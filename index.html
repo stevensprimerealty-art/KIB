@@ -4,18 +4,21 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Korea International Banking (KIB)</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
+
   <!-- INTRO SPLASH -->
   <section id="intro" class="intro" aria-label="Intro">
     <div class="intro-inner">
       <div class="flag" aria-hidden="true">
-        <svg viewBox="0 0 900 600" role="img">
+        <svg viewBox="0 0 900 600" role="img" aria-label="Korean flag">
           <rect width="900" height="600" fill="#fff"/>
           <g transform="translate(450 300)">
             <path d="M0-120a120 120 0 1 1 0 240a60 60 0 1 0 0-120a60 60 0 1 1 0-120z" fill="#cd2e3a"/>
@@ -52,6 +55,7 @@
 
   <!-- MAIN PAGE -->
   <main id="app" class="app" aria-label="KIB website" hidden>
+
     <!-- HEADER -->
     <header class="topbar">
       <div class="brand" aria-label="Brand">
@@ -60,12 +64,13 @@
       </div>
 
       <nav class="lang" aria-label="Language selector">
-        <button class="lang-btn is-active" data-lang="en" type="button">ENG</button>
-        <button class="lang-btn" data-lang="ko" type="button">KOR</button>
-        <button class="lang-btn" data-lang="es" type="button">ESPAÑOL</button>
+        <button class="lang-btn is-active" data-lang="en" type="button" aria-pressed="true">ENG</button>
+        <button class="lang-btn" data-lang="ko" type="button" aria-pressed="false">KOR</button>
+        <button class="lang-btn" data-lang="es" type="button" aria-pressed="false">ESPAÑOL</button>
       </nav>
 
-      <button id="menuBtn" class="hamburger" type="button" aria-label="Open menu" aria-expanded="false">
+      <button id="menuBtn" class="hamburger" type="button"
+              aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
         <span></span><span></span><span></span>
       </button>
     </header>
@@ -81,86 +86,95 @@
         </div>
 
         <h2 id="heroHeadline" class="hero-headline">KOREA INTERNATIONAL BANKING</h2>
+        <p class="hero-sub" id="heroSub">
+          A clean digital banking experience with secure systems and international services.
+        </p>
       </div>
 
-      <button class="scroll-down" type="button" aria-label="Scroll down">
+      <button class="scroll-down" id="scrollDownBtn" type="button" aria-label="Scroll down to content">
         <span class="chev"></span>
       </button>
     </section>
 
     <!-- MAIN CONTENT (after hero) -->
-    <section class="content" aria-label="Main content">
+    <section class="content" id="mainContent" aria-label="Main content">
       <div class="wrap">
         <h2 class="headline reveal" id="mainHeadline">
           Creating useful<br>
           financial services for your everyday life
         </h2>
 
+        <!-- SLIDER -->
         <div class="slider reveal" aria-label="KIB feature slider">
           <div class="slider-viewport" id="sliderViewport">
             <div class="slider-track" id="sliderTrack">
 
+              <!-- Slide 1 -->
               <article class="slide">
                 <div class="card">
                   <div class="card-media">
-                    <img src="hero.jpg" alt="Partnership" loading="lazy">
+                    <img src="assets/cards/card-1.jpg" alt="Card and receipt payment" loading="lazy">
                   </div>
                   <div class="card-body">
-                    <p class="card-kicker" id="s1Kicker">AI Finance</p>
-                    <h3 class="card-title" id="s1Title">Let me simplify your banking</h3>
-                    <p class="card-text" id="s1Text">Smart insights, secure access, fast transfers.</p>
+                    <p class="card-kicker" id="s1Kicker">Payments</p>
+                    <h3 class="card-title" id="s1Title">Card payments made simple</h3>
+                    <p class="card-text" id="s1Text">Clean receipts, tracking, and secure usage.</p>
                   </div>
                 </div>
               </article>
 
+              <!-- Slide 2 -->
               <article class="slide">
                 <div class="card">
                   <div class="card-media">
-                    <img src="hero.jpg" alt="Secure banking" loading="lazy">
+                    <img src="assets/cards/card-2.jpg" alt="Digital banking leader" loading="lazy">
                   </div>
                   <div class="card-body">
-                    <p class="card-kicker" id="s2Kicker">Security</p>
-                    <h3 class="card-title" id="s2Title">Protected by modern security</h3>
-                    <p class="card-text" id="s2Text">Safer sessions and advanced monitoring.</p>
+                    <p class="card-kicker" id="s2Kicker">Digital Banking</p>
+                    <h3 class="card-title" id="s2Title">A global leader in digital banking</h3>
+                    <p class="card-text" id="s2Text">Mobile payments, biometrics, real-time transfers.</p>
                   </div>
                 </div>
               </article>
 
+              <!-- Slide 3 -->
               <article class="slide">
                 <div class="card">
                   <div class="card-media">
-                    <img src="hero.jpg" alt="International banking" loading="lazy">
+                    <img src="assets/cards/card-3.jpg" alt="Running group account promotion" loading="lazy">
                   </div>
                   <div class="card-body">
-                    <p class="card-kicker" id="s3Kicker">International</p>
-                    <h3 class="card-title" id="s3Title">Cross-border made simple</h3>
-                    <p class="card-text" id="s3Text">Multi-currency tools for daily life.</p>
+                    <p class="card-kicker" id="s3Kicker">Groups</p>
+                    <h3 class="card-title" id="s3Title">Group accounts & monthly plans</h3>
+                    <p class="card-text" id="s3Text">Organize contributions and manage together.</p>
                   </div>
                 </div>
               </article>
 
+              <!-- Slide 4 -->
               <article class="slide">
                 <div class="card">
                   <div class="card-media">
-                    <img src="hero.jpg" alt="Support" loading="lazy">
+                    <img src="assets/cards/card-4.jpg" alt="Support chat UI" loading="lazy">
                   </div>
                   <div class="card-body">
                     <p class="card-kicker" id="s4Kicker">Support</p>
-                    <h3 class="card-title" id="s4Title">Help when you need it</h3>
-                    <p class="card-text" id="s4Text">Quick answers and guided steps.</p>
+                    <h3 class="card-title" id="s4Title">Ask about international banking</h3>
+                    <p class="card-text" id="s4Text">Quick help with a clean chat-style UI.</p>
                   </div>
                 </div>
               </article>
 
+              <!-- Slide 5 -->
               <article class="slide">
                 <div class="card">
                   <div class="card-media">
-                    <img src="hero.jpg" alt="Insights" loading="lazy">
+                    <img src="assets/cards/card-5.jpg" alt="Mortgage loan cap preview" loading="lazy">
                   </div>
                   <div class="card-body">
-                    <p class="card-kicker" id="s5Kicker">Insights</p>
-                    <h3 class="card-title" id="s5Title">Track your progress clearly</h3>
-                    <p class="card-text" id="s5Text">Clean summaries you can trust.</p>
+                    <p class="card-kicker" id="s5Kicker">Loans</p>
+                    <h3 class="card-title" id="s5Title">Loan overview made clear</h3>
+                    <p class="card-text" id="s5Text">Transparent limits and planning previews.</p>
                   </div>
                 </div>
               </article>
@@ -170,6 +184,34 @@
 
           <div class="dots" id="dots" aria-label="Slider dots"></div>
         </div>
+
+        <!-- OPTIONAL: CARD GRID SHOWCASE (below slider) -->
+        <section class="showcase reveal" aria-label="Card showcase">
+          <h3 class="showcase-title">Banking Highlights</h3>
+          <div class="showcase-grid">
+            <figure class="showcase-card">
+              <img src="assets/cards/card-1.jpg" alt="Payments" loading="lazy">
+              <figcaption>Payments & receipts</figcaption>
+            </figure>
+            <figure class="showcase-card">
+              <img src="assets/cards/card-2.jpg" alt="Compliance" loading="lazy">
+              <figcaption>Compliance & security</figcaption>
+            </figure>
+            <figure class="showcase-card">
+              <img src="assets/cards/card-3.jpg" alt="Group accounts" loading="lazy">
+              <figcaption>Group accounts</figcaption>
+            </figure>
+            <figure class="showcase-card">
+              <img src="assets/cards/card-4.jpg" alt="Support" loading="lazy">
+              <figcaption>Support chat</figcaption>
+            </figure>
+            <figure class="showcase-card">
+              <img src="assets/cards/card-5.jpg" alt="Loans" loading="lazy">
+              <figcaption>Loans overview</figcaption>
+            </figure>
+          </div>
+        </section>
+
       </div>
     </section>
 
@@ -182,11 +224,11 @@
 
       <ul class="drawer-list" role="list">
         <li class="drawer-item">
-          <button class="drawer-link" type="button" data-accordion="about">
+          <button class="drawer-link" type="button" data-accordion="about" aria-expanded="false" aria-controls="panelAbout">
             <span id="navAbout">About Us</span>
             <span class="caret" aria-hidden="true">▾</span>
           </button>
-          <div class="drawer-sub" data-panel="about" hidden>
+          <div class="drawer-sub" id="panelAbout" data-panel="about" hidden>
             <a href="#" id="navAboutStory">Our Story</a>
             <a href="#" id="navAboutMission">Mission</a>
           </div>
