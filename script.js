@@ -36,34 +36,45 @@ const drawer = $("drawer");
 const backdrop = $("backdrop");
 const menuBtn = $("menuBtn");
 const closeBtn = $("closeBtn");
-
 function openDrawer() {
   if (!drawer || !backdrop || !menuBtn) return;
 
   drawer.classList.add("is-open");
-  drawer.setAttribute("aria-hidden", "false");
-  menuBtn.setAttribute("aria-expanded", "true");
 
   backdrop.hidden = false;
   requestAnimationFrame(() => backdrop.classList.add("is-on"));
+
+  drawer.setAttribute("aria-hidden", "false");
+  menuBtn.setAttribute("aria-expanded", "true");
 }
 
 function closeDrawer() {
   if (!drawer || !backdrop || !menuBtn) return;
 
   drawer.classList.remove("is-open");
+  backdrop.classList.remove("is-on");
+
   drawer.setAttribute("aria-hidden", "true");
   menuBtn.setAttribute("aria-expanded", "false");
 
-  backdrop.classList.remove("is-on");
-  setTimeout(() => {
-    if (backdrop) backdrop.hidden = true;
-  }, 220);
+  setTimeout(() => { if (backdrop) backdrop.hidden = true; }, 200);
 }
 
-menuBtn?.addEventListener("click", openDrawer);
-closeBtn?.addEventListener("click", closeDrawer);
-backdrop?.addEventListener("click", closeDrawer);
+function toggleDrawer() {
+  if (!drawer) return;
+  drawer.classList.contains("is-open") ? closeDrawer() : openDrawer();
+}
+
+if (menuBtn) menuBtn.addEventListener("click", toggleDrawer);
+
+// ✅ X button ALWAYS works
+if (closeBtn) closeBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  closeDrawer();
+});
+
+if (backdrop) backdrop.addEventListener("click", closeDrawer);
 
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") closeDrawer();
@@ -353,11 +364,12 @@ if (track && viewport && dotsWrap) {
   });
 
   function setDots(i) {
-    $$(".dot", dotsWrap).forEach((d, di) => {
-      d.classList.toggle("is-active", di === i);
-      d.classList.toggle("active", di === i); // supports either CSS class
-    });
-  }
+  dotsWrap.querySelectorAll(".dot").forEach((d, di) => {
+    const active = di === i;
+    d.classList.toggle("is-active", active);
+    d.classList.toggle("active", active); // supports either CSS class
+  });
+}
 
   function goTo(i, user = false) {
     index = (i + slides.length) % slides.length;
