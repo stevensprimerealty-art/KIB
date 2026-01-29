@@ -15,7 +15,7 @@ body{
   color: var(--text);
 }
 
-/* INTRO */
+/* ---------- INTRO ---------- */
 .intro{
   position:fixed; inset:0;
   display:grid; place-items:center;
@@ -42,7 +42,6 @@ body{
   box-shadow: 0 10px 22px rgba(0,0,0,.10);
 }
 .flag svg{ width:100%; height:100%; display:block; }
-
 .intro-title{
   margin:0;
   color:#000;
@@ -52,15 +51,15 @@ body{
   text-transform: uppercase;
 }
 
-/* APP */
+/* ---------- APP ---------- */
 .app{
   min-height:100%;
   opacity:0;
-  transition: opacity .9s ease;
+  transition: opacity .55s ease;
 }
 .app.is-in{ opacity:1; }
 
-/* TOP BAR */
+/* ---------- TOP BAR (keeps visible above menu) ---------- */
 .topbar{
   position:fixed;
   top:0; left:0; right:0;
@@ -68,11 +67,9 @@ body{
   align-items:center;
   justify-content:space-between;
   gap: 12px;
-  padding: 16px 18px;
-  z-index:10;
-  pointer-events: none; /* lets hero clicks pass except controls */
+  padding: 14px 16px;
+  z-index:40;
 }
-.topbar > *{ pointer-events: auto; }
 
 .brand{
   display:flex;
@@ -83,20 +80,20 @@ body{
 .brand-title{
   font-weight:700;
   letter-spacing:.06em;
-  font-size: 14px;
+  font-size: 13px;
   text-transform: uppercase;
   white-space: nowrap;
 }
 .brand-sub{
   font-weight:600;
   opacity:.85;
-  font-size: 13px;
+  font-size: 12px;
   white-space: nowrap;
 }
 
 .lang{
   display:flex;
-  gap:10px;
+  gap:8px;
   align-items:center;
 }
 .lang-btn{
@@ -105,9 +102,9 @@ body{
   background: rgba(0,0,0,.10);
   color:#fff;
   border-radius: 999px;
-  padding: 8px 10px;
+  padding: 7px 9px;
   font-weight:700;
-  font-size: 12px;
+  font-size: 11px;
   letter-spacing:.02em;
   cursor:pointer;
   -webkit-tap-highlight-color: transparent;
@@ -119,7 +116,7 @@ body{
 }
 
 .hamburger{
-  width: 44px; height: 44px;
+  width: 42px; height: 42px;
   border:0;
   border-radius: 999px;
   background: rgba(0,0,0,.12);
@@ -137,7 +134,7 @@ body{
   margin: 2.6px 0;
 }
 
-/* HERO */
+/* ---------- HERO ---------- */
 .hero{
   position:relative;
   height: 100vh;
@@ -145,28 +142,28 @@ body{
   overflow:hidden;
 }
 
-/* ✅ Use your local hero image (hero.jpg) */
+/* ✅ hero image */
 .hero-bg{
   position:absolute;
   inset:0;
   background-image: url("./hero.jpg");
-  background-size: cover;          /* fills screen neatly */
+  background-size: cover;
   background-repeat: no-repeat;
-  background-position: center 35%; /* adjust subject position */
-  transform: scale(1.05);          /* subtle cinematic zoom */
+  background-position: center 35%;
+  transform: scale(1.05);
   filter: saturate(.95) contrast(.98);
+  opacity:0;
+  transition: opacity .6s ease;
 }
 
 .hero-overlay{
-  position:absolute; inset:0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,.25),
-    rgba(0,0,0,.50)
-  );
+  position:absolute;
+  inset:0;
+  background: linear-gradient(to bottom, rgba(0,0,0,.20), rgba(0,0,0,.55));
+  opacity:0;
+  transition: opacity .6s ease;
 }
 
-/* center like your inspo */
 .hero-content{
   position:relative;
   z-index:2;
@@ -179,34 +176,39 @@ body{
   padding: 0 20px;
 }
 
+/* flag + headline fade up from below */
 .hero-flag{
-  position:absolute;
-  top: 34%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  opacity:.95;
+  opacity:0;
+  transform: translateY(12px);
+  transition: opacity .35s ease, transform .35s ease;
+  transition-delay: .12s;
+  margin-bottom: 12px;
 }
 .flag-dot{
-  font-size: 26px;
+  font-size: 18px;
   filter: drop-shadow(0 10px 22px rgba(0,0,0,.25));
 }
+
 .hero-headline{
   margin:0;
   color:#fff;
   font-weight:800;
   letter-spacing:.04em;
   text-transform:uppercase;
-  font-size: clamp(30px, 6.5vw, 64px);
-  text-shadow: 0 14px 32px rgba(0,0,0,.35);
+  font-size: clamp(28px, 6.5vw, 56px);
+  text-shadow: 0 10px 26px rgba(0,0,0,.35); /* subtle shadow */
+  opacity:0;
+  transform: translateY(18px);
+  transition: opacity .45s ease, transform .45s ease;
+  transition-delay: .18s;
 }
 
-/* DOWN ARROW */
+/* down arrow fade in */
 .scroll-down{
   position:absolute;
   z-index:2;
   left: 50%;
-  bottom: 26px;
-  transform: translateX(-50%);
+  bottom: 22px;
   width: 56px; height: 56px;
   border-radius: 999px;
   border: 1px solid rgba(255,255,255,.35);
@@ -215,6 +217,11 @@ body{
   display:grid;
   place-items:center;
   -webkit-tap-highlight-color: transparent;
+
+  opacity:0;
+  transform: translateX(-50%) translateY(10px);
+  transition: opacity .35s ease, transform .35s ease;
+  transition-delay: .28s;
 }
 .chev{
   width: 14px; height: 14px;
@@ -224,19 +231,39 @@ body{
   margin-top:-4px;
 }
 
-/* DRAWER MENU */
+/* ✅ Hero fade trigger (JS adds .is-in to .hero) */
+.hero.is-in .hero-bg{ opacity:1; }
+.hero.is-in .hero-overlay{ opacity:1; }
+.hero.is-in .hero-flag{
+  opacity:1;
+  transform: translateY(0);
+}
+.hero.is-in .hero-headline{
+  opacity:1;
+  transform: translateY(0);
+}
+.hero.is-in .scroll-down{
+  opacity:1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ---------- MENU DRAWER (swift/quick fade like Kakao) ---------- */
 .drawer{
   position:fixed;
   top:0; right:0;
-  width:min(420px, 92vw);
+  width:min(520px, 100vw);
   height:100%;
   background:#fff;
-  transform: translateX(110%);
-  transition: transform .35s ease;
+  transform: translateX(105%);
+  opacity:0;
+  transition: transform .22s ease, opacity .22s ease;
   z-index:30;
   box-shadow: -22px 0 44px rgba(0,0,0,.18);
 }
-.drawer.is-open{ transform: translateX(0); }
+.drawer.is-open{
+  transform: translateX(0);
+  opacity:1;
+}
 
 .drawer-top{
   display:flex;
@@ -305,20 +332,130 @@ body{
 }
 
 .backdrop{
-  position:fixed; inset:0;
-  background: rgba(0,0,0,.35);
+  position:fixed;
+  inset:0;
+  background: rgba(0,0,0,.0);
   z-index:20;
+  transition: background .22s ease;
+}
+.backdrop.is-on{
+  background: rgba(0,0,0,.35);
 }
 
-/* MOBILE TUNING (matches your KakaoBank inspo better) */
+/* ---------- MAIN CONTENT ---------- */
+.content{
+  background:#fff;
+  padding: 54px 0 70px;
+}
+.wrap{
+  width: min(1040px, 92vw);
+  margin: 0 auto;
+}
+.headline{
+  margin: 0 0 22px;
+  font-size: clamp(30px, 5.2vw, 54px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 800;
+  color: #111;
+}
+
+/* ---------- SCROLL FADE-IN ---------- */
+.reveal{
+  opacity:0;
+  transform: translateY(18px);
+  transition: opacity .45s ease, transform .45s ease;
+}
+.reveal.is-visible{
+  opacity:1;
+  transform: translateY(0);
+}
+
+/* ---------- SLIDER ---------- */
+.slider{ margin-top: 18px; }
+
+.slider-viewport{
+  overflow:hidden;
+  border-radius: 26px;
+}
+
+.slider-track{
+  display:flex;
+  gap: 18px;
+  will-change: transform;
+  transition: transform .35s ease;
+  touch-action: pan-y;
+}
+
+.slide{ flex: 0 0 86%; }
+@media (min-width: 900px){
+  .slide{ flex-basis: 46%; }
+}
+
+.card{
+  background:#fff;
+  border-radius: 26px;
+  overflow:hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,.10);
+  transform: translateY(0);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.card:active{
+  transform: translateY(1px) scale(0.995);
+  box-shadow: 0 16px 50px rgba(0,0,0,.12);
+}
+
+.card-media{
+  aspect-ratio: 4 / 5;
+  background:#f2f2f2;
+}
+.card-media img{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  display:block;
+}
+
+.card-body{ padding: 16px 16px 18px; }
+.card-kicker{
+  margin:0 0 6px;
+  font-weight:700;
+  color:#666;
+  font-size: 12px;
+}
+.card-title{
+  margin:0 0 8px;
+  font-size: 18px;
+  font-weight:800;
+  color:#111;
+}
+.card-text{
+  margin:0;
+  color:#555;
+  font-weight:600;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.dots{
+  display:flex;
+  gap: 8px;
+  justify-content:center;
+  align-items:center;
+  padding: 14px 0 0;
+}
+.dot{
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(0,0,0,.18);
+  border:0;
+}
+.dot.is-active{
+  background: rgba(0,0,0,.70);
+}
+
+/* ---------- MOBILE TUNING ---------- */
 @media (max-width: 768px){
-  .brand-title{ font-size: 13px; }
-  .lang{ gap: 8px; }
-  .lang-btn{ padding: 7px 9px; font-size: 11px; }
-
-  .hero-bg{
-    background-position: center 30%;
-  }
-
-  .hero-flag{ top: 33%; }
+  .hero-bg{ background-position: center 30%; }
 }
