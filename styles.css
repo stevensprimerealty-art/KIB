@@ -12,6 +12,7 @@ body{
   margin:0;
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   background: var(--bg);
+  color: var(--text);
 }
 
 /* INTRO */
@@ -48,6 +49,7 @@ body{
   font-weight:800;
   letter-spacing:.06em;
   font-size: clamp(22px, 4.8vw, 44px);
+  text-transform: uppercase;
 }
 
 /* APP */
@@ -58,15 +60,19 @@ body{
 }
 .app.is-in{ opacity:1; }
 
+/* TOP BAR */
 .topbar{
   position:fixed;
   top:0; left:0; right:0;
   display:flex;
   align-items:center;
   justify-content:space-between;
+  gap: 12px;
   padding: 16px 18px;
   z-index:10;
+  pointer-events: none; /* lets hero clicks pass except controls */
 }
+.topbar > *{ pointer-events: auto; }
 
 .brand{
   display:flex;
@@ -79,11 +85,13 @@ body{
   letter-spacing:.06em;
   font-size: 14px;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 .brand-sub{
   font-weight:600;
   opacity:.85;
   font-size: 13px;
+  white-space: nowrap;
 }
 
 .lang{
@@ -102,6 +110,7 @@ body{
   font-size: 12px;
   letter-spacing:.02em;
   cursor:pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 .lang-btn.is-active{
   background:#fff;
@@ -117,6 +126,7 @@ body{
   display:grid;
   place-items:center;
   cursor:pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 .hamburger span{
   display:block;
@@ -131,28 +141,44 @@ body{
 .hero{
   position:relative;
   height: 100vh;
+  width: 100%;
   overflow:hidden;
 }
+
+/* ✅ Use your local hero image (hero.jpg) */
 .hero-bg{
-  position:absolute; inset:0;
-  background:
-    url("https://images.unsplash.com/photo-1511988617509-a57c8a288659?auto=format&fit=crop&w=1600&q=70")
-    center/cover no-repeat;
-  transform: scale(1.04);
-  filter: saturate(0.95) contrast(0.95);
+  position:absolute;
+  inset:0;
+  background-image: url("./hero.jpg");
+  background-size: cover;          /* fills screen neatly */
+  background-repeat: no-repeat;
+  background-position: center 35%; /* adjust subject position */
+  transform: scale(1.05);          /* subtle cinematic zoom */
+  filter: saturate(.95) contrast(.98);
 }
+
 .hero-overlay{
   position:absolute; inset:0;
-  background: linear-gradient(to bottom, rgba(0,0,0,.30), rgba(0,0,0,.45));
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,.25),
+    rgba(0,0,0,.50)
+  );
 }
+
+/* center like your inspo */
 .hero-content{
   position:relative;
+  z-index:2;
   height: 100%;
-  display:grid;
-  place-items:center;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
   text-align:center;
   padding: 0 20px;
 }
+
 .hero-flag{
   position:absolute;
   top: 34%;
@@ -177,6 +203,7 @@ body{
 /* DOWN ARROW */
 .scroll-down{
   position:absolute;
+  z-index:2;
   left: 50%;
   bottom: 26px;
   transform: translateX(-50%);
@@ -187,6 +214,7 @@ body{
   cursor:pointer;
   display:grid;
   place-items:center;
+  -webkit-tap-highlight-color: transparent;
 }
 .chev{
   width: 14px; height: 14px;
@@ -226,6 +254,7 @@ body{
   background: transparent;
   font-size: 22px;
   cursor:pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .drawer-list{
@@ -279,4 +308,17 @@ body{
   position:fixed; inset:0;
   background: rgba(0,0,0,.35);
   z-index:20;
+}
+
+/* MOBILE TUNING (matches your KakaoBank inspo better) */
+@media (max-width: 768px){
+  .brand-title{ font-size: 13px; }
+  .lang{ gap: 8px; }
+  .lang-btn{ padding: 7px 9px; font-size: 11px; }
+
+  .hero-bg{
+    background-position: center 30%;
+  }
+
+  .hero-flag{ top: 33%; }
 }
