@@ -1,15 +1,18 @@
 // ===============================
-// KIB — script.js (FULL CORRECT)
+// KIB — script.js (FULL FINAL)
 // ===============================
 
-// -------- INTRO → MAIN TRANSITION + HERO FADE-IN --------
-const intro = document.getElementById("intro");
-const app = document.getElementById("app");
+// ---------- Helpers ----------
+const $ = (id) => document.getElementById(id);
+const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+
+// ---------- INTRO → MAIN TRANSITION + HERO FADE-IN ----------
+const intro = $("intro");
+const app = $("app");
 
 window.addEventListener("load", () => {
   if (intro) intro.classList.add("is-in");
 
-  // After 3 seconds: hide intro, show app, then trigger hero fade-in
   setTimeout(() => {
     if (intro) intro.style.display = "none";
 
@@ -19,81 +22,84 @@ window.addEventListener("load", () => {
       requestAnimationFrame(() => {
         app.classList.add("is-in");
 
-        // Trigger hero fade-in animations (CSS listens to .hero.is-in)
         const hero = document.querySelector(".hero");
         if (hero) hero.classList.add("is-in");
 
-        // Start scroll reveal after app is visible
         initScrollReveal();
       });
     }
   }, 3000);
 });
 
-// -------- MENU DRAWER (swift + backdrop fade) --------
-const drawer = document.getElementById("drawer");
-const backdrop = document.getElementById("backdrop");
-const menuBtn = document.getElementById("menuBtn");
-const closeBtn = document.getElementById("closeBtn");
+// ---------- MENU DRAWER ----------
+const drawer = $("drawer");
+const backdrop = $("backdrop");
+const menuBtn = $("menuBtn");
+const closeBtn = $("closeBtn");
 
 function openDrawer() {
   if (!drawer || !backdrop || !menuBtn) return;
+
   drawer.classList.add("is-open");
+  drawer.setAttribute("aria-hidden", "false");
+  menuBtn.setAttribute("aria-expanded", "true");
 
   backdrop.hidden = false;
   requestAnimationFrame(() => backdrop.classList.add("is-on"));
-
-  drawer.setAttribute("aria-hidden", "false");
-  menuBtn.setAttribute("aria-expanded", "true");
 }
 
 function closeDrawer() {
   if (!drawer || !backdrop || !menuBtn) return;
-  drawer.classList.remove("is-open");
-  backdrop.classList.remove("is-on");
 
+  drawer.classList.remove("is-open");
   drawer.setAttribute("aria-hidden", "true");
   menuBtn.setAttribute("aria-expanded", "false");
 
-  // allow fade-out to finish, then hide
+  backdrop.classList.remove("is-on");
   setTimeout(() => {
     if (backdrop) backdrop.hidden = true;
   }, 220);
 }
 
-if (menuBtn) menuBtn.addEventListener("click", openDrawer);
-if (closeBtn) closeBtn.addEventListener("click", closeDrawer);
-if (backdrop) backdrop.addEventListener("click", closeDrawer);
+menuBtn?.addEventListener("click", openDrawer);
+closeBtn?.addEventListener("click", closeDrawer);
+backdrop?.addEventListener("click", closeDrawer);
 
-// Close menu on Escape key (nice UX)
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") closeDrawer();
 });
 
-// -------- ABOUT US accordion --------
-document.querySelectorAll("[data-accordion]").forEach((btn) => {
+// ---------- ABOUT accordion (and aria-expanded) ----------
+$$("[data-accordion]").forEach((btn) => {
   btn.addEventListener("click", () => {
     const key = btn.getAttribute("data-accordion");
     const panel = document.querySelector(`[data-panel="${key}"]`);
-    if (panel) panel.hidden = !panel.hidden;
+    if (!panel) return;
+
+    const willOpen = panel.hidden === true;
+    panel.hidden = !willOpen;
+    btn.setAttribute("aria-expanded", String(willOpen));
   });
 });
 
-// -------- Scroll down button --------
-const scrollBtn = document.querySelector(".scroll-down");
-if (scrollBtn) {
-  scrollBtn.addEventListener("click", () => {
-    window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
-  });
-}
+// ---------- Scroll down button (scroll to content) ----------
+const scrollBtn = $("scrollDownBtn") || document.querySelector(".scroll-down");
+scrollBtn?.addEventListener("click", () => {
+  const target = $("mainContent") || document.querySelector(".content");
+  if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+  else window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
+});
 
-// -------- LANGUAGE SWITCH (includes main headline + 5 cards) --------
-const t = {
+// ---------- LANGUAGE SWITCH (FULL PAGE) ----------
+const translations = {
   en: {
     brandTitle: "KOREA INTERNATIONAL BANKING",
     brandSub: "(KIB)",
     heroHeadline: "KOREA INTERNATIONAL BANKING",
+    heroSub: "A clean digital banking experience with secure systems and international services.",
     introTitle: "KOREA INTERNATIONAL BANKING",
+
+    mainHeadline: "Creating useful\nfinancial services for your everyday life",
 
     navAbout: "About Us",
     navAboutStory: "Our Story",
@@ -102,34 +108,44 @@ const t = {
     navMedia: "Media",
     navOverview: "Overview",
 
-    mainHeadline: "Creating useful\nfinancial services for your everyday life",
+    // Slider cards
+    s1Kicker: "Payments",
+    s1Title: "Card payments made simple",
+    s1Text: "Clean receipts, tracking, and secure usage.",
 
-    s1Kicker: "AI Finance",
-    s1Title: "Let me simplify your banking",
-    s1Text: "Smart insights, secure access, fast transfers.",
+    s2Kicker: "Digital Banking",
+    s2Title: "A global leader in digital banking",
+    s2Text: "Mobile payments, biometrics, real-time transfers.",
 
-    s2Kicker: "Security",
-    s2Title: "Protected by modern security",
-    s2Text: "Safer sessions and advanced monitoring.",
-
-    s3Kicker: "International",
-    s3Title: "Cross-border made simple",
-    s3Text: "Multi-currency tools for daily life.",
+    s3Kicker: "Groups",
+    s3Title: "Group accounts & monthly plans",
+    s3Text: "Organize contributions and manage together.",
 
     s4Kicker: "Support",
-    s4Title: "Help when you need it",
-    s4Text: "Quick answers and guided steps.",
+    s4Title: "Ask about international banking",
+    s4Text: "Quick help with a clean chat-style UI.",
 
-    s5Kicker: "Insights",
-    s5Title: "Track your progress clearly",
-    s5Text: "Clean summaries you can trust.",
+    s5Kicker: "Loans",
+    s5Title: "Loan overview made clear",
+    s5Text: "Transparent limits and planning previews.",
+
+    // Optional showcase (if you kept it)
+    showcaseTitle: "Banking Highlights",
+    cap1: "Payments & receipts",
+    cap2: "Compliance & security",
+    cap3: "Group accounts",
+    cap4: "Support chat",
+    cap5: "Loans overview",
   },
 
   ko: {
     brandTitle: "한국 국제 은행",
     brandSub: "(KIB)",
     heroHeadline: "한국 국제 은행",
+    heroSub: "안전한 시스템과 국제 서비스를 갖춘 깔끔한 디지털 뱅킹 경험.",
     introTitle: "한국 국제 은행",
+
+    mainHeadline: "일상에 도움이 되는\n금융 서비스를 만듭니다",
 
     navAbout: "회사 소개",
     navAboutStory: "우리 이야기",
@@ -138,34 +154,42 @@ const t = {
     navMedia: "미디어",
     navOverview: "개요",
 
-    mainHeadline: "일상에 도움이 되는\n금융 서비스를 만듭니다",
+    s1Kicker: "결제",
+    s1Title: "카드 결제를 더 쉽게",
+    s1Text: "영수증, 추적, 안전한 사용.",
 
-    s1Kicker: "AI 금융",
-    s1Title: "은행 업무를 더 쉽게",
-    s1Text: "스마트 인사이트, 안전한 접속, 빠른 송금.",
+    s2Kicker: "디지털 뱅킹",
+    s2Title: "디지털 뱅킹 글로벌 리더",
+    s2Text: "모바일 결제, 생체인증, 실시간 송금.",
 
-    s2Kicker: "보안",
-    s2Title: "현대적 보안으로 보호",
-    s2Text: "더 안전한 세션과 고급 모니터링.",
-
-    s3Kicker: "국제",
-    s3Title: "해외 금융을 간편하게",
-    s3Text: "일상을 위한 다중 통화 도구.",
+    s3Kicker: "그룹",
+    s3Title: "그룹 계좌 및 월간 플랜",
+    s3Text: "모임/저축을 함께 관리.",
 
     s4Kicker: "지원",
-    s4Title: "필요할 때 바로 도움",
-    s4Text: "빠른 답변과 단계별 가이드.",
+    s4Title: "국제 뱅킹 문의",
+    s4Text: "깔끔한 채팅 UI로 빠른 도움.",
 
-    s5Kicker: "인사이트",
-    s5Title: "진행 상황을 명확하게",
-    s5Text: "신뢰할 수 있는 깔끔한 요약.",
+    s5Kicker: "대출",
+    s5Title: "대출 정보를 명확하게",
+    s5Text: "한도와 계획을 투명하게.",
+
+    showcaseTitle: "뱅킹 하이라이트",
+    cap1: "결제 및 영수증",
+    cap2: "컴플라이언스 및 보안",
+    cap3: "그룹 계좌",
+    cap4: "지원 채팅",
+    cap5: "대출 개요",
   },
 
   es: {
     brandTitle: "BANCA INTERNACIONAL DE COREA",
     brandSub: "(KIB)",
     heroHeadline: "BANCA INTERNACIONAL DE COREA",
+    heroSub: "Una experiencia bancaria digital limpia con sistemas seguros y servicios internacionales.",
     introTitle: "BANCA INTERNACIONAL DE COREA",
+
+    mainHeadline: "Creando servicios financieros útiles\npara tu vida diaria",
 
     navAbout: "Sobre nosotros",
     navAboutStory: "Nuestra historia",
@@ -174,50 +198,57 @@ const t = {
     navMedia: "Medios",
     navOverview: "Resumen",
 
-    mainHeadline: "Creando servicios financieros útiles\npara tu vida diaria",
+    s1Kicker: "Pagos",
+    s1Title: "Pagos con tarjeta más simples",
+    s1Text: "Recibos claros, control y seguridad.",
 
-    s1Kicker: "Finanzas IA",
-    s1Title: "Hagamos tu banca más simple",
-    s1Text: "Insights inteligentes, acceso seguro, transferencias rápidas.",
+    s2Kicker: "Banca Digital",
+    s2Title: "Líder global en banca digital",
+    s2Text: "Pagos móviles, biometría, transferencias en tiempo real.",
 
-    s2Kicker: "Seguridad",
-    s2Title: "Protegido con seguridad moderna",
-    s2Text: "Sesiones más seguras y monitoreo avanzado.",
-
-    s3Kicker: "Internacional",
-    s3Title: "Transacciones globales sin complicaciones",
-    s3Text: "Herramientas multimoneda para el día a día.",
+    s3Kicker: "Grupos",
+    s3Title: "Cuentas de grupo y planes mensuales",
+    s3Text: "Organiza aportes y gestiona en conjunto.",
 
     s4Kicker: "Soporte",
-    s4Title: "Ayuda cuando la necesitas",
-    s4Text: "Respuestas rápidas y guía paso a paso.",
+    s4Title: "Consulta banca internacional",
+    s4Text: "Ayuda rápida con UI tipo chat.",
 
-    s5Kicker: "Insights",
-    s5Title: "Sigue tu progreso con claridad",
-    s5Text: "Resúmenes limpios en los que puedes confiar.",
+    s5Kicker: "Préstamos",
+    s5Title: "Resumen de préstamos claro",
+    s5Text: "Límites transparentes y vista previa de planificación.",
+
+    showcaseTitle: "Aspectos destacados",
+    cap1: "Pagos y recibos",
+    cap2: "Cumplimiento y seguridad",
+    cap3: "Cuentas de grupo",
+    cap4: "Chat de soporte",
+    cap5: "Resumen de préstamos",
   }
 };
 
+function setText(id, value) {
+  const el = $(id);
+  if (!el || value == null) return;
+
+  if (typeof value === "string" && value.includes("\n")) {
+    el.innerHTML = value.replaceAll("\n", "<br>");
+  } else {
+    el.textContent = value;
+  }
+}
+
 function setLanguage(lang) {
-  const dict = t[lang] || t.en;
+  const dict = translations[lang] || translations.en;
 
-  const setText = (id, value) => {
-    const el = document.getElementById(id);
-    if (!el || value == null) return;
-
-    // allow \n to become line breaks for headings
-    if (typeof value === "string" && value.includes("\n")) {
-      el.innerHTML = value.replaceAll("\n", "<br>");
-    } else {
-      el.textContent = value;
-    }
-  };
-
+  // Top + intro + hero
   setText("brandTitle", dict.brandTitle);
   setText("brandSub", dict.brandSub);
   setText("heroHeadline", dict.heroHeadline);
+  setText("heroSub", dict.heroSub);
   setText("introTitle", dict.introTitle);
 
+  // Drawer nav
   setText("navAbout", dict.navAbout);
   setText("navAboutStory", dict.navAboutStory);
   setText("navAboutMission", dict.navAboutMission);
@@ -225,8 +256,10 @@ function setLanguage(lang) {
   setText("navMedia", dict.navMedia);
   setText("navOverview", dict.navOverview);
 
+  // Main headline
   setText("mainHeadline", dict.mainHeadline);
 
+  // Slider 5 cards
   setText("s1Kicker", dict.s1Kicker);
   setText("s1Title", dict.s1Title);
   setText("s1Text", dict.s1Text);
@@ -247,30 +280,40 @@ function setLanguage(lang) {
   setText("s5Title", dict.s5Title);
   setText("s5Text", dict.s5Text);
 
-  // button UI
-  document.querySelectorAll(".lang-btn").forEach((b) => {
-    b.classList.toggle("is-active", b.dataset.lang === lang);
+  // Optional showcase IDs (only if present in HTML)
+  setText("showcaseTitle", dict.showcaseTitle);
+  setText("cap1", dict.cap1);
+  setText("cap2", dict.cap2);
+  setText("cap3", dict.cap3);
+  setText("cap4", dict.cap4);
+  setText("cap5", dict.cap5);
+
+  // Update buttons state + aria-pressed
+  $$(".lang-btn").forEach((b) => {
+    const active = b.dataset.lang === lang;
+    b.classList.toggle("is-active", active);
+    b.setAttribute("aria-pressed", active ? "true" : "false");
   });
 
-  // set <html lang="">
+  // Set html lang
   document.documentElement.lang = lang;
 
-  // close menu when language is changed (nice UX)
+  // Close menu when language changed
   closeDrawer();
 }
 
-document.querySelectorAll(".lang-btn").forEach((btn) => {
+$$(".lang-btn").forEach((btn) => {
   btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
 });
 
 // Default language
 setLanguage("en");
 
-// -------- SCROLL REVEAL (fade in while scrolling) --------
+// ---------- SCROLL REVEAL ----------
 let _io = null;
 
 function initScrollReveal() {
-  const revealEls = document.querySelectorAll(".reveal");
+  const revealEls = $$(".reveal");
   if (!revealEls.length) return;
 
   if (_io) _io.disconnect();
@@ -287,17 +330,18 @@ function initScrollReveal() {
   revealEls.forEach((el) => _io.observe(el));
 }
 
-// -------- SLIDER (auto every 3s + swipe + dots) --------
-const track = document.getElementById("sliderTrack");
-const viewport = document.getElementById("sliderViewport");
-const dotsWrap = document.getElementById("dots");
+// ---------- SLIDER (AUTO 3s + SWIPE + DOTS) ----------
+// This version matches the corrected CSS: .slide { flex: 0 0 100%; }
+const track = $("sliderTrack");
+const viewport = $("sliderViewport");
+const dotsWrap = $("dots");
 
 if (track && viewport && dotsWrap) {
   const slides = Array.from(track.children);
   let index = 0;
   let timer = null;
 
-  // build dots
+  // Build dots
   dotsWrap.innerHTML = "";
   slides.forEach((_, i) => {
     const b = document.createElement("button");
@@ -309,28 +353,22 @@ if (track && viewport && dotsWrap) {
   });
 
   function setDots(i) {
-    dotsWrap.querySelectorAll(".dot").forEach((d, di) => {
+    $$(".dot", dotsWrap).forEach((d, di) => {
       d.classList.toggle("is-active", di === i);
+      d.classList.toggle("active", di === i); // supports either CSS class
     });
-  }
-
-  function slideStep() {
-    const first = slides[0];
-    if (!first) return 0;
-    const style = getComputedStyle(track);
-    const gap = parseFloat(style.gap || "0");
-    return first.getBoundingClientRect().width + gap;
   }
 
   function goTo(i, user = false) {
     index = (i + slides.length) % slides.length;
-    const x = slideStep() * index;
-    track.style.transform = `translateX(${-x}px)`;
+    track.style.transform = `translateX(-${index * 100}%)`;
     setDots(index);
     if (user) restart();
   }
 
-  function next() { goTo(index + 1); }
+  function next() {
+    goTo(index + 1);
+  }
 
   function start() {
     stop();
@@ -342,9 +380,11 @@ if (track && viewport && dotsWrap) {
     timer = null;
   }
 
-  function restart() { start(); }
+  function restart() {
+    start();
+  }
 
-  // Auto start
+  // Start autoplay
   start();
 
   // Pause while touching/hovering
@@ -353,7 +393,7 @@ if (track && viewport && dotsWrap) {
   viewport.addEventListener("mouseenter", stop);
   viewport.addEventListener("mouseleave", restart);
 
-  // Swipe support (pointer)
+  // Swipe / drag (pointer)
   let startX = 0;
   let dx = 0;
   let isDown = false;
@@ -364,31 +404,38 @@ if (track && viewport && dotsWrap) {
     dx = 0;
     track.style.transition = "none";
     stop();
+    viewport.setPointerCapture?.(e.pointerId);
   });
 
   viewport.addEventListener("pointermove", (e) => {
     if (!isDown) return;
     dx = e.clientX - startX;
-    const x = (slideStep() * index) - dx;
-    track.style.transform = `translateX(${-x}px)`;
+
+    // drag in % based on viewport width
+    const w = viewport.getBoundingClientRect().width || 1;
+    const dragPercent = (dx / w) * 100;
+    track.style.transform = `translateX(calc(-${index * 100}% + ${dragPercent}%))`;
   });
 
-  function endSwipe() {
+  function endSwipe(e) {
     if (!isDown) return;
     isDown = false;
     track.style.transition = "transform .35s ease";
 
-    const threshold = Math.min(70, slideStep() * 0.18);
-    if (dx > threshold) goTo(index - 1, true);
-    else if (dx < -threshold) goTo(index + 1, true);
+    const w = viewport.getBoundingClientRect().width || 1;
+    const thresholdPx = Math.min(70, w * 0.18);
+
+    if (dx > thresholdPx) goTo(index - 1, true);
+    else if (dx < -thresholdPx) goTo(index + 1, true);
     else goTo(index, true);
 
     restart();
+    viewport.releasePointerCapture?.(e.pointerId);
   }
 
   viewport.addEventListener("pointerup", endSwipe);
   viewport.addEventListener("pointercancel", endSwipe);
 
-  // Fix position on resize
+  // Keep correct position on resize
   window.addEventListener("resize", () => goTo(index));
 }
