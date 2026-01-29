@@ -387,6 +387,29 @@ body{
   width: min(1040px, 92vw);
   margin: 0 auto;
 }
+
+/* ---------- OVERVIEW SECTION ---------- */
+.overview{
+  background:#fff;
+  padding: 10px 0 70px;
+}
+
+.overview-title{
+  margin: 26px 0 12px;
+  font-weight: 800;
+  font-size: 24px;
+  color:#111;
+}
+
+.overview-text{
+  margin: 0 0 14px;
+  color:#444;
+  font-weight: 600;
+  line-height: 1.6;
+  max-width: 72ch;
+}
+
+
 .headline{
   margin: 0 0 22px;
   font-size: clamp(30px, 5.2vw, 54px);
