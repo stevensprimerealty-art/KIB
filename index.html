@@ -14,16 +14,13 @@
   <!-- INTRO SPLASH -->
   <section id="intro" class="intro" aria-label="Intro">
     <div class="intro-inner">
-      <!-- Simple Korean flag (SVG) -->
       <div class="flag" aria-hidden="true">
         <svg viewBox="0 0 900 600" role="img">
           <rect width="900" height="600" fill="#fff"/>
-          <!-- taegeuk -->
           <g transform="translate(450 300)">
             <path d="M0-120a120 120 0 1 1 0 240a60 60 0 1 0 0-120a60 60 0 1 1 0-120z" fill="#cd2e3a"/>
             <path d="M0 120a120 120 0 1 1 0-240a60 60 0 1 0 0 120a60 60 0 1 1 0 120z" fill="#0047a0"/>
           </g>
-          <!-- trigrams (stylized) -->
           <g fill="#000">
             <g transform="translate(150 140) rotate(-30)">
               <rect x="-90" y="-60" width="180" height="18" rx="4"/>
@@ -53,10 +50,11 @@
     </div>
   </section>
 
-  <!-- MAIN PAGE (HERO + HEADER) -->
+  <!-- MAIN PAGE -->
   <main id="app" class="app" aria-label="KIB website" hidden>
+    <!-- HEADER -->
     <header class="topbar">
-      <div class="brand">
+      <div class="brand" aria-label="Brand">
         <span class="brand-title" id="brandTitle">KOREA INTERNATIONAL BANKING</span>
         <span class="brand-sub" id="brandSub">(KIB)</span>
       </div>
@@ -72,26 +70,107 @@
       </button>
     </header>
 
+    <!-- HERO -->
     <section class="hero" role="region" aria-label="Hero">
-      <!-- Replace this image with your own later -->
       <div class="hero-bg" aria-hidden="true"></div>
-
       <div class="hero-overlay" aria-hidden="true"></div>
 
       <div class="hero-content">
         <div class="hero-flag" aria-hidden="true">
-          <!-- small flag -->
           <span class="flag-dot">🇰🇷</span>
         </div>
 
-        <h2 id="heroHeadline" class="hero-headline">
-          KOREA INTERNATIONAL BANKING
-        </h2>
+        <h2 id="heroHeadline" class="hero-headline">KOREA INTERNATIONAL BANKING</h2>
       </div>
 
       <button class="scroll-down" type="button" aria-label="Scroll down">
         <span class="chev"></span>
       </button>
+    </section>
+
+    <!-- MAIN CONTENT (after hero) -->
+    <section class="content" aria-label="Main content">
+      <div class="wrap">
+        <h2 class="headline reveal" id="mainHeadline">
+          Creating useful<br>
+          financial services for your everyday life
+        </h2>
+
+        <div class="slider reveal" aria-label="KIB feature slider">
+          <div class="slider-viewport" id="sliderViewport">
+            <div class="slider-track" id="sliderTrack">
+
+              <article class="slide">
+                <div class="card">
+                  <div class="card-media">
+                    <img src="hero.jpg" alt="Partnership" loading="lazy">
+                  </div>
+                  <div class="card-body">
+                    <p class="card-kicker" id="s1Kicker">AI Finance</p>
+                    <h3 class="card-title" id="s1Title">Let me simplify your banking</h3>
+                    <p class="card-text" id="s1Text">Smart insights, secure access, fast transfers.</p>
+                  </div>
+                </div>
+              </article>
+
+              <article class="slide">
+                <div class="card">
+                  <div class="card-media">
+                    <img src="hero.jpg" alt="Secure banking" loading="lazy">
+                  </div>
+                  <div class="card-body">
+                    <p class="card-kicker" id="s2Kicker">Security</p>
+                    <h3 class="card-title" id="s2Title">Protected by modern security</h3>
+                    <p class="card-text" id="s2Text">Safer sessions and advanced monitoring.</p>
+                  </div>
+                </div>
+              </article>
+
+              <article class="slide">
+                <div class="card">
+                  <div class="card-media">
+                    <img src="hero.jpg" alt="International banking" loading="lazy">
+                  </div>
+                  <div class="card-body">
+                    <p class="card-kicker" id="s3Kicker">International</p>
+                    <h3 class="card-title" id="s3Title">Cross-border made simple</h3>
+                    <p class="card-text" id="s3Text">Multi-currency tools for daily life.</p>
+                  </div>
+                </div>
+              </article>
+
+              <article class="slide">
+                <div class="card">
+                  <div class="card-media">
+                    <img src="hero.jpg" alt="Support" loading="lazy">
+                  </div>
+                  <div class="card-body">
+                    <p class="card-kicker" id="s4Kicker">Support</p>
+                    <h3 class="card-title" id="s4Title">Help when you need it</h3>
+                    <p class="card-text" id="s4Text">Quick answers and guided steps.</p>
+                  </div>
+                </div>
+              </article>
+
+              <article class="slide">
+                <div class="card">
+                  <div class="card-media">
+                    <img src="hero.jpg" alt="Insights" loading="lazy">
+                  </div>
+                  <div class="card-body">
+                    <p class="card-kicker" id="s5Kicker">Insights</p>
+                    <h3 class="card-title" id="s5Title">Track your progress clearly</h3>
+                    <p class="card-text" id="s5Text">Clean summaries you can trust.</p>
+                  </div>
+                </div>
+              </article>
+
+            </div>
+          </div>
+
+          <div class="dots" id="dots" aria-label="Slider dots"></div>
+        </div>
+      </div>
     </section>
 
     <!-- MENU DRAWER -->
