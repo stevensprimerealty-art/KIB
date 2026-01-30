@@ -219,7 +219,8 @@
            </div> 
           </section>
 
-      </div> 
+
+     </div>
     </section>
 
   <section class="overview reveal" aria-label="KIB Overview">
@@ -235,6 +236,63 @@
     </p>
   </div>
 </section>
+
+    <!-- ===============================
+     KIB BANKING ONLINE (LOGIN)
+================================ -->
+<section class="login-section reveal" id="kibLogin" aria-label="KIB Banking Online">
+  <div class="wrap">
+    <h3 class="login-title">KIB BANKING ONLINE</h3>
+
+    <form class="login-card" id="loginForm" autocomplete="on">
+      <!-- Country -->
+      <label class="field">
+        <span class="sr-only">Country selection</span>
+        <select id="countrySelect" name="country" class="input" required>
+          <option value="" selected disabled>Country selection</option>
+        </select>
+      </label>
+
+      <!-- ID -->
+      <label class="field">
+        <span class="sr-only">ID</span>
+        <input id="userId" name="userId" class="input" type="text" placeholder="ID" minlength="8" maxlength="15" autocomplete="username" required>
+      </label>
+
+      <!-- Password -->
+      <label class="field">
+        <span class="sr-only">Password</span>
+        <div class="input-row">
+          <input id="password" name="password" class="input" type="password" placeholder="Password" minlength="8" autocomplete="current-password" required>
+          <button class="icon-btn" id="togglePw" type="button" aria-label="Show password">👁️</button>
+        </div>
+      </label>
+
+      <!-- Email OTP -->
+      <label class="field">
+        <span class="sr-only">Email OTP</span>
+        <input id="emailOtp" name="emailOtp" class="input" type="text" placeholder="email-OTP" inputmode="numeric" autocomplete="one-time-code" required>
+      </label>
+
+      <!-- Login -->
+      <button class="login-btn" type="submit">Login</button>
+
+      <!-- bottom row -->
+      <div class="login-foot">
+        <label class="save-id">
+          <input id="saveId" type="checkbox">
+          <span>Save ID</span>
+        </label>
+
+        <div class="login-links">
+          <a href="#" id="findIdLink">Find ID &gt;</a>
+          <a href="#" id="resetPwLink">Password reset &gt;</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+    
     
     <!-- MENU DRAWER -->
     <aside id="drawer" class="drawer" aria-hidden="true">
