@@ -270,6 +270,11 @@ function setLanguage(lang) {
   // Main headline
   setText("mainHeadline", dict.mainHeadline);
 
+  setText("overviewTitle", dict.overviewTitle);
+  setText("overviewP1", dict.overviewP1);
+  setText("overviewP2", dict.overviewP2);
+
+  
   // Slider 5 cards
   setText("s1Kicker", dict.s1Kicker);
   setText("s1Title", dict.s1Title);
@@ -451,3 +456,99 @@ if (track && viewport && dotsWrap) {
   // Keep correct position on resize
   window.addEventListener("resize", () => goTo(index));
 }
+
+// ===============================
+// KIB LOGIN SECTION (Countries + Save ID + Toggle Password)
+// ===============================
+function flagEmojiFromISO2(code) {
+  if (!code || code.length !== 2) return "🏳️";
+  const cc = code.toUpperCase();
+  const A = 0x1F1E6;
+  const first = cc.charCodeAt(0) - 65 + A;
+  const second = cc.charCodeAt(1) - 65 + A;
+  return String.fromCodePoint(first, second);
+}
+
+function buildCountries(selectEl) {
+  if (!selectEl) return;
+
+  // Best way: uses the browser’s built-in region list
+  const regionCodes =
+    (Intl.supportedValuesOf && Intl.supportedValuesOf("region"))
+      ? Intl.supportedValuesOf("region")
+      : ["KR","US","GB","FR","DE","ES","IT","NG","JP","CN","CA","BR","IN","AE","SA"]; // fallback
+
+  const dn = new Intl.DisplayNames(["en"], { type: "region" });
+
+  const rows = regionCodes
+    .filter(c => typeof c === "string" && c.length === 2) // ISO2 only
+    .map(code => ({ code, name: dn.of(code) || code }))
+    .filter(x => x.name && x.name !== x.code)
+    .sort((a,b) => a.name.localeCompare(b.name));
+
+  // Clear (keep placeholder)
+  selectEl.querySelectorAll("option:not([disabled])").forEach(o => o.remove());
+
+  rows.forEach(({code, name}) => {
+    const opt = document.createElement("option");
+    opt.value = code;
+    opt.textContent = `${flagEmojiFromISO2(code)}  ${name}`;
+    selectEl.appendChild(opt);
+  });
+}
+
+function initLoginUI() {
+  const form = document.getElementById("loginForm");
+  const country = document.getElementById("countrySelect");
+  const userId = document.getElementById("userId");
+  const saveId = document.getElementById("saveId");
+  const pw = document.getElementById("password");
+  const togglePw = document.getElementById("togglePw");
+
+  buildCountries(country);
+
+  // Save ID (localStorage)
+  const saved = localStorage.getItem("kib_saved_id");
+  if (saved) {
+    userId.value = saved;
+    saveId.checked = true;
+  }
+
+  saveId?.addEventListener("change", () => {
+  const v = userId.value.trim();
+  if (saveId.checked && v) localStorage.setItem("kib_saved_id", v);
+  else localStorage.removeItem("kib_saved_id");
+});
+
+  userId?.addEventListener("input", () => {
+    if (saveId?.checked) localStorage.setItem("kib_saved_id", userId.value.trim());
+  });
+
+  // Show/Hide password
+  togglePw?.addEventListener("click", () => {
+    const isPw = pw.type === "password";
+    pw.type = isPw ? "text" : "password";
+    togglePw.textContent = isPw ? "🙈" : "👁️";
+    togglePw.setAttribute("aria-label", isPw ? "Hide password" : "Show password");
+  });
+
+  // Login action (demo navigation)
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    // Simple front-end check only
+    if (!country.value) return alert("Select a country.");
+    if (userId.value.trim().length < 8) return alert("ID must be 8–15 characters.");
+    if (pw.value.trim().length < 8) return alert("Password must be 8+ characters.");
+
+    // Go to dashboard page (you will create dashboard.html next)
+    window.location.href = "dashboard.html";
+  });
+}
+
+// Call it after page loads (safe even if section not present)
+window.addEventListener("load", () => {
+  initLoginUI();
+});
+
+
