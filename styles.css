@@ -381,7 +381,7 @@ body{
 /* ---------- MAIN CONTENT ---------- */
 .content{
   background:#fff;
-  padding: 54px 0 70px;
+  padding: calc(var(--topbar-h) + 24px) 0 70px;
 }
 .wrap{
   width: min(1040px, 92vw);
@@ -391,7 +391,7 @@ body{
 /* ---------- OVERVIEW SECTION ---------- */
 .overview{
   background:#fff;
-  padding: 10px 0 70px;
+  padding: 60px 0 70px; /* increased top padding */
 }
 
 .overview-title{
@@ -418,6 +418,122 @@ body{
   font-weight: 800;
   color: #111;
 }
+
+/* ===============================
+   KIB BANKING ONLINE (LOGIN)
+================================ */
+.login-section{
+  background: linear-gradient(180deg, #eef6ff 0%, #ffffff 70%);
+  padding: 64px 0 80px;
+}
+
+.login-title{
+  margin: 0 0 18px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: #111;
+  font-size: clamp(24px, 5.5vw, 34px);
+}
+
+.login-card{
+  max-width: 520px;
+  margin: 0 auto;
+  background: rgba(255,255,255,.92);
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 18px;
+  box-shadow: 0 14px 40px rgba(0,0,0,.10);
+  padding: 18px;
+}
+
+.field{ display:block; margin: 12px 0; }
+
+.input{
+  width: 100%;
+  height: 54px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,.16);
+  background: #fff;
+  padding: 0 14px;
+  font-weight: 650;
+  font-size: 15px;
+  outline: none;
+}
+
+.input:focus{
+  border-color: rgba(32, 90, 190, .55);
+  box-shadow: 0 0 0 4px rgba(32, 90, 190, .12);
+}
+
+.input-row{
+  display:flex;
+  gap: 10px;
+  align-items:center;
+}
+
+.icon-btn{
+  height: 54px;
+  width: 54px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,.16);
+  background: #fff;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.login-btn{
+  width: 100%;
+  height: 58px;
+  margin-top: 10px;
+  border: 0;
+  border-radius: 12px;
+  background: #2f60b5;
+  color: #fff;
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing: .02em;
+  cursor: pointer;
+}
+
+.login-btn:active{ transform: translateY(1px); }
+
+.login-foot{
+  display:flex;
+  justify-content: space-between;
+  align-items:center;
+  gap: 12px;
+  padding-top: 14px;
+  flex-wrap: wrap;
+}
+
+.save-id{
+  display:flex;
+  gap: 10px;
+  align-items:center;
+  font-weight: 700;
+  color:#222;
+}
+
+.login-links{
+  display:flex;
+  gap: 14px;
+}
+
+.login-links a{
+  color:#2f60b5;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.login-links a:active{ opacity: .7; }
+
+.sr-only{
+  position:absolute;
+  width:1px; height:1px;
+  padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0,0,0,0);
+  white-space:nowrap; border:0;
+}
+
 
 /* ---------- SCROLL FADE-IN ---------- */
 .reveal{
