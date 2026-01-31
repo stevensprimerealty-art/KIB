@@ -684,3 +684,198 @@ body{
   .lang-btn{ font-size: 10px; padding: 7px 8px; }
   .showcase-grid{ grid-template-columns: repeat(5, minmax(180px, 1fr)); }
 }
+
+/* ===============================
+  NEWSROOM
+================================ */
+.newsroom{
+  background:#fff;
+  padding: 80px 0 70px;
+}
+
+.newsroom-title{
+  margin: 0 0 18px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  font-size: clamp(28px, 6vw, 42px);
+  color:#111;
+}
+
+.news-viewport{
+  overflow:hidden;
+  border-radius: 22px;
+  background: transparent;
+}
+
+.news-track{
+  display:flex;
+  transition: transform .35s ease;
+  will-change: transform;
+  touch-action: pan-y;
+  cursor: grab;
+}
+.news-track:active{ cursor: grabbing; }
+.news-slide{ flex: 0 0 100%; 
+            
+}
+
+.news-card{
+  background:#fff;
+  border-radius: 22px;
+  overflow:hidden;
+  border: 1px solid rgba(0,0,0,.08);
+  box-shadow: 0 14px 40px rgba(0,0,0,.10);
+}
+
+.news-media{
+  height: 240px;
+  background: #e9edf3; /* blank image placeholder */
+}
+
+.news-meta{
+  padding: 14px 16px 0;
+}
+
+.news-date{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  background: #f3f5f8;
+  border-radius: 14px;
+  padding: 12px 14px;
+  border: 1px solid rgba(0,0,0,.06);
+}
+
+.news-date span{
+  font-weight:800;
+  color:#111;
+}
+
+.news-date strong{
+  font-weight:900;
+  color:#111;
+  opacity:.8;
+}
+
+.news-headline{
+  margin: 14px 16px 18px;
+  font-weight: 900;
+  font-size: 20px;
+  color:#111;
+  line-height: 1.15;
+}
+
+.news-highlights{
+  margin-top: 26px;
+}
+
+.news-highlights-title{
+  margin: 0 0 10px;
+  font-weight: 900;
+  color:#111;
+}
+
+.news-grid{
+  display:grid;
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  gap: 12px;
+  overflow-x:auto;
+  padding-bottom: 8px;
+  scroll-snap-type: x mandatory;
+}
+
+.news-mini{
+  min-width: 190px;
+  padding: 16px;
+  border-radius: 16px;
+  background:#fff;
+  border: 1px solid rgba(0,0,0,.08);
+  box-shadow: 0 10px 26px rgba(0,0,0,.08);
+  font-weight: 800;
+  color:#111;
+  scroll-snap-align: start;
+}
+
+/* ===============================
+  PERSONAL/BUSINESS BLOCK
+================================ */
+.banking-block{
+  background:#f6f7f9;
+  padding: 70px 0;
+}
+
+.banking-kicker{
+  margin:0 0 8px;
+  font-weight:900;
+  color:#2f60b5;
+}
+
+.banking-title{
+  margin:0 0 16px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color:#111;
+  font-size: clamp(26px, 6vw, 40px);
+  line-height: 1.05;
+}
+
+.discover-btn{
+  height: 56px;
+  padding: 0 20px;
+  border-radius: 16px;
+  border: 0;
+  background: #d7eef8;
+  color:#2f60b5;
+  font-weight: 900;
+  cursor:pointer;
+}
+
+/* Icon slider */
+.icon-viewport{
+  margin-top: 22px;
+  overflow:hidden;
+  border-radius: 22px;
+}
+
+.icon-track{
+  display: flex;
+  transition: transform .35s ease;
+  will-change: transform;
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.icon-track:active{
+  cursor: grabbing;
+}
+.icon-slide{ flex: 0 0 100%; }
+
+.icon-card{
+  background:#fff;
+  border-radius: 22px;
+  border: 1px solid rgba(0,0,0,.08);
+  box-shadow: 0 14px 40px rgba(0,0,0,.10);
+  padding: 22px;
+}
+
+.icon-circle{
+  width: 92px;
+  height: 92px;
+  border-radius: 999px;
+  background: #e9edf3; /* placeholder for your icon */
+  margin-bottom: 14px;
+}
+
+.icon-card h4{
+  margin: 0 0 6px;
+  font-weight: 900;
+  font-size: 22px;
+  color:#111;
+}
+
+.icon-card p{
+  margin:0;
+  color:#666;
+  font-weight: 650;
+  line-height: 1.45;
+}
