@@ -879,3 +879,22 @@ body{
   font-weight: 650;
   line-height: 1.45;
 }
+
+/* ICON CIRCLE IMAGE */
+.icon-circle{
+  width:64px;
+  height:64px;
+  border-radius:50%;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#eef2ff; /* optional light background */
+}
+
+.icon-circle img{
+  width:80%;
+  height:80%;
+  object-fit:contain;  /* shows the whole piggy */
+  display:block;
+}
