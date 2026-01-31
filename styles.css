@@ -858,14 +858,25 @@ body{
   padding: 22px;
 }
 
+/* ICON CIRCLE IMAGE */
 .icon-circle{
-  width: 92px;
-  height: 92px;
-  border-radius: 999px;
-  background: #e9edf3; /* placeholder for your icon */
-  margin-bottom: 14px;
+  width:64px;
+  height:64px;
+  border-radius:50%;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#eef2ff;
+  margin-bottom:14px;
 }
 
+.icon-circle img{
+  width:80%;
+  height:80%;
+  object-fit:contain;
+  display:block;
+}
 .icon-card h4{
   margin: 0 0 6px;
   font-weight: 900;
@@ -880,21 +891,3 @@ body{
   line-height: 1.45;
 }
 
-/* ICON CIRCLE IMAGE */
-.icon-circle{
-  width:64px;
-  height:64px;
-  border-radius:50%;
-  overflow:hidden;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#eef2ff; /* optional light background */
-}
-
-.icon-circle img{
-  width:80%;
-  height:80%;
-  object-fit:contain;  /* shows the whole piggy */
-  display:block;
-}
