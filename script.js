@@ -6,6 +6,70 @@
 const $ = (id) => document.getElementById(id);
 const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
+function flagEmojiFromISO2(code) {
+  if (!code || code.length !== 2) return "🏳️";
+  const cc = code.toUpperCase();
+  const A = 0x1F1E6;
+  const first = cc.charCodeAt(0) - 65 + A;
+  const second = cc.charCodeAt(1) - 65 + A;
+  return String.fromCodePoint(first, second);
+}
+
+async function buildCountries(selectEl) {
+  if (!selectEl) return;
+
+  // keep the placeholder (disabled) option, clear others
+  selectEl.querySelectorAll("option:not([disabled])").forEach(o => o.remove());
+
+  // 1) Try: REST Countries API (full world list)
+  try {
+    const res = await fetch("https://restcountries.com/v3.1/all?fields=cca2,name", { cache: "force-cache" });
+    if (!res.ok) throw new Error("REST Countries failed");
+
+    const data = await res.json();
+
+    const rows = data
+      .filter(c => c.cca2 && c.cca2.length === 2 && c.name?.common)
+      .map(c => ({ code: c.cca2.toUpperCase(), name: c.name.common }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+
+    rows.forEach(({ code, name }) => {
+      const opt = document.createElement("option");
+      opt.value = code;
+      opt.textContent = `${flagEmojiFromISO2(code)}  ${name}`;
+      selectEl.appendChild(opt);
+    });
+
+    return;
+  } catch (err) {
+    // 2) Fallback: Intl list (if supported)
+  }
+
+  try {
+    const regionCodes =
+      (Intl.supportedValuesOf && Intl.supportedValuesOf("region"))
+        ? Intl.supportedValuesOf("region")
+        : ["KR","US","GB","FR","DE","ES","IT","NG","JP","CN","CA","BR","IN","AE","SA"];
+
+    const dn = new Intl.DisplayNames(["en"], { type: "region" });
+
+    const rows = regionCodes
+      .filter(c => typeof c === "string" && c.length === 2)
+      .map(code => ({ code, name: dn.of(code) || code }))
+      .filter(x => x.name && x.name !== x.code)
+      .sort((a, b) => a.name.localeCompare(b.name));
+
+    rows.forEach(({ code, name }) => {
+      const opt = document.createElement("option");
+      opt.value = code.toUpperCase();
+      opt.textContent = `${flagEmojiFromISO2(code)}  ${name}`;
+      selectEl.appendChild(opt);
+    });
+  } catch (e) {
+    // last resort: do nothing
+  }
+}
+
 // ---------- INTRO → MAIN TRANSITION + HERO FADE-IN ----------
 const intro = $("intro");
 const app = $("app");
@@ -270,11 +334,6 @@ function setLanguage(lang) {
   // Main headline
   setText("mainHeadline", dict.mainHeadline);
 
-  setText("overviewTitle", dict.overviewTitle);
-  setText("overviewP1", dict.overviewP1);
-  setText("overviewP2", dict.overviewP2);
-
-  
   // Slider 5 cards
   setText("s1Kicker", dict.s1Kicker);
   setText("s1Title", dict.s1Title);
@@ -460,44 +519,7 @@ if (track && viewport && dotsWrap) {
 // ===============================
 // KIB LOGIN SECTION (Countries + Save ID + Toggle Password)
 // ===============================
-function flagEmojiFromISO2(code) {
-  if (!code || code.length !== 2) return "🏳️";
-  const cc = code.toUpperCase();
-  const A = 0x1F1E6;
-  const first = cc.charCodeAt(0) - 65 + A;
-  const second = cc.charCodeAt(1) - 65 + A;
-  return String.fromCodePoint(first, second);
-}
-
-function buildCountries(selectEl) {
-  if (!selectEl) return;
-
-  // Best way: uses the browser’s built-in region list
-  const regionCodes =
-    (Intl.supportedValuesOf && Intl.supportedValuesOf("region"))
-      ? Intl.supportedValuesOf("region")
-      : ["KR","US","GB","FR","DE","ES","IT","NG","JP","CN","CA","BR","IN","AE","SA"]; // fallback
-
-  const dn = new Intl.DisplayNames(["en"], { type: "region" });
-
-  const rows = regionCodes
-    .filter(c => typeof c === "string" && c.length === 2) // ISO2 only
-    .map(code => ({ code, name: dn.of(code) || code }))
-    .filter(x => x.name && x.name !== x.code)
-    .sort((a,b) => a.name.localeCompare(b.name));
-
-  // Clear (keep placeholder)
-  selectEl.querySelectorAll("option:not([disabled])").forEach(o => o.remove());
-
-  rows.forEach(({code, name}) => {
-    const opt = document.createElement("option");
-    opt.value = code;
-    opt.textContent = `${flagEmojiFromISO2(code)}  ${name}`;
-    selectEl.appendChild(opt);
-  });
-}
-
-function initLoginUI() {
+async function initLoginUI() {
   const form = document.getElementById("loginForm");
   const country = document.getElementById("countrySelect");
   const userId = document.getElementById("userId");
@@ -505,7 +527,7 @@ function initLoginUI() {
   const pw = document.getElementById("password");
   const togglePw = document.getElementById("togglePw");
 
-  buildCountries(country);
+  await buildCountries(country);
 
   // Save ID (localStorage)
   const saved = localStorage.getItem("kib_saved_id");
@@ -551,4 +573,111 @@ window.addEventListener("load", () => {
   initLoginUI();
 });
 
+
+function makeSlider({ trackId, viewportId, dotsId, interval = 3000 }) {
+  const track = document.getElementById(trackId);
+  const viewport = document.getElementById(viewportId);
+  const dotsWrap = document.getElementById(dotsId);
+  if (!track || !viewport || !dotsWrap) return;
+
+  const slides = Array.from(track.children);
+  let index = 0;
+  let timer = null;
+
+  // dots
+  dotsWrap.innerHTML = "";
+  slides.forEach((_, i) => {
+    const b = document.createElement("button");
+    b.className = "dot" + (i === 0 ? " is-active" : "");
+    b.type = "button";
+    b.addEventListener("click", () => goTo(i, true));
+    dotsWrap.appendChild(b);
+  });
+
+  function setDots(i) {
+    dotsWrap.querySelectorAll(".dot").forEach((d, di) => {
+      const active = di === i;
+      d.classList.toggle("is-active", active);
+      d.classList.toggle("active", active);
+    });
+  }
+
+  function goTo(i, user = false) {
+    index = (i + slides.length) % slides.length;
+    track.style.transform = `translateX(-${index * 100}%)`;
+    setDots(index);
+    if (user) restart();
+  }
+
+  function next() { goTo(index + 1); }
+
+  function start() {
+    stop();
+    timer = setInterval(next, interval);
+  }
+  function stop() {
+    if (timer) clearInterval(timer);
+    timer = null;
+  }
+  function restart() { start(); }
+
+  start();
+
+  // pause
+  viewport.addEventListener("touchstart", stop, { passive: true });
+  viewport.addEventListener("touchend", restart, { passive: true });
+  viewport.addEventListener("mouseenter", stop);
+  viewport.addEventListener("mouseleave", restart);
+
+  // swipe
+  let startX = 0, dx = 0, isDown = false;
+
+  viewport.addEventListener("pointerdown", (e) => {
+    isDown = true;
+    startX = e.clientX;
+    dx = 0;
+    track.style.transition = "none";
+    stop();
+    viewport.setPointerCapture?.(e.pointerId);
+  });
+
+  viewport.addEventListener("pointermove", (e) => {
+    if (!isDown) return;
+    dx = e.clientX - startX;
+    const w = viewport.getBoundingClientRect().width || 1;
+    const dragPercent = (dx / w) * 100;
+    track.style.transform = `translateX(calc(-${index * 100}% + ${dragPercent}%))`;
+  });
+
+  function endSwipe(e) {
+    if (!isDown) return;
+    isDown = false;
+    track.style.transition = "transform .35s ease";
+
+    const w = viewport.getBoundingClientRect().width || 1;
+    const thresholdPx = Math.min(70, w * 0.18);
+
+    if (dx > thresholdPx) goTo(index - 1, true);
+    else if (dx < -thresholdPx) goTo(index + 1, true);
+    else goTo(index, true);
+
+    restart();
+    viewport.releasePointerCapture?.(e.pointerId);
+  }
+
+  viewport.addEventListener("pointerup", endSwipe);
+  viewport.addEventListener("pointercancel", endSwipe);
+  window.addEventListener("resize", () => goTo(index));
+}
+
+window.addEventListener("load", () => {
+  // News slider
+  makeSlider({ trackId: "newsTrack", viewportId: "newsViewport", dotsId: "newsDots", interval: 3000 });
+
+  // Personal banking slider
+  makeSlider({ trackId: "personalTrack", viewportId: "personalViewport", dotsId: "personalDots", interval: 3000 });
+
+  // Business banking slider
+  makeSlider({ trackId: "businessTrack", viewportId: "businessViewport", dotsId: "businessDots", interval: 3000 });
+});
 
