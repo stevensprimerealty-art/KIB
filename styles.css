@@ -860,8 +860,8 @@ body{
 
 /* ICON CIRCLE IMAGE */
 .icon-circle{
-  width:64px;
-  height:64px;
+  width:72px;
+  height:72px;
   border-radius:50%;
   overflow:hidden;
   display:flex;
@@ -872,8 +872,8 @@ body{
 }
 
 .icon-circle img{
-  width:80%;
-  height:80%;
+  width:78%;
+  height:78%;
   object-fit:contain;
   display:block;
 }
