@@ -731,6 +731,17 @@ body{
   height: 240px;
   background: #e9edf3; /* blank image placeholder */
 }
+.news-media{
+  overflow: hidden;
+}
+
+.news-media img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
 
 .news-meta{
   padding: 14px 16px 0;
