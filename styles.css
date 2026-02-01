@@ -944,24 +944,25 @@ body{
   font-weight: 750;
 }
 
-/* ✅ Banner: safe height, no page breaking */
+/* Portrait banner container */
 .kib-banner{
   position: relative;
   width: 100%;
-  max-width: 980px;
+  max-width: 420px;        /* 👈 portrait card width */
   margin: 18px auto 12px;
+  aspect-ratio: 3 / 4.6;  /* 👈 portrait ratio */
   border-radius: 22px;
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0,0,0,.10);
   background: #e9edf3;
-  height: 520px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.10);
 }
 
+/* Mobile: slightly taller portrait */
 @media (max-width: 768px){
   .kib-banner{
-    height: 360px;      /* ✅ normal phone banner height */
-    max-width: 100%;
-    border-radius: 18px;
+    max-width: 92vw;
+    aspect-ratio: 3 / 4.8;
+    border-radius: 20px;
   }
 }
 
@@ -987,10 +988,10 @@ body{
 .kib-banner-slide img{
   width:100%;
   height:100%;
-  object-fit: contain;      /* <- IMPORTANT: shows full image */
+  object-fit: contain;     /* 👈 full image visible */
   object-position: center;
   display:block;
-  background: #e9edf3;      /* prevents white */
+  background:#e9edf3;
 }
 
 /* grain overlay (optional) */
