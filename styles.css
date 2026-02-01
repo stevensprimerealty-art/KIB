@@ -901,7 +901,7 @@ body{
 }
 
 /* ===============================
-   KIB PROMO BANNER (RECTANGLE + GRAIN)
+   KIB PROMO BANNER (RECTANGLE + GRAIN) + FULL WIDTH FIX
 ================================ */
 
 .kib-promo{
@@ -909,9 +909,19 @@ body{
   padding: 60px 0 80px;
 }
 
+/* ✅ Make promo section full width (override .wrap limits only here) */
+.kib-promo .wrap{
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 .kib-promo-top{
   text-align:center;
+  width: min(1040px, 92vw);
   margin: 0 auto 18px;
+  padding: 0;
 }
 
 .kib-pill{
@@ -953,7 +963,7 @@ body{
   font-weight: 750;
 }
 
-/* ✅ RECTANGLE banner box (NO poster ratio) */
+/* ✅ Banner (default = contained / centered) */
 .kib-banner{
   position: relative;
   width: 100%;
@@ -963,8 +973,16 @@ body{
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0,0,0,.10);
   background: #e9edf3;
-
   height: 520px;             /* desktop height */
+}
+
+/* ✅ Full width mode (edge-to-edge) */
+.kib-banner.kib-banner--full{
+  max-width: 100%;
+  width: 100%;
+  border-radius: 0;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 /* ✅ Mobile height like KakaoBank hero */
@@ -973,7 +991,11 @@ body{
     height: 72vh;
     min-height: 460px;
     max-height: 720px;
-    border-radius: 18px;
+    border-radius: 18px;     /* rounded when NOT full */
+  }
+
+  .kib-banner.kib-banner--full{
+    border-radius: 0;        /* edge-to-edge full width */
   }
 }
 
@@ -1038,10 +1060,10 @@ body{
   background: rgba(0,0,0,.70);
 }
 
-/* bottom copy */
+/* bottom copy (keep text aligned to normal content width) */
 .kib-bottom-copy{
   text-align:left;
-  max-width: 980px;         /* match banner width */
+  width: min(1040px, 92vw);
   margin: 18px auto 0;
 }
 
@@ -1057,9 +1079,4 @@ body{
   color:#6b7280;
   font-weight: 650;
   line-height: 1.6;
-}
-
-.kib-banner.kib-banner--full{
-  max-width: 100%;
-  border-radius: 0;
 }
