@@ -696,27 +696,21 @@ window.addEventListener("load", () => {
   const total = slides.length;
   if (!total) return;
 
-  let index = Math.max(0, slides.findIndex(s => s.classList.contains("is-active")));
-  if (index < 0) index = 0;
-
+  let index = 0;
   let timer = null;
 
   // Build dots
   dotsWrap.innerHTML = "";
   const dots = slides.map((_, i) => {
-  const b = document.createElement("button");
-  b.type = "button";
-  b.dataset.i = String(i);
-  b.setAttribute("aria-label", `Go to slide ${i + 1}`);
-  if (i === index) b.classList.add("is-active"); // ✅ add this
-  dotsWrap.appendChild(b);
-  return b;
-});
+    const b = document.createElement("button");
+    b.type = "button";
+    b.dataset.i = String(i);
+    b.setAttribute("aria-label", `Go to slide ${i + 1}`);
+    dotsWrap.appendChild(b);
+    return b;
+  });
 
-  // Optional highlight buttons/cards (if you have them)
-  const hlBtns = highlightsWrap
-    ? Array.from(highlightsWrap.querySelectorAll("[data-i]"))
-    : [];
+  const hlBtns = highlightsWrap ? Array.from(highlightsWrap.querySelectorAll("[data-i]")) : [];
 
   function render() {
     slides.forEach((s, i) => s.classList.toggle("is-active", i === index));
@@ -732,7 +726,7 @@ window.addEventListener("load", () => {
 
   function startAuto() {
     stopAuto();
-    timer = setInterval(() => setActive(index + 1), 3000); // ✅ 3 seconds
+    timer = setInterval(() => setActive(index + 1), 3000);
   }
 
   function stopAuto() {
@@ -752,7 +746,7 @@ window.addEventListener("load", () => {
     setActive(parseInt(btn.dataset.i, 10), true);
   });
 
-  // Highlight click (optional)
+  // Highlight click
   if (highlightsWrap) {
     highlightsWrap.addEventListener("click", (e) => {
       const el = e.target.closest("[data-i]");
@@ -761,7 +755,7 @@ window.addEventListener("load", () => {
     });
   }
 
-  // Swipe (touch)
+  // Swipe
   let x0 = null;
   let y0 = null;
 
@@ -775,27 +769,23 @@ window.addEventListener("load", () => {
 
   banner.addEventListener("touchend", (e) => {
     if (x0 === null || y0 === null) return;
-
     const t = e.changedTouches && e.changedTouches[0];
     if (!t) return;
 
     const dx = t.clientX - x0;
     const dy = t.clientY - y0;
 
-    // only horizontal swipes
-if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) {
-  if (dx < 0) setActive(index + 1, true);
-  else setActive(index - 1, true);
-} else {
-  render();
-  restartAuto();
-}
+    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) {
+      if (dx < 0) setActive(index + 1, true);
+      else setActive(index - 1, true);
+    } else {
+      restartAuto();
+    }
 
     x0 = null;
     y0 = null;
   }, { passive: true });
 
-  // Init
   render();
   startAuto();
 })();
