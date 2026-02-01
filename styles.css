@@ -959,9 +959,8 @@ body{
 
 @media (max-width: 768px){
   .kib-banner{
-    height: 72vh;
-    min-height: 420px;
-    max-height: 700px;
+    height: 360px;      /* ✅ normal phone banner height */
+    max-width: 100%;
     border-radius: 18px;
   }
 }
