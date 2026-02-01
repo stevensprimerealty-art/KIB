@@ -704,13 +704,14 @@ window.addEventListener("load", () => {
   // Build dots
   dotsWrap.innerHTML = "";
   const dots = slides.map((_, i) => {
-    const b = document.createElement("button");
-    b.type = "button";
-    b.dataset.i = String(i);
-    b.setAttribute("aria-label", `Go to slide ${i + 1}`);
-    dotsWrap.appendChild(b);
-    return b;
-  });
+  const b = document.createElement("button");
+  b.type = "button";
+  b.dataset.i = String(i);
+  b.setAttribute("aria-label", `Go to slide ${i + 1}`);
+  if (i === index) b.classList.add("is-active"); // ✅ add this
+  dotsWrap.appendChild(b);
+  return b;
+});
 
   // Optional highlight buttons/cards (if you have them)
   const hlBtns = highlightsWrap
