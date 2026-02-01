@@ -671,14 +671,12 @@ function makeSlider({ trackId, viewportId, dotsId, interval = 3000 }) {
 }
 
 window.addEventListener("load", () => {
-  // News slider
   makeSlider({ trackId: "newsTrack", viewportId: "newsViewport", dotsId: "newsDots", interval: 3000 });
-
-  // Personal banking slider
   makeSlider({ trackId: "personalTrack", viewportId: "personalViewport", dotsId: "personalDots", interval: 3000 });
-
-  // Business banking slider
   makeSlider({ trackId: "businessTrack", viewportId: "businessViewport", dotsId: "businessDots", interval: 3000 });
+
+  // ✅ add this
+  makeSlider({ trackId: "circleTrack", viewportId: "circleViewport", dotsId: "circleDots", interval: 3500 });
 });
 
 // ===============================
