@@ -681,3 +681,116 @@ window.addEventListener("load", () => {
   makeSlider({ trackId: "businessTrack", viewportId: "businessViewport", dotsId: "businessDots", interval: 3000 });
 });
 
+/* ===============================
+   KIB PROMO BANNER (AUTO FADE + SWIPE)
+   HTML expects:
+   #kibBanner, #kibBannerTrack, #kibBannerDots
+   .kib-banner-slide (and .is-active on current)
+================================ */
+(function kibPromoBanner() {
+  const banner = document.getElementById("kibBanner");
+  const track = document.getElementById("kibBannerTrack");
+  const dotsWrap = document.getElementById("kibBannerDots");
+  if (!banner || !track || !dotsWrap) return;
+
+  const slides = Array.from(track.querySelectorAll(".kib-banner-slide"));
+  if (!slides.length) return;
+
+  let index = 0;
+  let timer = null;
+  const interval = 3000;
+
+  // Create dots
+  dotsWrap.innerHTML = "";
+  const dots = slides.map((_, i) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.setAttribute("aria-label", `Banner slide ${i + 1}`);
+    if (i === 0) b.classList.add("is-active");
+    b.addEventListener("click", () => {
+      goTo(i);
+      restart();
+    });
+    dotsWrap.appendChild(b);
+    return b;
+  });
+
+  function applyActive() {
+    slides.forEach((s, i) => s.classList.toggle("is-active", i === index));
+    dots.forEach((d, i) => d.classList.toggle("is-active", i === index));
+  }
+
+  function goTo(i) {
+    index = (i + slides.length) % slides.length;
+    applyActive();
+  }
+
+  function next() {
+    goTo(index + 1);
+  }
+
+  function start() {
+    stop();
+    timer = setInterval(next, interval);
+  }
+
+  function stop() {
+    if (timer) clearInterval(timer);
+    timer = null;
+  }
+
+  function restart() {
+    start();
+  }
+
+  // Init
+  applyActive();
+  start();
+
+  // Swipe support
+  let startX = 0;
+  let startY = 0;
+  let isDown = false;
+
+  function onStart(x, y) {
+    isDown = true;
+    startX = x;
+    startY = y;
+    stop(); // pause while swiping
+  }
+
+  function onEnd(x, y) {
+    if (!isDown) return;
+    isDown = false;
+
+    const dx = x - startX;
+    const dy = y - startY;
+
+    // only treat as swipe if mostly horizontal and big enough
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+      if (dx < 0) goTo(index + 1); // swipe left = next
+      else goTo(index - 1);        // swipe right = prev
+    }
+
+    restart();
+  }
+
+  // Touch
+  banner.addEventListener("touchstart", (e) => {
+    const t = e.touches[0];
+    onStart(t.clientX, t.clientY);
+  }, { passive: true });
+
+  banner.addEventListener("touchend", (e) => {
+    const t = e.changedTouches[0];
+    onEnd(t.clientX, t.clientY);
+  }, { passive: true });
+
+  // Mouse (desktop)
+  banner.addEventListener("mousedown", (e) => onStart(e.clientX, e.clientY));
+  window.addEventListener("mouseup", (e) => onEnd(e.clientX, e.clientY));
+
+  // Optional: pause on hover (desktop)
+  banner.addEventListener("mouseenter", stop);
+  banner.addEventListener("mouseleave", start);
+})();
