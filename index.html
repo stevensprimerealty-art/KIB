@@ -533,10 +533,9 @@
   </div>
 </section> 
 
-  
-<!-- ===============================
+  <!-- ===============================
   KIB PROMO BANNER (AUTO FADE + SWIPE)
-  Paste UNDER Business Banking
+  (Inspo: portrait image + white info card)
 ================================ -->
 <section class="kib-promo" aria-label="KIB Promo Banner">
   <div class="wrap">
@@ -550,45 +549,82 @@
       <p class="kib-subtitle">A smart bank in your hand</p>
     </div>
 
-  <!-- Banner slider -->
-<div class="kib-banner" id="kibBanner" aria-label="KIB banner slider">
-  <div class="kib-banner-track" id="kibBannerTrack">
-    <figure class="kib-banner-slide is-active">
-      <img src="assets/images/banner-1.jpg" alt="KIB Banner 1" loading="lazy">
-    </figure>
-    <figure class="kib-banner-slide">
-      <img src="assets/images/banner-2.jpg" alt="KIB Banner 2" loading="lazy">
-    </figure>
-    <figure class="kib-banner-slide">
-      <img src="assets/images/banner-3.jpg" alt="KIB Banner 3" loading="lazy">
-    </figure>
-    <figure class="kib-banner-slide">
-      <img src="assets/images/banner-4.jpg" alt="KIB Banner 4" loading="lazy">
-    </figure>
-  </div>
-</div>
+    <!-- Banner slider -->
+    <div class="kib-banner" id="kibBanner" aria-label="KIB banner slider">
+      <div class="kib-banner-track" id="kibBannerTrack">
 
-<div class="kib-banner-dots" id="kibBannerDots" aria-label="Banner dots"></div>
+        <!-- Slide 1 -->
+        <figure class="kib-banner-slide is-active" data-i="0">
+          <div class="kib-banner-media">
+            <img src="assets/images/banner-1.jpg" alt="High Five Account" loading="lazy">
+          </div>
+          <figcaption class="kib-banner-info">
+            <h4>High Five Account</h4>
+            <p>Save smart and earn more. Deposit and withdraw anytime.</p>
+            <button class="kib-cta" type="button">Learn more</button>
+          </figcaption>
+        </figure>
 
-<!-- ✅ SMALL highlights (no big images) -->
-<div id="kibHighlights" class="kib-highlights">
-  <button class="kib-hl is-active" type="button" data-i="0">
-    High Five Account
-    <small>Savings • Deposit • FX</small>
-  </button>
-  <button class="kib-hl" type="button" data-i="1">
-    International Remittance
-    <small>Fast • Easy • Secure</small>
-  </button>
-  <button class="kib-hl" type="button" data-i="2">
-    Kids Junior Account
-    <small>Smart savings for kids</small>
-  </button>
-  <button class="kib-hl" type="button" data-i="3">
-    Cards & Wallet
-    <small>Tap-to-pay • Mobile ready</small>
-  </button>
-</div>
+        <!-- Slide 2 -->
+        <figure class="kib-banner-slide" data-i="1">
+          <div class="kib-banner-media">
+            <img src="assets/images/banner-2.jpg" alt="International Remittance" loading="lazy">
+          </div>
+          <figcaption class="kib-banner-info">
+            <h4>International Remittance</h4>
+            <p>Fast, easy, and secure transfers across borders.</p>
+            <button class="kib-cta" type="button">Learn more</button>
+          </figcaption>
+        </figure>
+
+        <!-- Slide 3 -->
+        <figure class="kib-banner-slide" data-i="2">
+          <div class="kib-banner-media">
+            <img src="assets/images/banner-3.jpg" alt="Kids Junior Account" loading="lazy">
+          </div>
+          <figcaption class="kib-banner-info">
+            <h4>Kids Junior Account</h4>
+            <p>Smart savings choice designed for your kids.</p>
+            <button class="kib-cta" type="button">Learn more</button>
+          </figcaption>
+        </figure>
+
+        <!-- Slide 4 -->
+        <figure class="kib-banner-slide" data-i="3">
+          <div class="kib-banner-media">
+            <img src="assets/images/banner-4.jpg" alt="Cards & Wallet" loading="lazy">
+          </div>
+          <figcaption class="kib-banner-info">
+            <h4>Cards & Wallet</h4>
+            <p>Tap-to-pay, mobile-ready, and protected by security layers.</p>
+            <button class="kib-cta" type="button">Learn more</button>
+          </figcaption>
+        </figure>
+
+      </div>
+    </div>
+
+    <div class="kib-banner-dots" id="kibBannerDots" aria-label="Banner dots"></div>
+
+    <!-- ✅ SMALL highlights (chips) -->
+    <div id="kibHighlights" class="kib-highlights" aria-label="KIB highlights">
+      <button class="kib-hl is-active" type="button" data-i="0">
+        High Five Account
+        <small>Savings • Deposit • FX</small>
+      </button>
+      <button class="kib-hl" type="button" data-i="1">
+        International Remittance
+        <small>Fast • Easy • Secure</small>
+      </button>
+      <button class="kib-hl" type="button" data-i="2">
+        Kids Junior Account
+        <small>Smart savings for kids</small>
+      </button>
+      <button class="kib-hl" type="button" data-i="3">
+        Cards & Wallet
+        <small>Tap-to-pay • Mobile ready</small>
+      </button>
+    </div>
 
     <div class="kib-bottom-copy">
       <h4 class="kib-bottom-title">The Smart Bank in your hand</h4>
