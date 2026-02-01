@@ -681,71 +681,102 @@ window.addEventListener("load", () => {
   makeSlider({ trackId: "businessTrack", viewportId: "businessViewport", dotsId: "businessDots", interval: 3000 });
 });
 
-/* ===============================
-   KIB PROMO BANNER (AUTO FADE + SWIPE)
-   HTML expects:
-   #kibBanner, #kibBannerTrack, #kibBannerDots
-   .kib-banner-slide (and .is-active on current)
-================================ */
-(function kibPromoBanner() {
+// ===============================
+// KIB BANNER (FADE + AUTO 3s + SWIPE + HIGHLIGHTS)
+// ===============================
+(function(){
   const banner = document.getElementById("kibBanner");
   const track = document.getElementById("kibBannerTrack");
   const dotsWrap = document.getElementById("kibBannerDots");
+  const highlights = document.getElementById("kibHighlights");
+
   if (!banner || !track || !dotsWrap) return;
 
   const slides = Array.from(track.querySelectorAll(".kib-banner-slide"));
-  if (!slides.length) return;
+  const total = slides.length;
 
-  let index = 0;
+  let i = 0;
   let timer = null;
-  const interval = 3000;
 
-  // Create dots
-  dotsWrap.innerHTML = "";
-  const dots = slides.map((_, i) => {
-    const b = document.createElement("button");
-    b.type = "button";
-    b.setAttribute("aria-label", `Banner slide ${i + 1}`);
-    if (i === 0) b.classList.add("is-active");
-    b.addEventListener("click", () => {
-      goTo(i);
-      restart();
-    });
-    dotsWrap.appendChild(b);
-    return b;
-  });
+  // dots
+  dotsWrap.innerHTML = slides.map((_, idx) =>
+    `<button type="button" aria-label="Go to slide ${idx+1}" data-i="${idx}" class="${idx===0 ? "is-active" : ""}"></button>`
+  ).join("");
 
-  function applyActive() {
-    slides.forEach((s, i) => s.classList.toggle("is-active", i === index));
-    dots.forEach((d, i) => d.classList.toggle("is-active", i === index));
+  const dots = Array.from(dotsWrap.querySelectorAll("button"));
+  const hlBtns = highlights ? Array.from(highlights.querySelectorAll(".kib-hl")) : [];
+
+  function setActive(next){
+    i = (next + total) % total;
+
+    slides.forEach((s, idx) => s.classList.toggle("is-active", idx === i));
+    dots.forEach((d, idx) => d.classList.toggle("is-active", idx === i));
+    hlBtns.forEach((b, idx) => b.classList.toggle("is-active", idx === i));
   }
 
-  function goTo(i) {
-    index = (i + slides.length) % slides.length;
-    applyActive();
-  }
-
-  function next() {
-    goTo(index + 1);
-  }
-
-  function start() {
+  function start(){
     stop();
-    timer = setInterval(next, interval);
+    timer = setInterval(() => setActive(i + 1), 3000); // ✅ 3 seconds
   }
 
-  function stop() {
+  function stop(){
     if (timer) clearInterval(timer);
     timer = null;
   }
 
-  function restart() {
+  // dot click
+  dotsWrap.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-i]");
+    if (!btn) return;
+    setActive(parseInt(btn.dataset.i, 10));
     start();
+  });
+
+  // highlight click
+  if (highlights){
+    highlights.addEventListener("click", (e) => {
+      const btn = e.target.closest(".kib-hl[data-i]");
+      if (!btn) return;
+      setActive(parseInt(btn.dataset.i, 10));
+      start();
+    });
   }
 
-  // Init
-  applyActive();
+  // swipe
+  let x0 = null;
+  let t0 = 0;
+
+  banner.addEventListener("touchstart", (e) => {
+    if (!e.touches || !e.touches[0]) return;
+    stop();
+    x0 = e.touches[0].clientX;
+    t0 = Date.now();
+  }, { passive: true });
+
+  banner.addEventListener("touchend", (e) => {
+    if (x0 === null) return;
+
+    const x1 = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientX : x0;
+    const dx = x1 - x0;
+    const dt = Date.now() - t0;
+
+    // ✅ swipe threshold (feels natural, not too fast)
+    const fastEnough = dt < 420;
+    const farEnough = Math.abs(dx) > 45;
+
+    if (farEnough || (fastEnough && Math.abs(dx) > 28)){
+      if (dx < 0) setActive(i + 1);
+      else setActive(i - 1);
+    }
+
+    x0 = null;
+    start();
+  }, { passive: true });
+
+  // init
+  setActive(0);
   start();
+})();
 
   // Swipe support
   let startX = 0;
