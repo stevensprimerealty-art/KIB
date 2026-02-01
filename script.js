@@ -699,6 +699,23 @@ window.addEventListener("load", () => {
   let index = 0;
   let timer = null;
 
+  function syncSlideContent() {
+    const active = slides[index];
+    if (!active) return;
+
+    const title = active.dataset.title;
+    const text  = active.dataset.text;
+    const cta   = active.dataset.cta;
+
+    const h4 = active.querySelector(".kib-banner-info h4");
+    const p  = active.querySelector(".kib-banner-info p");
+    const btn = active.querySelector(".kib-banner-info .kib-cta");
+
+    if (title && h4) h4.textContent = title;
+    if (text && p) p.textContent = text;
+    if (cta && btn) btn.textContent = cta;
+  }
+  
   // Build dots
   dotsWrap.innerHTML = "";
   const dots = slides.map((_, i) => {
@@ -712,10 +729,11 @@ window.addEventListener("load", () => {
 
   const hlBtns = highlightsWrap ? Array.from(highlightsWrap.querySelectorAll("[data-i]")) : [];
 
-  function render() {
+    function render() {
     slides.forEach((s, i) => s.classList.toggle("is-active", i === index));
     dots.forEach((d, i) => d.classList.toggle("is-active", i === index));
     hlBtns.forEach((h, i) => h.classList.toggle("is-active", i === index));
+    syncSlideContent();
   }
 
   function setActive(next, user = false) {
