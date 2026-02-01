@@ -944,29 +944,30 @@ body{
   font-weight: 750;
 }
 
-/* Portrait banner container */
+/* ===== KIB Banner — PORTRAIT CARD (FINAL) ===== */
 .kib-banner{
   position: relative;
   width: 100%;
-  max-width: 420px;        /* 👈 portrait card width */
+  max-width: 420px;
   margin: 18px auto 12px;
-  aspect-ratio: 3 / 4.6;  /* 👈 portrait ratio */
+
+  height: auto;                 /* ✅ IMPORTANT */
+  aspect-ratio: 3 / 4.8;        /* ✅ portrait */
+
   border-radius: 22px;
   overflow: hidden;
   background: #e9edf3;
   box-shadow: 0 20px 60px rgba(0,0,0,.10);
 }
 
-/* Mobile: slightly taller portrait */
 @media (max-width: 768px){
   .kib-banner{
     max-width: 92vw;
-    aspect-ratio: 3 / 4.8;
+    aspect-ratio: 3 / 5.0;      /* a bit taller on phones */
     border-radius: 20px;
   }
 }
 
-/* slides (fade) */
 .kib-banner-track{
   position:absolute;
   inset:0;
@@ -984,11 +985,10 @@ body{
   opacity:1;
 }
 
-/* ✅ FULL IMAGE SHOW (no crop) */
 .kib-banner-slide img{
   width:100%;
   height:100%;
-  object-fit: contain;     /* 👈 full image visible */
+  object-fit: contain;
   object-position: center;
   display:block;
   background:#e9edf3;
@@ -1064,3 +1064,5 @@ body{
   border-color: rgba(47,96,181,.35);
   box-shadow: 0 14px 34px rgba(47,96,181,.12);
 }
+
+.kib-banner{ max-width:420px !important; aspect-ratio:3/5 !important; height:auto !important; }
