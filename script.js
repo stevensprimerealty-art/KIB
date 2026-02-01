@@ -684,144 +684,118 @@ window.addEventListener("load", () => {
 // ===============================
 // KIB BANNER (FADE + AUTO 3s + SWIPE + HIGHLIGHTS)
 // ===============================
-(function(){
+(function () {
   const banner = document.getElementById("kibBanner");
   const track = document.getElementById("kibBannerTrack");
   const dotsWrap = document.getElementById("kibBannerDots");
-  const highlights = document.getElementById("kibHighlights");
+  const highlightsWrap = document.getElementById("kibHighlights"); // optional
 
   if (!banner || !track || !dotsWrap) return;
 
   const slides = Array.from(track.querySelectorAll(".kib-banner-slide"));
   const total = slides.length;
+  if (!total) return;
 
-  let i = 0;
+  let index = Math.max(0, slides.findIndex(s => s.classList.contains("is-active")));
+  if (index < 0) index = 0;
+
   let timer = null;
 
-  // dots
-  dotsWrap.innerHTML = slides.map((_, idx) =>
-    `<button type="button" aria-label="Go to slide ${idx+1}" data-i="${idx}" class="${idx===0 ? "is-active" : ""}"></button>`
-  ).join("");
+  // Build dots
+  dotsWrap.innerHTML = "";
+  const dots = slides.map((_, i) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.dataset.i = String(i);
+    b.setAttribute("aria-label", `Go to slide ${i + 1}`);
+    dotsWrap.appendChild(b);
+    return b;
+  });
 
-  const dots = Array.from(dotsWrap.querySelectorAll("button"));
-  const hlBtns = highlights ? Array.from(highlights.querySelectorAll(".kib-hl")) : [];
+  // Optional highlight buttons/cards (if you have them)
+  const hlBtns = highlightsWrap
+    ? Array.from(highlightsWrap.querySelectorAll("[data-i]"))
+    : [];
 
-  function setActive(next){
-    i = (next + total) % total;
-
-    slides.forEach((s, idx) => s.classList.toggle("is-active", idx === i));
-    dots.forEach((d, idx) => d.classList.toggle("is-active", idx === i));
-    hlBtns.forEach((b, idx) => b.classList.toggle("is-active", idx === i));
+  function render() {
+    slides.forEach((s, i) => s.classList.toggle("is-active", i === index));
+    dots.forEach((d, i) => d.classList.toggle("is-active", i === index));
+    hlBtns.forEach((h, i) => h.classList.toggle("is-active", i === index));
   }
 
-  function start(){
-    stop();
-    timer = setInterval(() => setActive(i + 1), 3000); // ✅ 3 seconds
+  function setActive(next, user = false) {
+    index = (next + total) % total;
+    render();
+    if (user) restartAuto();
   }
 
-  function stop(){
+  function startAuto() {
+    stopAuto();
+    timer = setInterval(() => setActive(index + 1), 3000); // ✅ 3 seconds
+  }
+
+  function stopAuto() {
     if (timer) clearInterval(timer);
     timer = null;
   }
 
-  // dot click
+  function restartAuto() {
+    stopAuto();
+    startAuto();
+  }
+
+  // Dot click
   dotsWrap.addEventListener("click", (e) => {
     const btn = e.target.closest("button[data-i]");
     if (!btn) return;
-    setActive(parseInt(btn.dataset.i, 10));
-    start();
+    setActive(parseInt(btn.dataset.i, 10), true);
   });
 
-  // highlight click
-  if (highlights){
-    highlights.addEventListener("click", (e) => {
-      const btn = e.target.closest(".kib-hl[data-i]");
-      if (!btn) return;
-      setActive(parseInt(btn.dataset.i, 10));
-      start();
+  // Highlight click (optional)
+  if (highlightsWrap) {
+    highlightsWrap.addEventListener("click", (e) => {
+      const el = e.target.closest("[data-i]");
+      if (!el) return;
+      setActive(parseInt(el.dataset.i, 10), true);
     });
   }
 
-  // swipe
+  // Swipe (touch)
   let x0 = null;
-  let t0 = 0;
+  let y0 = null;
 
   banner.addEventListener("touchstart", (e) => {
-    if (!e.touches || !e.touches[0]) return;
-    stop();
-    x0 = e.touches[0].clientX;
-    t0 = Date.now();
+    const t = e.touches && e.touches[0];
+    if (!t) return;
+    stopAuto();
+    x0 = t.clientX;
+    y0 = t.clientY;
   }, { passive: true });
 
   banner.addEventListener("touchend", (e) => {
-    if (x0 === null) return;
+    if (x0 === null || y0 === null) return;
 
-    const x1 = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientX : x0;
-    const dx = x1 - x0;
-    const dt = Date.now() - t0;
+    const t = e.changedTouches && e.changedTouches[0];
+    if (!t) return;
 
-    // ✅ swipe threshold (feels natural, not too fast)
-    const fastEnough = dt < 420;
-    const farEnough = Math.abs(dx) > 45;
+    const dx = t.clientX - x0;
+    const dy = t.clientY - y0;
 
-    if (farEnough || (fastEnough && Math.abs(dx) > 28)){
-      if (dx < 0) setActive(i + 1);
-      else setActive(i - 1);
-    }
+    // only horizontal swipes
+if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) {
+  if (dx < 0) setActive(index + 1, true);
+  else setActive(index - 1, true);
+} else {
+  render();
+  restartAuto();
+}
 
     x0 = null;
-    start();
+    y0 = null;
   }, { passive: true });
 
-  // init
-  setActive(0);
-  start();
+  // Init
+  render();
+  startAuto();
 })();
 
-  // Swipe support
-  let startX = 0;
-  let startY = 0;
-  let isDown = false;
-
-  function onStart(x, y) {
-    isDown = true;
-    startX = x;
-    startY = y;
-    stop(); // pause while swiping
-  }
-
-  function onEnd(x, y) {
-    if (!isDown) return;
-    isDown = false;
-
-    const dx = x - startX;
-    const dy = y - startY;
-
-    // only treat as swipe if mostly horizontal and big enough
-    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
-      if (dx < 0) goTo(index + 1); // swipe left = next
-      else goTo(index - 1);        // swipe right = prev
-    }
-
-    restart();
-  }
-
-  // Touch
-  banner.addEventListener("touchstart", (e) => {
-    const t = e.touches[0];
-    onStart(t.clientX, t.clientY);
-  }, { passive: true });
-
-  banner.addEventListener("touchend", (e) => {
-    const t = e.changedTouches[0];
-    onEnd(t.clientX, t.clientY);
-  }, { passive: true });
-
-  // Mouse (desktop)
-  banner.addEventListener("mousedown", (e) => onStart(e.clientX, e.clientY));
-  window.addEventListener("mouseup", (e) => onEnd(e.clientX, e.clientY));
-
-  // Optional: pause on hover (desktop)
-  banner.addEventListener("mouseenter", stop);
-  banner.addEventListener("mouseleave", start);
-})();
