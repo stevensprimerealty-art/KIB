@@ -714,9 +714,8 @@ body{
   touch-action: pan-y;
   cursor: grab;
 }
-.news-track:active{ cursor: grabbing; }
-.news-slide{ flex: 0 0 100%; 
-            
+.news-track > .slide{
+  flex: 0 0 100%;
 }
 
 .news-card{
@@ -729,9 +728,7 @@ body{
 
 .news-media{
   height: 240px;
-  background: #e9edf3; /* blank image placeholder */
-}
-.news-media{
+  background: #e9edf3;
   overflow: hidden;
 }
 
@@ -903,3 +900,166 @@ body{
   line-height: 1.45;
 }
 
+/* ===============================
+   KIB PROMO BANNER (RECTANGLE + GRAIN)
+================================ */
+
+.kib-promo{
+  background:#fff;
+  padding: 60px 0 80px;
+}
+
+.kib-promo-top{
+  text-align:center;
+  margin: 0 auto 18px;
+}
+
+.kib-pill{
+  display:inline-block;
+  padding: 10px 22px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #f4f6f9, #eceff3);
+  box-shadow: 0 12px 32px rgba(0,0,0,.10);
+  font-weight: 900;
+  letter-spacing:.14em;
+  color:#111;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.kib-title{
+  margin: 0 0 8px;
+  font-weight: 900;
+  letter-spacing: .08em;
+  font-size: clamp(28px, 6.5vw, 44px);
+  line-height: 1.05;
+}
+
+.kib-grey{
+  color:#6b7280;
+  text-shadow: 0 10px 26px rgba(0,0,0,.12);
+}
+
+.kib-red{
+  color:#c4161c;
+  text-shadow:
+    0 0 12px rgba(196,22,28,.28),
+    0 12px 28px rgba(0,0,0,.15);
+}
+
+.kib-subtitle{
+  margin: 0;
+  color:#6b7280;
+  font-weight: 750;
+}
+
+/* ✅ RECTANGLE banner box (NO poster ratio) */
+.kib-banner{
+  position: relative;
+  width: 100%;
+  max-width: 980px;          /* clean on desktop */
+  margin: 18px auto 18px;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,.10);
+  background: #e9edf3;
+
+  height: 520px;             /* desktop height */
+}
+
+/* ✅ Mobile height like KakaoBank hero */
+@media (max-width: 768px){
+  .kib-banner{
+    height: 72vh;
+    min-height: 460px;
+    max-height: 720px;
+    border-radius: 18px;
+  }
+}
+
+/* slides (fade) */
+.kib-banner-track{
+  position:absolute;
+  inset:0;
+}
+
+.kib-banner-slide{
+  position:absolute;
+  inset:0;
+  margin:0;
+  opacity:0;
+  transition: opacity .9s ease;
+}
+
+.kib-banner-slide.is-active{
+  opacity:1;
+}
+
+/* ✅ FULL COVER (no empty sides) */
+.kib-banner-slide img{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  object-position: center;
+  display:block;
+}
+
+/* ✅ grain overlay */
+.kib-banner::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:.10;
+  mix-blend-mode: overlay;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+}
+
+/* dots */
+.kib-banner-dots{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+  padding: 12px 0 0;
+}
+
+.kib-banner-dots button{
+  width:8px;
+  height:8px;
+  border-radius:999px;
+  border:0;
+  background: rgba(0,0,0,.18);
+  cursor:pointer;
+}
+
+.kib-banner-dots button.is-active{
+  background: rgba(0,0,0,.70);
+}
+
+/* bottom copy */
+.kib-bottom-copy{
+  text-align:left;
+  max-width: 980px;         /* match banner width */
+  margin: 18px auto 0;
+}
+
+.kib-bottom-title{
+  margin: 0 0 10px;
+  font-size: 22px;
+  font-weight: 900;
+  color:#111;
+}
+
+.kib-bottom-text{
+  margin: 0;
+  color:#6b7280;
+  font-weight: 650;
+  line-height: 1.6;
+}
+
+.kib-banner.kib-banner--full{
+  max-width: 100%;
+  border-radius: 0;
+}
