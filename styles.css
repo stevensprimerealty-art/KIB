@@ -1343,3 +1343,96 @@ body{
   .kib-stats-grid { gap: 26px; }
   .kib-stat-value { font-size: 32px; }
 }
+
+
+/* ===============================
+   KIB NAV CARDS (WOORI STYLE)
+================================ */
+.kib-nav-cards{
+  background:#f1f1f1;
+  padding: 56px 0 70px;
+}
+
+.kib-nav-grid{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.kib-nav-card{
+  background:#fff;
+  border-radius: 20px;
+  padding: 22px;
+  text-decoration:none;
+  color:#000;
+  position:relative;
+  min-height: 170px;
+  box-shadow: 0 14px 40px rgba(0,0,0,.08);
+}
+
+.kib-nav-icon{
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  background:#1f5ea8;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:16px;
+}
+
+.kib-nav-icon img{
+  width:26px;
+  height:26px;
+}
+
+.kib-nav-card h3{
+  margin:0;
+  font-size:22px;
+  font-weight:900;
+  line-height:1.15;
+}
+
+.kib-arrow{
+  position:absolute;
+  right:20px;
+  bottom:20px;
+  font-size:22px;
+  font-weight:900;
+  color:#1f5ea8;
+}
+
+/* ===============================
+   KIB FOOT NAV (BLUE LIST)
+================================ */
+.kib-foot-nav{
+  background:#0a5ea8;
+  padding: 40px 0 48px;
+}
+
+.kib-foot-item{
+  width:100%;
+  background:none;
+  border:0;
+  border-bottom:1px solid rgba(255,255,255,.25);
+  padding:18px 6px;
+  color:#fff;
+  font-size:18px;
+  font-weight:800;
+  text-align:left;
+  cursor:pointer;
+}
+
+.kib-foot-item::after{
+  content:"⌄";
+  float:right;
+  font-size:18px;
+}
+
+.kib-foot-brand{
+  margin-top:28px;
+  color:#fff;
+  font-weight:900;
+  letter-spacing:.06em;
+  font-size:14px;
+}
