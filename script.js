@@ -806,3 +806,58 @@ window.addEventListener("load", () => {
   startAuto();
 })();
 
+/* ===============================
+   COUNT UP (KIB STATS)
+================================ */
+(function () {
+  const els = Array.from(document.querySelectorAll(".js-count"));
+  if (!els.length) return;
+
+  const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function formatNumber(n) {
+    return n.toLocaleString("en-US");
+  }
+
+  function animateCount(el) {
+    const target = Number(el.dataset.value || "0");
+    const prefix = el.dataset.prefix || "";
+    const suffix = el.dataset.suffix || "";
+
+    if (prefersReduced) {
+      el.textContent = `${prefix}${formatNumber(target)}${suffix}`;
+      return;
+    }
+
+    const duration = 1100; // ms
+    const start = performance.now();
+
+    function tick(now) {
+      const t = Math.min(1, (now - start) / duration);
+      // easeOutCubic
+      const eased = 1 - Math.pow(1 - t, 3);
+      const current = Math.round(target * eased);
+
+      el.textContent = `${prefix}${formatNumber(current)}${suffix}`;
+
+      if (t < 1) requestAnimationFrame(tick);
+      else el.textContent = `${prefix}${formatNumber(target)}${suffix}`;
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  // Trigger when section comes into view
+  const section = document.querySelector("#kibStats") || els[0].closest("section") || document.body;
+
+  let ran = false;
+  const io = new IntersectionObserver((entries) => {
+    const entry = entries[0];
+    if (!entry || !entry.isIntersecting || ran) return;
+    ran = true;
+    els.forEach(animateCount);
+    io.disconnect();
+  }, { threshold: 0.35 });
+
+  io.observe(section);
+})();
