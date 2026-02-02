@@ -1213,3 +1213,133 @@ body{
   color:#111;
   letter-spacing: .02em;
 }
+
+
+/* ===============================
+   KIB MILESTONE + STATS (WOORI-LIKE SPACING)
+================================ */
+.kib-stats {
+  padding: 34px 0 56px;
+}
+
+/* top milestone text */
+.kib-milestone {
+  max-width: 720px;
+  margin: 0 auto 18px;
+  text-align: left;
+}
+
+.kib-milestone-date {
+  font-weight: 900;
+  font-size: 22px;
+  margin: 0 0 10px;
+}
+
+.kib-milestone-text {
+  margin: 0 0 14px;
+  line-height: 1.55;
+  color: rgba(0,0,0,0.62);
+  font-size: 15.5px;
+}
+
+.kib-milestone-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 18px;
+  border-radius: 14px;
+  background: rgba(40, 170, 230, 0.18);
+  color: #1676a6;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+/* assets tile */
+.kib-assets-tile {
+  margin: 22px auto 30px;
+  max-width: 720px;
+  border-radius: 22px;
+  padding: 26px 22px;
+  color: #fff;
+  background: linear-gradient(135deg, #0a3e7a, #0f67b7);
+  position: relative;
+  overflow: hidden;
+}
+
+.kib-assets-big {
+  font-size: clamp(56px, 10vw, 78px);
+  font-weight: 900;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.kib-assets-unit {
+  font-size: clamp(18px, 4.5vw, 28px);
+  font-weight: 800;
+  opacity: 0.95;
+  margin-top: 6px;
+}
+
+.kib-assets-label {
+  margin-top: 18px;
+  font-size: 16px;
+  font-weight: 800;
+  opacity: 0.95;
+  text-align: center;
+}
+
+/* stats list (WOORI STYLE: big spacing, no borders) */
+.kib-stats-grid {
+  max-width: 720px;
+  margin: 0 auto;
+  display: grid;
+  gap: 34px;            /* ✅ matches Woori vertical spacing */
+  padding-top: 8px;
+}
+
+.kib-stat {
+  padding: 0;           /* ✅ clean like Woori */
+}
+
+/* icon + label row */
+.kib-stat-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.kib-stat-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: rgba(47,96,181,.10);
+  font-size: 16px;
+  flex: 0 0 auto;
+}
+
+.kib-stat-label {
+  font-size: 18px;
+  color: rgba(0,0,0,0.72);
+  font-weight: 700;
+}
+
+/* big number (responsive + never breaks) */
+.kib-stat-value {
+  font-size: clamp(34px, 8.5vw, 52px);
+  font-weight: 900;
+  letter-spacing: -0.6px;
+  line-height: 1.05;
+
+  white-space: nowrap;     /* ✅ keep “US$ 996 M” in one line */
+  word-break: keep-all;
+  overflow: hidden;
+  text-overflow: ellipsis; /* ✅ just in case screen is tiny */
+}
+
+@media (max-width: 360px) {
+  .kib-stats-grid { gap: 26px; }
+  .kib-stat-value { font-size: 32px; }
+}
