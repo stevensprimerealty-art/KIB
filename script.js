@@ -861,3 +861,50 @@ window.addEventListener("load", () => {
 
   io.observe(section);
 })();
+
+
+// ---------- FOOTER COLLAPSE (MOBILE ONLY) ----------
+function initFooterAccordion() {
+  const footer = document.getElementById("kibFooter");
+  if (!footer) return;
+
+  const isDesktop = () => window.matchMedia("(min-width: 769px)").matches;
+
+  function openAllOnDesktop() {
+    footer.querySelectorAll(".kib-foot-btn").forEach((btn) => {
+      const key = btn.getAttribute("data-foot");
+      const panel = footer.querySelector(`[data-foot-panel="${key}"]`);
+      if (!panel) return;
+
+      if (isDesktop()) {
+        btn.setAttribute("aria-expanded", "true");
+        panel.hidden = false;
+      } else {
+        btn.setAttribute("aria-expanded", "false");
+        panel.hidden = true;
+      }
+    });
+  }
+
+  footer.querySelectorAll(".kib-foot-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (isDesktop()) return; // desktop stays open
+
+      const key = btn.getAttribute("data-foot");
+      const panel = footer.querySelector(`[data-foot-panel="${key}"]`);
+      if (!panel) return;
+
+      const willOpen = panel.hidden === true;
+
+      // close others (Woori style)
+      footer.querySelectorAll(".kib-foot-panel").forEach(p => p.hidden = true);
+      footer.querySelectorAll(".kib-foot-btn").forEach(b => b.setAttribute("aria-expanded","false"));
+
+      panel.hidden = !willOpen;
+      btn.setAttribute("aria-expanded", String(willOpen));
+    });
+  });
+
+  openAllOnDesktop();
+  window.addEventListener("resize", openAllOnDesktop);
+}
