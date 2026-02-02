@@ -739,7 +739,7 @@
       <a class="kib-milestone-btn" href="#" role="button">Read more</a>
     </div>
 
-    <!-- big assets tile (optional image background) -->
+    <!-- big assets tile -->
     <div class="kib-assets-tile" aria-label="Total assets card">
       <div class="kib-assets-big">1.4</div>
       <div class="kib-assets-unit">Billion USD</div>
@@ -748,25 +748,49 @@
 
     <!-- stats list -->
     <div class="kib-stats-grid" role="list">
+
       <div class="kib-stat" role="listitem">
-        <div class="kib-stat-label">Loan Portfolio</div>
-        <div class="kib-stat-value">US$ 996 M</div>
+        <div class="kib-stat-head">
+          <span class="kib-stat-icon" aria-hidden="true">📊</span>
+          <div class="kib-stat-label">Loan Portfolio</div>
+        </div>
+
+        <div class="kib-stat-value js-count"
+             data-value="996"
+             data-prefix="US$ "
+             data-suffix=" M">US$ 0 M</div>
       </div>
 
       <div class="kib-stat" role="listitem">
-        <div class="kib-stat-label">Deposit Amount</div>
-        <div class="kib-stat-value">US$ 743 M</div>
+        <div class="kib-stat-head">
+          <span class="kib-stat-icon" aria-hidden="true">🏦</span>
+          <div class="kib-stat-label">Deposit Amount</div>
+        </div>
+
+        <div class="kib-stat-value js-count"
+             data-value="743"
+             data-prefix="US$ "
+             data-suffix=" M">US$ 0 M</div>
       </div>
 
       <div class="kib-stat" role="listitem">
-        <div class="kib-stat-label">Customers</div>
-        <div class="kib-stat-value">549,000</div>
+        <div class="kib-stat-head">
+          <span class="kib-stat-icon" aria-hidden="true">👥</span>
+          <div class="kib-stat-label">Customers</div>
+        </div>
+
+        <div class="kib-stat-value js-count"
+             data-value="549000"
+             data-prefix=""
+             data-suffix="">0</div>
       </div>
+
     </div>
 
   </div>
 </section>
 
+  
     
     <!-- MENU DRAWER -->
     <aside id="drawer" class="drawer" aria-hidden="true">
