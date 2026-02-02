@@ -1437,80 +1437,34 @@ body{
   font-size:14px;
 }
 
-/* ===============================
-   FOOTER (WOORI-LIKE + COLLAPSIBLE)
-================================ */
-.kib-footer{
-  background: #fff;
-  padding: 60px 0 70px;
-  border-top: 1px solid rgba(0,0,0,.06);
+/* Woori-like info block (Location Address / Email) */
+.woori-info{
+  width: min(1040px, 92vw);
+  margin: 0 auto;
+  padding: 38px 0 70px;
 }
 
-.kib-foot-sec{
-  padding: 18px 0;
-  border-top: 1px solid rgba(0,0,0,.08);
-}
-.kib-foot-sec:first-child{ border-top: 0; }
-
-.kib-foot-btn{
-  width: 100%;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  border:0;
-  background: transparent;
-  padding: 16px 0;
-
-  cursor: pointer;
-  text-align:left;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.kib-foot-title{
-  font-weight: 900;
-  font-size: 34px;         /* big Woori-like */
-  letter-spacing: -0.02em;
-  color:#111;
-  line-height: 1.05;
-}
-
-.kib-foot-caret{
-  font-size: 22px;
-  opacity: .7;
-  transform: rotate(0deg);
-  transition: transform .2s ease;
-}
-
-.kib-foot-btn[aria-expanded="true"] .kib-foot-caret{
-  transform: rotate(180deg);
-}
-
-.kib-foot-panel{
-  padding: 6px 0 2px;
-}
-
-.kib-foot-body p{
+.woori-h{
   margin: 0 0 14px;
-  font-size: 18px;         /* Woori spacing feel */
+  font-weight: 900;
+  font-size: 34px;
+  color: #2f60b5;
+  letter-spacing: -0.02em;
+}
+
+.woori-h-gap{
+  margin-top: 40px;
+}
+
+.woori-p{
+  margin: 0 0 18px;
+  font-size: 22px;
   line-height: 1.55;
-  color: rgba(0,0,0,.72);
-  font-weight: 650;
+  color: #111;
+  font-weight: 500;
+  max-width: 72ch;
 }
 
-.kib-foot-body p:last-child{ margin-bottom: 0; }
-
-.kib-foot-muted{
-  color: rgba(0,0,0,.55);
-}
-
-/* DESKTOP: keep them OPEN + no arrows */
-@media (min-width: 769px){
-  .kib-foot-btn{
-    cursor: default;
-    padding: 0 0 14px;
-  }
-  .kib-foot-caret{ display:none; }
-  .kib-foot-panel{ display:block !important; }
-  .kib-foot-panel[hidden]{ display:block !important; }
+.woori-muted{
+  color: rgba(0,0,0,.45);
 }
