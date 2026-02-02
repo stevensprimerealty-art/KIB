@@ -890,41 +890,40 @@
     <div id="backdrop" class="backdrop" hidden></div>
   </main>
 
-<!-- ===============================
-   KIB FOOTER — LOCATIONS ONLY
-================================ -->
-<footer class="kib-footer">
+<footer class="kib-footer" id="kibFooter">
   <div class="wrap">
 
-    <h3 class="kib-footer-title">Location Address</h3>
+    <!-- SECTION 1 -->
+    <section class="kib-foot-sec">
+      <button class="kib-foot-btn" type="button" aria-expanded="false" data-foot="addr">
+        <span class="kib-foot-title">Location Address</span>
+        <span class="kib-foot-caret" aria-hidden="true">⌄</span>
+      </button>
 
-    <div class="kib-address-list">
+      <div class="kib-foot-panel" data-foot-panel="addr" hidden>
+        <div class="kib-foot-body">
+          <p>39 Namdaemun-ro, Jung-gu, Seoul (04531), Republic of Korea.</p>
+          <p>Piazza di Spagna, 59, 00187 Roma RM, Italy</p>
+          <p>Tower 42, Level 38, 25 Old Broad Street, EC2N 1HQ, London, United Kingdom</p>
+          <p><strong>New York Branch</strong><br>1250 Broadway, 37th Floor, New York, NY 10001, USA</p>
+          <p>Mubarak Al-Kabeer Street, Darwazat Al-Abdul Razzak, Kuwait City, State of Kuwait</p>
+        </div>
+      </div>
+    </section>
 
-      <p>
-        39 Namdaemun-ro, Jung-gu, Seoul (04531), Republic of Korea.
-      </p>
+    <!-- SECTION 2 (placeholder for email later) -->
+    <section class="kib-foot-sec">
+      <button class="kib-foot-btn" type="button" aria-expanded="false" data-foot="email">
+        <span class="kib-foot-title">Email</span>
+        <span class="kib-foot-caret" aria-hidden="true">⌄</span>
+      </button>
 
-      <p>
-        Piazza di Spagna, 59, 00187 Roma RM, Italy
-      </p>
-
-      <p>
-        Tower 42, Level 38, 25 Old Broad Street, EC2N 1HQ, London, United Kingdom
-      </p>
-
-      <p>
-        <strong>New York Branch</strong><br>
-        📍 1250 Broadway, 37th Floor, New York, NY 10001, USA
-      </p>
-
-      <p>
-        Mubarak Al-Kabeer Street, Darwazat Al-Abdul Razzak, Kuwait City, State of Kuwait
-      </p>
-
-    </div>
-
-    <!-- Contact intentionally left blank -->
-    <div class="kib-footer-contact"></div>
+      <div class="kib-foot-panel" data-foot-panel="email" hidden>
+        <div class="kib-foot-body">
+          <p class="kib-foot-muted">Email will be added soon.</p>
+        </div>
+      </div>
+    </section>
 
   </div>
 </footer>
