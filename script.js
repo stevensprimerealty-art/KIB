@@ -6,6 +6,101 @@
 const $ = (id) => document.getElementById(id);
 const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
+// ===============================
+// SUPABASE MAGIC LINK (WORKING)
+// ===============================
+const SUPABASE_URL = "https://YOUR_PROJECT_REF.supabase.co";
+const SUPABASE_ANON_KEY = "YOUR_ANON_PUBLIC_KEY";
+
+const supabase = window.supabase?.createClient
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+  : null;
+
+// IMPORTANT: must be EXACT URL where your site lives
+const REDIRECT_URL = "https://stevensprimerealty-art.github.io/KIB/";
+
+// Grab email field (supports multiple possible ids)
+function getEmailInput() {
+  return (
+    document.getElementById("email") ||
+    document.getElementById("emailInput") ||
+    document.getElementById("emailOtp") ||          // if you named it this
+    document.getElementById("emailOTP") ||          // if you named it this
+    document.querySelector('input[type="email"]') || // fallback
+    document.querySelector('input[placeholder*="email"]')
+  );
+}
+
+async function initMagicLinkLogin() {
+  const form = document.getElementById("loginForm");
+  if (!form) return;
+
+  const msg = document.getElementById("msg");
+  const setMsg = (t) => { if (msg) msg.textContent = t; };
+
+  const emailEl = getEmailInput();
+
+  // If you still have an "email-OTP" input, we will use it as EMAIL instead.
+  // (Magic link does NOT need OTP typed in.)
+  if (emailEl) {
+    emailEl.setAttribute("autocomplete", "email");
+  }
+
+  // Submit → send magic link
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    if (!supabase) {
+      setMsg("Supabase not loaded. Check the Supabase CDN script tag.");
+      return;
+    }
+
+    if (!emailEl || !emailEl.value.trim()) {
+      setMsg("Please enter your email.");
+      return;
+    }
+
+    const email = emailEl.value.trim();
+
+    setMsg("Sending login link...");
+
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        emailRedirectTo: REDIRECT_URL,
+      },
+    });
+
+    if (error) {
+      console.error(error);
+      setMsg(`Failed to send link: ${error.message}`);
+      return;
+    }
+
+    setMsg("✅ Link sent! Check your email and tap the login link.");
+  });
+
+  // When user returns from email link → if session exists, go dashboard
+  // (Run on load)
+  try {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) console.warn(error);
+
+    if (data?.session) {
+      window.location.href = "dashboard.html";
+    }
+  } catch (err) {
+    console.warn(err);
+  }
+
+  // Extra safety: if session appears after redirect, redirect immediately
+  supabase.auth.onAuthStateChange((_event, session) => {
+    if (session) window.location.href = "dashboard.html";
+  });
+}
+
+window.addEventListener("load", initMagicLinkLogin);
+
 function flagEmojiFromISO2(code) {
   if (!code || code.length !== 2) return "🏳️";
   const cc = code.toUpperCase();
@@ -547,32 +642,18 @@ async function initLoginUI() {
   });
 
   // Show/Hide password
-  togglePw?.addEventListener("click", () => {
+    togglePw?.addEventListener("click", () => {
     const isPw = pw.type === "password";
     pw.type = isPw ? "text" : "password";
     togglePw.textContent = isPw ? "🙈" : "👁️";
     togglePw.setAttribute("aria-label", isPw ? "Hide password" : "Show password");
   });
-
-  // Login action (demo navigation)
-  form?.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    // Simple front-end check only
-    if (!country.value) return alert("Select a country.");
-    if (userId.value.trim().length < 8) return alert("ID must be 8–15 characters.");
-    if (pw.value.trim().length < 8) return alert("Password must be 8+ characters.");
-
-    // Go to dashboard page (you will create dashboard.html next)
-    window.location.href = "dashboard.html";
-  });
-}
+}   // ✅ ADD THIS LINE
 
 // Call it after page loads (safe even if section not present)
 window.addEventListener("load", () => {
   initLoginUI();
 });
-
 
 function makeSlider({ trackId, viewportId, dotsId, interval = 3000 }) {
   const track = document.getElementById(trackId);
