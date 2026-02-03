@@ -1,4 +1,3 @@
-[hidden] { display: none !important; }
 :root{
   --bg:#ffffff;
   --text:#0b0c10;
@@ -56,9 +55,10 @@ body{
 /* ---------- APP ---------- */
 .app{
   min-height:100%;
-  opacity:1;           /* always visible */
-  visibility:visible;
+  opacity:0;
+  transition: opacity .55s ease;
 }
+.app.is-in{ opacity:1; }
 
 /* HEADER stays above everything */
 .topbar{
@@ -1468,29 +1468,3 @@ body{
 .woori-muted{
   color: rgba(0,0,0,.45);
 }
-
-/* ===============================
-   FORCE REMOVE WHITE OVERLAYS
-   =============================== */
-
-#intro,
-.intro {
-  display: none !important;
-}
-
-#backdrop {
-  display: none !important;
-}
-
-/* make sure app is visible */
-#app {
-  display: block !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-[hidden] {
-  display: none !important;
-}
-/* DEBUG: force all reveal sections to show */
-.reveal { opacity: 1 !important; transform: none !important; }
