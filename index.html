@@ -256,26 +256,27 @@
       <!-- ID -->
       <label class="field">
         <span class="sr-only">ID</span>
-        <input id="userId" name="userId" class="input" type="text" placeholder="ID" minlength="8" maxlength="15" autocomplete="username" required>
+        <input id="userId" name="userId" class="input" type="text" placeholder="ID" minlength="8" maxlength="15" autocomplete="username">
       </label>
 
       <!-- Password -->
       <label class="field">
         <span class="sr-only">Password</span>
         <div class="input-row">
-          <input id="password" name="password" class="input" type="password" placeholder="Password" minlength="8" autocomplete="current-password" required>
+          <input id="password" name="password" class="input" type="password" placeholder="Password" minlength="8" autocomplete="current-password">
           <button class="icon-btn" id="togglePw" type="button" aria-label="Show password">👁️</button>
         </div>
       </label>
 
-      <!-- Email OTP -->
+      <!-- Email -->
       <label class="field">
-        <span class="sr-only">Email OTP</span>
-        <input id="emailOtp" name="emailOtp" class="input" type="text" placeholder="email-OTP" inputmode="numeric" autocomplete="one-time-code" required>
+        <span class="sr-only">Email</span>
+        <input id="email" name="email" class="input" type="email" placeholder="Email address" autocomplete="email" required>
       </label>
 
       <!-- Login -->
       <button class="login-btn" type="submit">Login</button>
+      <p id="msg" class="login-msg" aria-live="polite"></p>
 
       <!-- bottom row -->
       <div class="login-foot">
@@ -931,7 +932,8 @@
   </main>
 
   
-  <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="script.js"></script>
 </body>
 </html>
 
