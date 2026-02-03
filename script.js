@@ -6,6 +6,37 @@
 const $ = (id) => document.getElementById(id);
 const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
+
+// ===============================
+// INTRO SPLASH CONTROLLER (SAFE)
+// ===============================
+document.addEventListener("DOMContentLoaded", () => {
+  const intro = document.getElementById("intro");
+  const app = document.getElementById("app");
+
+  // Safety fallback
+  if (!intro || !app) {
+    if (app) app.hidden = false;
+    return;
+  }
+
+  // Ensure correct initial state
+  intro.style.display = "grid";
+  app.hidden = true;
+
+  // Show intro for 2.5 seconds
+  setTimeout(() => {
+    intro.classList.add("is-out");
+
+    setTimeout(() => {
+      intro.style.display = "none";
+      app.hidden = false;
+      app.classList.add("is-in");
+      if (typeof initScrollReveal === "function") initScrollReveal();
+    }, 600); // matches CSS fade
+  }, 2500);
+});
+
 // ===============================
 // SUPABASE MAGIC LINK (WORKING)
 // ===============================
@@ -164,31 +195,6 @@ async function buildCountries(selectEl) {
     // last resort: do nothing
   }
 }
-
-// ---------- INTRO → MAIN TRANSITION + HERO FADE-IN ----------
-const intro = $("intro");
-const app = $("app");
-
-window.addEventListener("load", () => {
-  if (intro) intro.classList.add("is-in");
-
-  setTimeout(() => {
-    if (intro) intro.style.display = "none";
-
-    if (app) {
-      app.hidden = false;
-
-      requestAnimationFrame(() => {
-        app.classList.add("is-in");
-
-        const hero = document.querySelector(".hero");
-        if (hero) hero.classList.add("is-in");
-
-        initScrollReveal();
-      });
-    }
-  }, 3000);
-});
 
 // ---------- MENU DRAWER ----------
 const drawer = $("drawer");
