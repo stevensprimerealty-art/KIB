@@ -38,33 +38,22 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ===============================
-// SUPABASE MAGIC LINK (WORKING)
+// SUPABASE MAGIC LINK (CLEAN)
 // ===============================
 const SUPABASE_URL = "https://wkhlshjwpjnhpwcfvdqv.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_UyqL5TtlTGVXVeUGeEseCw_QLaujK2V";
-
-let supabase = null;
-
-if (window.supabase) {
-  supabase = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-  );
-} else {
-  console.warn("Supabase not loaded yet");
-}
-
-// IMPORTANT: must be EXACT URL where your site lives
 const REDIRECT_URL = "https://stevensprimerealty-art.github.io/KIB/";
 
-// Grab email field (supports multiple possible ids)
+function getSupabase() {
+  if (!window.supabase?.createClient) return null;
+  return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}
+
 function getEmailInput() {
   return (
     document.getElementById("email") ||
     document.getElementById("emailInput") ||
-    document.getElementById("emailOtp") ||          // if you named it this
-    document.getElementById("emailOTP") ||          // if you named it this
-    document.querySelector('input[type="email"]') || // fallback
+    document.querySelector('input[type="email"]') ||
     document.querySelector('input[placeholder*="email"]')
   );
 }
@@ -76,15 +65,13 @@ async function initMagicLinkLogin() {
   const msg = document.getElementById("msg");
   const setMsg = (t) => { if (msg) msg.textContent = t; };
 
-  // ✅ If supabase wasn't loaded, DON'T run auth code (prevents white screen)
+  const supabase = getSupabase();
   if (!supabase) {
-    console.warn("Supabase not ready yet.");
-    setMsg("Supabase not loaded. Check the Supabase CDN script tag.");
+    setMsg("Supabase not loaded. Add the Supabase CDN script tag back.");
     return;
   }
 
   const emailEl = getEmailInput();
-  if (emailEl) emailEl.setAttribute("autocomplete", "email");
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -94,34 +81,25 @@ async function initMagicLinkLogin() {
       return;
     }
 
-    const email = emailEl.value.trim();
     setMsg("Sending login link...");
 
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
+    const { data, error } = await supabase.auth.signInWithOtp({
+      email: emailEl.value.trim(),
       options: { emailRedirectTo: REDIRECT_URL },
     });
 
+    console.log("OTP result:", data, error);
+
     if (error) {
-      console.error(error);
-      setMsg(`Failed to send link: ${error.message}`);
+      setMsg("❌ " + error.message);
       return;
     }
 
     setMsg("✅ Link sent! Check your email and tap the login link.");
   });
 
-  // ✅ Only runs if supabase exists
-  try {
-    const { data } = await supabase.auth.getSession();
-    if (data?.session) window.location.href = "dashboard.html";
-  } catch (err) {
-    console.warn(err);
-  }
-
-  supabase.auth.onAuthStateChange((_event, session) => {
-    if (session) window.location.href = "dashboard.html";
-  });
+  const { data } = await supabase.auth.getSession();
+  if (data?.session) window.location.href = "dashboard.html";
 }
 
 window.addEventListener("load", initMagicLinkLogin);
