@@ -92,26 +92,11 @@ const intro = $("intro");
 const app = $("app");
 
 window.addEventListener("load", () => {
-  if (intro) intro.classList.add("is-in");
-
-  setTimeout(() => {
-    if (intro) intro.style.display = "none";
-
-    if (app) {
-      app.hidden = false;
-
-      requestAnimationFrame(() => {
-        app.classList.add("is-in");
-
-        const hero = document.querySelector(".hero");
-        if (hero) hero.classList.add("is-in");
-
-        initScrollReveal();
-      });
-    }
-  }, 3000);
+  if (intro) intro.style.display = "none";
+  if (app) {
+    app.hidden = false;
+  }
 });
-
 // ---------- MENU DRAWER ----------
 const drawer = $("drawer");
 const backdrop = $("backdrop");
