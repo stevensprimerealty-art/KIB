@@ -40,12 +40,13 @@ document.addEventListener("DOMContentLoaded", () => {
 // ===============================
 // SUPABASE MAGIC LINK (WORKING)
 // ===============================
-const SUPABASE_URL = "https://YOUR_PROJECT_REF.supabase.co";
-const SUPABASE_ANON_KEY = "YOUR_ANON_PUBLIC_KEY";
+const SUPABASE_URL = "https://wkhlshjwpjnhpwcfvdqv.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_UyqL5TtlTGVXVeUGeEseCw_QLaujK2V";
 
-const supabase = window.supabase?.createClient
-  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-  : null;
+const supabase = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
 
 // IMPORTANT: must be EXACT URL where your site lives
 const REDIRECT_URL = "https://stevensprimerealty-art.github.io/KIB/";
