@@ -270,6 +270,7 @@
 
       <!-- Login -->
       <button class="login-btn" type="submit">Login</button>
+      <p id="msg" class="login-msg" aria-live="polite"></p>
 
       <!-- bottom row -->
       <div class="login-foot">
@@ -924,75 +925,8 @@
     <div id="backdrop" class="backdrop" hidden></div>
   </main>
 
-  
-   <!-- SUPABASE AUTH (PASTE HERE) -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-  // ✅ Put your real values here (Supabase Project Settings → API)
-  const SUPABASE_URL = "https://YOUR_PROJECT_REF.supabase.co";
-  const SUPABASE_ANON_KEY = "YOUR_ANON_PUBLIC_KEY";
-
-  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-  // ✅ Match your HTML IDs
-  const form = document.getElementById("loginForm");
-  const countryEl = document.getElementById("countrySelect");
-  const idEl = document.getElementById("userId");
-  const passwordEl = document.getElementById("password");
-  const msgEl = document.getElementById("msg");
-
-  // (Optional) default ID
-  if (idEl) idEl.value = "KIB-DH26887";
-
-  async function sendMagicLink() {
-    if (!msgEl) return;
-
-    // Optional country lock (Korea = KR because your dropdown uses ISO2 codes)
-    if (countryEl && countryEl.value !== "KR") {
-      msgEl.textContent = "Please select South Korea to continue.";
-      return;
-    }
-
-    // Optional password check (front-end only)
-    if (passwordEl && passwordEl.value !== "XRZ?KADAS") {
-      msgEl.textContent = "Invalid credentials.";
-      return;
-    }
-
-    msgEl.textContent = "Sending login link...";
-
-    const { error } = await supabase.auth.signInWithOtp({
-      email: "info@kibinternational.co.site",
-      options: {
-        emailRedirectTo: "https://stevensprimerealty-art.github.io/KIB/"
-      }
-    });
-
-    if (error) {
-      console.error(error);
-      msgEl.textContent = "Failed to send email. Check Supabase SMTP + Redirect URL.";
-      return;
-    }
-
-    msgEl.textContent = "Check your email and click the login link ✅";
-  }
-
-  // ✅ Submit handler
-  if (form) {
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      sendMagicLink();
-    });
-  }
-
-  // ✅ If they clicked the email link, session will exist → redirect
-  (async () => {
-    const { data } = await supabase.auth.getSession();
-    if (data.session) window.location.href = "dashboard.html";
-  })();
-</script>
-  <!-- YOUR EXISTING SCRIPT -->
-  <script src="script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="script.js"></script>
 </body>
 </html>
 
