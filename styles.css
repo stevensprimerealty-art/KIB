@@ -1,3 +1,4 @@
+[hidden] { display: none !important; }
 :root{
   --bg:#ffffff;
   --text:#0b0c10;
@@ -1466,4 +1467,28 @@ body{
 
 .woori-muted{
   color: rgba(0,0,0,.45);
+}
+
+/* ===============================
+   FORCE REMOVE WHITE OVERLAYS
+   =============================== */
+
+#intro,
+.intro {
+  display: none !important;
+}
+
+#backdrop {
+  display: none !important;
+}
+
+/* make sure app is visible */
+#app {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+[hidden] {
+  display: none !important;
 }
