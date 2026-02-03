@@ -34,17 +34,6 @@ body{
   opacity:1;
   transform: translateY(0);
 }
-
-/* Intro fade OUT */
-.intro.is-out .intro-inner{
-  opacity:0;
-  transform: translateY(-8px);
-}
-.intro.is-out{
-  opacity:0;
-  transition: opacity .6s ease;
-}
-
 .flag{
   width: 112px;
   height: 74px;
