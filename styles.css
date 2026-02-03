@@ -1492,3 +1492,5 @@ body{
 [hidden] {
   display: none !important;
 }
+/* DEBUG: force all reveal sections to show */
+.reveal { opacity: 1 !important; transform: none !important; }
