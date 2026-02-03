@@ -43,10 +43,16 @@ document.addEventListener("DOMContentLoaded", () => {
 const SUPABASE_URL = "https://wkhlshjwpjnhpwcfvdqv.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_UyqL5TtlTGVXVeUGeEseCw_QLaujK2V";
 
-const supabase = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
+let supabase = null;
+
+if (window.supabase) {
+  supabase = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+} else {
+  console.warn("Supabase not loaded yet");
+}
 
 // IMPORTANT: must be EXACT URL where your site lives
 const REDIRECT_URL = "https://stevensprimerealty-art.github.io/KIB/";
@@ -70,22 +76,18 @@ async function initMagicLinkLogin() {
   const msg = document.getElementById("msg");
   const setMsg = (t) => { if (msg) msg.textContent = t; };
 
-  const emailEl = getEmailInput();
-
-  // If you still have an "email-OTP" input, we will use it as EMAIL instead.
-  // (Magic link does NOT need OTP typed in.)
-  if (emailEl) {
-    emailEl.setAttribute("autocomplete", "email");
+  // ✅ If supabase wasn't loaded, DON'T run auth code (prevents white screen)
+  if (!supabase) {
+    console.warn("Supabase not ready yet.");
+    setMsg("Supabase not loaded. Check the Supabase CDN script tag.");
+    return;
   }
 
-  // Submit → send magic link
+  const emailEl = getEmailInput();
+  if (emailEl) emailEl.setAttribute("autocomplete", "email");
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-
-    if (!supabase) {
-      setMsg("Supabase not loaded. Check the Supabase CDN script tag.");
-      return;
-    }
 
     if (!emailEl || !emailEl.value.trim()) {
       setMsg("Please enter your email.");
@@ -93,14 +95,11 @@ async function initMagicLinkLogin() {
     }
 
     const email = emailEl.value.trim();
-
     setMsg("Sending login link...");
 
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: {
-        emailRedirectTo: REDIRECT_URL,
-      },
+      options: { emailRedirectTo: REDIRECT_URL },
     });
 
     if (error) {
@@ -112,20 +111,14 @@ async function initMagicLinkLogin() {
     setMsg("✅ Link sent! Check your email and tap the login link.");
   });
 
-  // When user returns from email link → if session exists, go dashboard
-  // (Run on load)
+  // ✅ Only runs if supabase exists
   try {
-    const { data, error } = await supabase.auth.getSession();
-    if (error) console.warn(error);
-
-    if (data?.session) {
-      window.location.href = "dashboard.html";
-    }
+    const { data } = await supabase.auth.getSession();
+    if (data?.session) window.location.href = "dashboard.html";
   } catch (err) {
     console.warn(err);
   }
 
-  // Extra safety: if session appears after redirect, redirect immediately
   supabase.auth.onAuthStateChange((_event, session) => {
     if (session) window.location.href = "dashboard.html";
   });
