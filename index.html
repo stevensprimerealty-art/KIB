@@ -4,11 +4,12 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Korea International Banking (KIB)</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css?v=5" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
@@ -53,7 +54,7 @@
   </section>
 
   <!-- MAIN PAGE -->
- <main id="app" class="app" aria-label="KIB website">
+  <main id="app" class="app" aria-label="KIB website" hidden>
 
     <!-- HEADER -->
     <header class="topbar">
@@ -75,7 +76,7 @@
     </header>
 
     <!-- HERO -->
-      <section class="hero is-in" role="region" aria-label="Hero">
+    <section class="hero" role="region" aria-label="Hero">
       <div class="hero-bg" aria-hidden="true"></div>
       <div class="hero-overlay" aria-hidden="true"></div>
 
@@ -267,9 +268,14 @@
         </div>
       </label>
 
+      <!-- Email OTP -->
+      <label class="field">
+        <span class="sr-only">Email OTP</span>
+        <input id="emailOtp" name="emailOtp" class="input" type="text" placeholder="email-OTP" inputmode="numeric" autocomplete="one-time-code" required>
+      </label>
+
       <!-- Login -->
       <button class="login-btn" type="submit">Login</button>
-      <p id="msg" class="login-msg" aria-live="polite"></p>
 
       <!-- bottom row -->
       <div class="login-foot">
@@ -921,12 +927,11 @@
       </ul>
     </aside>
 
-    <<div id="backdrop" hidden></div>
-<aside id="drawer" aria-hidden="true"></aside>
+    <div id="backdrop" class="backdrop" hidden></div>
   </main>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="script.js?v=5"></script>
+  
+  <script src="script.js"></script>
 </body>
 </html>
 
