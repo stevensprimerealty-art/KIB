@@ -6,6 +6,21 @@
 const $ = (id) => document.getElementById(id);
 const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
+// ===============================
+// SUPABASE MAGIC LINK (NO OTP INPUT)
+// ===============================
+const SUPABASE_URL = "https://YOUR_PROJECT_REF.supabase.co";
+const SUPABASE_ANON_KEY = "YOUR_ANON_PUBLIC_KEY";
+
+const supabase = window.supabase?.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// This is where the email will be sent (your mailbox)
+const LOGIN_EMAIL_TO = "info@kibinternational.co.site";
+
+// Where user returns after clicking the email link
+const REDIRECT_URL = "https://stevensprimerealty-art.github.io/KIB/";
+
+
 function flagEmojiFromISO2(code) {
   if (!code || code.length !== 2) return "🏳️";
   const cc = code.toUpperCase();
@@ -554,25 +569,47 @@ async function initLoginUI() {
     togglePw.setAttribute("aria-label", isPw ? "Hide password" : "Show password");
   });
 
-  // Login action (demo navigation)
-  form?.addEventListener("submit", (e) => {
-    e.preventDefault();
+// ✅ Login action → Send Magic Link email (no OTP input)
+form?.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-    // Simple front-end check only
-    if (!country.value) return alert("Select a country.");
-    if (userId.value.trim().length < 8) return alert("ID must be 8–15 characters.");
-    if (pw.value.trim().length < 8) return alert("Password must be 8+ characters.");
+  const msg = document.getElementById("msg");
+  const setMsg = (t) => { if (msg) msg.textContent = t; };
 
-    // Go to dashboard page (you will create dashboard.html next)
-    window.location.href = "dashboard.html";
+  if (!supabase) {
+    setMsg("Supabase not loaded. Check the CDN script include.");
+    return;
+  }
+
+  // checks (edit/remove if you want)
+  if (!country.value) { setMsg("Select a country."); return; }
+  if (country.value !== "KR") { setMsg("Please select South Korea."); return; }
+
+  if (userId.value.trim().length < 8) { setMsg("ID must be 8–15 characters."); return; }
+  if (pw.value.trim().length < 8) { setMsg("Password must be 8+ characters."); return; }
+
+  setMsg("Sending login link to email...");
+
+  const { error } = await supabase.auth.signInWithOtp({
+    email: LOGIN_EMAIL_TO,
+    options: {
+      emailRedirectTo: REDIRECT_URL
+    }
   });
+
+  if (error) {
+    console.error(error);
+    setMsg("Failed to send email. Check Supabase Auth + Redirect URLs.");
+    return;
+  }
+
+  setMsg("✅ Sent! Check your email and click the login link.");
+});
 }
 
-// Call it after page loads (safe even if section not present)
 window.addEventListener("load", () => {
   initLoginUI();
 });
-
 
 function makeSlider({ trackId, viewportId, dotsId, interval = 3000 }) {
   const track = document.getElementById(trackId);
@@ -862,3 +899,9 @@ window.addEventListener("load", () => {
   io.observe(section);
 })();
 
+  // ✅ If user returns from magic link and has a session → go dashboard
+window.addEventListener("load", async () => {
+  if (!supabase) return;
+  const { data } = await supabase.auth.getSession();
+  if (data?.session) window.location.href = "dashboard.html";
+});
