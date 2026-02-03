@@ -1468,3 +1468,8 @@ body{
 .woori-muted{
   color: rgba(0,0,0,.45);
 }
+
+
+#app { display:block !important; opacity:1 !important; visibility:visible !important; }
+#intro { display:none !important; }
+body { background: #f2f2f2 !important; }
