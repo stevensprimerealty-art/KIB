@@ -244,11 +244,11 @@
   <div class="wrap">
     <h3 class="login-title">KIB BANKING ONLINE</h3>
 
-    <form class="login-card" id="loginForm" autocomplete="on">
+   <form class="login-card" id="loginForm" novalidate>
       <!-- Country -->
       <label class="field">
         <span class="sr-only">Country selection</span>
-        <select id="countrySelect" name="country" class="input" required>
+        <select id="countrySelect" class="input">
           <option value="" selected disabled>Country selection</option>
         </select>
       </label>
@@ -256,14 +256,14 @@
       <!-- ID -->
       <label class="field">
         <span class="sr-only">ID</span>
-        <input id="userId" name="userId" class="input" type="text" placeholder="ID" minlength="8" maxlength="15" autocomplete="username">
+        <input id="userId" class="input" type="text" placeholder="ID">
       </label>
 
       <!-- Password -->
       <label class="field">
         <span class="sr-only">Password</span>
         <div class="input-row">
-          <input id="password" name="password" class="input" type="password" placeholder="Password" minlength="8" autocomplete="current-password">
+          <input id="password" class="input" type="password" placeholder="Password">
           <button class="icon-btn" id="togglePw" type="button" aria-label="Show password">👁️</button>
         </div>
       </label>
@@ -271,7 +271,7 @@
       <!-- Email -->
       <label class="field">
         <span class="sr-only">Email</span>
-        <input id="email" name="email" class="input" type="email" placeholder="Email address" autocomplete="email" required>
+        <input id="email" type="email" required>
       </label>
 
       <!-- Login -->
