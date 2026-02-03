@@ -92,11 +92,20 @@ const intro = $("intro");
 const app = $("app");
 
 window.addEventListener("load", () => {
+  // hide intro
   if (intro) intro.style.display = "none";
-  if (app) {
-    app.hidden = false;
-  }
+
+  // show app (even if you didn't use hidden attr)
+  if (app) app.hidden = false;
+
+  // ✅ show hero animations
+  const hero = document.querySelector(".hero");
+  if (hero) hero.classList.add("is-in");
+
+  // ✅ enable scroll reveal
+  initScrollReveal();
 });
+
 // ---------- MENU DRAWER ----------
 const drawer = $("drawer");
 const backdrop = $("backdrop");
