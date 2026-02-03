@@ -55,10 +55,9 @@ body{
 /* ---------- APP ---------- */
 .app{
   min-height:100%;
-  opacity:0;
-  transition: opacity .55s ease;
+  opacity:1;           /* always visible */
+  visibility:visible;
 }
-.app.is-in{ opacity:1; }
 
 /* HEADER stays above everything */
 .topbar{
