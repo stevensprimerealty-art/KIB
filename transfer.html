@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>KIB — Transfer</title>
+  <link rel="stylesheet" href="transfer.css" />
+</head>
+
+<body>
+  <main class="page">
+    <!-- Top bar -->
+    <header class="topbar">
+      <button class="icon-btn" type="button" onclick="history.back()" aria-label="Back">←</button>
+
+      <div class="title">
+        <div class="title-en">Transfer</div>
+        <div class="title-ko">송금</div>
+      </div>
+
+      <button id="menuOpen" class="icon-btn" type="button" aria-label="Menu">☰</button>
+    </header>
+
+    <!-- Left fade-in menu -->
+    <aside id="drawer" class="drawer" aria-hidden="true">
+      <div class="drawer-head">
+        <div class="drawer-title">Menu</div>
+        <button id="menuClose" class="icon-btn" type="button" aria-label="Close">✕</button>
+      </div>
+
+      <button id="logoutBtn" class="drawer-item danger" type="button">Log out ➡️</button>
+    </aside>
+    <div id="backdrop" class="backdrop" hidden></div>
+
+    <!-- Main options -->
+    <section id="home" class="card">
+      <div class="option" data-target="domestic">
+        <div class="radio"></div>
+        <div class="opt-text">
+          <div class="opt-title">Domestic Transfer (KRW)</div>
+          <div class="opt-sub">KIB → KIB or other Korean banks • Account number</div>
+        </div>
+        <div class="chev">›</div>
+      </div>
+
+      <div class="option" data-target="remittance">
+        <div class="radio"></div>
+        <div class="opt-text">
+          <div class="opt-title">Remittance (USD / FX)</div>
+          <div class="opt-sub">Overseas remittance form</div>
+        </div>
+        <div class="chev">›</div>
+      </div>
+
+      <div class="option" data-target="fx">
+        <div class="radio"></div>
+        <div class="opt-text">
+          <div class="opt-title">FX / Currency Exchange</div>
+          <div class="opt-sub">KRW ↔ USD, etc. • More currency slides</div>
+        </div>
+        <div class="chev">›</div>
+      </div>
+    </section>
+
+    <!-- Domestic -->
+    <section id="domestic" class="panel" hidden>
+      <div class="panel-head">
+        <h2>Domestic Transfer (KRW)</h2>
+        <p>KRW only • KIB → KIB or other Korean banks • Uses account number</p>
+      </div>
+
+      <div class="form">
+        <label class="field">
+          <span>From Account</span>
+          <select>
+            <option>Saving Account • 227881700</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Beneficiary Bank</span>
+          <input type="text" placeholder="KIB / Other Korean bank" />
+        </label>
+
+        <label class="field">
+          <span>Beneficiary Account Number</span>
+          <input type="text" inputmode="numeric" placeholder="Enter account number" />
+        </label>
+
+        <label class="field">
+          <span>Amount (KRW)</span>
+          <input type="text" inputmode="numeric" placeholder="₩0" />
+        </label>
+
+        <button class="contact-btn" type="button" data-contact>
+          Contact bank • More information
+        </button>
+      </div>
+    </section>
+
+    <!-- Remittance -->
+    <section id="remittance" class="panel" hidden>
+      <div class="panel-head">
+        <h2>Overseas Remittance Form</h2>
+        <p>USD / FX • Fill beneficiary details</p>
+      </div>
+
+      <div class="form">
+        <label class="field">
+          <span>From Account</span>
+          <select>
+            <option>Saving Account • 227881700</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Beneficiary Name</span>
+          <input type="text" placeholder="Full name" />
+        </label>
+
+        <label class="field">
+          <span>Bank &amp; SWIFT</span>
+          <input type="text" placeholder="Bank name + SWIFT code" />
+        </label>
+
+        <div class="row2">
+          <label class="field">
+            <span>Amount</span>
+            <input type="text" inputmode="numeric" placeholder="0" />
+          </label>
+
+          <label class="field">
+            <span>Currency</span>
+            <select>
+              <option>USD</option>
+              <option>KRW</option>
+              <option>EUR</option>
+              <option>GBP</option>
+              <option>JPY</option>
+            </select>
+          </label>
+        </div>
+
+        <label class="field">
+          <span>Purpose of Remittance</span>
+          <input type="text" placeholder="Tuition / Family support / Business, etc." />
+        </label>
+
+        <label class="field">
+          <span>Fees</span>
+          <select>
+            <option>Sender pays</option>
+            <option>Beneficiary pays</option>
+            <option>Shared</option>
+          </select>
+        </label>
+
+        <div class="btn-row">
+          <button id="getOtpBtn" class="btn ghost" type="button">Get OTP</button>
+          <button id="confirmBtn" class="btn" type="button" disabled>Confirm</button>
+        </div>
+
+        <div id="otpMsg" class="hint" aria-live="polite"></div>
+
+        <button class="contact-btn" type="button" data-contact>
+          Contact bank • More information
+        </button>
+      </div>
+    </section>
+
+    <!-- FX -->
+    <section id="fx" class="panel" hidden>
+      <div class="panel-head">
+        <h2>FX / Foreign Currency Services</h2>
+        <p>Currency exchange (KRW ↔ USD, etc.)</p>
+      </div>
+
+      <div class="fx-slides" aria-label="Currency exchange slides">
+        <div class="fx-card">
+          <div class="fx-flag">🇰🇷</div>
+          <div class="fx-main">KRW ↔ USD</div>
+          <div class="fx-sub">🇺🇸 USD • Quick exchange preview</div>
+        </div>
+
+        <div class="fx-card">
+          <div class="fx-flag">🇰🇷</div>
+          <div class="fx-main">KRW ↔ EUR</div>
+          <div class="fx-sub">🇪🇺 EUR • Exchange guidance</div>
+        </div>
+
+        <div class="fx-card">
+          <div class="fx-flag">🇰🇷</div>
+          <div class="fx-main">KRW ↔ GBP</div>
+          <div class="fx-sub">🇬🇧 GBP • Rate check</div>
+        </div>
+
+        <div class="fx-card">
+          <div class="fx-flag">🇰🇷</div>
+          <div class="fx-main">KRW ↔ JPY</div>
+          <div class="fx-sub">🇯🇵 JPY • Fast conversion</div>
+        </div>
+      </div>
+
+      <button class="contact-btn" type="button" data-contact>
+        Contact bank • More information
+      </button>
+    </section>
+
+    <!-- Transactions record -->
+    <section class="panel" id="records">
+      <div class="panel-head">
+        <h2>Transaction Record</h2>
+        <p>Latest incoming transfers</p>
+      </div>
+
+      <div class="record-list">
+        <div class="record">
+          <div class="record-top">
+            <div class="record-bank">UniCredit</div>
+            <div class="record-status">SUCCESS</div>
+          </div>
+          <div class="record-mid">Incoming transfer • ₩400,000,000</div>
+          <div class="record-bot">20 Feb 2026 • 13:06</div>
+        </div>
+
+        <div class="record">
+          <div class="record-top">
+            <div class="record-bank">Intesa Sanpaolo</div>
+            <div class="record-status">SUCCESS</div>
+          </div>
+          <div class="record-mid">Incoming transfer • ₩530,000,000</div>
+          <div class="record-bot">21 Feb 2026 • 10:04</div>
+        </div>
+
+        <div class="record">
+          <div class="record-top">
+            <div class="record-bank">UniCredit</div>
+            <div class="record-status">SUCCESS</div>
+          </div>
+          <div class="record-mid">Incoming transfer • ₩330,530,596</div>
+          <div class="record-bot">22 Feb 2026 • 11:37</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Supabase first -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Your existing script.js (contains getSupabase/protectDashboard) -->
+  <script defer src="script.js"></script>
+
+  <!-- Transfer-only logic -->
+  <script defer src="transfer.js"></script>
+</body>
+</html>
