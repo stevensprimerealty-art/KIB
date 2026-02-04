@@ -42,13 +42,26 @@ document.addEventListener("DOMContentLoaded", () => {
 // ===============================
 const SUPABASE_URL = "https://wkhlshjwpjnhpwcfvdqv.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_UyqL5TtlTGVXVeUGeEseCw_QLaujK2V";
-const REDIRECT_URL = "https://stevensprimerealty-art.github.io/KIB/";
+
+// ✅ redirect must be the dashboard page (not homepage)
+const REDIRECT_URL = "https://stevensprimerealty-art.github.io/KIB/dashboard.html";
+
+// ✅ only this email can receive magic link
+const ALLOWED_EMAIL = "kimdaehyun241@gmail.com";
+const ALLOWED_ID = "KIB-DH26887";
+const ALLOWED_PASSWORD = "XRZ?KADAS";
 
 function getSupabase() {
   if (!window.supabase?.createClient) return null;
-  return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-}
 
+  return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true, // ✅ IMPORTANT
+    },
+  });
+}
 function getEmailInput() {
   return (
     document.getElementById("email") ||
@@ -62,6 +75,9 @@ async function initMagicLinkLogin() {
   const form = document.getElementById("loginForm");
   if (!form) return;
 
+  const countryEl = document.getElementById("countrySelect");
+  const idEl = document.getElementById("userId");
+  const pwEl = document.getElementById("password");
   const msg = document.getElementById("msg");
   const setMsg = (t) => { if (msg) msg.textContent = t; };
 
@@ -73,22 +89,55 @@ async function initMagicLinkLogin() {
 
   const emailEl = getEmailInput();
 
+  // ✅ define ONCE (top of function)
+  const isCallback =
+    location.hash.includes("access_token=") ||
+    location.search.includes("code=") ||
+    location.search.includes("type=magiclink") ||
+    location.hash.includes("type=magiclink");
+
+  // ✅ ONE auth listener (no duplicates)
+  supabase.auth.onAuthStateChange((_event, session) => {
+    // only redirect automatically when user arrived from magic link callback
+    if (session && isCallback) window.location.replace("dashboard.html");
+  });
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+
+    // ✅ must be South Korea
+    if (!countryEl || countryEl.value !== "KR") {
+      setMsg("Country must be South Korea to continue.");
+      return;
+    }
 
     if (!emailEl || !emailEl.value.trim()) {
       setMsg("Please enter your email.");
       return;
     }
 
+    // ✅ allowlist only
+    const email = emailEl.value.trim().toLowerCase();
+    if (email !== ALLOWED_EMAIL) {
+      setMsg("This email is not allowed.");
+      return;
+    }
+
+    // ✅ must match ID + password too
+    const id = (idEl?.value || "").trim();
+    const pw = (pwEl?.value || "").trim();
+
+    if (id !== ALLOWED_ID || pw !== ALLOWED_PASSWORD) {
+      setMsg("Invalid ID or password.");
+      return; // ❌ no email sent
+    }
+
     setMsg("Sending login link...");
 
-    const { data, error } = await supabase.auth.signInWithOtp({
-      email: emailEl.value.trim(),
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
       options: { emailRedirectTo: REDIRECT_URL },
     });
-
-    console.log("OTP result:", data, error);
 
     if (error) {
       setMsg("❌ " + error.message);
@@ -98,15 +147,12 @@ async function initMagicLinkLogin() {
     setMsg("✅ Link sent! Check your email and tap the login link.");
   });
 
-  // If already logged in AND this is a magiclink callback → go dashboard
-  const { data } = await supabase.auth.getSession();
-
-  const isMagicCallback =
-    location.search.includes("type=magiclink") ||
-    location.hash.includes("type=magiclink");
-
-  if (data?.session && isMagicCallback) {
-    window.location.replace("dashboard.html");
+  // ✅ Fallback: sometimes session appears slightly after URL parsing
+  if (isCallback) {
+    setTimeout(async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data?.session) window.location.replace("dashboard.html");
+    }, 200);
   }
 }
 
@@ -121,7 +167,15 @@ async function protectDashboard() {
   const supabase = getSupabase();
   if (!supabase) return;
 
-  const { data } = await supabase.auth.getSession();
+  // 1st check
+  let { data } = await supabase.auth.getSession();
+
+  // ✅ retry once (session can appear after Supabase parses URL)
+  if (!data?.session) {
+    await new Promise(r => setTimeout(r, 250));
+    ({ data } = await supabase.auth.getSession());
+  }
+
   if (!data?.session) window.location.replace("index.html");
 }
 
@@ -138,10 +192,10 @@ function flagEmojiFromISO2(code) {
 async function buildCountries(selectEl) {
   if (!selectEl) return;
 
-  // keep the placeholder (disabled) option, clear others
+  // keep placeholder, clear others
   selectEl.querySelectorAll("option:not([disabled])").forEach(o => o.remove());
 
-  // 1) Try: REST Countries API (full world list)
+  // 1) Try REST Countries
   try {
     const res = await fetch("https://restcountries.com/v3.1/all?fields=cca2,name", { cache: "force-cache" });
     if (!res.ok) throw new Error("REST Countries failed");
@@ -160,11 +214,14 @@ async function buildCountries(selectEl) {
       selectEl.appendChild(opt);
     });
 
+    // ✅ default South Korea AFTER options exist
+    selectEl.value = "KR";
     return;
   } catch (err) {
-    // 2) Fallback: Intl list (if supported)
+    // fallback below
   }
 
+  // 2) Fallback Intl
   try {
     const regionCodes =
       (Intl.supportedValuesOf && Intl.supportedValuesOf("region"))
@@ -185,6 +242,9 @@ async function buildCountries(selectEl) {
       opt.textContent = `${flagEmojiFromISO2(code)}  ${name}`;
       selectEl.appendChild(opt);
     });
+
+    // ✅ default South Korea AFTER options exist
+    selectEl.value = "KR";
   } catch (e) {
     // last resort: do nothing
   }
