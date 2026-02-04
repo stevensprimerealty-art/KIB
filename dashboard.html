@@ -8,11 +8,10 @@
 </head>
 
 <body>
-  <main class="phone">
-    <!-- Top Bar -->
+  <main class="app">
+    <!-- TOP BAR -->
     <header class="topbar">
-      <!-- ✅ Give this an ID so JS can open menu -->
-      <button id="menuOpen" class="icon-btn" aria-label="Menu" type="button">☰</button>
+      <button id="menuBtn" class="icon-btn" type="button" aria-label="Open menu">☰</button>
 
       <div class="greet">
         <label class="avatar" title="Upload owner image">
@@ -26,12 +25,12 @@
         </div>
       </div>
 
-      <button class="icon-btn" aria-label="Notifications" type="button">🔔</button>
+      <button class="icon-btn" type="button" aria-label="Notifications">🔔</button>
     </header>
 
-    <!-- Account Card -->
-    <section class="card-wrap">
-      <article class="bank-card" aria-label="Savings account card">
+    <!-- ACCOUNT CARD -->
+    <section class="card-wrap" aria-label="Account overview">
+      <article class="bank-card" aria-label="Saving account card">
         <div class="card-top">
           <div class="label">Saving Account</div>
           <div class="mini-chip" aria-hidden="true"></div>
@@ -40,33 +39,37 @@
         <div class="acct">227881700</div>
 
         <div class="balance-row">
-          <div id="balanceText" class="balance">₩1,260,530,586</div>
-          <!-- ✅ Give the button an ID + type -->
-          <button id="toggleBalance" class="eye" type="button" aria-label="Hide balance">👁️</button>
+          <div id="balanceText" class="balance" aria-live="polite">₩1,260,530,586</div>
+          <button id="toggleBalance" class="eye" type="button" aria-label="Show balance" aria-pressed="false">👁️</button>
         </div>
 
-        <button class="recent" type="button">
+        <button class="recent" type="button" aria-label="Recent Transaction">
           Recent Transaction <span class="chev">▾</span>
         </button>
       </article>
 
+      <!-- layered shadows like inspo -->
       <div class="card-layer layer-1" aria-hidden="true"></div>
       <div class="card-layer layer-2" aria-hidden="true"></div>
     </section>
 
-    <!-- Quick actions -->
+    <!-- QUICK ACTION GRID -->
     <section class="actions" aria-label="Quick actions">
-      <button class="action" type="button">Transfer</button>
-      <button class="action" type="button">Payment</button>
-      <button class="action" type="button">Card</button>
-      <button class="action" type="button">Cash-Out</button>
-      <button class="action" type="button">New</button>
-      <button class="action" type="button">Loan</button>
-      <button class="action" type="button">Top-Up</button>
-      <button class="action" type="button">More</button>
+      <button class="action" type="button"><span class="ico">⇄</span><span>Transfer</span></button>
+      <button class="action" type="button"><span class="ico">₩</span><span>Payment</span></button>
+      <button class="action" type="button"><span class="ico">💳</span><span>Card</span></button>
+      <button class="action" type="button"><span class="ico">🏧</span><span>Cash-Out</span></button>
+
+      <button class="action" type="button"><span class="ico">🆕</span><span>New</span></button>
+      <button class="action" type="button"><span class="ico">🤝</span><span>Loan</span></button>
+      <button class="action" type="button"><span class="ico">📱</span><span>Top-Up</span></button>
+      <button class="action" type="button"><span class="ico">⋯</span><span>More</span></button>
     </section>
 
-    <!-- Bottom nav -->
+    <!-- BIG BANNER SPACE (full width, no breaks) -->
+    <section class="banner-space" aria-label="Banner space"></section>
+
+    <!-- BOTTOM NAV (optional like inspo) -->
     <nav class="bottom-nav" aria-label="Bottom navigation">
       <button class="nav-item is-active" type="button">Account</button>
       <button class="nav-item" type="button">Scan QR</button>
@@ -74,36 +77,36 @@
     </nav>
   </main>
 
-  <!-- ✅ Full-page menu overlay (hidden by default) -->
-  <div id="menuOverlay" class="menu-overlay" hidden>
-    <div class="menu-panel">
-      <div class="menu-top">
-        <div class="menu-title">Menu</div>
-        <button id="menuClose" class="icon-btn" type="button" aria-label="Close menu">✕</button>
-      </div>
+  <!-- BACKDROP + LEFT DRAWER MENU -->
+  <div id="menuBackdrop" class="backdrop" hidden></div>
 
-      <div class="menu-grid" role="menu">
-        <button class="menu-item" type="button">Profile</button>
-        <button class="menu-item" type="button">Cards</button>
-        <button class="menu-item" type="button">Transfers</button>
-
-        <button class="menu-item" type="button">Loans</button>
-        <button class="menu-item" type="button">Support</button>
-        <button class="menu-item" type="button">Settings</button>
-
-        <!-- ✅ Logout -->
-        <button id="logoutBtn" class="menu-item danger" type="button">Log out</button>
-      </div>
+  <aside id="drawer" class="drawer" aria-hidden="true">
+    <div class="drawer-top">
+      <div class="drawer-title">Menu</div>
+      <button id="closeDrawer" class="icon-btn" type="button" aria-label="Close menu">✕</button>
     </div>
-  </div>
+
+    <div class="drawer-list" role="menu">
+      <button class="drawer-item" type="button">Profile</button>
+      <button class="drawer-item" type="button">Cards</button>
+      <button class="drawer-item" type="button">Transfers</button>
+      <button class="drawer-item" type="button">Loans</button>
+      <button class="drawer-item" type="button">Support</button>
+      <button class="drawer-item" type="button">Settings</button>
+
+      <button id="logoutBtn" class="drawer-item danger" type="button">
+        LOG OUT <span class="arrow">➡️</span>
+      </button>
+    </div>
+  </aside>
 
   <!-- Supabase MUST be before script.js -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <!-- Your main JS (contains protectDashboard) -->
+  <!-- Your main auth logic (protectDashboard + getSupabase lives here) -->
   <script defer src="script.js"></script>
 
-  <!-- Dashboard-only JS -->
+  <!-- Dashboard-only interactions -->
   <script defer src="dashboard.js"></script>
 </body>
 </html>
