@@ -1,0 +1,214 @@
+:root{
+  --bg: #eef4ff;
+  --text: #0b1220;
+  --muted: rgba(11,18,32,.55);
+
+  /* Inspired by your screenshot */
+  --kib-blue: #61A4F9;
+  --kib-blue-dark: #4A8AD1;
+  --kib-blue-light: #DDEBFF;
+
+  --radius: 18px;
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: white;
+  display:grid;
+  place-items:center;
+  color:var(--text);
+}
+
+.phone{
+  width:min(420px, 100%);
+  min-height: 100vh;
+  background: var(--bg);
+  padding: 18px 16px 16px;
+  display:flex;
+  flex-direction:column;
+  gap: 18px;
+}
+
+/* TOP BAR */
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding: 4px 2px;
+}
+
+.icon-btn{
+  border:0;
+  background: transparent;
+  font-size: 22px;
+  padding: 10px 10px;
+  border-radius: 12px;
+  cursor:pointer;
+}
+
+.greet{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  flex:1;
+  justify-content:center;
+}
+
+.avatar{
+  width:44px;
+  height:44px;
+  border-radius: 999px;
+  overflow:hidden;
+  border: 2px solid rgba(255,255,255,.8);
+  box-shadow: 0 6px 18px rgba(0,0,0,.08);
+  background: white;
+  cursor:pointer;
+}
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.greet-text{ line-height:1.1; }
+.hello{ font-size: 12px; color: var(--muted); }
+.name{ font-weight: 700; font-size: 16px; }
+
+/* CARD */
+.card-wrap{
+  position:relative;
+  padding-bottom: 26px; /* room for layers */
+}
+
+.bank-card{
+  position:relative;
+  z-index: 3;
+  border-radius: 22px;
+  padding: 18px 18px 14px;
+  color: white;
+  background:
+    radial-gradient(140px 90px at 85% 20%, rgba(255,255,255,.25), transparent 60%),
+    linear-gradient(135deg, var(--kib-blue) 0%, #78B6FF 40%, var(--kib-blue-dark) 100%);
+  box-shadow: 0 18px 35px rgba(55,120,220,.35);
+  overflow:hidden;
+}
+
+.card-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom: 10px;
+}
+.label{ font-size: 14px; opacity:.9; letter-spacing:.2px; }
+
+.mini-chip{
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: rgba(255,255,255,.22);
+  border: 1px solid rgba(255,255,255,.25);
+}
+
+.acct{
+  font-size: 13px;
+  opacity:.95;
+  margin-bottom: 8px;
+}
+
+.balance-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.balance{
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: .2px;
+}
+.eye{
+  border:0;
+  background: rgba(255,255,255,.18);
+  color:white;
+  border-radius: 999px;
+  padding: 8px 10px;
+  cursor:pointer;
+}
+
+.recent{
+  margin-top: 12px;
+  width:100%;
+  border:0;
+  background: rgba(0,0,0,.12);
+  color: rgba(255,255,255,.95);
+  border-radius: 14px;
+  padding: 10px 12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  cursor:pointer;
+  font-weight: 600;
+}
+
+.card-layer{
+  position:absolute;
+  left: 22px;
+  right: 22px;
+  height: 95px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(97,164,249,.55), rgba(74,138,209,.55));
+  filter: blur(.2px);
+  opacity:.55;
+  z-index:1;
+}
+.layer-1{ bottom: 12px; transform: translateY(18px); opacity:.38; }
+.layer-2{ bottom: 0; transform: translateY(34px) scale(.98); opacity:.22; }
+
+/* ACTIONS */
+.actions{
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.action{
+  border: 0;
+  background: rgba(255,255,255,.55);
+  border-radius: 18px;
+  padding: 14px 10px;
+  font-weight: 650;
+  color: rgba(11,18,32,.78);
+  box-shadow: 0 10px 18px rgba(0,0,0,.05);
+  cursor:pointer;
+}
+
+/* BOTTOM NAV */
+.bottom-nav{
+  margin-top:auto;
+  background: linear-gradient(180deg, rgba(15,96,170,.95), rgba(12,78,145,.95));
+  border-radius: 22px;
+  padding: 12px;
+  display:flex;
+  justify-content:space-around;
+  gap:10px;
+  box-shadow: 0 18px 35px rgba(10,60,120,.25);
+}
+
+.nav-item{
+  border:0;
+  background: transparent;
+  color: rgba(255,255,255,.85);
+  font-weight: 700;
+  padding: 10px 12px;
+  border-radius: 14px;
+  cursor:pointer;
+}
+.nav-item.is-active{
+  background: rgba(255,255,255,.16);
+  color: white;
+}
