@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>KIB — Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css" />
+</head>
+
+<body>
+  <main class="phone">
+    <!-- Top Bar -->
+    <header class="topbar">
+      <button class="icon-btn" aria-label="Menu">☰</button>
+
+      <div class="greet">
+        <label class="avatar" title="Upload owner image">
+          <input id="ownerImage" type="file" accept="image/*" hidden />
+          <img id="ownerPreview" alt="Owner" src="https://via.placeholder.com/44" />
+        </label>
+
+        <div class="greet-text">
+          <div class="hello">Hello</div>
+          <div class="name">Mr Kim Dae Hyun</div>
+        </div>
+      </div>
+
+      <button class="icon-btn" aria-label="Notifications">🔔</button>
+    </header>
+
+    <!-- Account Card -->
+    <section class="card-wrap">
+      <article class="bank-card" aria-label="Savings account card">
+        <div class="card-top">
+          <div class="label">Saving Account</div>
+          <div class="mini-chip" aria-hidden="true"></div>
+        </div>
+
+        <div class="acct">227881700</div>
+
+        <div class="balance-row">
+          <div class="balance">₩1,260,530,586</div>
+          <button class="eye" aria-label="Hide balance">👁️</button>
+        </div>
+
+        <button class="recent" type="button">
+          Recent Transaction <span class="chev">▾</span>
+        </button>
+      </article>
+
+      <!-- layered shadows like inspo -->
+      <div class="card-layer layer-1" aria-hidden="true"></div>
+      <div class="card-layer layer-2" aria-hidden="true"></div>
+    </section>
+
+    <!-- Quick actions (optional - same vibe as inspo) -->
+    <section class="actions" aria-label="Quick actions">
+      <button class="action">Transfer</button>
+      <button class="action">Payment</button>
+      <button class="action">Card</button>
+      <button class="action">Cash-Out</button>
+      <button class="action">New</button>
+      <button class="action">Loan</button>
+      <button class="action">Top-Up</button>
+      <button class="action">More</button>
+    </section>
+
+    <!-- Bottom nav -->
+    <nav class="bottom-nav" aria-label="Bottom navigation">
+      <button class="nav-item is-active">Account</button>
+      <button class="nav-item">Scan QR</button>
+      <button class="nav-item">Favorite</button>
+    </nav>
+  </main>
+
+  <script>
+    // Owner image upload preview
+    const file = document.getElementById("ownerImage");
+    const img = document.getElementById("ownerPreview");
+
+    file.addEventListener("change", () => {
+      const f = file.files && file.files[0];
+      if (!f) return;
+      const url = URL.createObjectURL(f);
+      img.src = url;
+    });
+  </script>
+</body>
+</html>
