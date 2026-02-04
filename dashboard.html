@@ -72,17 +72,47 @@
     </nav>
   </main>
 
-  <!-- Owner image preview -->
   <script>
-    const file = document.getElementById("ownerImage");
-    const img = document.getElementById("ownerPreview");
+  // Owner image upload preview
+  const file = document.getElementById("ownerImage");
+  const img = document.getElementById("ownerPreview");
 
-    file.addEventListener("change", () => {
-      const f = file.files?.[0];
-      if (!f) return;
-      img.src = URL.createObjectURL(f);
-    });
-  </script>
+  file?.addEventListener("change", () => {
+    const f = file.files?.[0];
+    if (!f) return;
+    img.src = URL.createObjectURL(f);
+  });
+
+  // Hide/Show balance toggle
+  const eyeBtn = document.querySelector(".eye");
+  const balanceEl = document.querySelector(".balance");
+
+  let balanceVisible = true;
+  const realBalanceText = balanceEl?.textContent || "";
+
+  function maskBalance(text) {
+    // keep currency symbol, hide numbers
+    // example: ₩1,260,530,586 -> ₩••••••••••
+    const symbol = text.trim().slice(0, 1);
+    return symbol + "••••••••••";
+  }
+
+  eyeBtn?.addEventListener("click", () => {
+    if (!balanceEl) return;
+
+    balanceVisible = !balanceVisible;
+
+    if (balanceVisible) {
+      balanceEl.textContent = realBalanceText;
+      eyeBtn.textContent = "👁️";
+      eyeBtn.setAttribute("aria-label", "Hide balance");
+    } else {
+      balanceEl.textContent = maskBalance(realBalanceText);
+      eyeBtn.textContent = "🙈";
+      eyeBtn.setAttribute("aria-label", "Show balance");
+    }
+  });
+</script>
 
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
