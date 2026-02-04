@@ -11,7 +11,8 @@
   <main class="phone">
     <!-- Top Bar -->
     <header class="topbar">
-      <button class="icon-btn" aria-label="Menu">☰</button>
+      <!-- ✅ Give this an ID so JS can open menu -->
+      <button id="menuOpen" class="icon-btn" aria-label="Menu" type="button">☰</button>
 
       <div class="greet">
         <label class="avatar" title="Upload owner image">
@@ -25,99 +26,84 @@
         </div>
       </div>
 
-      <button class="icon-btn" aria-label="Notifications">🔔</button>
+      <button class="icon-btn" aria-label="Notifications" type="button">🔔</button>
     </header>
 
     <!-- Account Card -->
     <section class="card-wrap">
-      <article class="bank-card">
+      <article class="bank-card" aria-label="Savings account card">
         <div class="card-top">
           <div class="label">Saving Account</div>
-          <div class="mini-chip"></div>
+          <div class="mini-chip" aria-hidden="true"></div>
         </div>
 
         <div class="acct">227881700</div>
 
         <div class="balance-row">
-          <div class="balance">₩1,260,530,586</div>
-          <button class="eye">👁️</button>
+          <div id="balanceText" class="balance">₩1,260,530,586</div>
+          <!-- ✅ Give the button an ID + type -->
+          <button id="toggleBalance" class="eye" type="button" aria-label="Hide balance">👁️</button>
         </div>
 
-        <button class="recent">
+        <button class="recent" type="button">
           Recent Transaction <span class="chev">▾</span>
         </button>
       </article>
 
-      <div class="card-layer layer-1"></div>
-      <div class="card-layer layer-2"></div>
+      <div class="card-layer layer-1" aria-hidden="true"></div>
+      <div class="card-layer layer-2" aria-hidden="true"></div>
     </section>
 
     <!-- Quick actions -->
-    <section class="actions">
-      <button class="action">Transfer</button>
-      <button class="action">Payment</button>
-      <button class="action">Card</button>
-      <button class="action">Cash-Out</button>
-      <button class="action">New</button>
-      <button class="action">Loan</button>
-      <button class="action">Top-Up</button>
-      <button class="action">More</button>
+    <section class="actions" aria-label="Quick actions">
+      <button class="action" type="button">Transfer</button>
+      <button class="action" type="button">Payment</button>
+      <button class="action" type="button">Card</button>
+      <button class="action" type="button">Cash-Out</button>
+      <button class="action" type="button">New</button>
+      <button class="action" type="button">Loan</button>
+      <button class="action" type="button">Top-Up</button>
+      <button class="action" type="button">More</button>
     </section>
 
     <!-- Bottom nav -->
-    <nav class="bottom-nav">
-      <button class="nav-item is-active">Account</button>
-      <button class="nav-item">Scan QR</button>
-      <button class="nav-item">Favorite</button>
+    <nav class="bottom-nav" aria-label="Bottom navigation">
+      <button class="nav-item is-active" type="button">Account</button>
+      <button class="nav-item" type="button">Scan QR</button>
+      <button class="nav-item" type="button">Favorite</button>
     </nav>
   </main>
 
-  <script>
-  // Owner image upload preview
-  const file = document.getElementById("ownerImage");
-  const img = document.getElementById("ownerPreview");
+  <!-- ✅ Full-page menu overlay (hidden by default) -->
+  <div id="menuOverlay" class="menu-overlay" hidden>
+    <div class="menu-panel">
+      <div class="menu-top">
+        <div class="menu-title">Menu</div>
+        <button id="menuClose" class="icon-btn" type="button" aria-label="Close menu">✕</button>
+      </div>
 
-  file?.addEventListener("change", () => {
-    const f = file.files?.[0];
-    if (!f) return;
-    img.src = URL.createObjectURL(f);
-  });
+      <div class="menu-grid" role="menu">
+        <button class="menu-item" type="button">Profile</button>
+        <button class="menu-item" type="button">Cards</button>
+        <button class="menu-item" type="button">Transfers</button>
 
-  // Hide/Show balance toggle
-  const eyeBtn = document.querySelector(".eye");
-  const balanceEl = document.querySelector(".balance");
+        <button class="menu-item" type="button">Loans</button>
+        <button class="menu-item" type="button">Support</button>
+        <button class="menu-item" type="button">Settings</button>
 
-  let balanceVisible = true;
-  const realBalanceText = balanceEl?.textContent || "";
+        <!-- ✅ Logout -->
+        <button id="logoutBtn" class="menu-item danger" type="button">Log out</button>
+      </div>
+    </div>
+  </div>
 
-  function maskBalance(text) {
-    // keep currency symbol, hide numbers
-    // example: ₩1,260,530,586 -> ₩••••••••••
-    const symbol = text.trim().slice(0, 1);
-    return symbol + "••••••••••";
-  }
-
-  eyeBtn?.addEventListener("click", () => {
-    if (!balanceEl) return;
-
-    balanceVisible = !balanceVisible;
-
-    if (balanceVisible) {
-      balanceEl.textContent = realBalanceText;
-      eyeBtn.textContent = "👁️";
-      eyeBtn.setAttribute("aria-label", "Hide balance");
-    } else {
-      balanceEl.textContent = maskBalance(realBalanceText);
-      eyeBtn.textContent = "🙈";
-      eyeBtn.setAttribute("aria-label", "Show balance");
-    }
-  });
-</script>
-
-  <!-- Supabase -->
+  <!-- Supabase MUST be before script.js -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <!-- Main app logic (protectDashboard runs here) -->
+  <!-- Your main JS (contains protectDashboard) -->
   <script defer src="script.js"></script>
+
+  <!-- Dashboard-only JS -->
+  <script defer src="dashboard.js"></script>
 </body>
 </html>
