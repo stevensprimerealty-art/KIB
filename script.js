@@ -98,11 +98,34 @@ async function initMagicLinkLogin() {
     setMsg("✅ Link sent! Check your email and tap the login link.");
   });
 
+  // If already logged in AND this is a magiclink callback → go dashboard
   const { data } = await supabase.auth.getSession();
-  if (data?.session) window.location.href = "dashboard.html";
+
+  const isMagicCallback =
+    location.search.includes("type=magiclink") ||
+    location.hash.includes("type=magiclink");
+
+  if (data?.session && isMagicCallback) {
+    window.location.replace("dashboard.html");
+  }
 }
 
 window.addEventListener("load", initMagicLinkLogin);
+
+// ===============================
+// DASHBOARD PROTECTION
+// ===============================
+async function protectDashboard() {
+  if (!location.pathname.endsWith("/dashboard.html")) return;
+
+  const supabase = getSupabase();
+  if (!supabase) return;
+
+  const { data } = await supabase.auth.getSession();
+  if (!data?.session) window.location.replace("index.html");
+}
+
+window.addEventListener("load", protectDashboard);
 
 function flagEmojiFromISO2(code) {
   if (!code || code.length !== 2) return "🏳️";
@@ -112,7 +135,6 @@ function flagEmojiFromISO2(code) {
   const second = cc.charCodeAt(1) - 65 + A;
   return String.fromCodePoint(first, second);
 }
-
 async function buildCountries(selectEl) {
   if (!selectEl) return;
 
