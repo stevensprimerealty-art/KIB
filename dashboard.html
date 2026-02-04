@@ -30,31 +30,30 @@
 
     <!-- Account Card -->
     <section class="card-wrap">
-      <article class="bank-card" aria-label="Savings account card">
+      <article class="bank-card">
         <div class="card-top">
           <div class="label">Saving Account</div>
-          <div class="mini-chip" aria-hidden="true"></div>
+          <div class="mini-chip"></div>
         </div>
 
         <div class="acct">227881700</div>
 
         <div class="balance-row">
           <div class="balance">₩1,260,530,586</div>
-          <button class="eye" aria-label="Hide balance">👁️</button>
+          <button class="eye">👁️</button>
         </div>
 
-        <button class="recent" type="button">
+        <button class="recent">
           Recent Transaction <span class="chev">▾</span>
         </button>
       </article>
 
-      <!-- layered shadows like inspo -->
-      <div class="card-layer layer-1" aria-hidden="true"></div>
-      <div class="card-layer layer-2" aria-hidden="true"></div>
+      <div class="card-layer layer-1"></div>
+      <div class="card-layer layer-2"></div>
     </section>
 
-    <!-- Quick actions (optional - same vibe as inspo) -->
-    <section class="actions" aria-label="Quick actions">
+    <!-- Quick actions -->
+    <section class="actions">
       <button class="action">Transfer</button>
       <button class="action">Payment</button>
       <button class="action">Card</button>
@@ -66,24 +65,29 @@
     </section>
 
     <!-- Bottom nav -->
-    <nav class="bottom-nav" aria-label="Bottom navigation">
+    <nav class="bottom-nav">
       <button class="nav-item is-active">Account</button>
       <button class="nav-item">Scan QR</button>
       <button class="nav-item">Favorite</button>
     </nav>
   </main>
 
+  <!-- Owner image preview -->
   <script>
-    // Owner image upload preview
     const file = document.getElementById("ownerImage");
     const img = document.getElementById("ownerPreview");
 
     file.addEventListener("change", () => {
-      const f = file.files && file.files[0];
+      const f = file.files?.[0];
       if (!f) return;
-      const url = URL.createObjectURL(f);
-      img.src = url;
+      img.src = URL.createObjectURL(f);
     });
   </script>
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Main app logic (protectDashboard runs here) -->
+  <script defer src="script.js"></script>
 </body>
 </html>
