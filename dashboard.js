@@ -1,5 +1,4 @@
-// dashboard.js
-// Runs only on dashboard.html
+// dashboard.js — runs only on dashboard.html
 
 window.addEventListener("DOMContentLoaded", () => {
   // -------------------------
@@ -15,65 +14,82 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   // -------------------------
-  // Hide/Show balance toggle
+  // Balance toggle (DEFAULT: HIDDEN)
   // -------------------------
   const eyeBtn = document.getElementById("toggleBalance");
   const balanceEl = document.getElementById("balanceText");
 
-  let balanceVisible = true;
-  const realBalanceText = balanceEl?.textContent || "";
+  const realBalanceText = (balanceEl?.textContent || "").trim();
 
   function maskBalance(text) {
-    const symbol = text.trim().slice(0, 1); // ₩
+    // ₩1,260,530,586 -> ₩••••••••••
+    const symbol = text.slice(0, 1);
     return symbol + "••••••••••";
   }
 
-  eyeBtn?.addEventListener("click", () => {
-    if (!balanceEl) return;
+  let visible = false;
 
-    balanceVisible = !balanceVisible;
-
-    if (balanceVisible) {
+  function renderBalance() {
+    if (!balanceEl || !eyeBtn) return;
+    if (visible) {
       balanceEl.textContent = realBalanceText;
-      eyeBtn.textContent = "👁️";
+      eyeBtn.textContent = "🙈";
       eyeBtn.setAttribute("aria-label", "Hide balance");
+      eyeBtn.setAttribute("aria-pressed", "true");
     } else {
       balanceEl.textContent = maskBalance(realBalanceText);
-      eyeBtn.textContent = "🙈";
+      eyeBtn.textContent = "👁️";
       eyeBtn.setAttribute("aria-label", "Show balance");
+      eyeBtn.setAttribute("aria-pressed", "false");
     }
+  }
+
+  // ✅ start hidden on open
+  renderBalance();
+
+  eyeBtn?.addEventListener("click", () => {
+    visible = !visible;
+    renderBalance();
   });
 
   // -------------------------
-  // Full-page menu overlay
+  // Drawer (fade + slide from left)
   // -------------------------
-  const overlay = document.getElementById("menuOverlay");
-  const openBtn = document.getElementById("menuOpen");
-  const closeBtn = document.getElementById("menuClose");
+  const drawer = document.getElementById("drawer");
+  const backdrop = document.getElementById("menuBackdrop");
+  const menuBtn = document.getElementById("menuBtn");
+  const closeBtn = document.getElementById("closeDrawer");
 
-  function openMenu() {
-    if (!overlay) return;
-    overlay.hidden = false;
-    document.body.style.overflow = "hidden"; // prevent scroll behind
+  function openDrawer() {
+    if (!drawer || !backdrop) return;
+    drawer.classList.add("is-open");
+    drawer.setAttribute("aria-hidden", "false");
+
+    backdrop.hidden = false;
+    requestAnimationFrame(() => backdrop.classList.add("is-on"));
+
+    document.body.style.overflow = "hidden";
   }
 
-  function closeMenu() {
-    if (!overlay) return;
-    overlay.hidden = true;
+  function closeDrawer() {
+    if (!drawer || !backdrop) return;
+    drawer.classList.remove("is-open");
+    drawer.setAttribute("aria-hidden", "true");
+
+    backdrop.classList.remove("is-on");
+    setTimeout(() => {
+      backdrop.hidden = true;
+    }, 220);
+
     document.body.style.overflow = "";
   }
 
-  openBtn?.addEventListener("click", openMenu);
-  closeBtn?.addEventListener("click", closeMenu);
+  menuBtn?.addEventListener("click", openDrawer);
+  closeBtn?.addEventListener("click", closeDrawer);
 
-  // click outside panel closes
-  overlay?.addEventListener("click", (e) => {
-    if (e.target === overlay) closeMenu();
-  });
-
-  // ESC closes
+  backdrop?.addEventListener("click", closeDrawer);
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeMenu();
+    if (e.key === "Escape") closeDrawer();
   });
 
   // -------------------------
@@ -81,14 +97,12 @@ window.addEventListener("DOMContentLoaded", () => {
   // -------------------------
   const logoutBtn = document.getElementById("logoutBtn");
   logoutBtn?.addEventListener("click", async () => {
-    const supabase = (typeof getSupabase === "function") ? getSupabase() : null;
-    if (!supabase) {
-      // fallback: still go back
-      window.location.replace("index.html");
-      return;
+    try {
+      const supabase = (typeof getSupabase === "function") ? getSupabase() : null;
+      if (supabase) await supabase.auth.signOut();
+    } catch (_) {
+      // ignore
     }
-
-    await supabase.auth.signOut();
     window.location.replace("index.html");
   });
 });
