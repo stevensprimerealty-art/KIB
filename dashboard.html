@@ -43,9 +43,9 @@
           <button id="toggleBalance" class="eye" type="button" aria-label="Show balance" aria-pressed="false">👁️</button>
         </div>
 
-        <button class="recent" type="button" aria-label="Recent Transaction">
-          Recent Transaction <span class="chev">▾</span>
-        </button>
+        <button id="recentBtn" class="recent" type="button" aria-expanded="false">
+  Recent Transaction <span id="recentChevron" class="chev">▾</span>
+</button>
       </article>
 
       <!-- layered shadows like inspo -->
@@ -53,6 +53,15 @@
       <div class="card-layer layer-2" aria-hidden="true"></div>
     </section>
 
+<!-- ✅ Recent Transactions (slide-down) -->
+<section id="recentPanel" class="recent-panel" hidden aria-label="Recent transactions">
+  <div class="tx-list" id="txList"></div>
+
+  <button id="viewAllTx" class="view-all" type="button">
+    View all →
+  </button>
+</section>
+    
     <!-- QUICK ACTION GRID -->
     <section class="actions" aria-label="Quick actions">
       <button class="action" type="button" onclick="location.href='transfer.html'">Transfer</button>
