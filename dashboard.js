@@ -27,6 +27,94 @@ window.addEventListener("DOMContentLoaded", () => {
     return symbol + "••••••••••";
   }
 
+  // -------------------------
+  // Recent Transactions (slide down)
+  // -------------------------
+  const recentBtn = document.getElementById("recentBtn");
+  const recentPanel = document.getElementById("recentPanel");
+  const recentChevron = document.getElementById("recentChevron");
+  const txList = document.getElementById("txList");
+  const viewAllTx = document.getElementById("viewAllTx");
+
+  const transactions = [
+    {
+      date: "22 Feb 2026",
+      bank: "UniCredit",
+      amount: "₩330,530,596",
+      time: "11:37",
+      status: "Successful",
+    },
+    {
+      date: "21 Feb 2026",
+      bank: "Intesa Sanpaolo",
+      amount: "₩530,000,000",
+      time: "10:04",
+      status: "Successful",
+    },
+    {
+      date: "20 Feb 2026",
+      bank: "UniCredit",
+      amount: "₩400,000,000",
+      time: "13:06",
+      status: "Successful",
+    },
+  ];
+
+  function renderTx(list) {
+    if (!txList) return;
+    txList.innerHTML = list.map((t) => `
+      <div class="tx-item" role="listitem">
+        <div class="tx-left">
+          <div class="tx-title">${t.bank} — Transfer</div>
+          <div class="tx-meta">${t.date} • ${t.time}</div>
+        </div>
+        <div class="tx-right">
+          <div class="tx-amount">${t.amount}</div>
+          <div class="tx-status">${t.status}</div>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  let recentOpen = false;
+
+  function openRecent() {
+    if (!recentPanel) return;
+    renderTx(transactions); // ✅ last 3 only
+    recentPanel.hidden = false;
+
+    // allow layout then animate
+    requestAnimationFrame(() => {
+      recentPanel.classList.add("is-open");
+    });
+
+    recentOpen = true;
+    recentBtn?.setAttribute("aria-expanded", "true");
+    if (recentChevron) recentChevron.textContent = "▴";
+  }
+
+  function closeRecent() {
+    if (!recentPanel) return;
+    recentPanel.classList.remove("is-open");
+    recentOpen = false;
+    recentBtn?.setAttribute("aria-expanded", "false");
+    if (recentChevron) recentChevron.textContent = "▾";
+
+    // wait for animation, then hide
+    setTimeout(() => {
+      if (!recentOpen) recentPanel.hidden = true;
+    }, 350);
+  }
+
+  recentBtn?.addEventListener("click", () => {
+    recentOpen ? closeRecent() : openRecent();
+  });
+
+  // View all -> dedicated page
+  viewAllTx?.addEventListener("click", () => {
+    window.location.href = "transactions.html";
+  });
+  
   let visible = false;
 
   function renderBalance() {
