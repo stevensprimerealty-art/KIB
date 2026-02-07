@@ -38,62 +38,45 @@
 
         <div class="acct">227881700</div>
 
+        <!-- Balance slider + one eye toggle -->
         <div class="balance-row">
-  <!-- Balance slider -->
-  <div class="bal" aria-label="Balance slider">
-    <div class="bal-viewport" id="balViewport">
-      <div class="bal-track" id="balTrack">
-        
-        <!-- KRW -->
-        <div class="bal-slide" data-currency="KRW">
-          <div
-            class="bal-amt"
-            id="balKRW"
-            data-real="₩1,260,530,586"
-            aria-live="polite"
-          >
-            ₩1,260,530,586
+          <div class="bal" aria-label="Balance slider">
+            <div class="bal-viewport" id="balViewport">
+              <div class="bal-track" id="balTrack">
+
+                <!-- KRW -->
+                <div class="bal-slide" data-currency="KRW">
+                  <div class="bal-amt" id="balKRW" data-real="₩1,260,530,586" aria-live="polite">
+                    ₩1,260,530,586
+                  </div>
+                  <div class="bal-sub">KRW Balance</div>
+                </div>
+
+                <!-- USD -->
+                <div class="bal-slide" data-currency="USD">
+                  <div class="bal-amt" id="balUSD" data-real="$932,793.00" aria-live="polite">
+                    $932,793.00
+                  </div>
+                  <div class="bal-sub">USD Balance</div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="bal-dots" id="balDots" aria-label="Balance pagination">
+              <button type="button" class="is-active" aria-label="KRW balance"></button>
+              <button type="button" aria-label="USD balance"></button>
+            </div>
           </div>
-          <div class="bal-sub">KRW Balance</div>
+
+          <button id="toggleBalance" class="eye" type="button" aria-label="Show balance" aria-pressed="false">
+            👁️
+          </button>
         </div>
-
-        <!-- USD -->
-        <div class="bal-slide" data-currency="USD">
-          <div
-            class="bal-amt"
-            id="balUSD"
-            data-real="$932,793.00"
-            aria-live="polite"
-          >
-            $932,793.00
-          </div>
-          <div class="bal-sub">USD Balance</div>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="bal-dots" id="balDots" aria-label="Balance pagination">
-      <button type="button" class="is-active" aria-label="KRW balance"></button>
-      <button type="button" aria-label="USD balance"></button>
-    </div>
-  </div>
-
-  <!-- Same eye button controls BOTH -->
-  <button
-    id="toggleBalance"
-    class="eye"
-    type="button"
-    aria-label="Show balance"
-    aria-pressed="false"
-  >
-    👁️
-  </button>
-</div>
 
         <button id="recentBtn" class="recent" type="button" aria-expanded="false">
-  Recent Transaction <span id="recentChevron" class="chev">▾</span>
-</button>
+          Recent Transaction <span id="recentChevron" class="chev">▾</span>
+        </button>
       </article>
 
       <!-- layered shadows like inspo -->
@@ -101,15 +84,15 @@
       <div class="card-layer layer-2" aria-hidden="true"></div>
     </section>
 
-<!-- ✅ Recent Transactions (slide-down) -->
-<section id="recentPanel" class="recent-panel" hidden aria-label="Recent transactions">
-  <div class="tx-list" id="txList"></div>
+    <!-- Recent Transactions (slide-down) -->
+    <section id="recentPanel" class="recent-panel" hidden aria-label="Recent transactions">
+      <div class="tx-list" id="txList"></div>
 
-  <button id="viewAllTx" class="view-all" type="button">
-    View all →
-  </button>
-</section>
-    
+      <button id="viewAllTx" class="view-all" type="button">
+        View all →
+      </button>
+    </section>
+
     <!-- QUICK ACTION GRID -->
     <section class="actions" aria-label="Quick actions">
       <button class="action" type="button" onclick="location.href='transfer.html'">Transfer</button>
@@ -123,23 +106,26 @@
       <button class="action" type="button"><span class="ico">⋯</span><span>More</span></button>
     </section>
 
-    <!-- BIG BANNER SPACE (full width, no breaks) -->
+    <!-- BANNERS -->
     <section class="banner" aria-label="Promotional banners">
-  <div class="banner-viewport" id="bannerViewport">
-    <div class="banner-track" id="bannerTrack">
-      <div class="banner-slide">Banner 1</div>
-      <div class="banner-slide">Banner 2</div>
-      <div class="banner-slide">Banner 3</div>
-    </div>
-  </div>
+      <div class="banner-viewport" id="bannerViewport">
+        <div class="banner-track" id="bannerTrack">
+          <div class="banner-slide">Banner 1</div>
+          <div class="banner-slide">Banner 2</div>
+          <div class="banner-slide">Banner 3</div>
+        </div>
+      </div>
 
-  <div class="banner-dots" id="bannerDots" aria-label="Banner pagination"></div>
-</section>
+      <div class="banner-dots" id="bannerDots" aria-label="Banner pagination"></div>
+    </section>
 
-    <!-- BOTTOM NAV (optional like inspo) -->
+    <!-- BOTTOM NAV -->
     <nav class="bottom-nav" aria-label="Bottom navigation">
       <button class="nav-item is-active" type="button">Account</button>
-      <button class="nav-item" type="button">Scan QR</button>
+
+      <!-- ✅ IMPORTANT: give it an id so it can open scan.html -->
+      <button id="scanNav" class="nav-item" type="button">Scan QR</button>
+
       <button class="nav-item" type="button">Favorite</button>
     </nav>
   </main>
@@ -170,7 +156,7 @@
   <!-- Supabase MUST be before script.js -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <!-- Your main auth logic (protectDashboard + getSupabase lives here) -->
+  <!-- Your main auth logic -->
   <script defer src="script.js"></script>
 
   <!-- Dashboard-only interactions -->
