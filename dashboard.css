@@ -400,3 +400,62 @@ body{
   to   { opacity: 0; transform: translateY(6px); }
 }
 
+
+/* ===============================
+   KRW + USD BALANCE SLIDER
+================================ */
+.bal{
+  flex: 1;
+  min-width: 0;
+}
+
+.bal-viewport{
+  overflow: hidden;
+  border-radius: 14px;
+}
+
+.bal-track{
+  display: flex;
+  transition: transform .35s ease;
+}
+
+.bal-slide{
+  flex: 0 0 100%;
+  min-width: 100%;
+}
+
+.bal-amt{
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: .2px;
+  text-shadow: 0 8px 20px rgba(0,0,0,.12);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bal-sub{
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  opacity: .9;
+}
+
+.bal-dots{
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding-top: 10px;
+}
+
+.bal-dots button{
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  border: 0;
+  background: rgba(255,255,255,.35);
+}
+
+.bal-dots button.is-active{
+  background: rgba(255,255,255,.85);
+}
