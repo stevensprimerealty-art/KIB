@@ -198,17 +198,20 @@ body{
 /* BIG EMPTY SPACE (banner area) */
 .banner{ margin-top: 14px; padding: 0 14px 12px; }
 .banner-viewport{ overflow:hidden; border-radius: 18px; }
-.banner-track{ display:flex; transition: transform .35s ease; }
-.banner-slide{
+.banner-track{ display:flex; transition: transform .35s ease; }.banner-slide{
   flex: 0 0 100%;
   height: 140px;
   border-radius: 18px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight: 800;
-  color: #fff;
-  background: linear-gradient(135deg, var(--kib-blue), var(--kib-blue-dark));
+  overflow: hidden;          /* ✅ important */
+  position: relative;        /* ✅ important */
+  background: transparent;   /* optional */
+}
+
+.banner-slide img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;         /* ✅ fills the whole banner */
+  display: block;
 }
 
 .banner-dots{ display:flex; gap:8px; justify-content:center; padding-top:10px; }
