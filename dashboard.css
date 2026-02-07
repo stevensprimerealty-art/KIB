@@ -201,36 +201,30 @@ body{
   padding: 0 14px 12px;
 }
 
-/* Viewport = mask */
 .banner-viewport{
   overflow: hidden;
   border-radius: 18px;
 }
 
-/* Track = sliding row */
 .banner-track{
   display: flex;
   transition: transform .35s ease;
 }
 
-/* ✅ THIS IS WHERE YOUR CODE GOES */
 .banner-slide{
   flex: 0 0 100%;
-  height: 120px;              /* ⬅️ correct */
+  height: 120px;          /* banner height */
   border-radius: 18px;
   overflow: hidden;
   position: relative;
-  background: #5fa8f5;
 }
 
-/* Image fills slide properly */
 .banner-slide img{
   width: 100%;
   height: 100%;
-  object-fit: contain;        /* no cropping */
+  object-fit: cover;     /* 🔥 THIS makes it fill */
   display: block;
 }
-
 
 .banner-dots{ display:flex; gap:8px; justify-content:center; padding-top:10px; }
 .banner-dots button{
