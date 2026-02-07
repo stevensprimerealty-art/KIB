@@ -88,18 +88,27 @@ body {
 }
 
 /* Toggle button */
+.bank-card.disabled {
+  opacity: 0.45;
+  filter: grayscale(1);
+  pointer-events: none;
+}
+
 .toggle-btn {
-  width: 100%;
-  margin-top: 10px;
-  padding: 12px;
-  border-radius: 14px;
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
   border: none;
   font-weight: 600;
-  background: #d1e7ff;
-  color: #0b3c7d;
+  cursor: pointer;
 }
 
 .toggle-btn.active {
-  background: #1d4ed8;
+  background: #1f7aff;
   color: #fff;
+}
+
+.toggle-btn:not(.active) {
+  background: #e6e6e6;
+  color: #555;
 }
