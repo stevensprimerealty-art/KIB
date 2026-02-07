@@ -1,11 +1,21 @@
 document.querySelectorAll(".toggle-btn").forEach(btn => {
   btn.addEventListener("click", () => {
-    btn.classList.toggle("active");
+    const cardSection = btn.closest(".card-section");
+    const card = cardSection.querySelector(".bank-card");
 
-    if (btn.classList.contains("active")) {
-      btn.textContent = "Card Enabled";
+    const isActive = btn.classList.toggle("active");
+
+    // Update button text
+    btn.textContent = isActive ? "Card Enabled" : "Card Disabled";
+
+    // Accessibility state
+    btn.setAttribute("aria-pressed", isActive);
+
+    // Visual card state
+    if (isActive) {
+      card.classList.remove("disabled");
     } else {
-      btn.textContent = "Card Disabled";
+      card.classList.add("disabled");
     }
   });
 });
