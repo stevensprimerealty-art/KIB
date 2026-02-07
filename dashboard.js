@@ -366,8 +366,9 @@ window.addEventListener("DOMContentLoaded", () => {
   })();
 });
 
-// Go to Scan QR page
-const scanNav = document.getElementById("scanNav");
-scanNav?.addEventListener("click", () => {
+// -------------------------
+// Scan QR navigation
+// -------------------------
+document.getElementById("scanNav")?.addEventListener("click", () => {
   window.location.href = "scan.html";
 });
