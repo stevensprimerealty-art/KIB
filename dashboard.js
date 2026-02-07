@@ -13,40 +13,112 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   // -------------------------
-  // Balance toggle (DEFAULT: HIDDEN)
+  // Balance slider (KRW + USD) + eye toggle (DEFAULT: HIDDEN)
   // -------------------------
   const eyeBtn = document.getElementById("toggleBalance");
-  const balanceEl = document.getElementById("balanceText");
-  const realBalanceText = (balanceEl?.textContent || "").trim();
 
-  function maskBalance(text) {
-    const symbol = text.slice(0, 1); // ₩
-    return symbol + "••••••••••";
+  const balKRW = document.getElementById("balKRW");
+  const balUSD = document.getElementById("balUSD");
+
+  const realKRW = (balKRW?.dataset.real || balKRW?.textContent || "").trim();
+  const realUSD = (balUSD?.dataset.real || balUSD?.textContent || "").trim();
+
+  function maskMoney(text) {
+    const t = (text || "").trim();
+    const first = t[0] || "•"; // ₩ or $
+    return first + "••••••••••";
   }
 
   let visible = false;
 
-  function renderBalance() {
-    if (!balanceEl || !eyeBtn) return;
+  function renderBalances() {
+    if (balKRW) balKRW.textContent = visible ? realKRW : maskMoney(realKRW);
+    if (balUSD) balUSD.textContent = visible ? realUSD : maskMoney(realUSD);
 
-    if (visible) {
-      balanceEl.textContent = realBalanceText;
-      eyeBtn.textContent = "🙈";
-      eyeBtn.setAttribute("aria-label", "Hide balance");
-      eyeBtn.setAttribute("aria-pressed", "true");
-    } else {
-      balanceEl.textContent = maskBalance(realBalanceText);
-      eyeBtn.textContent = "👁️";
-      eyeBtn.setAttribute("aria-label", "Show balance");
-      eyeBtn.setAttribute("aria-pressed", "false");
+    if (eyeBtn) {
+      if (visible) {
+        eyeBtn.textContent = "🙈";
+        eyeBtn.setAttribute("aria-label", "Hide balance");
+        eyeBtn.setAttribute("aria-pressed", "true");
+      } else {
+        eyeBtn.textContent = "👁️";
+        eyeBtn.setAttribute("aria-label", "Show balance");
+        eyeBtn.setAttribute("aria-pressed", "false");
+      }
     }
   }
 
-  renderBalance(); // start hidden
+  // Start hidden
+  renderBalances();
+
   eyeBtn?.addEventListener("click", () => {
     visible = !visible;
-    renderBalance();
+    renderBalances();
   });
+
+  // -------------------------
+  // Balance slider (swipe + dots)
+  // -------------------------
+  const balTrack = document.getElementById("balTrack");
+  const balViewport = document.getElementById("balViewport");
+  const balDots = document.getElementById("balDots");
+
+  if (balTrack && balViewport && balDots) {
+    const dots = Array.from(balDots.querySelectorAll("button"));
+    const slides = Array.from(balTrack.children);
+    let index = 0;
+
+    function setDots(i) {
+      dots.forEach((d, di) => d.classList.toggle("is-active", di === i));
+    }
+
+    function goTo(i) {
+      index = (i + slides.length) % slides.length;
+      balTrack.style.transform = `translateX(-${index * 100}%)`;
+      setDots(index);
+    }
+
+    dots.forEach((d, i) => d.addEventListener("click", () => goTo(i)));
+
+    // swipe (pointer)
+    let startX = 0, dx = 0, down = false;
+
+    balViewport.addEventListener("pointerdown", (e) => {
+      down = true;
+      startX = e.clientX;
+      dx = 0;
+      balTrack.style.transition = "none";
+      balViewport.setPointerCapture?.(e.pointerId);
+    });
+
+    balViewport.addEventListener("pointermove", (e) => {
+      if (!down) return;
+      dx = e.clientX - startX;
+      const w = balViewport.getBoundingClientRect().width || 1;
+      const p = (dx / w) * 100;
+      balTrack.style.transform = `translateX(calc(-${index * 100}% + ${p}%))`;
+    });
+
+    function end(e) {
+      if (!down) return;
+      down = false;
+      balTrack.style.transition = "transform .35s ease";
+      const w = balViewport.getBoundingClientRect().width || 1;
+      const thresh = Math.min(60, w * 0.18);
+
+      if (dx < -thresh) goTo(index + 1);
+      else if (dx > thresh) goTo(index - 1);
+      else goTo(index);
+
+      balViewport.releasePointerCapture?.(e.pointerId);
+    }
+
+    balViewport.addEventListener("pointerup", end);
+    balViewport.addEventListener("pointercancel", end);
+
+    // init
+    goTo(0);
+  }
 
   // -------------------------
   // Recent Transactions (auto-open + stagger fade in/out)
