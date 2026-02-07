@@ -1,4 +1,4 @@
-// scan.js — QR page (NO demo payment, NO fake success)
+// scan.js — NO demo, no link sending. Shows result only.
 
 window.addEventListener("DOMContentLoaded", () => {
   const $ = (id) => document.getElementById(id);
@@ -16,125 +16,77 @@ window.addEventListener("DOMContentLoaded", () => {
     tabCam?.setAttribute("aria-selected", show ? "false" : "true");
     if (panelShow) panelShow.hidden = !show;
     if (panelCam) panelCam.hidden = show;
-
-    // stop camera when switching away
-    if (show) stopCamera();
+    if (show) stopScan(); // stop camera if switching away
   }
 
   tabShow?.addEventListener("click", () => setTab("show"));
   tabCam?.addEventListener("click", () => setTab("cam"));
 
-  // -------------------------
-  // Show QR + Copy (NO DEMO)
-  // -------------------------
-  const copyBtn = $("copyLink");
-  const copyMsg = $("copyMsg");
-
-  // ✅ Put your REAL payment string / URL here (or leave empty)
-  const PAYMENT_STRING = ""; // e.g. "https://stevensprimerealty-art.github.io/KIB/pay"
-
-  copyBtn?.addEventListener("click", async () => {
-    // If you don't have a real value yet, show INVALID (as you requested)
-    if (!PAYMENT_STRING) {
-      if (copyMsg) copyMsg.textContent = "Invalid. Contact bank • More information.";
-      return;
-    }
-
-    try {
-      await navigator.clipboard.writeText(PAYMENT_STRING);
-      if (copyMsg) copyMsg.textContent = "Copied.";
-    } catch {
-      if (copyMsg) copyMsg.textContent = "Copy not supported on this device.";
-    }
-  });
-
-  // -------------------------
-  // Camera scan (NO DEMO)
-  // -------------------------
+  // Camera scan
   const startBtn = $("startCam");
   const stopBtn = $("stopCam");
   const video = $("video");
-  const result = $("scanResult");
-  const fallback = $("fallback");
+  const canvas = $("canvas");
+  const camMsg = $("camMsg");
+  const resultText = $("resultText");
 
   let stream = null;
   let raf = null;
-  let detector = null;
 
-  function setResult(text) {
-    if (result) result.textContent = text || "";
+  function setMsg(msg) {
+    if (camMsg) camMsg.textContent = msg || "";
+  }
+  function setResult(msg) {
+    if (resultText) resultText.textContent = msg || "No result";
   }
 
-  function setFallback(text) {
-    if (fallback) fallback.textContent = text || "";
-  }
+  async function startScan() {
+    setMsg("");
+    setResult("No result");
 
-  async function startCamera() {
-    setResult("");
-    setFallback("");
+    if (!video || !canvas) return;
 
-    const hasGetUserMedia = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
-    const hasBarcodeDetector = "BarcodeDetector" in window;
-
-    if (!hasGetUserMedia) {
-      setFallback("Camera not supported on this browser. Use “Show QR” option.");
-      return;
+    // In-app browsers often fail on iOS
+    // This message helps you debug quickly.
+    if (/Gmail|Instagram|FBAN|FBAV/i.test(navigator.userAgent)) {
+      setMsg("If camera doesn’t open, tap … and open this page in Safari.");
     }
 
     try {
       stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "environment" },
+        video: { facingMode: { ideal: "environment" } },
         audio: false,
       });
 
-      if (video) {
-        video.srcObject = stream;
-        await video.play();
-      }
+      video.srcObject = stream;
+      await video.play();
 
+      if (startBtn) startBtn.disabled = true;
       if (stopBtn) stopBtn.disabled = false;
 
-      if (!hasBarcodeDetector) {
-        setFallback("QR scan not supported here. Try Chrome on mobile or use “Show QR”.");
-        return;
-      }
-
-      detector = new BarcodeDetector({ formats: ["qr_code"] });
-
-      const loop = async () => {
-        if (!video || video.readyState < 2 || !detector) {
-          raf = requestAnimationFrame(loop);
+      // Prefer BarcodeDetector if available
+      if ("BarcodeDetector" in window) {
+        const detector = new BarcodeDetector({ formats: ["qr_code"] });
+        loopBarcodeDetector(detector);
+      } else {
+        // Fallback: jsQR (works on iPhone Safari)
+        if (typeof window.jsQR !== "function") {
+          setMsg("QR scanning not supported on this device.");
           return;
         }
-
-        try {
-          const codes = await detector.detect(video);
-          if (codes && codes.length) {
-            // ✅ We do NOT treat scanned QR as success
-            setResult("Invalid. Contact bank • More information.");
-            stopCamera();
-            return;
-          }
-        } catch {
-          // ignore
-        }
-
-        raf = requestAnimationFrame(loop);
-      };
-
-      raf = requestAnimationFrame(loop);
-    } catch {
-      setFallback("Could not access camera. Allow permission or use “Show QR”.");
+        loopJsQR();
+      }
+    } catch (err) {
+      setMsg("Camera blocked. Allow camera permission in Safari settings, then try again.");
     }
   }
 
-  function stopCamera() {
+  function stopScan() {
     if (raf) cancelAnimationFrame(raf);
     raf = null;
-    detector = null;
 
     if (video) {
-      video.pause?.();
+      video.pause();
       video.srcObject = null;
     }
 
@@ -143,9 +95,67 @@ window.addEventListener("DOMContentLoaded", () => {
       stream = null;
     }
 
+    if (startBtn) startBtn.disabled = false;
     if (stopBtn) stopBtn.disabled = true;
   }
 
-  startBtn?.addEventListener("click", startCamera);
-  stopBtn?.addEventListener("click", stopCamera);
+  function loopBarcodeDetector(detector) {
+    const tick = async () => {
+      if (!video || !detector) return;
+
+      try {
+        const codes = await detector.detect(video);
+        if (codes && codes.length) {
+          setResult(codes[0].rawValue || "QR detected");
+          setMsg("QR detected.");
+          // stop after success
+          stopScan();
+          return;
+        }
+      } catch {
+        // ignore detection errors
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+  }
+
+  function loopJsQR() {
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+
+    const tick = () => {
+      if (!video || !ctx) return;
+
+      const w = video.videoWidth;
+      const h = video.videoHeight;
+      if (!w || !h) {
+        raf = requestAnimationFrame(tick);
+        return;
+      }
+
+      canvas.width = w;
+      canvas.height = h;
+      ctx.drawImage(video, 0, 0, w, h);
+
+      const img = ctx.getImageData(0, 0, w, h);
+      const code = window.jsQR(img.data, w, h, { inversionAttempts: "attemptBoth" });
+
+      if (code?.data) {
+        setResult(code.data);
+        setMsg("QR detected.");
+        stopScan();
+        return;
+      }
+
+      raf = requestAnimationFrame(tick);
+    };
+
+    raf = requestAnimationFrame(tick);
+  }
+
+  startBtn?.addEventListener("click", startScan);
+  stopBtn?.addEventListener("click", stopScan);
+
+  // Default tab
+  setTab("show");
 });
