@@ -12,22 +12,31 @@
 
     <!-- TOP BAR -->
     <header class="topbar">
-      <button class="icon-btn" onclick="location.href='dashboard.html'">←</button>
+      <button
+        class="icon-btn"
+        type="button"
+        aria-label="Return to dashboard"
+        onclick="location.href='dashboard.html'"
+      >
+        ←
+      </button>
+
       <h1 class="title">My Cards</h1>
-      <span></span>
+
+      <span aria-hidden="true"></span>
     </header>
 
     <!-- KRW CARD -->
-    <section class="card-section">
+    <section class="card-section" aria-label="KIB KRW Debit Card">
       <div class="card-label">KIB KRW Debit Card</div>
 
-      <div class="bank-card krw">
+      <div class="bank-card krw" role="group" aria-label="KRW Card">
         <div class="card-row">
-          <span class="chip"></span>
-          <span class="contactless"></span>
+          <span class="chip" aria-hidden="true"></span>
+          <span class="contactless" aria-hidden="true"></span>
         </div>
 
-        <div class="card-number">
+        <div class="card-number" aria-label="Card number ending 5564">
           ●●●● ●●●● ●●●● 5564
         </div>
 
@@ -37,22 +46,27 @@
         </div>
       </div>
 
-      <button class="toggle-btn active" data-card="krw">
+      <button
+        class="toggle-btn active"
+        type="button"
+        data-card="krw"
+        aria-pressed="true"
+      >
         Card Enabled
       </button>
     </section>
 
     <!-- USD CARD -->
-    <section class="card-section">
+    <section class="card-section" aria-label="KIB USD Debit Card">
       <div class="card-label">KIB USD Debit Card</div>
 
-      <div class="bank-card usd">
+      <div class="bank-card usd" role="group" aria-label="USD Card">
         <div class="card-row">
-          <span class="chip"></span>
-          <span class="contactless"></span>
+          <span class="chip" aria-hidden="true"></span>
+          <span class="contactless" aria-hidden="true"></span>
         </div>
 
-        <div class="card-number">
+        <div class="card-number" aria-label="Card number ending 5564">
           ●●●● ●●●● ●●●● 5564
         </div>
 
@@ -62,13 +76,28 @@
         </div>
       </div>
 
-      <button class="toggle-btn active" data-card="usd">
+      <button
+        class="toggle-btn active"
+        type="button"
+        data-card="usd"
+        aria-pressed="true"
+      >
         Card Enabled
       </button>
     </section>
 
+    <!-- RETURN HOME BUTTON -->
+    <button
+      class="home-btn"
+      type="button"
+      onclick="location.href='dashboard.html'"
+      aria-label="Return to Home"
+    >
+      ← Return to Home
+    </button>
+
   </main>
 
-  <script src="cards.js"></script>
+  <script defer src="cards.js"></script>
 </body>
 </html>
