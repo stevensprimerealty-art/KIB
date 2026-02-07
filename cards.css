@@ -1,3 +1,4 @@
+/* Base */
 body {
   margin: 0;
   font-family: system-ui, -apple-system, sans-serif;
@@ -7,6 +8,8 @@ body {
 
 .app {
   padding: 16px;
+  max-width: 560px;
+  margin: 0 auto;
 }
 
 /* Top bar */
@@ -14,6 +17,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
   margin-bottom: 16px;
 }
 
@@ -21,6 +25,13 @@ body {
   background: none;
   border: none;
   font-size: 20px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.icon-btn:active {
+  transform: scale(0.98);
 }
 
 .title {
@@ -35,80 +46,163 @@ body {
 
 .card-label {
   font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 8px;
+  font-weight: 700;
+  margin-bottom: 10px;
 }
 
-/* Card design */
-.bank-card {
+/* -----------------------------
+   IMAGE CARD (flip structure)
+   Works with: .card-flip + .flip-inner + .flip-face
+------------------------------ */
+.card-flip {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  display: block;
   border-radius: 18px;
-  padding: 16px;
-  color: #fff;
-  box-shadow: 0 10px 24px rgba(0,0,0,.15);
-}
-
-.bank-card.krw {
-  background: linear-gradient(135deg, #6fb1fc, #3b82f6);
-}
-
-.bank-card.usd {
-  background: linear-gradient(135deg, #4facfe, #00c6ff);
-}
-
-.card-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 24px;
-}
-
-.chip {
-  width: 42px;
-  height: 32px;
-  background: gold;
-  border-radius: 6px;
-}
-
-.contactless {
-  width: 32px;
-  height: 32px;
-  background: rgba(255,255,255,.4);
-  border-radius: 8px;
-}
-
-.card-number {
-  font-size: 18px;
-  letter-spacing: 2px;
-  margin-bottom: 20px;
-}
-
-.card-footer {
-  display: flex;
-  justify-content: space-between;
-  font-size: 13px;
-}
-
-/* Toggle button */
-.bank-card.disabled {
-  opacity: 0.45;
-  filter: grayscale(1);
-  pointer-events: none;
-}
-
-.toggle-btn {
-  margin-top: 12px;
-  padding: 10px 14px;
-  border-radius: 10px;
-  border: none;
-  font-weight: 600;
+  margin: 0 0 12px;
+  perspective: 1100px;
   cursor: pointer;
 }
 
-.toggle-btn.active {
+.flip-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 18px;
+  transform-style: preserve-3d;
+  transition: transform 0.6s ease;
+  box-shadow: 0 14px 25px rgba(0, 0, 0, 0.16);
+  overflow: hidden;
+}
+
+.card-flip.is-flipped .flip-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.flip-front {
+  transform: rotateY(0deg);
+}
+
+.flip-back {
+  transform: rotateY(180deg);
+  background: linear-gradient(135deg, rgba(20, 30, 60, 0.96), rgba(10, 10, 10, 0.96));
+  color: #fff;
+  padding: 14px;
+}
+
+/* Card image */
+.card-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* Simple back design */
+.mag-strip {
+  height: 44px;
+  background: rgba(0, 0, 0, 0.75);
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.back-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.cvv-box {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.cvv-label {
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.cvv {
+  font-size: 18px;
+  letter-spacing: 3px;
+  margin-top: 4px;
+}
+
+.back-brand {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.back-note {
+  margin-top: 14px;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+/* Disabled visual (when Card Disabled) */
+.card-flip.is-disabled .flip-inner {
+  filter: grayscale(1) brightness(0.85);
+  opacity: 0.75;
+}
+
+.disabled-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  display: none;
+  place-items: center;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.95);
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.card-flip.is-disabled .disabled-overlay {
+  display: grid;
+}
+
+/* Toggle button */
+.toggle-btn {
+  margin-top: 10px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
   background: #1f7aff;
   color: #fff;
 }
 
-.toggle-btn:not(.active) {
-  background: #e6e6e6;
-  color: #555;
+.toggle-btn.is-off {
+  background: #e2eaf6;
+  color: #1b2b44;
+}
+
+/* Return home button */
+.home-btn {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(27, 43, 68, 0.18);
+  background: #ffffff;
+  color: #1b2b44;
+  font-weight: 700;
+  cursor: pointer;
 }
