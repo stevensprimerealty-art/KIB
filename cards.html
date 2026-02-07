@@ -9,20 +9,12 @@
 
 <body>
   <main class="app">
-
     <!-- TOP BAR -->
     <header class="topbar">
-      <button
-        class="icon-btn"
-        type="button"
-        aria-label="Return to dashboard"
-        onclick="location.href='dashboard.html'"
-      >
+      <button class="icon-btn" type="button" aria-label="Return to dashboard" onclick="location.href='dashboard.html'">
         ←
       </button>
-
       <h1 class="title">My Cards</h1>
-
       <span aria-hidden="true"></span>
     </header>
 
@@ -30,28 +22,32 @@
     <section class="card-section" aria-label="KIB KRW Debit Card">
       <div class="card-label">KIB KRW Debit Card</div>
 
-      <div class="bank-card krw" role="group" aria-label="KRW Card">
-        <div class="card-row">
-          <span class="chip" aria-hidden="true"></span>
-          <span class="contactless" aria-hidden="true"></span>
+      <button class="card-flip" type="button" data-flip-card="krw" aria-label="Flip KRW card">
+        <div class="flip-inner">
+          <!-- FRONT (your image) -->
+          <div class="flip-face flip-front">
+            <img class="card-img" src="assets/kib-krw-card.png" alt="KIB KRW Debit Card" />
+          </div>
+
+          <!-- BACK (simple back design) -->
+          <div class="flip-face flip-back">
+            <div class="mag-strip"></div>
+            <div class="back-row">
+              <div class="cvv-box">
+                <div class="cvv-label">CVV</div>
+                <div class="cvv">***</div>
+              </div>
+              <div class="back-brand">Mastercard</div>
+            </div>
+            <div class="back-note">Tap to flip back</div>
+          </div>
         </div>
 
-        <div class="card-number" aria-label="Card number ending 5564">
-          ●●●● ●●●● ●●●● 5564
-        </div>
+        <!-- Disabled overlay -->
+        <div class="disabled-overlay" aria-hidden="true">DISABLED</div>
+      </button>
 
-        <div class="card-footer">
-          <span class="name">KIM DAE HYUN</span>
-          <span class="brand">Mastercard</span>
-        </div>
-      </div>
-
-      <button
-        class="toggle-btn active"
-        type="button"
-        data-card="krw"
-        aria-pressed="true"
-      >
+      <button class="toggle-btn" type="button" data-card="krw" aria-pressed="true">
         Card Enabled
       </button>
     </section>
@@ -60,42 +56,39 @@
     <section class="card-section" aria-label="KIB USD Debit Card">
       <div class="card-label">KIB USD Debit Card</div>
 
-      <div class="bank-card usd" role="group" aria-label="USD Card">
-        <div class="card-row">
-          <span class="chip" aria-hidden="true"></span>
-          <span class="contactless" aria-hidden="true"></span>
+      <button class="card-flip" type="button" data-flip-card="usd" aria-label="Flip USD card">
+        <div class="flip-inner">
+          <!-- FRONT (your image) -->
+          <div class="flip-face flip-front">
+            <img class="card-img" src="assets/kib-usd-card.png" alt="KIB USD Debit Card" />
+          </div>
+
+          <!-- BACK -->
+          <div class="flip-face flip-back">
+            <div class="mag-strip"></div>
+            <div class="back-row">
+              <div class="cvv-box">
+                <div class="cvv-label">CVV</div>
+                <div class="cvv">***</div>
+              </div>
+              <div class="back-brand">Mastercard</div>
+            </div>
+            <div class="back-note">Tap to flip back</div>
+          </div>
         </div>
 
-        <div class="card-number" aria-label="Card number ending 5564">
-          ●●●● ●●●● ●●●● 5564
-        </div>
+        <div class="disabled-overlay" aria-hidden="true">DISABLED</div>
+      </button>
 
-        <div class="card-footer">
-          <span class="name">KIM DAE HYUN</span>
-          <span class="brand">Mastercard</span>
-        </div>
-      </div>
-
-      <button
-        class="toggle-btn active"
-        type="button"
-        data-card="usd"
-        aria-pressed="true"
-      >
+      <button class="toggle-btn" type="button" data-card="usd" aria-pressed="true">
         Card Enabled
       </button>
     </section>
 
     <!-- RETURN HOME BUTTON -->
-    <button
-      class="home-btn"
-      type="button"
-      onclick="location.href='dashboard.html'"
-      aria-label="Return to Home"
-    >
+    <button class="home-btn" type="button" onclick="location.href='dashboard.html'" aria-label="Return to Home">
       ← Return to Home
     </button>
-
   </main>
 
   <script defer src="cards.js"></script>
