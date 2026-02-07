@@ -1,5 +1,4 @@
 // dashboard.js — runs only on dashboard.html
-
 window.addEventListener("DOMContentLoaded", () => {
   // -------------------------
   // Owner image upload preview
@@ -44,7 +43,6 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   renderBalance(); // start hidden
-
   eyeBtn?.addEventListener("click", () => {
     visible = !visible;
     renderBalance();
@@ -105,6 +103,10 @@ window.addEventListener("DOMContentLoaded", () => {
       el.style.animation = "fadeOutDown .22s ease forwards";
       el.style.animationDelay = `${i * 80}ms`;
     });
+
+    // how long until last item finishes?
+    const total = items.length;
+    return total ? (total - 1) * 80 + 220 : 220;
   }
 
   function openRecent(auto = false) {
@@ -113,7 +115,6 @@ window.addEventListener("DOMContentLoaded", () => {
     renderTx(transactions);
     recentPanel.hidden = false;
 
-    // let browser paint first, then animate open + stagger items
     requestAnimationFrame(() => {
       recentPanel.classList.add("is-open");
       staggerIn();
@@ -123,33 +124,31 @@ window.addEventListener("DOMContentLoaded", () => {
     recentBtn?.setAttribute("aria-expanded", "true");
     if (recentChevron) recentChevron.textContent = "▴";
 
-    // optional: scroll only when user clicks (not on auto)
-    if (!auto) {
-      recentPanel.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    if (!auto) recentPanel.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   function closeRecent() {
     if (!recentPanel) return;
 
-    // fade items out first
-    staggerOut();
+    const fadeTime = staggerOut();
 
-    recentPanel.classList.remove("is-open");
+    // keep panel open while items fade
     recentOpen = false;
     recentBtn?.setAttribute("aria-expanded", "false");
     if (recentChevron) recentChevron.textContent = "▾";
 
-    // hide after animations finish
-    // (panel close transition ~350ms + stagger)
-    const hideDelay = 520;
     setTimeout(() => {
-      if (!recentOpen) recentPanel.hidden = true;
-    }, hideDelay);
+      // now close panel
+      recentPanel.classList.remove("is-open");
+      setTimeout(() => {
+        if (!recentOpen) recentPanel.hidden = true;
+      }, 300);
+    }, fadeTime);
   }
 
   recentBtn?.addEventListener("click", () => {
-    recentOpen ? closeRecent() : openRecent(false);
+    if (recentOpen) closeRecent();
+    else openRecent(false);
   });
 
   viewAllTx?.addEventListener("click", () => {
@@ -174,7 +173,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
     backdrop.hidden = false;
     requestAnimationFrame(() => backdrop.classList.add("is-on"));
-
     document.body.style.overflow = "hidden";
   }
 
@@ -184,20 +182,14 @@ window.addEventListener("DOMContentLoaded", () => {
     drawer.setAttribute("aria-hidden", "true");
 
     backdrop.classList.remove("is-on");
-    setTimeout(() => {
-      backdrop.hidden = true;
-    }, 220);
-
+    setTimeout(() => (backdrop.hidden = true), 220);
     document.body.style.overflow = "";
   }
 
   menuBtn?.addEventListener("click", openDrawer);
   closeBtn?.addEventListener("click", closeDrawer);
-
   backdrop?.addEventListener("click", closeDrawer);
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeDrawer();
-  });
+  document.addEventListener("keydown", (e) => e.key === "Escape" && closeDrawer());
 
   // -------------------------
   // Logout (Supabase)
@@ -210,4 +202,94 @@ window.addEventListener("DOMContentLoaded", () => {
     } catch (_) {}
     window.location.replace("index.html");
   });
+
+  // -------------------------
+  // Banner slider (auto 4s + swipe + dots)
+  // -------------------------
+  (function bannerSlider() {
+    const track = document.getElementById("bannerTrack");
+    const viewport = document.getElementById("bannerViewport");
+    const dotsWrap = document.getElementById("bannerDots");
+    if (!track || !viewport || !dotsWrap) return;
+
+    const slides = Array.from(track.children);
+    let index = 0;
+    let timer = null;
+
+    dotsWrap.innerHTML = "";
+    slides.forEach((_, i) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = i === 0 ? "is-active" : "";
+      b.addEventListener("click", () => goTo(i, true));
+      dotsWrap.appendChild(b);
+    });
+
+    function setDots(i) {
+      dotsWrap.querySelectorAll("button").forEach((d, di) => {
+        d.classList.toggle("is-active", di === i);
+      });
+    }
+
+    function goTo(i, user = false) {
+      index = (i + slides.length) % slides.length;
+      track.style.transform = `translateX(-${index * 100}%)`;
+      setDots(index);
+      if (user) restart();
+    }
+
+    function start() {
+      stop();
+      timer = setInterval(() => goTo(index + 1), 4000);
+    }
+    function stop() {
+      if (timer) clearInterval(timer);
+      timer = null;
+    }
+    function restart() {
+      start();
+    }
+
+    start();
+
+    // swipe
+    let startX = 0,
+      dx = 0,
+      down = false;
+
+    viewport.addEventListener("pointerdown", (e) => {
+      down = true;
+      startX = e.clientX;
+      dx = 0;
+      track.style.transition = "none";
+      stop();
+      viewport.setPointerCapture?.(e.pointerId);
+    });
+
+    viewport.addEventListener("pointermove", (e) => {
+      if (!down) return;
+      dx = e.clientX - startX;
+      const w = viewport.getBoundingClientRect().width || 1;
+      const p = (dx / w) * 100;
+      track.style.transform = `translateX(calc(-${index * 100}% + ${p}%))`;
+    });
+
+    function end(e) {
+      if (!down) return;
+      down = false;
+      track.style.transition = "transform .35s ease";
+      const w = viewport.getBoundingClientRect().width || 1;
+      const thresh = Math.min(70, w * 0.18);
+
+      if (dx < -thresh) goTo(index + 1, true);
+      else if (dx > thresh) goTo(index - 1, true);
+      else goTo(index, true);
+
+      restart();
+      viewport.releasePointerCapture?.(e.pointerId);
+    }
+
+    viewport.addEventListener("pointerup", end);
+    viewport.addEventListener("pointercancel", end);
+  })();
 });
