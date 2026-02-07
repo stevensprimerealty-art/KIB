@@ -365,3 +365,9 @@ window.addEventListener("DOMContentLoaded", () => {
     viewport.addEventListener("pointercancel", end);
   })();
 });
+
+// Go to Scan QR page
+const scanNav = document.getElementById("scanNav");
+scanNav?.addEventListener("click", () => {
+  window.location.href = "scan.html";
+});
