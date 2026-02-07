@@ -1,0 +1,105 @@
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #eef4fb;
+  color: #0b1f33;
+}
+
+.app {
+  padding: 16px;
+}
+
+/* Top bar */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* Card section */
+.card-section {
+  margin-bottom: 24px;
+}
+
+.card-label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+/* Card design */
+.bank-card {
+  border-radius: 18px;
+  padding: 16px;
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(0,0,0,.15);
+}
+
+.bank-card.krw {
+  background: linear-gradient(135deg, #6fb1fc, #3b82f6);
+}
+
+.bank-card.usd {
+  background: linear-gradient(135deg, #4facfe, #00c6ff);
+}
+
+.card-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.chip {
+  width: 42px;
+  height: 32px;
+  background: gold;
+  border-radius: 6px;
+}
+
+.contactless {
+  width: 32px;
+  height: 32px;
+  background: rgba(255,255,255,.4);
+  border-radius: 8px;
+}
+
+.card-number {
+  font-size: 18px;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+/* Toggle button */
+.toggle-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 14px;
+  border: none;
+  font-weight: 600;
+  background: #d1e7ff;
+  color: #0b3c7d;
+}
+
+.toggle-btn.active {
+  background: #1d4ed8;
+  color: #fff;
+}
