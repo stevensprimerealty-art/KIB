@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>KIB — Cards</title>
+  <link rel="stylesheet" href="cards.css" />
+</head>
+
+<body>
+  <main class="app">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <button class="icon-btn" onclick="location.href='dashboard.html'">←</button>
+      <h1 class="title">My Cards</h1>
+      <span></span>
+    </header>
+
+    <!-- KRW CARD -->
+    <section class="card-section">
+      <div class="card-label">KIB KRW Debit Card</div>
+
+      <div class="bank-card krw">
+        <div class="card-row">
+          <span class="chip"></span>
+          <span class="contactless"></span>
+        </div>
+
+        <div class="card-number">
+          ●●●● ●●●● ●●●● 5564
+        </div>
+
+        <div class="card-footer">
+          <span class="name">KIM DAE HYUN</span>
+          <span class="brand">Mastercard</span>
+        </div>
+      </div>
+
+      <button class="toggle-btn active" data-card="krw">
+        Card Enabled
+      </button>
+    </section>
+
+    <!-- USD CARD -->
+    <section class="card-section">
+      <div class="card-label">KIB USD Debit Card</div>
+
+      <div class="bank-card usd">
+        <div class="card-row">
+          <span class="chip"></span>
+          <span class="contactless"></span>
+        </div>
+
+        <div class="card-number">
+          ●●●● ●●●● ●●●● 5564
+        </div>
+
+        <div class="card-footer">
+          <span class="name">KIM DAE HYUN</span>
+          <span class="brand">Mastercard</span>
+        </div>
+      </div>
+
+      <button class="toggle-btn active" data-card="usd">
+        Card Enabled
+      </button>
+    </section>
+
+  </main>
+
+  <script src="cards.js"></script>
+</body>
+</html>
