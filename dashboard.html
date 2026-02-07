@@ -95,15 +95,38 @@
 
     <!-- QUICK ACTION GRID -->
     <section class="actions" aria-label="Quick actions">
-      <button class="action" type="button" onclick="location.href='transfer.html'">Transfer</button>
-      <button class="action" type="button"><span class="ico">₩</span><span>Payment</span></button>
-      <button class="action" type="button"><span class="ico">💳</span><span>Cards</span></button>
-      <button class="action" type="button"><span class="ico">🏧</span><span>Cash-Out</span></button>
+      <button class="action" type="button" onclick="location.href='transfer.html'">
+        <span class="ico">⇄</span><span>Transfer</span>
+      </button>
 
-      <button class="action" type="button"><span class="ico">🆕</span><span>New</span></button>
-      <button class="action" type="button"><span class="ico">🤝</span><span>Loan</span></button>
-      <button class="action" type="button"><span class="ico">📱</span><span>Top-Up</span></button>
-      <button class="action" type="button"><span class="ico">⋯</span><span>More</span></button>
+      <button class="action" type="button">
+        <span class="ico">₩</span><span>Payment</span>
+      </button>
+
+      <!-- ✅ FIX: Cards now opens cards.html -->
+      <button class="action" type="button" onclick="location.href='cards.html'">
+        <span class="ico">💳</span><span>Cards</span>
+      </button>
+
+      <button class="action" type="button">
+        <span class="ico">🏧</span><span>Cash-Out</span>
+      </button>
+
+      <button class="action" type="button">
+        <span class="ico">🆕</span><span>New</span>
+      </button>
+
+      <button class="action" type="button">
+        <span class="ico">🤝</span><span>Loan</span>
+      </button>
+
+      <button class="action" type="button">
+        <span class="ico">📱</span><span>Top-Up</span>
+      </button>
+
+      <button class="action" type="button">
+        <span class="ico">⋯</span><span>More</span>
+      </button>
     </section>
 
     <!-- BANNERS -->
@@ -111,30 +134,31 @@
       <div class="banner-viewport" id="bannerViewport">
         <div class="banner-track" id="bannerTrack">
           <div class="banner-slide">
-  <img src="kib-banner-1.jpg" alt="KIB Banner 1">
-</div>
+            <img src="kib-banner-1.jpg" alt="KIB Banner 1">
+          </div>
 
-<div class="banner-slide">
-  <img src="kib-banner-2.jpg" alt="KIB Banner 2">
-</div>
+          <div class="banner-slide">
+            <img src="kib-banner-2.jpg" alt="KIB Banner 2">
+          </div>
 
-<div class="banner-slide">
-  <img src="kib-banner-3.jpg" alt="KIB Banner 3">
-</div>
-      </div>
+          <div class="banner-slide">
+            <img src="kib-banner-3.jpg" alt="KIB Banner 3">
+          </div>
+        </div><!-- ✅ close banner-track -->
+      </div><!-- ✅ close banner-viewport -->
 
       <div class="banner-dots" id="bannerDots" aria-label="Banner pagination"></div>
     </section>
 
     <!-- BOTTOM NAV -->
-   <nav class="bottom-nav" aria-label="Bottom navigation">
-  <button class="nav-item is-active" type="button">Account</button>
+    <nav class="bottom-nav" aria-label="Bottom navigation">
+      <button class="nav-item is-active" type="button">Account</button>
 
-  <!-- ✅ Add ID here -->
-  <button id="scanNav" class="nav-item" type="button">Scan QR</button>
+      <!-- ✅ FIX: make it open scan.html -->
+      <button id="scanNav" class="nav-item" type="button" onclick="location.href='scan.html'">Scan QR</button>
 
-  <button class="nav-item" type="button">Favorite</button>
-</nav>
+      <button class="nav-item" type="button">Favorite</button>
+    </nav>
   </main>
 
   <!-- BACKDROP + LEFT DRAWER MENU -->
@@ -148,8 +172,13 @@
 
     <div class="drawer-list" role="menu">
       <button class="drawer-item" type="button">Profile</button>
-      <button class="drawer-item" type="button">Cards</button>
-      <button class="drawer-item" type="button">Transfers</button>
+
+      <!-- ✅ FIX: drawer Cards opens cards.html -->
+      <button class="drawer-item" type="button" onclick="location.href='cards.html'">Cards</button>
+
+      <!-- ✅ FIX: drawer Transfers opens transfer.html -->
+      <button class="drawer-item" type="button" onclick="location.href='transfer.html'">Transfers</button>
+
       <button class="drawer-item" type="button">Loans</button>
       <button class="drawer-item" type="button">Support</button>
       <button class="drawer-item" type="button">Settings</button>
