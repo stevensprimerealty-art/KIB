@@ -102,3 +102,33 @@ body{
 }
 .result-title{ font-weight:900; font-size:13px; }
 .result-text{ margin-top:6px; font-weight:800; word-break:break-word; }
+
+.qr-wrap{
+  margin-top: 14px;
+  background: rgba(255,255,255,.75);
+  border-radius: 18px;
+  padding: 14px;
+  box-shadow: 0 12px 22px rgba(0,0,0,.06);
+}
+
+.qr-title{
+  font-weight: 900;
+  margin: 4px 0 10px;
+}
+
+.qr-box{
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid rgba(11,18,32,.10);
+  padding: 14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.qr-img{
+  width: 240px;
+  height: 240px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
