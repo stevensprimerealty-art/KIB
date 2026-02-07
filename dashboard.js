@@ -1,24 +1,45 @@
 // dashboard.js — runs only on dashboard.html
+// ✅ Fixed: Scan QR listener moved INSIDE DOMContentLoaded (no more “not tapping”)
+// ✅ Safe: every block checks elements exist
+// ✅ No demo actions added
+
 window.addEventListener("DOMContentLoaded", () => {
+  // Helpers
+  const $ = (id) => document.getElementById(id);
+
   // -------------------------
   // Owner image upload preview
   // -------------------------
-  const file = document.getElementById("ownerImage");
-  const img = document.getElementById("ownerPreview");
+  const file = $("ownerImage");
+  const img = $("ownerPreview");
 
   file?.addEventListener("change", () => {
     const f = file.files?.[0];
-    if (!f) return;
+    if (!f || !img) return;
     img.src = URL.createObjectURL(f);
   });
 
   // -------------------------
-  // Balance slider (KRW + USD) + eye toggle (DEFAULT: HIDDEN)
+  // Scan QR navigation (FIXED: inside DOMContentLoaded)
   // -------------------------
-  const eyeBtn = document.getElementById("toggleBalance");
+  $("scanNav")?.addEventListener("click", () => {
+    window.location.href = "scan.html";
+  });
 
-  const balKRW = document.getElementById("balKRW");
-  const balUSD = document.getElementById("balUSD");
+  // -------------------------
+  // (Optional) Cards navigation if you want JS (recommended to also add onclick in HTML)
+  // Put id="cardsAction" on the Cards quick action button if you want to use this.
+  // -------------------------
+  $("cardsAction")?.addEventListener("click", () => {
+    window.location.href = "cards.html";
+  });
+
+  // -------------------------
+  // Balance (KRW + USD) + eye toggle (DEFAULT: HIDDEN)
+  // -------------------------
+  const eyeBtn = $("toggleBalance");
+  const balKRW = $("balKRW");
+  const balUSD = $("balUSD");
 
   const realKRW = (balKRW?.dataset.real || balKRW?.textContent || "").trim();
   const realUSD = (balUSD?.dataset.real || balUSD?.textContent || "").trim();
@@ -48,8 +69,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Start hidden
-  renderBalances();
+  renderBalances(); // start hidden
 
   eyeBtn?.addEventListener("click", () => {
     visible = !visible;
@@ -59,9 +79,9 @@ window.addEventListener("DOMContentLoaded", () => {
   // -------------------------
   // Balance slider (swipe + dots)
   // -------------------------
-  const balTrack = document.getElementById("balTrack");
-  const balViewport = document.getElementById("balViewport");
-  const balDots = document.getElementById("balDots");
+  const balTrack = $("balTrack");
+  const balViewport = $("balViewport");
+  const balDots = $("balDots");
 
   if (balTrack && balViewport && balDots) {
     const dots = Array.from(balDots.querySelectorAll("button"));
@@ -80,8 +100,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
     dots.forEach((d, i) => d.addEventListener("click", () => goTo(i)));
 
-    // swipe (pointer)
-    let startX = 0, dx = 0, down = false;
+    // Swipe
+    let startX = 0,
+      dx = 0,
+      down = false;
 
     balViewport.addEventListener("pointerdown", (e) => {
       down = true;
@@ -116,18 +138,17 @@ window.addEventListener("DOMContentLoaded", () => {
     balViewport.addEventListener("pointerup", end);
     balViewport.addEventListener("pointercancel", end);
 
-    // init
     goTo(0);
   }
 
   // -------------------------
   // Recent Transactions (auto-open + stagger fade in/out)
   // -------------------------
-  const recentBtn = document.getElementById("recentBtn");
-  const recentPanel = document.getElementById("recentPanel");
-  const recentChevron = document.getElementById("recentChevron");
-  const txList = document.getElementById("txList");
-  const viewAllTx = document.getElementById("viewAllTx");
+  const recentBtn = $("recentBtn");
+  const recentPanel = $("recentPanel");
+  const recentChevron = $("recentChevron");
+  const txList = $("txList");
+  const viewAllTx = $("viewAllTx");
 
   const transactions = [
     { date: "22 Feb 2026", bank: "UniCredit", amount: "₩330,530,596", time: "11:37", status: "Successful" },
@@ -169,16 +190,13 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   function staggerOut() {
-    if (!txList) return;
+    if (!txList) return 220;
     const items = Array.from(txList.querySelectorAll(".tx-item"));
     items.forEach((el, i) => {
       el.style.animation = "fadeOutDown .22s ease forwards";
       el.style.animationDelay = `${i * 80}ms`;
     });
-
-    // how long until last item finishes?
-    const total = items.length;
-    return total ? (total - 1) * 80 + 220 : 220;
+    return items.length ? (items.length - 1) * 80 + 220 : 220;
   }
 
   function openRecent(auto = false) {
@@ -204,13 +222,12 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const fadeTime = staggerOut();
 
-    // keep panel open while items fade
     recentOpen = false;
     recentBtn?.setAttribute("aria-expanded", "false");
     if (recentChevron) recentChevron.textContent = "▾";
 
+    // keep panel visible while items fade out
     setTimeout(() => {
-      // now close panel
       recentPanel.classList.remove("is-open");
       setTimeout(() => {
         if (!recentOpen) recentPanel.hidden = true;
@@ -227,16 +244,16 @@ window.addEventListener("DOMContentLoaded", () => {
     window.location.href = "transactions.html";
   });
 
-  // ✅ Auto-open when dashboard loads
+  // auto-open on load
   openRecent(true);
 
   // -------------------------
   // Drawer (fade + slide from left)
   // -------------------------
-  const drawer = document.getElementById("drawer");
-  const backdrop = document.getElementById("menuBackdrop");
-  const menuBtn = document.getElementById("menuBtn");
-  const closeBtn = document.getElementById("closeDrawer");
+  const drawer = $("drawer");
+  const backdrop = $("menuBackdrop");
+  const menuBtn = $("menuBtn");
+  const closeBtn = $("closeDrawer");
 
   function openDrawer() {
     if (!drawer || !backdrop) return;
@@ -245,6 +262,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     backdrop.hidden = false;
     requestAnimationFrame(() => backdrop.classList.add("is-on"));
+
     document.body.style.overflow = "hidden";
   }
 
@@ -255,6 +273,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     backdrop.classList.remove("is-on");
     setTimeout(() => (backdrop.hidden = true), 220);
+
     document.body.style.overflow = "";
   }
 
@@ -266,7 +285,7 @@ window.addEventListener("DOMContentLoaded", () => {
   // -------------------------
   // Logout (Supabase)
   // -------------------------
-  const logoutBtn = document.getElementById("logoutBtn");
+  const logoutBtn = $("logoutBtn");
   logoutBtn?.addEventListener("click", async () => {
     try {
       const supabase = typeof getSupabase === "function" ? getSupabase() : null;
@@ -279,9 +298,9 @@ window.addEventListener("DOMContentLoaded", () => {
   // Banner slider (auto 4s + swipe + dots)
   // -------------------------
   (function bannerSlider() {
-    const track = document.getElementById("bannerTrack");
-    const viewport = document.getElementById("bannerViewport");
-    const dotsWrap = document.getElementById("bannerDots");
+    const track = $("bannerTrack");
+    const viewport = $("bannerViewport");
+    const dotsWrap = $("bannerDots");
     if (!track || !viewport || !dotsWrap) return;
 
     const slides = Array.from(track.children);
@@ -364,11 +383,4 @@ window.addEventListener("DOMContentLoaded", () => {
     viewport.addEventListener("pointerup", end);
     viewport.addEventListener("pointercancel", end);
   })();
-});
-
-// -------------------------
-// Scan QR navigation
-// -------------------------
-document.getElementById("scanNav")?.addEventListener("click", () => {
-  window.location.href = "scan.html";
 });
