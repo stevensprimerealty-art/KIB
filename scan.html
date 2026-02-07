@@ -6,63 +6,64 @@
   <title>KIB — Scan QR</title>
   <link rel="stylesheet" href="scan.css" />
 </head>
-
 <body>
   <main class="page">
-    <!-- Top bar -->
     <header class="topbar">
       <button class="icon-btn" type="button" onclick="history.back()" aria-label="Back">←</button>
-
       <div class="title">
         <div class="title-en">Scan QR</div>
-        <div class="title-ko">QR 스캔</div>
+        <div class="title-ko">스캔</div>
       </div>
-
-      <span class="spacer" aria-hidden="true"></span>
+      <span style="width:44px"></span>
     </header>
 
-    <!-- Two options -->
-    <section class="card">
-      <h2 class="h2">Choose an option</h2>
+    <!-- Tabs -->
+    <div class="tabs" role="tablist" aria-label="Scan options">
+      <button id="tabShow" class="tab is-active" type="button" role="tab" aria-selected="true">Show QR</button>
+      <button id="tabCam" class="tab" type="button" role="tab" aria-selected="false">Use Camera</button>
+    </div>
 
-      <div class="tabs" role="tablist" aria-label="Scan options">
-        <button id="tabShow" class="tab is-active" type="button" role="tab" aria-selected="true">Show QR</button>
-        <button id="tabCam" class="tab" type="button" role="tab" aria-selected="false">Use Camera</button>
-      </div>
-
-      <!-- OPTION 1: SHOW QR -->
-      <section id="panelShow" class="panel" role="tabpanel">
-        <div class="qr-box" aria-label="QR to scan">
-          <img id="qrImg" alt="KIB Payment QR"
-     src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=https://stevensprimerealty-art.github.io/KIB/pay" />
-          />
+    <!-- Panel: Show QR -->
+    <section id="panelShow" class="panel" role="tabpanel">
+      <div class="card">
+        <div class="qr-box" aria-label="QR to be scanned">
+          <!-- Replace this image with your real QR image file -->
+          <img src="assets/kib-qr.png" alt="KIB QR" />
         </div>
-        <p class="hint">Let someone scan this QR to pay.</p>
+        <p class="hint">
+          Present this QR code to be scanned for payment.
+        </p>
+      </div>
+    </section>
 
-        <button id="copyLink" class="btn ghost" type="button">Copy payment link</button>
-        <div id="copyMsg" class="msg" aria-live="polite"></div>
-      </section>
-
-      <!-- OPTION 2: CAMERA SCAN -->
-      <section id="panelCam" class="panel" role="tabpanel" hidden>
+    <!-- Panel: Camera -->
+    <section id="panelCam" class="panel" role="tabpanel" hidden>
+      <div class="card">
         <div class="cam-wrap">
           <video id="video" playsinline muted></video>
-          <div class="cam-overlay">
-            <div class="scan-frame" aria-hidden="true"></div>
-            <div class="cam-text">Point camera at QR</div>
-          </div>
+          <div class="cam-overlay"></div>
         </div>
 
         <div class="btn-row">
-          <button id="startCam" class="btn" type="button">Start camera</button>
+          <button id="startCam" class="btn" type="button">Start scan</button>
           <button id="stopCam" class="btn ghost" type="button" disabled>Stop</button>
         </div>
 
-        <div id="scanResult" class="result" aria-live="polite"></div>
-        <p id="fallback" class="hint"></p>
-      </section>
+        <div id="camMsg" class="hint" aria-live="polite"></div>
+
+        <div class="result">
+          <div class="result-title">Scan result</div>
+          <div id="resultText" class="result-text">No result</div>
+        </div>
+
+        <!-- Hidden canvas used for QR decoding -->
+        <canvas id="canvas" hidden></canvas>
+      </div>
     </section>
   </main>
+
+  <!-- Fallback QR decoder (works on iPhone Safari) -->
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 
   <script defer src="scan.js"></script>
 </body>
