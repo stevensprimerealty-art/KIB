@@ -39,9 +39,57 @@
         <div class="acct">227881700</div>
 
         <div class="balance-row">
-          <div id="balanceText" class="balance" aria-live="polite">₩1,260,530,586</div>
-          <button id="toggleBalance" class="eye" type="button" aria-label="Show balance" aria-pressed="false">👁️</button>
+  <!-- Balance slider -->
+  <div class="bal" aria-label="Balance slider">
+    <div class="bal-viewport" id="balViewport">
+      <div class="bal-track" id="balTrack">
+        
+        <!-- KRW -->
+        <div class="bal-slide" data-currency="KRW">
+          <div
+            class="bal-amt"
+            id="balKRW"
+            data-real="₩1,260,530,586"
+            aria-live="polite"
+          >
+            ₩1,260,530,586
+          </div>
+          <div class="bal-sub">KRW Balance</div>
         </div>
+
+        <!-- USD -->
+        <div class="bal-slide" data-currency="USD">
+          <div
+            class="bal-amt"
+            id="balUSD"
+            data-real="$932,793.00"
+            aria-live="polite"
+          >
+            $932,793.00
+          </div>
+          <div class="bal-sub">USD Balance</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="bal-dots" id="balDots" aria-label="Balance pagination">
+      <button type="button" class="is-active" aria-label="KRW balance"></button>
+      <button type="button" aria-label="USD balance"></button>
+    </div>
+  </div>
+
+  <!-- Same eye button controls BOTH -->
+  <button
+    id="toggleBalance"
+    class="eye"
+    type="button"
+    aria-label="Show balance"
+    aria-pressed="false"
+  >
+    👁️
+  </button>
+</div>
 
         <button id="recentBtn" class="recent" type="button" aria-expanded="false">
   Recent Transaction <span id="recentChevron" class="chev">▾</span>
