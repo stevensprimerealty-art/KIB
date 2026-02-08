@@ -6,194 +6,241 @@
   <title>KIB — News 1</title>
   <link rel="stylesheet" href="news.css" />
 </head>
+
 <body>
-  <div class="page">
-
-    <!-- HEADER -->
-    <header class="site-header">
-      <div class="container bar">
-        <div class="brand">
-          KOREA INTERNATIONAL BANKING <small>(KIB)</small>
-        </div>
-
-        <div class="header-right">
-          <div class="lang" aria-label="Language selector">
-            <button class="is-active" type="button" data-lang="ENG">ENG</button>
-            <button type="button" data-lang="KOR">KOR</button>
-            <button type="button" data-lang="ESP">ESPAÑOL</button>
-          </div>
-
-          <button class="menu-btn" type="button" aria-label="Open menu">☰</button>
-        </div>
+  <!-- HEADER (keep same as your main page header structure) -->
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-title">KOREA INTERNATIONAL BANKING</div>
+        <div class="brand-sub">(KIB)</div>
       </div>
-    </header>
 
-    <main class="main">
-      <div class="container">
-        <div class="page-title">News room</div>
-
-        <article class="article-card" aria-label="News 1 article">
-
-          <!-- HERO (replace image path) -->
-          <div class="hero">
-            <img src="assets/images/news/news1-hero.jpg" alt="KIB News 1" />
-            <div class="hero-overlay">Korea International Banking Advances Asset Diversification</div>
-          </div>
-
-          <div class="meta-strip">
-            <div class="label">Date</div>
-            <div class="date">2026.02.03</div>
-          </div>
-
-          <div class="article-body">
-            <div class="h1">Korea International Banking Advances Asset Diversification and Digital Oversight Strategy</div>
-
-            <p class="p">
-              In 2026, Korea International Banking (KIB) is marking a decisive shift in its global financial strategy, reflecting a rapidly evolving international environment shaped by geopolitical uncertainty, persistent market volatility, and accelerating digital transformation. As cross-border finance grows more complex and traditional risk assumptions are challenged, KIB is positioning itself at the forefront of resilient banking by strengthening asset diversification and advancing comprehensive digital asset oversight.
-            </p>
-
-            <p class="p">
-              Two strategic initiatives define this evolution. First, KIB has expanded its exposure to gold-linked assets through carefully selected overseas spot gold exchange-traded funds (ETFs), reinforcing balance sheet resilience and long-term value preservation. Second, the institution has initiated the development of a structured registration and oversight framework for virtual asset issuance, with a particular emphasis on stablecoins and their interaction with fiat-linked banking systems, including instruments referenced to the Korean won.
-            </p>
-
-            <div class="hr"></div>
-            <div class="section-title">Strategic Re-entry into Gold-Linked Assets</div>
-
-            <p class="p">
-              KIB’s renewed allocation to gold-linked investments represents a measured recalibration of its international asset management approach. Historically, global banking portfolios have relied heavily on fiat-denominated instruments, sovereign bonds, and short-term liquid assets. While these instruments remain essential, recent global shocks—from pandemic-era disruptions to heightened geopolitical tensions—have underscored the risks of overconcentration in traditional currency-based assets.
-            </p>
-
-            <p class="p">
-              Gold has long served as a hedge against systemic risk, inflationary pressure, and currency depreciation. KIB’s decision to reintroduce gold exposure is not driven by speculation, but by risk management and portfolio stabilization. In an environment characterized by fluctuating interest rates and uncertain monetary cycles, gold-linked assets offer a counterbalance that strengthens capital preservation over the long term.
-            </p>
-
-            <p class="p">
-              By opting for overseas spot gold ETFs rather than direct physical bullion holdings, KIB is prioritizing liquidity, transparency, and operational efficiency. ETFs allow the institution to gain real-time exposure to gold prices while avoiding the logistical and custodial complexities associated with physical storage. This approach ensures flexibility, enabling KIB to adjust allocations swiftly in response to global market developments.
-            </p>
-
-            <div class="hr"></div>
-            <div class="section-title">Strengthening Oversight in the Digital Asset Era</div>
-
-            <p class="p">
-              Parallel to its asset diversification strategy, KIB is intensifying its engagement with the rapidly expanding digital asset ecosystem. As virtual assets and blockchain-based financial instruments gain adoption across global markets, banks face growing responsibility to ensure that innovation develops within a secure, transparent, and compliant framework.
-            </p>
-
-            <p class="p">
-              KIB’s leadership has identified stablecoins as a focal point of this transformation. Stablecoins—particularly those pegged to fiat currencies—offer efficiency in payments, settlements, and cross-border transactions. However, their widespread adoption also raises critical questions regarding financial stability, monetary integrity, consumer protection, and regulatory accountability.
-            </p>
-
-            <div class="hr"></div>
-            <div class="section-title">Read more</div>
-            <p class="p" style="margin-bottom:10px;">
-              Read more articles on KIB:
-            </p>
-          </div>
-
-          <!-- 3 IMAGES BLOCK (replace paths) -->
-          <section class="photo-grid" aria-label="News 1 images">
-            <div class="grid">
-              <div class="photo"><img src="assets/images/news/news1-1.jpg" alt="News 1 image 1"></div>
-              <div class="photo"><img src="assets/images/news/news1-2.jpg" alt="News 1 image 2"></div>
-              <div class="photo"><img src="assets/images/news/news1-3.jpg" alt="News 1 image 3"></div>
-            </div>
-          </section>
-
-        </article>
-
-        <!-- RELATED (News1 uses News3 + News2) -->
-        <section class="read-more" aria-label="Related news">
-          <h3>Read more articles on KIB</h3>
-
-          <div class="cards">
-            <a class="read-card" href="news3.html" aria-label="Go to News 3">
-              <div>
-                <div class="t">Korea International Banking Anchors South Korea’s Stablecoin and Digital Won Preparations</div>
-                <div class="d">2026.02.10</div>
-              </div>
-              <div class="arrow">→</div>
-            </a>
-
-            <a class="read-card" href="news2.html" aria-label="Go to News 2">
-              <div>
-                <div class="t">Korea International Banking at the Core of FX Leadership, Advancing Liquidity and Won Stability</div>
-                <div class="d">2026.01.29</div>
-              </div>
-              <div class="arrow">→</div>
-            </a>
-          </div>
-
-          <!-- space for text like you requested -->
-          <div style="height:18px;"></div>
-        </section>
-
+      <div class="lang">
+        <button class="pill is-active" type="button">ENG</button>
+        <button class="pill" type="button">KOR</button>
+        <button class="pill" type="button">ESPAÑOL</button>
       </div>
-    </main>
 
-    <!-- FOOTER (accordion like your main page) -->
-    <footer class="footer">
-      <div class="container inner">
+      <button class="menu-btn" type="button" aria-label="Open menu">≡</button>
+    </div>
+  </header>
 
-        <div class="footer-acc">
-          <div class="acc-item">
-            <button class="acc-btn" type="button" aria-expanded="false">
-              Personal Banking <span>▾</span>
-            </button>
-            <div class="acc-panel" hidden>
-              Accounts • Cards • Transfers • Savings • Loans
-            </div>
-          </div>
+  <main class="page" id="top">
+    <!-- PAGE TITLE -->
+    <section class="page-title">
+      <h1>News room</h1>
+    </section>
 
-          <div class="acc-item">
-            <button class="acc-btn" type="button" aria-expanded="false">
-              Business Banking <span>▾</span>
-            </button>
-            <div class="acc-panel" hidden>
-              Corporate accounts • Trade finance • Treasury solutions
-            </div>
-          </div>
-
-          <div class="acc-item">
-            <button class="acc-btn" type="button" aria-expanded="false">
-              Digital Banking <span>▾</span>
-            </button>
-            <div class="acc-panel" hidden>
-              Mobile banking • Online banking • Digital security
-            </div>
-          </div>
-
-          <div class="acc-item">
-            <button class="acc-btn" type="button" aria-expanded="false">
-              Company <span>▾</span>
-            </button>
-            <div class="acc-panel" hidden>
-              About KIB • Leadership • Governance
-            </div>
-          </div>
-
-          <div class="acc-item">
-            <button class="acc-btn" type="button" aria-expanded="false">
-              Financial <span>▾</span>
-            </button>
-            <div class="acc-panel" hidden>
-              Reports • Investor information • Risk disclosures
-            </div>
-          </div>
-
-          <div class="acc-item">
-            <button class="acc-btn" type="button" aria-expanded="false">
-              News <span>▾</span>
-            </button>
-            <div class="acc-panel" hidden>
-              Latest announcements • Media • Updates
-            </div>
-          </div>
+    <!-- HERO / FEATURE CARD -->
+    <section class="feature">
+      <article class="feature-card">
+        <div class="feature-media">
+          <!-- ✅ put your actual image path here -->
+          <img src="assets/images/news-1.jpg" alt="KIB Advances Asset Diversification and Digital Oversight Strategy" loading="lazy">
         </div>
 
-        <div class="footer-brand">KOREA INTERNATIONAL BANKING</div>
+        <div class="feature-meta">
+          <div class="meta-row">
+            <span class="meta-label">Date</span>
+            <strong class="meta-date">2026.02.03</strong>
+          </div>
+          <h2 class="feature-headline">
+            Korea International Banking Advances Asset Diversification and Digital Oversight Strategy
+          </h2>
+        </div>
+      </article>
+    </section>
+
+    <!-- ARTICLE BODY (✅ FULL TEXT) -->
+    <article class="article">
+      <p>
+        In 2026, Korea International Banking (KIB) is marking a decisive shift in its global financial strategy,
+        reflecting a rapidly evolving international environment shaped by geopolitical uncertainty, persistent market
+        volatility, and accelerating digital transformation. As cross-border finance grows more complex and traditional
+        risk assumptions are challenged, KIB is positioning itself at the forefront of resilient banking by strengthening
+        asset diversification and advancing comprehensive digital asset oversight.
+      </p>
+
+      <p>
+        Two strategic initiatives define this evolution. First, KIB has expanded its exposure to gold-linked assets through
+        carefully selected overseas spot gold exchange-traded funds (ETFs), reinforcing balance sheet resilience and long-term
+        value preservation. Second, the institution has initiated the development of a structured registration and oversight
+        framework for virtual asset issuance, with a particular emphasis on stablecoins and their interaction with fiat-linked
+        banking systems, including instruments referenced to the Korean won.
+      </p>
+
+      <p>
+        Together, these initiatives signal KIB’s intent to balance innovation with discipline—embracing modern financial
+        instruments while reinforcing institutional safeguards and regulatory alignment.
+      </p>
+
+      <hr class="sep" />
+
+      <h3>Strategic Re-entry into Gold-Linked Assets</h3>
+
+      <p>
+        KIB’s renewed allocation to gold-linked investments represents a measured recalibration of its international asset
+        management approach. Historically, global banking portfolios have relied heavily on fiat-denominated instruments,
+        sovereign bonds, and short-term liquid assets. While these instruments remain essential, recent global shocks—from
+        pandemic-era disruptions to heightened geopolitical tensions—have underscored the risks of overconcentration in traditional
+        currency-based assets.
+      </p>
+
+      <p>
+        Gold has long served as a hedge against systemic risk, inflationary pressure, and currency depreciation. KIB’s decision to
+        reintroduce gold exposure is not driven by speculation, but by risk management and portfolio stabilization. In an environment
+        characterized by fluctuating interest rates and uncertain monetary cycles, gold-linked assets offer a counterbalance that
+        strengthens capital preservation over the long term.
+      </p>
+
+      <p>
+        By opting for overseas spot gold ETFs rather than direct physical bullion holdings, KIB is prioritizing liquidity, transparency,
+        and operational efficiency. ETFs allow the institution to gain real-time exposure to gold prices while avoiding the logistical and
+        custodial complexities associated with physical storage. This approach ensures flexibility, enabling KIB to adjust allocations
+        swiftly in response to global market developments.
+      </p>
+
+      <p>
+        This move also aligns KIB with modern institutional asset management practices, where diversification is guided by stress testing,
+        liquidity modeling, and risk-adjusted performance rather than legacy conventions. Gold, in this context, functions as a stabilizing
+        component within a broader, globally diversified portfolio.
+      </p>
+
+      <hr class="sep" />
+
+      <h3>Strengthening Oversight in the Digital Asset Era</h3>
+
+      <p>
+        Parallel to its asset diversification strategy, KIB is intensifying its engagement with the rapidly expanding digital asset
+        ecosystem. As virtual assets and blockchain-based financial instruments gain adoption across global markets, banks face growing
+        responsibility to ensure that innovation develops within a secure, transparent, and compliant framework.
+      </p>
+
+      <p>
+        KIB’s leadership has identified stablecoins as a focal point of this transformation. Stablecoins—particularly those pegged to fiat
+        currencies—offer efficiency in payments, settlements, and cross-border transactions. However, their widespread adoption also raises
+        critical questions regarding financial stability, monetary integrity, consumer protection, and regulatory accountability.
+      </p>
+
+      <p>
+        In response, KIB is advancing a formal registration and oversight framework for virtual asset issuance and integration. This framework
+        is designed to ensure that digital instruments interacting with KIB’s banking infrastructure meet stringent standards related to
+        transparency, governance, capital backing, and operational risk.
+      </p>
+
+      <p>
+        Rather than viewing regulation as a constraint, KIB considers oversight an enabler of sustainable innovation. By establishing clear rules
+        for participation, the institution aims to foster trust among clients, partners, and regulators while mitigating risks associated with
+        unregulated or opaque digital asset structures.
+      </p>
+
+      <hr class="sep" />
+
+      <h3>Protecting Monetary Integrity and Financial Stability</h3>
+
+      <p>
+        A key concern driving KIB’s digital strategy is the potential impact of large-scale stablecoin usage on currency-linked banking systems
+        and capital flows. In an increasingly open and interconnected global economy, unchecked digital instruments could accelerate cross-border
+        movements of value in ways that bypass established safeguards.
+      </p>
+
+      <p>
+        KIB’s proposed oversight model seeks to ensure that any stablecoin or virtual asset integrated into its ecosystem operates in harmony with
+        existing financial regulations, including anti-money laundering (AML), know-your-customer (KYC), and counter-terrorism financing (CTF)
+        requirements. This alignment is critical not only for regulatory compliance, but also for maintaining confidence in the broader financial system.
+      </p>
+
+      <p>
+        By embedding digital assets within a clearly defined compliance perimeter, KIB aims to prevent fragmentation between traditional banking operations
+        and emerging digital finance platforms. The objective is coherence—ensuring that innovation enhances efficiency without undermining institutional
+        control or systemic stability.
+      </p>
+
+      <hr class="sep" />
+
+      <h3>Balancing Innovation with Institutional Discipline</h3>
+
+      <p>
+        KIB’s dual focus on asset diversification and digital oversight reflects a broader strategic philosophy: proactive adaptation. Rather than reacting
+        to crises or technological disruption after they occur, the institution is investing in frameworks that anticipate future challenges.
+      </p>
+
+      <p>
+        The integration of gold-linked ETFs strengthens KIB’s ability to absorb external shocks, while the development of digital asset governance mechanisms
+        positions the bank to engage confidently with next-generation financial technologies. Together, these initiatives reinforce KIB’s role as a globally
+        oriented banking institution capable of navigating both traditional market risks and emerging digital complexities.
+      </p>
+
+      <p>
+        Importantly, KIB’s strategy does not seek to replace established financial structures, but to modernize them. Traditional banking principles—capital
+        adequacy, liquidity management, and prudential oversight—remain central. Digital tools and diversified assets are incorporated as extensions of these
+        principles, not substitutes.
+      </p>
+
+      <hr class="sep" />
+
+      <h3>A Forward-Looking Vision for Global Banking</h3>
+
+      <p>
+        As 2026 unfolds, KIB is positioning itself at the intersection of conventional financial prudence and next-generation financial governance. In a world
+        where trust is increasingly tied to transparency, resilience, and adaptability, the institution’s strategy underscores a clear priority: safeguarding
+        client confidence while expanding the tools available to meet evolving global demands.
+      </p>
+
+      <p>
+        By reinforcing its balance sheet through diversified assets and establishing robust oversight for digital finance, KIB is laying the groundwork for
+        sustainable growth in an uncertain global environment. The institution’s approach highlights a long-term vision—one that recognizes that stability and
+        innovation are not opposing forces, but complementary pillars of modern international banking.
+      </p>
+
+      <p>
+        In essence, KIB’s evolving strategy reflects a commitment to preserving financial integrity while embracing change. As global markets continue to transform,
+        Korea International Banking aims to remain a trusted anchor—modern, resilient, and prepared for the future of finance.
+      </p>
+    </article>
+
+    <!-- READ MORE (News 1 uses News 3 + News 2) -->
+    <section class="read-more">
+      <h3>Read more</h3>
+      <p class="read-more-sub">Read more articles on KIB:</p>
+
+      <div class="related-grid">
+        <!-- Related: News 3 -->
+        <a class="related-card" href="news3.html" aria-label="Open News 3">
+          <div class="related-media">
+            <img src="assets/images/news-3.jpg" alt="Stablecoin and digital won preparations" loading="lazy">
+          </div>
+          <div class="related-body">
+            <div class="related-date">2026.02.10</div>
+            <div class="related-title">KIB Anchors South Korea’s Stablecoin and Digital Won Preparations</div>
+          </div>
+        </a>
+
+        <!-- Related: News 2 -->
+        <a class="related-card" href="news2.html" aria-label="Open News 2">
+          <div class="related-media">
+            <img src="assets/images/news-2.jpg" alt="FX leadership and won stability" loading="lazy">
+          </div>
+          <div class="related-body">
+            <div class="related-date">2026.01.29</div>
+            <div class="related-title">KIB at the Core of FX Leadership, Advancing Liquidity and Won Stability</div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Leave space like you requested -->
+      <div class="read-more-space"></div>
+    </section>
+
+    <!-- FOOTER (keep EXACT same footer HTML from your main page) -->
+    <footer class="site-footer" aria-label="Footer">
+      <!-- ✅ Paste your exact main-page footer markup here -->
+      <div class="footer-placeholder">
+        (Paste your main page footer HTML here)
       </div>
     </footer>
-
-  </div>
+  </main>
 
   <script defer src="news.js"></script>
 </body>
