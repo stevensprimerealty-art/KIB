@@ -719,11 +719,19 @@ body{
 }
 
 .news-card{
-  background:#fff;
-  border-radius: 22px;
-  overflow:hidden;
-  border: 1px solid rgba(0,0,0,.08);
-  box-shadow: 0 14px 40px rgba(0,0,0,.10);
+  display:block;          /* because it is now <a> */
+  color: inherit;
+  text-decoration: none;
+}
+
+.news-card:active{
+  transform: scale(.995);
+}
+
+.news-card:focus-visible{
+  outline: 3px solid rgba(31,122,255,.35);
+  outline-offset: 3px;
+  border-radius: 18px; /* match your card radius */
 }
 
 .news-media{
