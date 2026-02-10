@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>KIB — Personal Banking</title>
+  <link rel="stylesheet" href="personal-banking.css" />
+</head>
+<body>
+  <div class="page">
+
+    <!-- HEADER (same structure as your main page style) -->
+    <header class="site-header">
+      <div class="container bar">
+        <div class="brand">
+          KOREA INTERNATIONAL BANKING <small>(KIB)</small>
+        </div>
+
+        <div class="header-right">
+          <div class="lang" aria-label="Language selector">
+            <button class="is-active" type="button" data-lang="ENG">ENG</button>
+            <button type="button" data-lang="KOR">KOR</button>
+            <button type="button" data-lang="ESP">ESPAÑOL</button>
+          </div>
+
+          <button class="menu-btn" type="button" aria-label="Open menu">☰</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="container">
+
+        <!-- HERO SLIDER (3 images, auto slide every 3s + swipe) -->
+        <section class="hero reveal" aria-label="Personal Banking hero slider">
+          <div class="hero-slider" id="heroSlider">
+            <div class="hero-track" id="heroTrack">
+              <!-- Leave these JPGs blank for now; add your images later -->
+              <div class="hero-slide">
+                <img src="assets/images/personal/hero-1.jpg" alt="Personal Banking hero 1" />
+              </div>
+              <div class="hero-slide">
+                <img src="assets/images/personal/hero-2.jpg" alt="Personal Banking hero 2" />
+              </div>
+              <div class="hero-slide">
+                <img src="assets/images/personal/hero-3.jpg" alt="Personal Banking hero 3" />
+              </div>
+            </div>
+
+            <div class="hero-dots" id="heroDots" aria-label="Hero slider dots"></div>
+          </div>
+
+          <div class="hero-card">
+            <div class="crumb">Home » <span>Personal Banking</span></div>
+            <h1>Personal Banking</h1>
+            <div class="hero-line"></div>
+            <p>We bring you closer to your financial goals.</p>
+          </div>
+        </section>
+
+        <!-- BLUE BANNER -->
+        <section class="banner banner-blue reveal">
+          <h2>At KIB BANK, Our Personal<br>Banking Products is Your Product.</h2>
+        </section>
+
+        <!-- PRODUCT CARDS (Saving/Deposit, Loan, Money Transfer) -->
+        <section class="product-grid reveal" aria-label="Personal banking products">
+          <a class="product-card" href="#" aria-label="Saving / Deposit">
+            <div class="icon-circle">
+              <!-- you can replace with your own SVG later -->
+              <span class="icon">🐷</span>
+            </div>
+            <div class="pc-title">Saving / Deposit</div>
+            <div class="pc-sub">Watch your money grow with us.</div>
+            <button class="btn-soft" type="button">Discover more</button>
+          </a>
+
+          <a class="product-card" href="#" aria-label="Loan">
+            <div class="icon-circle">
+              <span class="icon">💳</span>
+            </div>
+            <div class="pc-title">Loan</div>
+            <div class="pc-sub">Start your dream business, build your warmhearted and enhance your living standard.</div>
+            <button class="btn-soft" type="button">Discover more</button>
+          </a>
+
+          <a class="product-card" href="#" aria-label="Money Transfer">
+            <div class="icon-circle">
+              <span class="icon">📱</span>
+            </div>
+            <div class="pc-title">Money Transfer</div>
+            <div class="pc-sub">Transfer and receive fund from business partners</div>
+            <button class="btn-soft" type="button">Discover more</button>
+          </a>
+        </section>
+
+        <!-- SECTION: Deposit NOW -->
+        <section class="section-title reveal">
+          <h2>Deposit NOW To Enjoy<br>More Excited Rate</h2>
+        </section>
+
+        <!-- CARD: The Saving That Fit Your Lifestyle -->
+        <section class="feature-card reveal" aria-label="Saving lifestyle">
+          <div class="feature-head">
+            <div class="mini-icon">🐷</div>
+            <div>
+              <h3>The Saving That Fit Your Lifestyle.</h3>
+            </div>
+          </div>
+
+          <button class="btn-soft wide" type="button">Discover Saving / Deposit</button>
+
+          <div class="feature-img">
+            <!-- blank image path (you add later) -->
+            <img src="assets/images/personal/saving-lifestyle.jpg" alt="Saving lifestyle banner" />
+          </div>
+        </section>
+
+        <!-- CARD: Hope Savings Account -->
+        <section class="feature-card reveal" aria-label="Hope savings account">
+          <div class="feature-head">
+            <h3>Hope Savings Account</h3>
+          </div>
+          <button class="btn-soft wide" type="button">Discover more</button>
+          <div class="feature-img">
+            <img src="assets/images/personal/hope-savings.jpg" alt="Hope savings banner" />
+          </div>
+        </section>
+
+        <!-- CARD: Planned Savings Account -->
+        <section class="feature-card reveal" aria-label="Planned savings account">
+          <div class="feature-head">
+            <h3>Planned Savings Account</h3>
+          </div>
+          <button class="btn-soft wide" type="button">Discover more</button>
+          <div class="feature-img">
+            <img src="assets/images/personal/planned-savings.jpg" alt="Planned savings banner" />
+          </div>
+        </section>
+
+        <!-- BANNER: Bigger Rate -->
+        <section class="banner banner-light reveal">
+          <h2>Bigger Rate, Biggest Heart</h2>
+          <button class="btn-soft" type="button">Discover more</button>
+
+          <div class="banner-img">
+            <img src="assets/images/personal/bigger-rate.jpg" alt="Bigger rate banner" />
+          </div>
+        </section>
+
+        <!-- SECTION: Better Loan -->
+        <section class="section-title reveal">
+          <h2>Better Loan, Better Living</h2>
+        </section>
+
+        <!-- CARD: Start your dream business -->
+        <section class="feature-card reveal" aria-label="Better loan card">
+          <div class="feature-head">
+            <div class="mini-icon">💳</div>
+            <div>
+              <h3>Start your dream business, build your warm hearted and enhance your living standard.</h3>
+            </div>
+          </div>
+          <button class="btn-soft wide" type="button">Discover more</button>
+          <div class="feature-img">
+            <img src="assets/images/personal/loan-calculator.jpg" alt="Loan calculator banner" />
+          </div>
+        </section>
+
+        <!-- CARD: Reach Your Business Goals -->
+        <section class="feature-card reveal" aria-label="Business loan card">
+          <div class="feature-head">
+            <h3>Reach Your Business Goals With<br>Business Loan</h3>
+          </div>
+          <button class="btn-soft wide" type="button">Discover more</button>
+          <div class="feature-img">
+            <img src="assets/images/personal/business-loan.jpg" alt="Business loan banner" />
+          </div>
+        </section>
+
+        <!-- 2x2 NAV TILES (like your inspo) -->
+        <section class="tiles reveal" aria-label="Quick navigation tiles">
+          <a class="tile" href="#">
+            <div class="tile-icon">👤</div>
+            <div class="tile-title">Personal<br>Banking</div>
+            <div class="tile-arrow">→</div>
+          </a>
+
+          <a class="tile" href="#">
+            <div class="tile-icon">🏢</div>
+            <div class="tile-title">Business<br>Banking</div>
+            <div class="tile-arrow">→</div>
+          </a>
+
+          <a class="tile" href="#">
+            <div class="tile-icon">📲</div>
+            <div class="tile-title">Digital<br>Banking</div>
+            <div class="tile-arrow">→</div>
+          </a>
+
+          <a class="tile" href="#">
+            <div class="tile-icon">❓</div>
+            <div class="tile-title">About Us</div>
+            <div class="tile-arrow">→</div>
+          </a>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- FOOTER (accordion behavior like your main page) -->
+    <footer class="footer">
+      <div class="container inner">
+
+        <div class="footer-acc">
+          <div class="acc-item">
+            <button class="acc-btn" type="button" aria-expanded="false">
+              Personal Banking <span>▾</span>
+            </button>
+            <div class="acc-panel" hidden>
+              Accounts • Cards • Transfers • Savings • Loans
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-btn" type="button" aria-expanded="false">
+              Business Banking <span>▾</span>
+            </button>
+            <div class="acc-panel" hidden>
+              Corporate accounts • Trade finance • Treasury solutions
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-btn" type="button" aria-expanded="false">
+              Digital Banking <span>▾</span>
+            </button>
+            <div class="acc-panel" hidden>
+              Mobile banking • Online banking • Digital security
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-btn" type="button" aria-expanded="false">
+              Company <span>▾</span>
+            </button>
+            <div class="acc-panel" hidden>
+              About KIB • Leadership • Governance
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-btn" type="button" aria-expanded="false">
+              Financial <span>▾</span>
+            </button>
+            <div class="acc-panel" hidden>
+              Reports • Investor information • Risk disclosures
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-btn" type="button" aria-expanded="false">
+              News <span>▾</span>
+            </button>
+            <div class="acc-panel" hidden>
+              Latest announcements • Media • Updates
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-info">
+          <div class="footer-section">
+            <div class="footer-h">Social Media</div>
+            <div class="social">
+              <a href="#" aria-label="Facebook">f</a>
+              <a href="#" aria-label="Instagram">◎</a>
+              <a href="#" aria-label="LinkedIn">in</a>
+              <a href="#" aria-label="YouTube">▶</a>
+            </div>
+          </div>
+
+          <div class="footer-section">
+            <div class="footer-h">Location Address</div>
+            <div class="footer-p">
+              <!-- put your real KIB addresses here -->
+              Seoul, Republic of Korea<br>
+              Rome, Italy<br>
+              London, United Kingdom<br>
+              New York, USA
+            </div>
+          </div>
+
+          <div class="footer-section">
+            <div class="footer-h">Contact</div>
+            <div class="footer-p">
+              +000 00 000 0000<br>
+              +000 00 000 0000
+            </div>
+          </div>
+
+          <div class="footer-section">
+            <div class="footer-h">Email</div>
+            <div class="footer-p">info@kibinternational.co.site</div>
+          </div>
+        </div>
+
+        <div class="footer-brand">KOREA INTERNATIONAL BANKING</div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script defer src="personal-banking.js"></script>
+</body>
+</html>
