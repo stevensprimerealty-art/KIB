@@ -461,3 +461,158 @@ body{
   }
   .grow-img{min-height:100%}
 }
+
+/* =========================================================
+   HEADER + FOOTER PATCH (to match Personal Banking structure)
+   Add this to business-banking.css (keep files separate)
+========================================================= */
+
+/* Use same container pattern as personal page */
+.page { min-height: 100vh; }
+.main { padding: 18px 0 40px; }
+
+/* If you already have .bb-page, keep it, but your new HTML uses .container */
+.container{
+  width: min(1100px, 92vw);
+  margin: 0 auto;
+}
+
+/* Header layout (matches your personal header HTML structure) */
+.site-header{
+  background: #ffffff;
+  box-shadow: 0 6px 18px rgba(16,24,40,.08);
+}
+.site-header .bar{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+}
+.brand{
+  font-weight: 900;
+  letter-spacing: .02em;
+  font-size: 14px;
+}
+.brand small{
+  font-weight: 700;
+  opacity: .8;
+}
+
+/* Right side controls */
+.header-right{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.lang{
+  display: inline-flex;
+  gap: 6px;
+  background: #1118270a;
+  padding: 6px;
+  border-radius: 999px;
+}
+.lang button{
+  border: 0;
+  background: transparent;
+  font-weight: 800;
+  font-size: 12px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  color: #111827;
+}
+.lang button.is-active{
+  background: #111827;
+  color: #ffffff;
+}
+.menu-btn{
+  border: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: #1118270a;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* Footer (your personal footer uses .footer, not .site-footer) */
+.footer{
+  margin-top: 24px;
+  background: var(--blue);
+  color: #ffffff;
+}
+.footer .inner{
+  padding: 22px 0 18px;
+}
+.footer-acc{
+  display: grid;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.acc-item{
+  background: rgba(255,255,255,.10);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.acc-btn{
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: #ffffff;
+  font-weight: 900;
+  padding: 14px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+.acc-panel{
+  padding: 0 14px 14px;
+  opacity: .9;
+  font-size: 14px;
+}
+
+.footer-info{
+  display: grid;
+  gap: 16px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,.18);
+}
+.footer-h{
+  font-weight: 900;
+  margin-bottom: 8px;
+}
+.footer-p{
+  opacity: .9;
+  line-height: 1.45;
+}
+.social{
+  display: flex;
+  gap: 10px;
+}
+.social a{
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: rgba(255,255,255,.16);
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 900;
+}
+
+.footer-brand{
+  margin-top: 18px;
+  text-align: center;
+  font-weight: 900;
+  letter-spacing: .06em;
+  opacity: .95;
+}
+
+/* Responsive footer columns */
+@media (min-width: 900px){
+  .footer-info{
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
