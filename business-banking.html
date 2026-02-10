@@ -8,248 +8,334 @@
 </head>
 
 <body>
-  <!-- =========================
-       HEADER (PASTE YOUR MAIN PAGE HEADER HERE)
-       Keep it EXACTLY the same as your main page header.
-  ========================== -->
-  <header class="site-header">
-    <!-- PASTE YOUR MAIN HEADER HTML HERE -->
-  </header>
+  <div class="page">
 
-  <main class="bb-page">
-
-    <!-- HERO SLIDER (3 images, auto-slide every 3s, swipe/touch) -->
-    <section class="hero reveal" aria-label="Business Banking hero">
-      <div class="hero-slider" data-slider>
-        <div class="hero-track" data-track>
-          <!-- Replace these filenames with your own later -->
-          <div class="hero-slide" data-slide style="background-image:url('hero-1.jpg');"></div>
-          <div class="hero-slide" data-slide style="background-image:url('hero-2.jpg');"></div>
-          <div class="hero-slide" data-slide style="background-image:url('hero-3.jpg');"></div>
+    <!-- HEADER (copied from your Personal Banking page) -->
+    <header class="site-header">
+      <div class="container bar">
+        <div class="brand">
+          KOREA INTERNATIONAL BANKING <small>(KIB)</small>
         </div>
 
-        <div class="hero-overlay-card">
-          <div class="breadcrumb">Home » <span>Business Banking</span></div>
-          <h1 class="hero-title">Business Banking</h1>
-          <div class="hero-divider"></div>
-          <p class="hero-subtitle">We are your better business assistance.</p>
-        </div>
-
-        <div class="hero-dots" data-dots aria-label="Hero slider dots"></div>
-      </div>
-    </section>
-
-    <!-- SERVICES (Saving/Deposit, Loan, Money Transfer) -->
-    <section class="services reveal">
-      <div class="service-card">
-        <div class="service-icon service-icon--gold" aria-hidden="true">
-          <!-- pig icon -->
-          <svg viewBox="0 0 24 24" role="img" focusable="false">
-            <path d="M3 11c0-3.3 2.7-6 6-6h4.2c1 0 2 .4 2.7 1.1l1.1 1.1H20v3h-1.2c.1.3.2.7.2 1v2c0 1.7-1.3 3-3 3h-1l-1 2H9l-1-2H7c-2.2 0-4-1.8-4-4v-1zM9 8.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5z"/>
-          </svg>
-        </div>
-        <h3>Saving / Deposit</h3>
-        <p>Watch your money grow with us</p>
-        <a class="btn btn-soft" href="#">Discover more</a>
-      </div>
-
-      <div class="service-card">
-        <div class="service-icon service-icon--gold" aria-hidden="true">
-          <!-- card icon -->
-          <svg viewBox="0 0 24 24" role="img" focusable="false">
-            <path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h13A2.5 2.5 0 0 1 21 6.5v11A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5v-11zM5 8h14V6.5c0-.3-.2-.5-.5-.5h-13c-.3 0-.5.2-.5.5V8zm0 3v6.5c0 .3.2.5.5.5h13c.3 0 .5-.2.5-.5V11H5zm2 4h6v1.5H7V15z"/>
-          </svg>
-        </div>
-        <h3>Loan</h3>
-        <p>Start your dream business, build your warmhearted and enhance your living standard.</p>
-        <a class="btn btn-soft" href="#">Discover more</a>
-      </div>
-
-      <div class="service-card">
-        <div class="service-icon service-icon--gold" aria-hidden="true">
-          <!-- document icon -->
-          <svg viewBox="0 0 24 24" role="img" focusable="false">
-            <path d="M7 3h7l4 4v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm7 1.5V8h3.5L14 4.5zM8 12h8v1.5H8V12zm0 3h8v1.5H8V15zm0 3h6v1.5H8V18z"/>
-          </svg>
-        </div>
-        <h3>Money Transfer</h3>
-        <p>Transfer and receive fund from business partners locally and internationally</p>
-        <a class="btn btn-soft" href="#">Discover more</a>
-      </div>
-    </section>
-
-    <!-- TRANSFER BANNER (image placeholder, keep filename .jpg) -->
-    <section class="banner reveal">
-      <h2 class="banner-h">Transfer your money to your partners borderless</h2>
-
-      <div class="banner-card">
-        <div class="banner-card-inner">
-          <h3>Transfer and receive fund from business partners locally and internationally</h3>
-          <a class="btn btn-soft" href="#">Discover Saving / Deposit</a>
-
-          <div class="banner-image placeholder-image" aria-label="Banner image placeholder">
-            <!-- Leave BLANK. You will add the image later. -->
-            <!-- File name must be .jpg -->
-            <span class="placeholder-name">transfer-banner-1.jpg</span>
+        <div class="header-right">
+          <div class="lang" aria-label="Language selector">
+            <button class="is-active" type="button" data-lang="ENG">ENG</button>
+            <button type="button" data-lang="KOR">KOR</button>
+            <button type="button" data-lang="ESP">ESPAÑOL</button>
           </div>
+
+          <button class="menu-btn" type="button" aria-label="Open menu">☰</button>
         </div>
       </div>
-    </section>
+    </header>
 
-    <!-- INTERNATIONAL REMITTANCE + TRADE FINANCE (image placeholders) -->
-    <section class="grid-two reveal">
-      <article class="image-card">
-        <div class="image-card-head">
-          <h3>International Remittance</h3>
+    <main class="main">
+      <div class="container">
+
+        <!-- HERO SLIDER (3 images, auto-slide every 3s, swipe/touch) -->
+        <section class="hero reveal" aria-label="Business Banking hero">
+          <div class="hero-slider" data-slider>
+            <div class="hero-track" data-track>
+              <!-- Leave these JPGs blank for now; add your images later -->
+              <div class="hero-slide" data-slide style="background-image:url('assets/images/business/hero-1.jpg');"></div>
+              <div class="hero-slide" data-slide style="background-image:url('assets/images/business/hero-2.jpg');"></div>
+              <div class="hero-slide" data-slide style="background-image:url('assets/images/business/hero-3.jpg');"></div>
+            </div>
+
+            <div class="hero-overlay-card">
+              <div class="breadcrumb">Home » <span>Business Banking</span></div>
+              <h1 class="hero-title">Business Banking</h1>
+              <div class="hero-divider"></div>
+              <p class="hero-subtitle">We are your better business assistance.</p>
+            </div>
+
+            <div class="hero-dots" data-dots aria-label="Hero slider dots"></div>
+          </div>
+        </section>
+
+        <!-- SERVICES (Saving/Deposit, Loan, Money Transfer) -->
+        <section class="services reveal">
+          <div class="service-card">
+            <div class="service-icon service-icon--gold" aria-hidden="true">
+              <svg viewBox="0 0 24 24" role="img" focusable="false">
+                <path d="M3 11c0-3.3 2.7-6 6-6h4.2c1 0 2 .4 2.7 1.1l1.1 1.1H20v3h-1.2c.1.3.2.7.2 1v2c0 1.7-1.3 3-3 3h-1l-1 2H9l-1-2H7c-2.2 0-4-1.8-4-4v-1zM9 8.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5z"/>
+              </svg>
+            </div>
+            <h3>Saving / Deposit</h3>
+            <p>Watch your money grow with us</p>
+            <a class="btn btn-soft" href="#">Discover more</a>
+          </div>
+
+          <div class="service-card">
+            <div class="service-icon service-icon--gold" aria-hidden="true">
+              <svg viewBox="0 0 24 24" role="img" focusable="false">
+                <path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h13A2.5 2.5 0 0 1 21 6.5v11A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5v-11zM5 8h14V6.5c0-.3-.2-.5-.5-.5h-13c-.3 0-.5.2-.5.5V8zm0 3v6.5c0 .3.2.5.5.5h13c.3 0 .5-.2.5-.5V11H5zm2 4h6v1.5H7V15z"/>
+              </svg>
+            </div>
+            <h3>Loan</h3>
+            <p>Start your dream business, build your warmhearted and enhance your living standard.</p>
+            <a class="btn btn-soft" href="#">Discover more</a>
+          </div>
+
+          <div class="service-card">
+            <div class="service-icon service-icon--gold" aria-hidden="true">
+              <svg viewBox="0 0 24 24" role="img" focusable="false">
+                <path d="M7 3h7l4 4v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm7 1.5V8h3.5L14 4.5zM8 12h8v1.5H8V12zm0 3h8v1.5H8V15zm0 3h6v1.5H8V18z"/>
+              </svg>
+            </div>
+            <h3>Money Transfer</h3>
+            <p>Transfer and receive fund from business partners locally and internationally</p>
+            <a class="btn btn-soft" href="#">Discover more</a>
+          </div>
+        </section>
+
+        <!-- TRANSFER BANNER (image placeholder .jpg) -->
+        <section class="banner reveal">
+          <h2 class="banner-h">Transfer your money to your partners borderless</h2>
+
+          <div class="banner-card">
+            <div class="banner-card-inner">
+              <h3>Transfer and receive fund from business partners locally and internationally</h3>
+              <a class="btn btn-soft" href="#">Discover Saving / Deposit</a>
+
+              <div class="banner-image placeholder-image" aria-label="Banner image placeholder">
+                <span class="placeholder-name">transfer-banner-1.jpg</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- INTERNATIONAL REMITTANCE + TRADE FINANCE -->
+        <section class="grid-two reveal">
+          <article class="image-card">
+            <div class="image-card-head">
+              <h3>International Remittance</h3>
+              <a class="btn btn-soft" href="#">Discover more</a>
+            </div>
+            <div class="image-card-img placeholder-image">
+              <span class="placeholder-name">international-remittance.jpg</span>
+            </div>
+          </article>
+
+          <article class="image-card">
+            <div class="image-card-head">
+              <h3>Trade Finance Services</h3>
+              <a class="btn btn-soft" href="#">Discover more</a>
+            </div>
+            <div class="image-card-img placeholder-image">
+              <span class="placeholder-name">trade-finance.jpg</span>
+            </div>
+          </article>
+        </section>
+
+        <!-- BAKONG SECTION -->
+        <section class="bakong reveal">
+          <h2>Transfer fund to business partner up to $50,000 per day through Bakong.</h2>
           <a class="btn btn-soft" href="#">Discover more</a>
-        </div>
-        <div class="image-card-img placeholder-image">
-          <span class="placeholder-name">international-remittance.jpg</span>
-        </div>
-      </article>
 
-      <article class="image-card">
-        <div class="image-card-head">
-          <h3>Trade Finance Services</h3>
-          <a class="btn btn-soft" href="#">Discover more</a>
-        </div>
-        <div class="image-card-img placeholder-image">
-          <span class="placeholder-name">trade-finance.jpg</span>
-        </div>
-      </article>
-    </section>
+          <div class="bakong-phone placeholder-image">
+            <span class="placeholder-name">bakong-phone.jpg</span>
+          </div>
+        </section>
 
-    <!-- BAKONG SECTION -->
-    <section class="bakong reveal">
-      <h2>Transfer fund to business partner up to $50,000 per day through Bakong.</h2>
-      <a class="btn btn-soft" href="#">Discover more</a>
+        <!-- BENEFITS + PAYROLL CARD -->
+        <section class="benefits reveal">
+          <h2>Benefits more than just a Payroll service</h2>
 
-      <div class="bakong-phone placeholder-image">
-        <span class="placeholder-name">bakong-phone.jpg</span>
-      </div>
-    </section>
+          <div class="benefit-card">
+            <div class="benefit-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 19V5h16v14H4zm2-2h12V7H6v10zm2-7h8v2H8V10zm0 4h6v2H8v-2z"/>
+              </svg>
+            </div>
+            <h3>Want your employee to receive their pay on time, earn extra income through interest rate and manage their finance better?</h3>
+            <a class="btn btn-soft" href="#">Discover more</a>
 
-    <!-- BENEFITS + PAYROLL CARD -->
-    <section class="benefits reveal">
-      <h2>Benefits more than just a Payroll service</h2>
+            <div class="benefit-img placeholder-image">
+              <span class="placeholder-name">payroll-laptop.jpg</span>
+            </div>
+          </div>
+        </section>
 
-      <div class="benefit-card">
-        <div class="benefit-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24">
-            <path d="M4 19V5h16v14H4zm2-2h12V7H6v10zm2-7h8v2H8V10zm0 4h6v2H8v-2z"/>
-          </svg>
-        </div>
-        <h3>Want your employee to receive their pay on time, earn extra income through interest rate and manage their finance better?</h3>
-        <a class="btn btn-soft" href="#">Discover more</a>
-
-        <div class="benefit-img placeholder-image">
-          <span class="placeholder-name">payroll-laptop.jpg</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- GROW YOUR BUSINESS -->
-    <section class="grow reveal">
-      <div class="grow-img placeholder-image">
-        <span class="placeholder-name">grow-business.jpg</span>
-      </div>
-
-      <div class="grow-text">
-        <h2>Grow your business with KIB Bank!</h2>
-        <p>The financial solutions for you to smoothen your cash flow and grow your business better</p>
-        <a class="btn btn-soft" href="#">Discover more</a>
-
-        <div class="metrics">
-          <div class="metric">
-            <div class="metric-label">Maximum Loan Size</div>
-            <div class="metric-value">More than USD 500K</div>
+        <!-- GROW YOUR BUSINESS -->
+        <section class="grow reveal">
+          <div class="grow-img placeholder-image">
+            <span class="placeholder-name">grow-business.jpg</span>
           </div>
 
-          <div class="metric">
-            <div class="metric-label">Annual Interest Rate</div>
-            <div class="metric-value">8% - 12%p.a.</div>
+          <div class="grow-text">
+            <h2>Grow your business with KIB Bank!</h2>
+            <p>The financial solutions for you to smoothen your cash flow and grow your business better</p>
+            <a class="btn btn-soft" href="#">Discover more</a>
+
+            <div class="metrics">
+              <div class="metric">
+                <div class="metric-label">Maximum Loan Size</div>
+                <div class="metric-value">More than USD 500K</div>
+              </div>
+
+              <div class="metric">
+                <div class="metric-label">Annual Interest Rate</div>
+                <div class="metric-value">8% - 12%p.a.</div>
+              </div>
+
+              <div class="metric">
+                <div class="metric-label">Maximum Loan Term</div>
+                <div class="metric-value">Up 120 Months</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CUSTOMER SERVICE CARD -->
+        <section class="support reveal">
+          <div class="support-card">
+            <h3>Customer Service Care</h3>
+            <p>We always available to solve your problem in just a few minute!</p>
+
+            <div class="support-phone">
+              <span class="phone-icon" aria-hidden="true">☎</span>
+              <a href="tel:+000000000000">+000 00 000 000</a>
+            </div>
+
+            <a class="btn btn-soft" href="#">Contact us</a>
+
+            <div class="support-img placeholder-image">
+              <span class="placeholder-name">support-agent.jpg</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- SIMPLE MENU GRID -->
+        <section class="menu-grid reveal">
+          <div class="menu-card">
+            <div class="menu-ic" aria-hidden="true">👤</div>
+            <div class="menu-title">Personal<br/>Banking</div>
+            <div class="menu-arrow">→</div>
           </div>
 
-          <div class="metric">
-            <div class="metric-label">Maximum Loan Term</div>
-            <div class="metric-value">Up 120 Months</div>
+          <div class="menu-card">
+            <div class="menu-ic" aria-hidden="true">💳</div>
+            <div class="menu-title">Business<br/>Banking</div>
+            <div class="menu-arrow">→</div>
+          </div>
+
+          <div class="menu-card">
+            <div class="menu-ic" aria-hidden="true">📱</div>
+            <div class="menu-title">Digital<br/>Banking</div>
+            <div class="menu-arrow">→</div>
+          </div>
+
+          <div class="menu-card">
+            <div class="menu-ic" aria-hidden="true">❓</div>
+            <div class="menu-title">About Us</div>
+            <div class="menu-arrow">→</div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- FOOTER (copied from your Personal Banking page) -->
+    <footer class="footer">
+      <div class="container inner">
+
+        <div class="footer-acc">
+          <div class="acc-item">
+            <button class="acc-btn" type="button" aria-expanded="false">
+              Personal Banking <span>▾</span>
+            </button>
+            <div class="acc-panel" hidden>
+              Accounts • Cards • Transfers • Savings • Loans
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-btn" type="button" aria-expanded="false">
+              Business Banking <span>▾</span>
+            </button>
+            <div class="acc-panel" hidden>
+              Corporate accounts • Trade finance • Treasury solutions
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-btn" type="button" aria-expanded="false">
+              Digital Banking <span>▾</span>
+            </button>
+            <div class="acc-panel" hidden>
+              Mobile banking • Online banking • Digital security
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-btn" type="button" aria-expanded="false">
+              Company <span>▾</span>
+            </button>
+            <div class="acc-panel" hidden>
+              About KIB • Leadership • Governance
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-btn" type="button" aria-expanded="false">
+              Financial <span>▾</span>
+            </button>
+            <div class="acc-panel" hidden>
+              Reports • Investor information • Risk disclosures
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-btn" type="button" aria-expanded="false">
+              News <span>▾</span>
+            </button>
+            <div class="acc-panel" hidden>
+              Latest announcements • Media • Updates
+            </div>
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- CUSTOMER SERVICE CARD -->
-    <section class="support reveal">
-      <div class="support-card">
-        <h3>Customer Service Care</h3>
-        <p>We always available to solve your problem in just a few minute!</p>
+        <div class="footer-info">
+          <div class="footer-section">
+            <div class="footer-h">Social Media</div>
+            <div class="social">
+              <a href="#" aria-label="Facebook">f</a>
+              <a href="#" aria-label="Instagram">◎</a>
+              <a href="#" aria-label="LinkedIn">in</a>
+              <a href="#" aria-label="YouTube">▶</a>
+            </div>
+          </div>
 
-        <div class="support-phone">
-          <span class="phone-icon" aria-hidden="true">☎</span>
-          <a href="tel:+000000000000">+000 00 000 000</a>
+          <div class="footer-section">
+            <div class="footer-h">Location Address</div>
+            <div class="footer-p">
+              Seoul, Republic of Korea<br>
+              Rome, Italy<br>
+              London, United Kingdom<br>
+              New York, USA
+            </div>
+          </div>
+
+          <div class="footer-section">
+            <div class="footer-h">Contact</div>
+            <div class="footer-p">
+              +000 00 000 0000<br>
+              +000 00 000 0000
+            </div>
+          </div>
+
+          <div class="footer-section">
+            <div class="footer-h">Email</div>
+            <div class="footer-p">info@kibinternational.co.site</div>
+          </div>
         </div>
 
-        <a class="btn btn-soft" href="#">Contact us</a>
-
-        <div class="support-img placeholder-image">
-          <span class="placeholder-name">support-agent.jpg</span>
-        </div>
+        <div class="footer-brand">KOREA INTERNATIONAL BANKING</div>
       </div>
-    </section>
+    </footer>
 
-    <!-- DOWNLOAD APP -->
-    <section class="download reveal">
-      <h2>Download KIB Mobile APP</h2>
-      <p>Get your latest version app now</p>
-
-      <div class="download-row">
-        <div class="download-qr placeholder-image">
-          <span class="placeholder-name">app-qr.jpg</span>
-        </div>
-
-        <div class="download-badges">
-          <a class="badge" href="#" aria-label="Download on the App Store">App Store</a>
-          <a class="badge" href="#" aria-label="Get it on Google Play">Google Play</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- SIMPLE MENU GRID (like screenshot bottom) -->
-    <section class="menu-grid reveal">
-      <div class="menu-card">
-        <div class="menu-ic" aria-hidden="true">👤</div>
-        <div class="menu-title">Personal<br/>Banking</div>
-        <div class="menu-arrow">→</div>
-      </div>
-
-      <div class="menu-card">
-        <div class="menu-ic" aria-hidden="true">💳</div>
-        <div class="menu-title">Business<br/>Banking</div>
-        <div class="menu-arrow">→</div>
-      </div>
-
-      <div class="menu-card">
-        <div class="menu-ic" aria-hidden="true">📱</div>
-        <div class="menu-title">Digital<br/>Banking</div>
-        <div class="menu-arrow">→</div>
-      </div>
-
-      <div class="menu-card">
-        <div class="menu-ic" aria-hidden="true">❓</div>
-        <div class="menu-title">About Us</div>
-        <div class="menu-arrow">→</div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- =========================
-       FOOTER (PASTE YOUR MAIN PAGE FOOTER HERE)
-       Keep addresses EXACTLY the same as your main page.
-  ========================== -->
-  <footer class="site-footer">
-    <!-- PASTE YOUR MAIN FOOTER HTML (addresses etc.) HERE -->
-  </footer>
+  </div>
 
   <script src="business-banking.js"></script>
 </body>
