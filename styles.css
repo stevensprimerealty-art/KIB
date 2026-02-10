@@ -836,56 +836,33 @@ body{
   line-height: 1.05;
 }
 
-.service-card{
-  display:flex;
-  gap:16px;
-  align-items:flex-start;
-  background:#ffffff;
-  border-radius:24px;
-  padding:18px;
-  box-shadow: var(--shadow);
-  margin-top:16px;
-  text-decoration:none;
-}
-
-.service-card:active{
-  transform:scale(.99);
-}
-
-.service-icon{
-  width:64px;
-  height:64px;
-  border-radius:999px;
-  background:#0b5ea8;
-  display:grid;
-  place-items:center;
-  font-size:28px;
-  color:#fff;
-  flex:0 0 auto;
-}
-
-.service-content h3{
-  margin:0;
-  font-size:22px;
-  font-weight:900;
-}
-
-.service-content p{
-  margin:6px 0 12px;
-  color:#64748b;
-  font-size:15px;
-}
-
-.discover-btn{
+.discover-service{
   display:inline-flex;
   align-items:center;
-  height:44px;
-  padding:0 18px;
-  border-radius:14px;
-  background:#d7eef8;
-  color:#2f60b5;
+  justify-content:center;
+
+  height:56px;
+  padding:0 28px;
+
+  background:#d7eef8;      /* soft blue */
+  color:#2f60b5;           /* blue text */
+
+  border-radius:18px;
   font-weight:900;
-  font-size:14px;
+  font-size:16px;
+
+  text-decoration:none;
+  cursor:pointer;
+
+  transition: all .25s ease;
+}
+
+.discover-service:hover{
+  background:#c9e7f6;
+}
+
+.discover-service:active{
+  transform:scale(.97);
 }
 /* Icon slider */
 .icon-viewport{
