@@ -1,11 +1,15 @@
 // ===== Fade-in on scroll =====
 (function () {
   const els = Array.from(document.querySelectorAll(".reveal"));
+  if (!els.length) return;
 
   const io = new IntersectionObserver(
     (entries) => {
       entries.forEach((e) => {
-        if (e.isIntersecting) e.target.classList.add("is-visible");
+        if (e.isIntersecting) {
+          e.target.classList.add("is-visible");
+          io.unobserve(e.target);
+        }
       });
     },
     { threshold: 0.12 }
@@ -76,13 +80,14 @@
   }
 
   function start() {
-    timer = setInterval(() => go(index + 1), 3000);
-  }
+  stop();
+  timer = setInterval(() => go(index + 1), 3000);
+}
 
-  function stop() {
-    if (timer) clearInterval(timer);
-    timer = null;
-  }
+function stop() {
+  if (timer) clearInterval(timer);
+  timer = null;
+}
 
   function restart() {
     stop();
