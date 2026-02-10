@@ -1,0 +1,185 @@
+:root{
+  --bg:#eef3f8;
+  --card:#ffffff;
+  --text:#0f172a;
+  --muted:#64748b;
+  --blue:#0b5ea8;
+  --blue2:#0a4f8c;
+  --soft:#d8effa;
+  --shadow: 0 10px 30px rgba(2, 6, 23, .12);
+  --radius: 18px;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);background:var(--bg)}
+a{color:inherit;text-decoration:none}
+
+.page{min-height:100vh;display:flex;flex-direction:column}
+.main{padding:18px 0 28px}
+.container{width:min(980px, 92vw);margin:0 auto}
+
+/* HEADER (same structure as your main page) */
+.site-header{
+  position:sticky; top:0; z-index:50;
+  background:rgba(238,243,248,.92);
+  backdrop-filter: blur(8px);
+  border-bottom:1px solid rgba(15,23,42,.08);
+}
+.bar{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+.brand{font-weight:800;letter-spacing:.2px;font-size:16px}
+.brand small{font-weight:700;opacity:.6;margin-left:6px}
+.header-right{display:flex;align-items:center;gap:10px}
+.lang{display:flex;gap:8px}
+.lang button{
+  border:1px solid rgba(15,23,42,.12);
+  background:#fff;
+  padding:8px 12px;
+  border-radius:999px;
+  font-weight:700;
+  font-size:12px;
+}
+.lang button.is-active{background:#111827;color:#fff;border-color:#111827}
+.menu-btn{
+  width:42px;height:38px;border-radius:999px;
+  border:1px solid rgba(15,23,42,.12);
+  background:#fff;font-size:18px;font-weight:800;
+}
+
+/* HERO like your clean business pattern */
+.hero{margin-top:8px}
+.hero-slider{
+  position:relative;
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+  background:#cbd5e1;
+}
+.hero-track{display:flex;transition:transform .55s ease;will-change:transform}
+.hero-slide{min-width:100%;height:260px}
+.hero-ph{height:260px}
+.hero-dots{
+  position:absolute; left:0; right:0; top:12px;
+  display:flex; justify-content:center; gap:8px;
+}
+.hero-dots button{
+  width:10px;height:10px;border-radius:999px;border:0;
+  background:rgba(255,255,255,.55);
+}
+.hero-dots button.is-active{width:26px;background:#fff}
+.hero-overlay-card{
+  position:absolute;
+  left:14px; right:14px; bottom:14px;
+  background:rgba(255,255,255,.95);
+  border-radius:22px;
+  padding:16px;
+  box-shadow:0 14px 32px rgba(2,6,23,.12);
+}
+.breadcrumb{font-size:14px;color:var(--muted);margin-bottom:6px}
+.breadcrumb span{color:var(--blue);font-weight:700}
+.hero-title{margin:0 0 8px;font-size:32px;letter-spacing:-.6px}
+.hero-divider{width:70px;height:3px;background:rgba(15,23,42,.25);border-radius:10px;margin:10px 0}
+.hero-subtitle{margin:0;color:#334155;font-size:16px;line-height:1.45}
+
+/* Headline section */
+.headline{margin-top:18px;text-align:center}
+.headline h2{margin:0;font-size:34px;letter-spacing:-.8px}
+.headline p{margin:10px 0 0;color:var(--muted);line-height:1.5}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:14px;font-weight:800;padding:12px 16px;font-size:14px}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:#11a4d6;color:#fff}
+.btn-soft{background:var(--soft);color:#1d4ed8}
+
+/* Product cards */
+.product{margin-top:16px}
+.product-card{
+  background:var(--card);
+  border-radius:24px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.product-info{padding:18px}
+.product-info h3{margin:0 0 10px;font-size:28px;letter-spacing:-.6px}
+.product-desc{margin:0 0 14px;color:var(--muted);line-height:1.5}
+.product-actions{display:flex;gap:10px;flex-wrap:wrap}
+.product-image{min-height:280px}
+
+/* Support block */
+.support{margin-top:18px}
+.support-card{
+  background:linear-gradient(180deg, #e6f4ff 0%, #0b74c2 100%);
+  border-radius:24px;
+  box-shadow:var(--shadow);
+  padding:16px;
+  color:#0b1b2d;
+}
+.support-card h3{margin:0 0 8px;font-size:26px}
+.support-card p{margin:0 0 12px;color:#0b1b2dcc}
+.support-phone{display:flex;align-items:center;gap:10px;margin:8px 0 12px;font-weight:900}
+.support-phone a{color:#0b4ea2}
+.support-img{margin-top:14px;border-radius:18px;min-height:260px;background:rgba(255,255,255,.85)}
+
+/* Footer (same structure as your main page) */
+.footer{margin-top:auto;background:linear-gradient(180deg, var(--blue), var(--blue2));color:#fff;padding:22px 0 28px}
+.footer .inner{display:flex;flex-direction:column;gap:16px}
+.footer-acc{display:flex;flex-direction:column;gap:10px}
+.acc-item{border-top:1px solid rgba(255,255,255,.22);padding-top:10px}
+.acc-btn{
+  width:100%;
+  background:transparent;
+  border:0;
+  color:#fff;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-weight:900;
+  font-size:18px;
+  padding:10px 0;
+}
+.acc-panel{padding:0 0 12px;color:rgba(255,255,255,.85);line-height:1.45}
+.footer-info{
+  background:rgba(255,255,255,.08);
+  border-radius:18px;
+  padding:16px;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:14px;
+}
+.footer-h{font-weight:950;font-size:18px;margin-bottom:10px}
+.footer-p{color:rgba(255,255,255,.9);line-height:1.5}
+.social{display:flex;gap:10px}
+.social a{
+  width:40px;height:40px;border-radius:999px;
+  background:rgba(255,255,255,.16);
+  display:grid;place-items:center;
+  font-weight:950;
+}
+.footer-brand{font-weight:950;letter-spacing:.7px;opacity:.9;text-align:center}
+
+/* Placeholders for your future .jpg assets */
+.placeholder-image{
+  background:linear-gradient(135deg, rgba(11,94,168,.10), rgba(216,239,250,.60));
+  display:grid;
+  place-items:center;
+  position:relative;
+  border:2px dashed rgba(11,94,168,.25);
+}
+.placeholder-name{
+  font-weight:900;
+  color:#0b5ea8;
+  background:rgba(255,255,255,.75);
+  padding:10px 12px;
+  border-radius:14px;
+}
+
+/* Fade-in on scroll */
+.reveal{opacity:0;transform: translateY(18px);transition: opacity .55s ease, transform .55s ease}
+.reveal.is-visible{opacity:1;transform:none}
+
+/* Responsive */
+@media (min-width: 820px){
+  .hero-slide,.hero-ph{height:360px}
+  .product-image{min-height:360px}
+  .footer-info{grid-template-columns: 1fr 1fr}
+}
