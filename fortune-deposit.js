@@ -70,3 +70,34 @@
 
   items.forEach((el) => io.observe(el));
 })();
+
+// ===== Footer accordion behavior (same as Hope page) =====
+(function () {
+  const items = document.querySelectorAll(".acc-item");
+  if (!items.length) return;
+
+  items.forEach((item) => {
+    const btn = item.querySelector(".acc-btn");
+    const panel = item.querySelector(".acc-panel");
+    if (!btn || !panel) return;
+
+    btn.addEventListener("click", () => {
+      const isOpen = btn.getAttribute("aria-expanded") === "true";
+
+      // close all
+      items.forEach((it) => {
+        const b = it.querySelector(".acc-btn");
+        const p = it.querySelector(".acc-panel");
+        if (!b || !p) return;
+        b.setAttribute("aria-expanded", "false");
+        p.hidden = true;
+      });
+
+      // open this if it was closed
+      if (!isOpen) {
+        btn.setAttribute("aria-expanded", "true");
+        panel.hidden = false;
+      }
+    });
+  });
+})();
