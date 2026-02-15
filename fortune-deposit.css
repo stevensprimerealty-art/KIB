@@ -16,7 +16,105 @@ body{
   color:var(--text);
   background:#fff;
 }
+/* ===== Layout wrapper to match Hope page ===== */
+.page{min-height:100vh;display:flex;flex-direction:column}
+.main{flex:1}
 
+/* Same container you use in header/footer */
+.container{
+  width:min(980px, 92vw);
+  margin:0 auto;
+}
+
+/* ===== Header styles (same as Hope) ===== */
+.site-header{
+  position:sticky; top:0; z-index:50;
+  background:rgba(255,255,255,.92);
+  backdrop-filter: blur(8px);
+  border-bottom:1px solid rgba(15,23,42,.08);
+}
+.bar{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+.brand{font-weight:800;letter-spacing:.2px;font-size:16px}
+.brand small{font-weight:700;opacity:.6;margin-left:6px}
+
+.header-right{display:flex;align-items:center;gap:10px}
+.lang{display:flex;gap:8px}
+.lang button{
+  border:1px solid rgba(15,23,42,.12);
+  background:#fff;
+  padding:8px 12px;
+  border-radius:999px;
+  font-weight:700;
+  font-size:12px;
+}
+.lang button.is-active{
+  background:#111827;
+  color:#fff;
+  border-color:#111827;
+}
+.menu-btn{
+  width:42px;height:38px;border-radius:999px;
+  border:1px solid rgba(15,23,42,.12);
+  background:#fff;font-size:18px;font-weight:800;
+}
+
+/* ===== Footer styles (same as Hope) ===== */
+.footer{
+  margin-top:auto;
+  background:linear-gradient(180deg, #0b74b8, #0d6fa8);
+  color:#fff;
+  padding:22px 0 28px;
+}
+.footer .inner{display:flex;flex-direction:column;gap:16px}
+
+.footer-acc{display:flex;flex-direction:column;gap:10px}
+.acc-item{border-top:1px solid rgba(255,255,255,.22);padding-top:10px}
+.acc-btn{
+  width:100%;
+  background:transparent;
+  border:0;
+  color:#fff;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-weight:900;
+  font-size:18px;
+  padding:10px 0;
+}
+.acc-panel{padding:0 0 12px;color:rgba(255,255,255,.85);line-height:1.45}
+
+.footer-info{
+  background:rgba(255,255,255,.08);
+  border-radius:18px;
+  padding:16px;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:14px;
+}
+.footer-h{font-weight:950;font-size:18px;margin-bottom:10px}
+.footer-p{color:rgba(255,255,255,.9);line-height:1.5}
+
+.social{display:flex;gap:10px}
+.social a{
+  width:40px;height:40px;border-radius:999px;
+  background:rgba(255,255,255,.16);
+  display:grid;place-items:center;
+  font-weight:950;
+  color:#fff;
+  text-decoration:none;
+}
+
+.footer-brand{
+  font-weight:950;
+  letter-spacing:.7px;
+  opacity:.9;
+  text-align:center;
+}
+
+/* Footer responsive */
+@media (min-width:820px){
+  .footer-info{grid-template-columns:1fr 1fr}
+}
 /* Header/footer (match Hope page classes) */
 .site-header,
 .footer{
