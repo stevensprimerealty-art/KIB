@@ -11,13 +11,23 @@
 
 <body>
 
-  <!-- ✅ Keep your existing main header EXACTLY as your site header -->
-  <!-- Paste your main header here -->
   <header class="site-header">
-    <!-- Your main header HTML goes here -->
-  </header>
+  <div class="container bar">
+    <div class="brand">
+      KOREA INTERNATIONAL BANKING <small>(KIB)</small>
+    </div>
 
-  <main>
+    <div class="header-right">
+      <div class="lang" aria-label="Language selector">
+        <button class="is-active" type="button" data-lang="ENG">ENG</button>
+        <button type="button" data-lang="KOR">KOR</button>
+        <button type="button" data-lang="ESP">ESPAÑOL</button>
+      </div>
+
+      <button class="menu-btn" type="button" aria-label="Open menu">☰</button>
+    </div>
+  </div>
+</header>
 
     <!-- HERO (3 image slider) -->
     <section class="hero reveal">
@@ -259,11 +269,91 @@
 
   </main>
 
-  <!-- ✅ Keep your existing main footer EXACTLY as your site footer -->
-  <!-- Paste your main footer here -->
-  <footer class="site-footer">
-    <!-- Your main footer HTML goes here -->
-  </footer>
+ <footer class="footer">
+  <div class="container inner">
+
+    <div class="footer-acc">
+      <div class="acc-item">
+        <button class="acc-btn" type="button" aria-expanded="false">
+          Personal Banking <span>▾</span>
+        </button>
+        <div class="acc-panel" hidden>Accounts • Cards • Transfers • Savings • Loans</div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-btn" type="button" aria-expanded="false">
+          Business Banking <span>▾</span>
+        </button>
+        <div class="acc-panel" hidden>Corporate accounts • Trade finance • Treasury solutions</div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-btn" type="button" aria-expanded="false">
+          Digital Banking <span>▾</span>
+        </button>
+        <div class="acc-panel" hidden>Mobile banking • Online banking • Digital security</div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-btn" type="button" aria-expanded="false">
+          Company <span>▾</span>
+        </button>
+        <div class="acc-panel" hidden>About KIB • Leadership • Governance</div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-btn" type="button" aria-expanded="false">
+          Financial <span>▾</span>
+        </button>
+        <div class="acc-panel" hidden>Reports • Investor information • Risk disclosures</div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-btn" type="button" aria-expanded="false">
+          News <span>▾</span>
+        </button>
+        <div class="acc-panel" hidden>Latest announcements • Media • Updates</div>
+      </div>
+    </div>
+
+    <div class="footer-info">
+      <div class="footer-section">
+        <div class="footer-h">Social Media</div>
+        <div class="social">
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="Instagram">◎</a>
+          <a href="#" aria-label="LinkedIn">in</a>
+          <a href="#" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+
+      <div class="footer-section">
+        <div class="footer-h">Location Address</div>
+        <div class="footer-p">
+          Seoul, Republic of Korea<br>
+          Rome, Italy<br>
+          London, United Kingdom<br>
+          New York, USA
+        </div>
+      </div>
+
+      <div class="footer-section">
+        <div class="footer-h">Contact</div>
+        <div class="footer-p">
+          +000 00 000 0000<br>
+          +000 00 000 0000
+        </div>
+      </div>
+
+      <div class="footer-section">
+        <div class="footer-h">Email</div>
+        <div class="footer-p">info@kibinternational.co.site</div>
+      </div>
+    </div>
+
+    <div class="footer-brand">KOREA INTERNATIONAL BANKING</div>
+  </div>
+</footer>
 
   <script src="fortune-deposit.js"></script>
 </body>
