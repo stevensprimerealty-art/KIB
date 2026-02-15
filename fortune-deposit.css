@@ -17,9 +17,11 @@ body{
   background:#fff;
 }
 
-/* Header/footer placeholders (you will replace with your real header/footer) */
-.site-header,.site-footer{background:#fff}
-
+/* Header/footer (match Hope page classes) */
+.site-header,
+.footer{
+  background:#fff;
+}
 /* Reveal fade-in on scroll */
 .reveal{
   opacity:0;
