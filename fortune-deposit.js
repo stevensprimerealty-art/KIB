@@ -1,64 +1,73 @@
-// ===== Slider (auto every 3s + swipe) =====
-(function () {
-  const root = document.querySelector("[data-slider]");
-  if (root) {
-    const slides = Array.from(root.querySelectorAll(".slide"));
-    const dots = Array.from(root.querySelectorAll(".dot"));
-    const prev = root.querySelector(".prev");
-    const next = root.querySelector(".next");
+// ===== Hero slider (auto every 3s + swipe) =====
+(() => {
+  const slider = document.getElementById("heroSlider");
+  const track  = document.getElementById("heroTrack");
+  const dotsEl = document.getElementById("heroDots");
+  if (!slider || !track || !dotsEl) return;
 
-    let index = 0;
-    let timer = null;
+  const slides = Array.from(track.children);
+  let index = 0;
+  let timer = null;
+  let x0 = null;
 
-    const show = (i) => {
-      index = (i + slides.length) % slides.length;
-      slides.forEach((s, n) => s.classList.toggle("is-active", n === index));
-      dots.forEach((d, n) => d.classList.toggle("is-active", n === index));
-    };
+  // build dots
+  const dots = slides.map((_, i) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.setAttribute("aria-label", `Go to slide ${i + 1}`);
+    b.addEventListener("click", () => go(i));
+    dotsEl.appendChild(b);
+    return b;
+  });
 
-    const start = () => {
-      stop();
-      timer = setInterval(() => show(index + 1), 3000);
-    };
+  const setActiveDot = () => {
+    dots.forEach((d, i) => d.classList.toggle("is-active", i === index));
+  };
 
-    const stop = () => {
-      if (timer) clearInterval(timer);
-      timer = null;
-    };
+  const go = (i) => {
+    index = (i + slides.length) % slides.length;
+    track.style.transform = `translateX(-${index * 100}%)`;
+    setActiveDot();
+  };
 
-    prev?.addEventListener("click", () => { show(index - 1); start(); });
-    next?.addEventListener("click", () => { show(index + 1); start(); });
+  const start = () => {
+    stop();
+    timer = setInterval(() => go(index + 1), 3000);
+  };
 
-    dots.forEach((d, i) => d.addEventListener("click", () => { show(i); start(); }));
+  const stop = () => {
+    if (timer) clearInterval(timer);
+    timer = null;
+  };
 
-    // Swipe support
-    let x0 = null;
-    root.addEventListener("touchstart", (e) => { x0 = e.touches[0].clientX; }, { passive: true });
-    root.addEventListener("touchend", (e) => {
-      if (x0 == null) return;
-      const x1 = e.changedTouches[0].clientX;
-      const dx = x1 - x0;
-      x0 = null;
+  // swipe
+  slider.addEventListener("touchstart", (e) => {
+    x0 = e.touches[0].clientX;
+  }, { passive: true });
 
-      if (Math.abs(dx) > 40) {
-        show(dx > 0 ? index - 1 : index + 1);
-        start();
-      }
-    }, { passive: true });
+  slider.addEventListener("touchend", (e) => {
+    if (x0 == null) return;
+    const x1 = e.changedTouches[0].clientX;
+    const dx = x1 - x0;
+    x0 = null;
 
-    show(0);
-    start();
+    if (Math.abs(dx) > 40) {
+      go(dx > 0 ? index - 1 : index + 1);
+      start();
+    }
+  }, { passive: true });
 
-    // pause while not visible (optional nice touch)
-    document.addEventListener("visibilitychange", () => {
-      if (document.hidden) stop();
-      else start();
-    });
-  }
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) stop();
+    else start();
+  });
+
+  go(0);
+  start();
 })();
 
-// ===== Fade-in on scroll (like you asked) =====
-(function () {
+// ===== Fade-in on scroll =====
+(() => {
   const items = document.querySelectorAll(".reveal");
   if (!items.length) return;
 
@@ -71,33 +80,18 @@
   items.forEach((el) => io.observe(el));
 })();
 
-// ===== Footer accordion behavior (same as Hope page) =====
-(function () {
-  const items = document.querySelectorAll(".acc-item");
-  if (!items.length) return;
-
-  items.forEach((item) => {
-    const btn = item.querySelector(".acc-btn");
-    const panel = item.querySelector(".acc-panel");
-    if (!btn || !panel) return;
-
+// ===== Footer accordion (same behavior as Hope page) =====
+(() => {
+  const btns = document.querySelectorAll(".acc-btn");
+  btns.forEach((btn) => {
     btn.addEventListener("click", () => {
+      const panel = btn.parentElement.querySelector(".acc-panel");
       const isOpen = btn.getAttribute("aria-expanded") === "true";
 
-      // close all
-      items.forEach((it) => {
-        const b = it.querySelector(".acc-btn");
-        const p = it.querySelector(".acc-panel");
-        if (!b || !p) return;
-        b.setAttribute("aria-expanded", "false");
-        p.hidden = true;
-      });
+      btn.setAttribute("aria-expanded", String(!isOpen));
+      if (!panel) return;
 
-      // open this if it was closed
-      if (!isOpen) {
-        btn.setAttribute("aria-expanded", "true");
-        panel.hidden = false;
-      }
+      panel.hidden = isOpen;
     });
   });
 })();
