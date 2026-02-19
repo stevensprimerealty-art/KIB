@@ -2,16 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>KIB — Fortune Deposit Account</title>
 
-  <link rel="stylesheet" href="fortune-deposit.css" />
+  <link rel="stylesheet" href="fortune-deposit-account.css" />
 </head>
-
 <body>
   <div class="page">
 
-    <!-- HEADER (same as Hope / main header) -->
+    <!-- HEADER (EXACT same structure as Hope Savings Account) -->
     <header class="site-header">
       <div class="container bar">
         <div class="brand">
@@ -31,57 +30,50 @@
     </header>
 
     <main class="main">
+      <div class="container">
 
-      <!-- HERO (3 image slider) -->
-      <section class="hero reveal" aria-label="Fortune Deposit hero">
-        <div class="hero-slider" data-slider>
-          <div class="slides">
-            <div class="slide is-active">
-              <img src="fortune-hero-1.jpg" alt="fortune-hero-1.jpg" />
+        <!-- HERO SLIDER (3 images, auto slide every 3s + swipe) -->
+        <section class="hero reveal" aria-label="Fortune Deposit Account hero slider">
+          <div class="hero-slider" id="heroSlider">
+            <div class="hero-track" id="heroTrack">
+              <!-- Replace these JPGs later -->
+              <div class="hero-slide"><img src="assets/images/personal/fortune-hero-1.jpg" alt="Fortune hero 1"></div>
+              <div class="hero-slide"><img src="assets/images/personal/fortune-hero-2.jpg" alt="Fortune hero 2"></div>
+              <div class="hero-slide"><img src="assets/images/personal/fortune-hero-3.jpg" alt="Fortune hero 3"></div>
             </div>
-            <div class="slide">
-              <img src="fortune-hero-2.jpg" alt="fortune-hero-2.jpg" />
+
+            <div class="hero-dots" id="heroDots" aria-label="Hero slider dots"></div>
+          </div>
+
+          <div class="hero-card">
+            <div class="crumb">
+              Home » <span>Personal Banking</span> » <span>Saving / Deposit</span> »
+              <span class="crumb-strong">Fortune Deposit Account</span>
             </div>
-            <div class="slide">
-              <img src="fortune-hero-3.jpg" alt="fortune-hero-3.jpg" />
+            <h1>Fortune Deposit Account</h1>
+            <div class="hero-line"></div>
+            <p>Make more money through your deposit.</p>
+
+            <div class="hero-actions">
+              <a class="btn-primary" href="#" role="button">APPLY NOW</a>
+              <!-- Optional: if you want a second button like inspo -->
+              <a class="btn-soft" href="#watch" role="button">Discover more</a>
             </div>
           </div>
+        </section>
 
-          <button class="nav prev" type="button" aria-label="Previous slide">‹</button>
-          <button class="nav next" type="button" aria-label="Next slide">›</button>
+        <!-- WATCH YOUR MONEY WORKS... -->
+        <section id="watch" class="headline reveal">
+          <h2>Watch your money works<br>for you with us</h2>
 
-          <div class="dots" aria-label="Slider dots">
-            <button class="dot is-active" type="button" aria-label="Go to slide 1"></button>
-            <button class="dot" type="button" aria-label="Go to slide 2"></button>
-            <button class="dot" type="button" aria-label="Go to slide 3"></button>
-          </div>
-        </div>
+          <p>
+            Fortune Deposit Account (FDA) is a kind of interest-bearing and contract-based savings accounts
+            that require account balance to be placed within a specific contract with particular period.
+          </p>
+        </section>
 
-        <div class="hero-card">
-          <div class="breadcrumb">
-            Home » <span class="crumb-current">Fortune Deposit Account</span>
-          </div>
-
-          <h1>Fortune Deposit Account</h1>
-          <div class="divider"></div>
-          <p class="subtitle">Make more money through your deposit.</p>
-
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="#" role="button">APPLY NOW</a>
-          </div>
-        </div>
-      </section>
-
-      <!-- WATCH YOUR MONEY WORKS... -->
-      <section class="section section-light reveal">
-        <h2 class="section-title">Watch your money works<br/>for you with us</h2>
-
-        <p class="center-text">
-          Fortune Deposit Account (FDA) is a kind of interest-bearing and contract-based savings accounts
-          that require account balance to be placed within a specific contract with particular period.
-        </p>
-
-        <div class="card">
+        <!-- KEY BENEFITS CARD -->
+        <section class="card reveal" aria-label="Key Benefits">
           <h3 class="card-title">Key Benefits</h3>
           <ul class="bullets">
             <li>Generate additional income through interest rate</li>
@@ -92,51 +84,61 @@
             <li>High safety for your cash</li>
             <li>Fast and convenience customer service</li>
           </ul>
-        </div>
-      </section>
+        </section>
 
-      <!-- REQUIREMENTS -->
-      <section class="section section-blue reveal">
-        <h2 class="section-blue-title">Requirements</h2>
+        <!-- REQUIREMENTS -->
+        <section class="section-band reveal" aria-label="Requirements">
+          <div class="band-title">Requirements</div>
 
-        <div class="card card-blue">
-          <h3 class="card-title">For Individual</h3>
-          <ul class="checklist">
-            <li>A legal person, both Cambodian and Foreigner</li>
-            <li>Identification: Cambodian ID Card, Passport and/or other documents</li>
-          </ul>
-        </div>
+          <div class="req-grid">
+            <div class="req-card">
+              <h3>For Individual</h3>
+              <div class="checkrow">
+                <span class="check">✓</span>
+                <span>A legal person, both Cambodian and Foreigner</span>
+              </div>
+              <div class="checkrow">
+                <span class="check">✓</span>
+                <span>Identification Documents such as ID Card, Passport and/or other documents</span>
+              </div>
+            </div>
 
-        <div class="card card-blue">
-          <h3 class="card-title">For Corporate or Financial Institution</h3>
-          <ul class="checklist">
-            <li>An entity that is legally registered under the Cambodian’s laws and regulations</li>
-            <li>
-              Business Registration Certificate, Memorandum and Articles of Association,
-              and/or Letter of Authorization or Board Resolution as well as other documents (if available)
-            </li>
-          </ul>
-        </div>
-      </section>
+            <div class="req-card">
+              <h3>For Corporate or Financial Institution</h3>
+              <div class="checkrow">
+                <span class="check">✓</span>
+                <span>An entity that is legally registered under the Cambodian’s laws and regulations</span>
+              </div>
+              <div class="checkrow">
+                <span class="check">✓</span>
+                <span>
+                  Business Registration Certificate, Memorandum and Articles of Association, and/or Letter of
+                  Authorization or Board Resolution as well as other documents (if available)
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
 
-      <!-- CONDITIONS -->
-      <section class="section section-light reveal">
-        <h2 class="section-title left">Conditions</h2>
+        <!-- CONDITIONS -->
+        <section class="section-title reveal" aria-label="Conditions">
+          <h2>Conditions</h2>
+        </section>
 
-        <div class="card">
-          <div class="row">
-            <div class="row-title">Currency</div>
-            <div class="row-body">KHR and USD</div>
+        <section class="card reveal" aria-label="Conditions card">
+          <div class="kv">
+            <div class="k">Currency</div>
+            <div class="v">• KHR and USD</div>
           </div>
 
-          <div class="row">
-            <div class="row-title">Minimum Initial Deposit</div>
-            <div class="row-body">KHR 100,000 or USD 25</div>
+          <div class="kv">
+            <div class="k">Minimum Initial Deposit</div>
+            <div class="v">• KHR 100,000 or USD 25</div>
           </div>
 
-          <div class="row">
-            <div class="row-title">Interest Payment</div>
-            <div class="row-body">
+          <div class="kv">
+            <div class="k">Interest Payment</div>
+            <div class="v">
               <ul class="bullets tight">
                 <li>Monthly Interest Withdrawal</li>
                 <li>Annual Interest Withdrawal</li>
@@ -145,14 +147,14 @@
             </div>
           </div>
 
-          <div class="row">
-            <div class="row-title">Certificate of Deposit</div>
-            <div class="row-body">Free of charge</div>
+          <div class="kv">
+            <div class="k">Certificate of Deposit</div>
+            <div class="v">• Free of charge</div>
           </div>
 
-          <div class="row">
-            <div class="row-title">Withdrawal condition</div>
-            <div class="row-body">
+          <div class="kv">
+            <div class="k">Withdrawal condition</div>
+            <div class="v">
               <ul class="bullets tight">
                 <li>At the maturity date or upon account closure</li>
                 <li>Partial withdrawal is not allowed</li>
@@ -160,115 +162,142 @@
             </div>
           </div>
 
-          <div class="row">
-            <div class="row-title">Annual Interest Rate*</div>
-            <div class="row-body">(attach below)</div>
+          <div class="kv">
+            <div class="k">Annual Interest Rate*</div>
+            <div class="v">• (attach below)</div>
           </div>
 
-          <ul class="bullets tight muted">
-            <li>Other terms and conditions applied</li>
-            <li>KIB reserves its full rights to refine interest rates and other conditions without prior notice</li>
-          </ul>
-        </div>
-      </section>
+          <div class="terms">
+            <ul>
+              <li>Other terms and conditions applied</li>
+              <li>KIB Bank reserves its full rights to refine interest rates and other conditions without prior notice</li>
+            </ul>
+          </div>
+        </section>
 
-      <!-- HOW TO APPLY -->
-      <section class="section section-light reveal">
-        <div class="card">
+        <!-- HOW TO APPLY -->
+        <section class="card reveal" aria-label="How to apply">
           <h3 class="card-title">How To Apply</h3>
           <ul class="bullets">
-            <li>Please visit the nearest KIB branch along with any original copy of ID documents.</li>
-            <li>Open a Fortune Deposit Account by yourself: <a href="#" class="link">Download Now</a></li>
-            <li>Contact us at <a href="tel:+85523963333" class="link">023 96 3333</a> for detailed information</li>
+            <li>Please visit the nearest KIB Bank branch along with any original copy of ID documents.</li>
+            <li>Open a Fortune Deposit Account by yourself: <a class="link" href="#">Download Now</a></li>
+            <li>Contact us at <a class="link" href="tel:+85523963333">023 96 3333</a> for detailed information</li>
           </ul>
 
-          <a class="btn btn-soft big" href="#" role="button">Contact us</a>
+          <a class="btn-soft wide" href="#" role="button">Contact us</a>
 
-          <div class="banner-placeholder">
-            <span>fortune-apply.jpg</span>
+          <!-- Blank banner image placeholder -->
+          <div class="banner-img">
+            <img src="assets/images/personal/fortune-apply.jpg" alt="fortune-apply.jpg">
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- INTEREST RATE TABLES -->
-      <section class="section section-light reveal">
-        <h2 class="section-title left">Annual Interest Rate for Fortune Deposit Account</h2>
+        <!-- INTEREST RATE TABLES (horizontal swipe like inspo image 6 & 7) -->
+        <section class="reveal" aria-label="Annual Interest Rate tables">
+          <h2 class="table-title">Annual Interest Rate for Fortune Deposit Account</h2>
 
-        <div class="table-wrap" aria-label="Swipe table horizontally">
-          <table class="rate-table">
-            <thead>
-              <tr>
-                <th>Term (Months)</th>
-                <th colspan="2">Maturity Interest Withdrawal</th>
-                <th colspan="2">Monthly Interest Withdrawal</th>
-              </tr>
-              <tr>
-                <th></th>
-                <th>KHR</th>
-                <th>USD</th>
-                <th>KHR</th>
-                <th>USD</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td>1-2</td><td>3.00%</td><td>3.00%</td><td>n.a</td><td>n.a</td></tr>
-              <tr><td>3-5</td><td>3.50%</td><td>3.25%</td><td>3.25%</td><td>3.00%</td></tr>
-              <tr><td>6-11</td><td>4.25%</td><td>3.50%</td><td>4.00%</td><td>3.25%</td></tr>
-              <tr><td>12</td><td>5.35%</td><td>4.30%</td><td>5.10%</td><td>4.05%</td></tr>
-              <tr><td>13-23</td><td>5.60%</td><td>4.40%</td><td>5.35%</td><td>4.15%</td></tr>
-              <tr><td>24-35</td><td>5.70%</td><td>4.50%</td><td>5.45%</td><td>4.25%</td></tr>
-              <tr><td>36</td><td>5.90%</td><td>4.60%</td><td>5.65%</td><td>4.35%</td></tr>
-            </tbody>
-          </table>
-        </div>
+          <div class="table-wrap" aria-label="Swipe table horizontally">
+            <table class="rate-table">
+              <thead>
+                <tr>
+                  <th>Term (Months)</th>
+                  <th colspan="2">Maturity Interest Withdrawal</th>
+                  <th colspan="2">Monthly Interest Withdrawal</th>
+                </tr>
+                <tr>
+                  <th></th>
+                  <th>KHR</th>
+                  <th>USD</th>
+                  <th>KHR</th>
+                  <th>USD</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>1-2</td><td>3.00%</td><td>3.00%</td><td>n.a</td><td>n.a</td></tr>
+                <tr><td>3-5</td><td>3.50%</td><td>3.25%</td><td>3.25%</td><td>3.00%</td></tr>
+                <tr><td>6-11</td><td>4.25%</td><td>3.50%</td><td>4.00%</td><td>3.25%</td></tr>
+                <tr><td>12</td><td>5.35%</td><td>4.30%</td><td>5.10%</td><td>4.05%</td></tr>
+                <tr><td>13-23</td><td>5.60%</td><td>4.40%</td><td>5.35%</td><td>4.15%</td></tr>
+                <tr><td>24-35</td><td>5.70%</td><td>4.50%</td><td>5.45%</td><td>4.25%</td></tr>
+                <tr><td>36</td><td>5.90%</td><td>4.60%</td><td>5.65%</td><td>4.35%</td></tr>
+              </tbody>
+            </table>
+          </div>
 
-        <p class="note">These rates are effective from January 26, 2026 until further notice.</p>
+          <p class="note">These rates are effective from January 26, 2026 until further notice.</p>
 
-        <div class="table-wrap" aria-label="Swipe table horizontally">
-          <table class="rate-table">
-            <thead>
-              <tr>
-                <th>Term (month)</th>
-                <th colspan="2">Annually Interest Withdrawal</th>
-              </tr>
-              <tr>
-                <th></th>
-                <th>KHR</th>
-                <th>USD</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td>24</td><td>5.55%</td><td>4.35%</td></tr>
-              <tr><td>36</td><td>5.75%</td><td>4.45%</td></tr>
-            </tbody>
-          </table>
-        </div>
+          <div class="table-wrap" aria-label="Swipe table horizontally">
+            <table class="rate-table">
+              <thead>
+                <tr>
+                  <th>Term (month)</th>
+                  <th colspan="2">Annually Interest Withdrawal</th>
+                </tr>
+                <tr>
+                  <th></th>
+                  <th>KHR</th>
+                  <th>USD</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>24</td><td>5.55%</td><td>4.35%</td></tr>
+                <tr><td>36</td><td>5.75%</td><td>4.45%</td></tr>
+              </tbody>
+            </table>
+          </div>
 
-        <p class="note">These rates are effective from January 26, 2026 until further notice.</p>
-      </section>
+          <p class="note">These rates are effective from January 26, 2026 until further notice.</p>
+        </section>
 
-      <!-- CUSTOMER SERVICE CARE -->
-      <section class="section section-customer reveal">
-        <div class="card customer-card">
-          <h3 class="card-title">Customer Service Care</h3>
+        <!-- CUSTOMER SERVICE CARE -->
+        <section class="service-card reveal" aria-label="Customer Service Care">
+          <h3>Customer Service Care</h3>
           <p>We always available to solve your problem in just a few minute!</p>
 
           <div class="phone">
-            <span class="phone-icon">📞</span>
-            <a href="tel:+85523963333">+855 23 963 333</a>
+            <span class="phone-icon">☎</span>
+            <a class="phone-link" href="tel:+85523963333">+855 23 963 333</a>
           </div>
 
-          <a class="btn btn-soft big" href="#" role="button">Contact us</a>
+          <a class="btn-soft" href="#" role="button">Contact us</a>
 
-          <div class="banner-placeholder small">
-            <span>customer-care.jpg</span>
+          <!-- Blank banner image placeholder -->
+          <div class="service-img">
+            <img src="assets/images/personal/customer-service.jpg" alt="customer-service.jpg">
           </div>
-        </div>
-      </section>
+        </section>
 
+        <!-- 2x2 NAV TILES (same style as Hope page) -->
+        <section class="tiles reveal" aria-label="Quick navigation tiles">
+          <a class="tile" href="personal-banking.html">
+            <div class="tile-icon">👤</div>
+            <div class="tile-title">Personal<br>Banking</div>
+            <div class="tile-arrow">→</div>
+          </a>
+
+          <a class="tile" href="business-banking.html">
+            <div class="tile-icon">🏢</div>
+            <div class="tile-title">Business<br>Banking</div>
+            <div class="tile-arrow">→</div>
+          </a>
+
+          <a class="tile" href="digital-banking.html">
+            <div class="tile-icon">📲</div>
+            <div class="tile-title">Digital<br>Banking</div>
+            <div class="tile-arrow">→</div>
+          </a>
+
+          <a class="tile" href="about.html">
+            <div class="tile-icon">❓</div>
+            <div class="tile-title">About Us</div>
+            <div class="tile-arrow">→</div>
+          </a>
+        </section>
+
+      </div>
     </main>
 
-    <!-- FOOTER (same as Hope/main footer) -->
+    <!-- FOOTER (EXACT same structure as Hope Savings Account) -->
     <footer class="footer">
       <div class="container inner">
 
@@ -357,6 +386,6 @@
 
   </div>
 
-  <script defer src="fortune-deposit.js"></script>
+  <script defer src="fortune-deposit-account.js"></script>
 </body>
 </html>
