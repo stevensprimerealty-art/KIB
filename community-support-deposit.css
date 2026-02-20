@@ -1,0 +1,271 @@
+:root{
+  --bg:#f4f7fb;
+  --card:#ffffff;
+  --text:#0f1b2d;
+  --muted:#6a768a;
+  --blue:#19a0d7;
+  --soft:#d9eef9;
+  --softText:#1569c7;
+  --border:#d9e3ef;
+  --shadow: 0 10px 24px rgba(15,27,45,.08);
+  --radius: 18px;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+a{color:inherit}
+
+.container{width:min(980px, 92%); margin:0 auto}
+.page{min-height:100vh; display:flex; flex-direction:column}
+.main{flex:1; padding:14px 0 28px}
+
+/* ===== Header (kept simple; you can replace with your exact main header CSS) ===== */
+.site-header{
+  position:sticky; top:0; z-index:50;
+  background:#eef3f8; border-bottom:1px solid var(--border);
+}
+.bar{display:flex; align-items:center; justify-content:space-between; padding:14px 0}
+.brand{font-weight:800; letter-spacing:.3px; font-size:14px}
+.brand small{font-weight:700; opacity:.7}
+.header-right{display:flex; align-items:center; gap:10px}
+.lang{display:flex; gap:8px}
+.lang button{
+  border:1px solid var(--border); background:#fff;
+  padding:8px 12px; border-radius:999px;
+  font-weight:700; font-size:12px; color:#4b5a73;
+}
+.lang .is-active{background:#1a2436; color:#fff; border-color:#1a2436}
+.menu-btn{
+  width:38px; height:38px; border-radius:999px;
+  border:1px solid var(--border); background:#fff;
+  font-size:18px; font-weight:900;
+}
+
+/* ===== Hero slider ===== */
+.hero{margin-top:12px}
+.hero-slider{
+  position:relative; overflow:hidden; border-radius:22px;
+  box-shadow:var(--shadow);
+}
+.hero-track{
+  display:flex; width:100%;
+  transition:transform .45s ease;
+  touch-action:pan-y;
+}
+.hero-slide{min-width:100%}
+.banner{height:210px; border-radius:22px}
+
+.hero-dots{
+  position:absolute; left:0; right:0; bottom:12px;
+  display:flex; justify-content:center; gap:8px;
+}
+.hero-dots button{
+  width:9px; height:9px; border-radius:999px;
+  border:none; opacity:.45;
+}
+.hero-dots button.is-active{opacity:1}
+
+/* ===== Placeholder images (blank but labeled) ===== */
+.placeholder-image{
+  background:linear-gradient(135deg,#e8f2fb,#dfefff);
+  border:2px dashed #b9cfe4;
+  display:flex; align-items:center; justify-content:center;
+}
+.placeholder-name{
+  background:#ffffffcc;
+  padding:8px 14px;
+  border-radius:999px;
+  font-weight:800;
+  color:#1a5fae;
+}
+
+/* ===== Cards & sections ===== */
+.card{
+  margin-top:16px;
+  background:var(--card);
+  border-radius:24px;
+  box-shadow:var(--shadow);
+  padding:18px 18px 16px;
+}
+.breadcrumb{color:#8a96aa; font-size:14px; margin-bottom:10px}
+.breadcrumb span{color:#1a5fae; font-weight:700}
+
+.page-title{
+  font-size:36px; margin:0 0 10px;
+  letter-spacing:-.6px;
+}
+.title-line{width:92px; height:2px; background:#3b3b3b33; margin:0 0 14px}
+
+.intro-row{display:flex; gap:16px; align-items:flex-start; justify-content:space-between}
+.intro-text{margin:0; color:#1d2b43; font-size:18px; line-height:1.55; flex:1}
+
+.section{margin-top:18px}
+.section-title{font-size:34px; margin:0 0 12px; letter-spacing:-.6px}
+.big-heading{font-size:44px; margin:0 0 10px; letter-spacing:-.8px}
+.body-text{color:#1d2b43; font-size:18px; line-height:1.7; margin:0 0 14px}
+
+.soft-card{
+  background:#fff;
+  border-radius:22px;
+  box-shadow:var(--shadow);
+  padding:16px;
+}
+.soft-card-head{
+  font-weight:900; color:#1a5fae;
+  margin-bottom:10px; font-size:18px;
+}
+.bullets{margin:0; padding-left:18px; color:#6a768a; font-size:18px; line-height:1.8}
+.bullets li{margin:4px 0}
+
+/* ===== Buttons (match your “APPLY NOW / Discover more” style) ===== */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:14px 22px; border-radius:999px;
+  text-decoration:none; font-weight:900;
+  transition:transform .15s ease, filter .2s ease;
+  user-select:none;
+}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--blue); color:#fff}
+.btn-soft{background:var(--soft); color:var(--softText)}
+.btn-soft:hover{filter:brightness(.98)}
+
+@media (max-width:560px){
+  .intro-row{flex-direction:column}
+  .btn{width:max-content}
+}
+
+/* ===== Requirement section (blue background) ===== */
+.requirement{
+  margin-top:18px;
+  background:#0a6fa8;
+  border-radius:26px;
+  padding:18px 16px;
+  box-shadow:var(--shadow);
+}
+.req-title{color:#fff; font-size:34px; margin:0 0 14px}
+.req-wrap{max-width:760px; margin:0 auto}
+.req-card{
+  background:#fff;
+  border-radius:22px;
+  padding:16px;
+  margin:14px 0;
+}
+.req-card h4{margin:0 0 10px; font-size:28px}
+.checklist{margin:0; padding-left:0; list-style:none; color:#6a768a; font-size:18px; line-height:1.7}
+.checklist li{
+  position:relative; padding-left:34px; margin:10px 0;
+}
+.checklist li::before{
+  content:"✓";
+  position:absolute; left:0; top:0;
+  width:22px; height:22px; border-radius:999px;
+  background:#0b6ca7;
+  color:#fff; font-weight:900;
+  display:flex; align-items:center; justify-content:center;
+  font-size:13px;
+}
+
+/* ===== Condition block ===== */
+.condition-card{
+  background:#fff; border-radius:22px; box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.cond-row{
+  padding:14px 16px;
+  border-top:1px solid #eef2f7;
+}
+.cond-row:first-child{border-top:none}
+.cond-label{font-weight:800; color:#9aa6b8; margin-bottom:6px}
+.cond-bullets{margin:0; padding-left:18px; font-size:18px; line-height:1.7}
+.cond-bullets li{margin:6px 0}
+
+/* ===== How to apply ===== */
+.how-card{
+  background:#fff; border-radius:22px; box-shadow:var(--shadow);
+  padding:16px;
+}
+.how-list{margin:0 0 10px; padding-left:18px; font-size:18px; line-height:1.8}
+.how-link{color:#1a5fae; font-weight:900; text-decoration:underline}
+.how-note{margin:0 0 14px; font-size:18px; color:#1d2b43}
+.how-banner{margin-top:14px; height:210px; border-radius:18px}
+
+/* ===== Interest rate table (horizontal swipe) ===== */
+.table-shell{
+  background:#fff;
+  border-radius:22px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.table-scroll{
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
+  border-top-left-radius:22px;
+  border-top-right-radius:22px;
+}
+.rate-table{
+  width:820px; /* forces horizontal swipe on mobile like your inspo */
+  border-collapse:separate;
+  border-spacing:0;
+}
+.rate-table th, .rate-table td{
+  border:1px solid #bfe0f2;
+  padding:14px 10px;
+  text-align:center;
+  font-size:18px;
+}
+.th-top{
+  background:#1aa0d7;
+  color:#fff;
+  font-weight:900;
+}
+.th-sub{
+  background:#0b6ca7;
+  color:#fff;
+  font-weight:900;
+}
+.rate-table td{background:#fff}
+
+.table-foot{
+  padding:12px 14px;
+  background:#e8f2fb;
+  font-weight:800;
+}
+
+/* ===== Reveal on scroll ===== */
+.reveal{opacity:0; transform:translateY(14px); transition:opacity .55s ease, transform .55s ease}
+.reveal.is-visible{opacity:1; transform:none}
+
+/* ===== Footer (kept simple; you can replace with your exact main footer CSS) ===== */
+.footer{
+  background:#0a6fa8;
+  color:#fff;
+  margin-top:20px;
+}
+.footer .inner{padding:22px 0}
+.footer-acc{display:grid; gap:10px}
+.acc-btn{
+  width:100%; text-align:left;
+  background:transparent; border:none; color:#fff;
+  font-weight:900; font-size:16px;
+  display:flex; justify-content:space-between; align-items:center;
+  padding:12px 0;
+  border-bottom:1px solid rgba(255,255,255,.15);
+}
+.acc-panel{padding:10px 0 14px; opacity:.9}
+.footer-info{
+  display:grid; gap:14px;
+  margin-top:18px;
+}
+.footer-h{font-weight:900; margin-bottom:6px}
+.footer-p{opacity:.9}
+.social{display:flex; gap:10px}
+.social a{
+  width:36px; height:36px; border-radius:999px;
+  background:rgba(255,255,255,.14);
+  display:flex; align-items:center; justify-content:center;
+  text-decoration:none;
+  color:#fff;
+  font-weight:900;
+}
+.footer-brand{margin-top:16px; font-weight:1000; letter-spacing:.8px; opacity:.95}
