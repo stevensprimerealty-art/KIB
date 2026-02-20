@@ -1,0 +1,386 @@
+<!-- loan.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Loan | KIB</title>
+  <link rel="stylesheet" href="loan.css" />
+</head>
+
+<body>
+  <!-- HEADER (same style as your Planned Savings Account header) -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-title">KOREA INTERNATIONAL<br/>BANKING <span class="brand-sub">(KIB)</span></div>
+      </div>
+
+      <div class="header-actions">
+        <a class="pill pill-dark" href="#">ENG</a>
+        <a class="pill" href="#">KOR</a>
+        <a class="pill" href="#">ESPAÑOL</a>
+        <button class="icon-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false">
+          <span class="hamburger"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile menu (optional; matches your footer navigation structure) -->
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <div class="mobile-menu-inner">
+        <div class="menu-title">Menu</div>
+
+        <button class="accordion-btn" data-acc="m-personal">
+          <span>Personal Banking</span><span class="chev"></span>
+        </button>
+        <div class="accordion-panel" id="m-personal">
+          <a href="#" class="menu-link">Saving / Deposit</a>
+          <a href="#" class="menu-link is-active">Loan</a>
+          <a href="#" class="menu-link">Money Transfer</a>
+        </div>
+
+        <button class="accordion-btn" data-acc="m-business">
+          <span>Business Banking</span><span class="chev"></span>
+        </button>
+        <div class="accordion-panel" id="m-business">
+          <a href="#" class="menu-link">Business Accounts</a>
+          <a href="#" class="menu-link">Trade Finance</a>
+        </div>
+
+        <button class="accordion-btn" data-acc="m-digital">
+          <span>Digital Banking</span><span class="chev"></span>
+        </button>
+        <div class="accordion-panel" id="m-digital">
+          <a href="#" class="menu-link">Mobile Banking</a>
+          <a href="#" class="menu-link">Online Banking</a>
+        </div>
+
+        <button class="accordion-btn" data-acc="m-company">
+          <span>Company</span><span class="chev"></span>
+        </button>
+        <div class="accordion-panel" id="m-company">
+          <a href="#" class="menu-link">About KIB</a>
+          <a href="#" class="menu-link">Careers</a>
+        </div>
+
+        <button class="accordion-btn" data-acc="m-financial">
+          <span>Financial</span><span class="chev"></span>
+        </button>
+        <div class="accordion-panel" id="m-financial">
+          <a href="#" class="menu-link">Rates</a>
+          <a href="#" class="menu-link">Fees</a>
+        </div>
+
+        <button class="accordion-btn" data-acc="m-news">
+          <span>News</span><span class="chev"></span>
+        </button>
+        <div class="accordion-panel" id="m-news">
+          <a href="#" class="menu-link">Announcements</a>
+          <a href="#" class="menu-link">Press</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <!-- HERO: 3-image slider (auto 3s, touch swipe) -->
+    <section class="hero reveal">
+      <div class="hero-slider" id="heroSlider" aria-label="Loan hero slider">
+        <div class="slides" id="slides">
+          <!-- Leave these as .jpg placeholders; you will replace later -->
+          <div class="slide">
+            <img src="loan-hero-1.jpg" alt="" />
+          </div>
+          <div class="slide">
+            <img src="loan-hero-2.jpg" alt="" />
+          </div>
+          <div class="slide">
+            <img src="loan-hero-3.jpg" alt="" />
+          </div>
+        </div>
+
+        <div class="dots" id="dots" aria-hidden="true"></div>
+      </div>
+
+      <div class="hero-card">
+        <div class="breadcrumb">
+          <span>Home</span> <span class="sep">»</span>
+          <span>Personal Banking</span> <span class="sep">»</span>
+          <span class="crumb-accent">Loan</span>
+        </div>
+
+        <h1 class="hero-title">Loan</h1>
+        <div class="hero-rule"></div>
+        <p class="hero-desc">
+          Start your dream business, build your warmhearted and enhance your living standard.
+        </p>
+      </div>
+    </section>
+
+    <!-- SECTION: Personal Loan -->
+    <section class="block reveal">
+      <div class="card">
+        <div class="card-head">
+          <h2 class="card-title">Personal Loan</h2>
+        </div>
+
+        <div class="card-body">
+          <p class="card-text">
+            Upgrade your lifestyles with us through fast and convenient loan application.
+          </p>
+
+          <div class="btn-row">
+            <a class="btn btn-primary" href="#">APPLY NOW</a>
+          </div>
+
+          <div class="btn-row">
+            <a class="btn btn-soft" href="#">Discover more</a>
+          </div>
+        </div>
+
+        <div class="card-media">
+          <img src="personal-loan.jpg" alt="" />
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: Business Loan -->
+    <section class="block reveal">
+      <div class="card">
+        <div class="card-head">
+          <h2 class="card-title">Business Loan</h2>
+        </div>
+
+        <div class="card-body">
+          <div class="split">
+            <p class="card-text">Start your dream business with us.</p>
+            <a class="btn btn-primary" href="#">APPLY NOW</a>
+          </div>
+
+          <div class="btn-row">
+            <a class="btn btn-soft" href="#">Discover more</a>
+          </div>
+        </div>
+
+        <div class="card-media">
+          <img src="business-loan.jpg" alt="" />
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: Housing Loan -->
+    <section class="block reveal">
+      <div class="card">
+        <div class="card-head">
+          <h2 class="card-title">Housing Loan</h2>
+        </div>
+
+        <div class="card-body">
+          <p class="card-text">Build your warm-hearted home with us.</p>
+
+          <div class="btn-row">
+            <a class="btn btn-primary" href="#">APPLY NOW</a>
+          </div>
+
+          <div class="btn-row">
+            <a class="btn btn-soft" href="#">Discover more</a>
+          </div>
+        </div>
+
+        <div class="card-media">
+          <img src="housing-loan.jpg" alt="" />
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: Agriculture Loan -->
+    <section class="block reveal">
+      <div class="card">
+        <div class="card-head">
+          <h2 class="card-title">Agriculture Loan</h2>
+        </div>
+
+        <div class="card-body">
+          <p class="card-text">
+            Financing your agribusiness through our flexible and big size loan.
+          </p>
+
+          <div class="btn-row">
+            <a class="btn btn-soft" href="#">Discover more</a>
+          </div>
+        </div>
+
+        <div class="card-media">
+          <img src="agriculture-loan.jpg" alt="" />
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: Education Loan -->
+    <section class="block reveal">
+      <div class="card">
+        <div class="card-head">
+          <h2 class="card-title">Education Loan</h2>
+        </div>
+
+        <div class="card-body">
+          <p class="card-text">Invest in Education to brighten your future!</p>
+
+          <div class="btn-row">
+            <a class="btn btn-primary" href="#">APPLY NOW</a>
+          </div>
+
+          <div class="btn-row">
+            <a class="btn btn-soft" href="#">Discover more</a>
+          </div>
+        </div>
+
+        <div class="card-media">
+          <img src="education-loan.jpg" alt="" />
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: Express Loan -->
+    <section class="block reveal">
+      <div class="card">
+        <div class="card-head">
+          <h2 class="card-title">Express Loan</h2>
+        </div>
+
+        <div class="card-body">
+          <div class="split">
+            <p class="card-text">
+              Support the financial needs for emergency and/or unexpected life events.
+            </p>
+            <a class="btn btn-primary" href="#">APPLY NOW</a>
+          </div>
+
+          <div class="btn-row">
+            <a class="btn btn-soft" href="#">Discover more</a>
+          </div>
+        </div>
+
+        <div class="card-media">
+          <img src="express-loan.jpg" alt="" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Customer Service Care -->
+    <section class="block reveal">
+      <div class="card card-service">
+        <div class="card-head">
+          <h2 class="card-title">Customer Service Care</h2>
+        </div>
+
+        <div class="card-body">
+          <p class="card-text">We always available to solve your problem in just a few minute!</p>
+
+          <div class="phone-row">
+            <span class="phone-icon" aria-hidden="true">📞</span>
+            <a class="phone" href="tel:+85523963333">+855 23 963 333</a>
+          </div>
+
+          <div class="btn-row">
+            <a class="btn btn-soft" href="#">Contact us</a>
+          </div>
+        </div>
+
+        <div class="service-media">
+          <img src="customer-service.jpg" alt="" />
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER (use the last inspo image style; WOORI -> KIB; add rights text) -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">KOREA INTERNATIONAL BANKING</div>
+      </div>
+
+      <div class="footer-accordion">
+        <button class="footer-acc-btn" data-acc="f-personal">
+          <span>Personal Banking</span><span class="chev"></span>
+        </button>
+        <div class="footer-acc-panel" id="f-personal">
+          <a href="#" class="footer-link">Saving / Deposit</a>
+          <a href="#" class="footer-link is-active">Loan</a>
+          <a href="#" class="footer-link">Money Transfer</a>
+        </div>
+
+        <button class="footer-acc-btn" data-acc="f-business">
+          <span>Business Banking</span><span class="chev"></span>
+        </button>
+        <div class="footer-acc-panel" id="f-business">
+          <a href="#" class="footer-link">Business Accounts</a>
+          <a href="#" class="footer-link">Trade Finance</a>
+        </div>
+
+        <button class="footer-acc-btn" data-acc="f-digital">
+          <span>Digital Banking</span><span class="chev"></span>
+        </button>
+        <div class="footer-acc-panel" id="f-digital">
+          <a href="#" class="footer-link">Mobile Banking</a>
+          <a href="#" class="footer-link">Online Banking</a>
+        </div>
+
+        <button class="footer-acc-btn" data-acc="f-company">
+          <span>Company</span><span class="chev"></span>
+        </button>
+        <div class="footer-acc-panel" id="f-company">
+          <a href="#" class="footer-link">About KIB</a>
+          <a href="#" class="footer-link">Careers</a>
+        </div>
+
+        <button class="footer-acc-btn" data-acc="f-financial">
+          <span>Financial</span><span class="chev"></span>
+        </button>
+        <div class="footer-acc-panel" id="f-financial">
+          <a href="#" class="footer-link">Rates</a>
+          <a href="#" class="footer-link">Fees</a>
+        </div>
+
+        <button class="footer-acc-btn" data-acc="f-news">
+          <span>News</span><span class="chev"></span>
+        </button>
+        <div class="footer-acc-panel" id="f-news">
+          <a href="#" class="footer-link">Announcements</a>
+          <a href="#" class="footer-link">Press</a>
+        </div>
+      </div>
+
+      <div class="footer-locations">
+        <h3 class="loc-title">Location Address</h3>
+        <div class="loc-list">
+          <div class="loc">
+            39 Namdaemun-ro, Jung-gu, Seoul (04531), Republic of Korea.
+          </div>
+          <div class="loc">
+            Piazza di Spagna, 59, 00187 Roma RM, Italy
+          </div>
+          <div class="loc">
+            Tower 42, Level 38, 25 Old Broad Street, EC2N 1HQ, London, United Kingdom
+          </div>
+          <div class="loc">
+            <div class="loc-bold">New York Branch</div>
+            1250 Broadway, 37th Floor, New York, NY 10001, USA
+          </div>
+          <div class="loc">
+            Mubarak Al-Kabeer Street, Darwazat Al-Abdul Razzak, Kuwait City, State of Kuwait
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="rights">All rights reserved 2023</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="loan.js"></script>
+</body>
+</html>
