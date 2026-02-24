@@ -1,386 +1,340 @@
-<!-- loan.html -->
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Loan | KIB</title>
-  <link rel="stylesheet" href="loan.css" />
+  <title>KIB | Loan</title>
+  <link rel="stylesheet" href="./loan.css" />
 </head>
 
 <body>
-  <!-- HEADER (same style as your Planned Savings Account header) -->
+  <!-- HEADER (match Planned Savings Account style) -->
   <header class="site-header">
     <div class="header-inner">
       <div class="brand">
-        <div class="brand-title">KOREA INTERNATIONAL<br/>BANKING <span class="brand-sub">(KIB)</span></div>
+        <div class="brand-title">
+          <span class="brand-top">KOREA INTERNATIONAL</span>
+          <span class="brand-bottom">BANKING <span class="brand-sub">(KIB)</span></span>
+        </div>
       </div>
 
-      <div class="header-actions">
-        <a class="pill pill-dark" href="#">ENG</a>
-        <a class="pill" href="#">KOR</a>
-        <a class="pill" href="#">ESPAÑOL</a>
-        <button class="icon-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false">
-          <span class="hamburger"></span>
+      <nav class="header-actions" aria-label="Header actions">
+        <div class="lang-pills" role="group" aria-label="Language selection">
+          <button class="pill pill-active" type="button">ENG</button>
+          <button class="pill" type="button">KOR</button>
+          <button class="pill" type="button">ESPAÑOL</button>
+        </div>
+
+        <button class="hamburger" id="hamburgerBtn" type="button" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
         </button>
-      </div>
+      </nav>
     </div>
 
-    <!-- Mobile menu (optional; matches your footer navigation structure) -->
+    <!-- Mobile dropdown (simple) -->
     <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
-      <div class="mobile-menu-inner">
-        <div class="menu-title">Menu</div>
-
-        <button class="accordion-btn" data-acc="m-personal">
-          <span>Personal Banking</span><span class="chev"></span>
-        </button>
-        <div class="accordion-panel" id="m-personal">
-          <a href="#" class="menu-link">Saving / Deposit</a>
-          <a href="#" class="menu-link is-active">Loan</a>
-          <a href="#" class="menu-link">Money Transfer</a>
-        </div>
-
-        <button class="accordion-btn" data-acc="m-business">
-          <span>Business Banking</span><span class="chev"></span>
-        </button>
-        <div class="accordion-panel" id="m-business">
-          <a href="#" class="menu-link">Business Accounts</a>
-          <a href="#" class="menu-link">Trade Finance</a>
-        </div>
-
-        <button class="accordion-btn" data-acc="m-digital">
-          <span>Digital Banking</span><span class="chev"></span>
-        </button>
-        <div class="accordion-panel" id="m-digital">
-          <a href="#" class="menu-link">Mobile Banking</a>
-          <a href="#" class="menu-link">Online Banking</a>
-        </div>
-
-        <button class="accordion-btn" data-acc="m-company">
-          <span>Company</span><span class="chev"></span>
-        </button>
-        <div class="accordion-panel" id="m-company">
-          <a href="#" class="menu-link">About KIB</a>
-          <a href="#" class="menu-link">Careers</a>
-        </div>
-
-        <button class="accordion-btn" data-acc="m-financial">
-          <span>Financial</span><span class="chev"></span>
-        </button>
-        <div class="accordion-panel" id="m-financial">
-          <a href="#" class="menu-link">Rates</a>
-          <a href="#" class="menu-link">Fees</a>
-        </div>
-
-        <button class="accordion-btn" data-acc="m-news">
-          <span>News</span><span class="chev"></span>
-        </button>
-        <div class="accordion-panel" id="m-news">
-          <a href="#" class="menu-link">Announcements</a>
-          <a href="#" class="menu-link">Press</a>
-        </div>
-      </div>
+      <a href="./personal-banking.html">Personal Banking</a>
+      <a href="./business-banking.html">Business Banking</a>
+      <a href="./digital-banking.html">Digital Banking</a>
+      <a href="./about.html">About Us</a>
+      <a href="./contact.html">Contact</a>
     </div>
   </header>
 
-  <main class="page">
-    <!-- HERO: 3-image slider (auto 3s, touch swipe) -->
-    <section class="hero reveal">
-      <div class="hero-slider" id="heroSlider" aria-label="Loan hero slider">
-        <div class="slides" id="slides">
-          <!-- Leave these as .jpg placeholders; you will replace later -->
-          <div class="slide">
-            <img src="loan-hero-1.jpg" alt="" />
-          </div>
-          <div class="slide">
-            <img src="loan-hero-2.jpg" alt="" />
-          </div>
-          <div class="slide">
-            <img src="loan-hero-3.jpg" alt="" />
-          </div>
-        </div>
-
-        <div class="dots" id="dots" aria-hidden="true"></div>
-      </div>
-
-      <div class="hero-card">
-        <div class="breadcrumb">
-          <span>Home</span> <span class="sep">»</span>
-          <span>Personal Banking</span> <span class="sep">»</span>
-          <span class="crumb-accent">Loan</span>
-        </div>
-
-        <h1 class="hero-title">Loan</h1>
-        <div class="hero-rule"></div>
-        <p class="hero-desc">
-          Start your dream business, build your warmhearted and enhance your living standard.
-        </p>
-      </div>
-    </section>
-
-    <!-- SECTION: Personal Loan -->
-    <section class="block reveal">
-      <div class="card">
-        <div class="card-head">
-          <h2 class="card-title">Personal Loan</h2>
-        </div>
-
-        <div class="card-body">
-          <p class="card-text">
-            Upgrade your lifestyles with us through fast and convenient loan application.
-          </p>
-
-          <div class="btn-row">
-            <a class="btn btn-primary" href="#">APPLY NOW</a>
+  <main>
+    <!-- HERO SLIDER (3 images, auto every 3s, swipe) -->
+    <section class="hero">
+      <div class="hero-shell">
+        <div class="hero-slider" id="heroSlider" aria-label="Loan hero slider">
+          <div class="hero-track" id="heroTrack">
+            <!-- Replace these .jpg later -->
+            <div class="hero-slide" style="background-image:url('./images/loan-hero-1.jpg')" aria-label="Slide 1"></div>
+            <div class="hero-slide" style="background-image:url('./images/loan-hero-2.jpg')" aria-label="Slide 2"></div>
+            <div class="hero-slide" style="background-image:url('./images/loan-hero-3.jpg')" aria-label="Slide 3"></div>
           </div>
 
-          <div class="btn-row">
-            <a class="btn btn-soft" href="#">Discover more</a>
-          </div>
-        </div>
-
-        <div class="card-media">
-          <img src="personal-loan.jpg" alt="" />
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION: Business Loan -->
-    <section class="block reveal">
-      <div class="card">
-        <div class="card-head">
-          <h2 class="card-title">Business Loan</h2>
-        </div>
-
-        <div class="card-body">
-          <div class="split">
-            <p class="card-text">Start your dream business with us.</p>
-            <a class="btn btn-primary" href="#">APPLY NOW</a>
+          <div class="hero-dots" id="heroDots" aria-label="Slider dots">
+            <button type="button" class="dot dot-active" aria-label="Go to slide 1"></button>
+            <button type="button" class="dot" aria-label="Go to slide 2"></button>
+            <button type="button" class="dot" aria-label="Go to slide 3"></button>
           </div>
 
-          <div class="btn-row">
-            <a class="btn btn-soft" href="#">Discover more</a>
-          </div>
-        </div>
+          <!-- Overlay content card like inspo -->
+          <div class="hero-card">
+            <div class="breadcrumb">
+              <span>Home</span> <span class="sep">»</span> <span>Personal Banking</span> <span class="sep">»</span>
+              <a class="crumb-link" href="./loan.html">Loan</a>
+            </div>
 
-        <div class="card-media">
-          <img src="business-loan.jpg" alt="" />
-        </div>
-      </div>
-    </section>
+            <h1 class="hero-title">Loan</h1>
+            <div class="hero-underline"></div>
 
-    <!-- SECTION: Housing Loan -->
-    <section class="block reveal">
-      <div class="card">
-        <div class="card-head">
-          <h2 class="card-title">Housing Loan</h2>
-        </div>
-
-        <div class="card-body">
-          <p class="card-text">Build your warm-hearted home with us.</p>
-
-          <div class="btn-row">
-            <a class="btn btn-primary" href="#">APPLY NOW</a>
-          </div>
-
-          <div class="btn-row">
-            <a class="btn btn-soft" href="#">Discover more</a>
-          </div>
-        </div>
-
-        <div class="card-media">
-          <img src="housing-loan.jpg" alt="" />
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION: Agriculture Loan -->
-    <section class="block reveal">
-      <div class="card">
-        <div class="card-head">
-          <h2 class="card-title">Agriculture Loan</h2>
-        </div>
-
-        <div class="card-body">
-          <p class="card-text">
-            Financing your agribusiness through our flexible and big size loan.
-          </p>
-
-          <div class="btn-row">
-            <a class="btn btn-soft" href="#">Discover more</a>
-          </div>
-        </div>
-
-        <div class="card-media">
-          <img src="agriculture-loan.jpg" alt="" />
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION: Education Loan -->
-    <section class="block reveal">
-      <div class="card">
-        <div class="card-head">
-          <h2 class="card-title">Education Loan</h2>
-        </div>
-
-        <div class="card-body">
-          <p class="card-text">Invest in Education to brighten your future!</p>
-
-          <div class="btn-row">
-            <a class="btn btn-primary" href="#">APPLY NOW</a>
-          </div>
-
-          <div class="btn-row">
-            <a class="btn btn-soft" href="#">Discover more</a>
-          </div>
-        </div>
-
-        <div class="card-media">
-          <img src="education-loan.jpg" alt="" />
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION: Express Loan -->
-    <section class="block reveal">
-      <div class="card">
-        <div class="card-head">
-          <h2 class="card-title">Express Loan</h2>
-        </div>
-
-        <div class="card-body">
-          <div class="split">
-            <p class="card-text">
-              Support the financial needs for emergency and/or unexpected life events.
+            <p class="hero-desc">
+              Start your dream business, build your warmhearted and enhance your living standard.
             </p>
-            <a class="btn btn-primary" href="#">APPLY NOW</a>
           </div>
-
-          <div class="btn-row">
-            <a class="btn btn-soft" href="#">Discover more</a>
-          </div>
-        </div>
-
-        <div class="card-media">
-          <img src="express-loan.jpg" alt="" />
         </div>
       </div>
     </section>
 
-    <!-- Customer Service Care -->
-    <section class="block reveal">
-      <div class="card card-service">
-        <div class="card-head">
+    <!-- CONTENT -->
+    <section class="page-section">
+      <div class="container">
+
+        <!-- PERSONAL LOAN -->
+        <article class="loan-card reveal">
+          <div class="loan-card-top">
+            <div>
+              <h2 class="card-title">Personal Loan</h2>
+              <p class="card-desc">
+                Upgrade your lifestyles with us through fast and convenient loan application.
+              </p>
+            </div>
+            <button class="btn btn-primary" type="button">APPLY NOW</button>
+          </div>
+
+          <button class="btn btn-soft" type="button">Discover more</button>
+
+          <div class="card-image">
+            <img src="./images/personal-loan.jpg" alt="Personal loan banner (replace later)" />
+          </div>
+        </article>
+
+        <!-- BUSINESS LOAN -->
+        <article class="loan-card reveal">
+          <div class="loan-card-top">
+            <div>
+              <h2 class="card-title">Business Loan</h2>
+              <p class="card-desc">Start your dream business with us.</p>
+            </div>
+            <button class="btn btn-primary" type="button">APPLY NOW</button>
+          </div>
+
+          <button class="btn btn-soft" type="button">Discover more</button>
+
+          <div class="card-image">
+            <img src="./images/business-loan.jpg" alt="Business loan banner (replace later)" />
+          </div>
+        </article>
+
+        <!-- HOUSING LOAN -->
+        <article class="loan-card reveal">
+          <div class="loan-card-top">
+            <div>
+              <h2 class="card-title">Housing Loan</h2>
+              <p class="card-desc">Build your warm-hearted home with us.</p>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" type="button">APPLY NOW</button>
+          <button class="btn btn-soft" type="button">Discover more</button>
+
+          <div class="card-image">
+            <img src="./images/housing-loan.jpg" alt="Housing loan banner (replace later)" />
+          </div>
+        </article>
+
+        <!-- AGRICULTURE LOAN -->
+        <article class="loan-card reveal">
+          <div class="loan-card-top">
+            <div>
+              <h2 class="card-title">Agriculture Loan</h2>
+              <p class="card-desc">
+                Financing your agribusiness through our flexible and big size loan.
+              </p>
+            </div>
+          </div>
+
+          <button class="btn btn-soft" type="button">Discover more</button>
+
+          <div class="card-image">
+            <img src="./images/agriculture-loan.jpg" alt="Agriculture loan banner (replace later)" />
+          </div>
+        </article>
+
+        <!-- EDUCATION LOAN -->
+        <article class="loan-card reveal">
+          <div class="loan-card-top">
+            <div>
+              <h2 class="card-title">Education Loan</h2>
+              <p class="card-desc">Invest in Education to brighten your future!</p>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" type="button">APPLY NOW</button>
+          <button class="btn btn-soft" type="button">Discover more</button>
+
+          <div class="card-image">
+            <img src="./images/education-loan.jpg" alt="Education loan banner (replace later)" />
+          </div>
+        </article>
+
+        <!-- EXPRESS LOAN -->
+        <article class="loan-card reveal">
+          <div class="loan-card-top">
+            <div>
+              <h2 class="card-title">Express Loan</h2>
+              <p class="card-desc">
+                Support the financial needs for emergency and/or unexpected life events.
+              </p>
+            </div>
+            <button class="btn btn-primary" type="button">APPLY NOW</button>
+          </div>
+
+          <button class="btn btn-soft" type="button">Discover more</button>
+
+          <div class="card-image">
+            <img src="./images/express-loan.jpg" alt="Express loan banner (replace later)" />
+          </div>
+        </article>
+
+        <!-- CUSTOMER SERVICE CARE -->
+        <article class="service-card reveal">
           <h2 class="card-title">Customer Service Care</h2>
-        </div>
+          <p class="card-desc">We always available to solve your problem in just a few minute!</p>
 
-        <div class="card-body">
-          <p class="card-text">We always available to solve your problem in just a few minute!</p>
-
-          <div class="phone-row">
-            <span class="phone-icon" aria-hidden="true">📞</span>
-            <a class="phone" href="tel:+85523963333">+855 23 963 333</a>
+          <div class="service-row">
+            <div class="service-phone">
+              <span class="phone-icon" aria-hidden="true">☎</span>
+              <a href="tel:+85523963333" class="phone-link">+855 23 963 333</a>
+            </div>
           </div>
 
-          <div class="btn-row">
-            <a class="btn btn-soft" href="#">Contact us</a>
-          </div>
-        </div>
+          <button class="btn btn-soft" type="button">Contact us</button>
 
-        <div class="service-media">
-          <img src="customer-service.jpg" alt="" />
-        </div>
+          <div class="service-image">
+            <img src="./images/customer-care.jpg" alt="Customer care banner (replace later)" />
+          </div>
+        </article>
+
       </div>
     </section>
-  </main>
 
-  <!-- FOOTER (use the last inspo image style; WOORI -> KIB; add rights text) -->
-  <footer class="site-footer">
-    <div class="footer-inner">
+    <!-- FOOTER (match inspo image 9 layout) -->
+    <footer class="site-footer">
       <div class="footer-top">
-        <div class="footer-brand">KOREA INTERNATIONAL BANKING</div>
-      </div>
+        <div class="container footer-grid reveal">
+          <a class="footer-tile" href="./personal-banking.html">
+            <div class="tile-icon" aria-hidden="true">👤</div>
+            <div class="tile-text">
+              <div class="tile-title">Personal<br/>Banking</div>
+              <div class="tile-arrow" aria-hidden="true">→</div>
+            </div>
+          </a>
 
-      <div class="footer-accordion">
-        <button class="footer-acc-btn" data-acc="f-personal">
-          <span>Personal Banking</span><span class="chev"></span>
-        </button>
-        <div class="footer-acc-panel" id="f-personal">
-          <a href="#" class="footer-link">Saving / Deposit</a>
-          <a href="#" class="footer-link is-active">Loan</a>
-          <a href="#" class="footer-link">Money Transfer</a>
+          <a class="footer-tile" href="./business-banking.html">
+            <div class="tile-icon" aria-hidden="true">💳</div>
+            <div class="tile-text">
+              <div class="tile-title">Business<br/>Banking</div>
+              <div class="tile-arrow" aria-hidden="true">→</div>
+            </div>
+          </a>
+
+          <a class="footer-tile" href="./digital-banking.html">
+            <div class="tile-icon" aria-hidden="true">📱</div>
+            <div class="tile-text">
+              <div class="tile-title">Digital<br/>Banking</div>
+              <div class="tile-arrow" aria-hidden="true">→</div>
+            </div>
+          </a>
+
+          <a class="footer-tile" href="./about.html">
+            <div class="tile-icon" aria-hidden="true">❔</div>
+            <div class="tile-text">
+              <div class="tile-title">About Us</div>
+              <div class="tile-arrow" aria-hidden="true">→</div>
+            </div>
+          </a>
         </div>
 
-        <button class="footer-acc-btn" data-acc="f-business">
-          <span>Business Banking</span><span class="chev"></span>
-        </button>
-        <div class="footer-acc-panel" id="f-business">
-          <a href="#" class="footer-link">Business Accounts</a>
-          <a href="#" class="footer-link">Trade Finance</a>
-        </div>
-
-        <button class="footer-acc-btn" data-acc="f-digital">
-          <span>Digital Banking</span><span class="chev"></span>
-        </button>
-        <div class="footer-acc-panel" id="f-digital">
-          <a href="#" class="footer-link">Mobile Banking</a>
-          <a href="#" class="footer-link">Online Banking</a>
-        </div>
-
-        <button class="footer-acc-btn" data-acc="f-company">
-          <span>Company</span><span class="chev"></span>
-        </button>
-        <div class="footer-acc-panel" id="f-company">
-          <a href="#" class="footer-link">About KIB</a>
-          <a href="#" class="footer-link">Careers</a>
-        </div>
-
-        <button class="footer-acc-btn" data-acc="f-financial">
-          <span>Financial</span><span class="chev"></span>
-        </button>
-        <div class="footer-acc-panel" id="f-financial">
-          <a href="#" class="footer-link">Rates</a>
-          <a href="#" class="footer-link">Fees</a>
-        </div>
-
-        <button class="footer-acc-btn" data-acc="f-news">
-          <span>News</span><span class="chev"></span>
-        </button>
-        <div class="footer-acc-panel" id="f-news">
-          <a href="#" class="footer-link">Announcements</a>
-          <a href="#" class="footer-link">Press</a>
-        </div>
-      </div>
-
-      <div class="footer-locations">
-        <h3 class="loc-title">Location Address</h3>
-        <div class="loc-list">
-          <div class="loc">
-            39 Namdaemun-ro, Jung-gu, Seoul (04531), Republic of Korea.
+        <div class="footer-accordions container reveal">
+          <div class="acc">
+            <button class="acc-head" type="button">
+              <span>Personal Banking</span><span class="acc-caret">▾</span>
+            </button>
+            <div class="acc-body">
+              <a href="./planned-savings.html">Planned Savings Account</a>
+              <a href="./saving.html">Saving / Deposit</a>
+              <a href="./loan.html">Loan</a>
+              <a href="./money-transfer.html">Money Transfer</a>
+            </div>
           </div>
-          <div class="loc">
-            Piazza di Spagna, 59, 00187 Roma RM, Italy
+
+          <div class="acc">
+            <button class="acc-head" type="button">
+              <span>Business Banking</span><span class="acc-caret">▾</span>
+            </button>
+            <div class="acc-body">
+              <a href="./business-account.html">Business Account</a>
+              <a href="./trade-finance.html">Trade Finance</a>
+              <a href="./corporate-loan.html">Corporate Loan</a>
+            </div>
           </div>
-          <div class="loc">
-            Tower 42, Level 38, 25 Old Broad Street, EC2N 1HQ, London, United Kingdom
+
+          <div class="acc">
+            <button class="acc-head" type="button">
+              <span>Digital Banking</span><span class="acc-caret">▾</span>
+            </button>
+            <div class="acc-body">
+              <a href="./internet-banking.html">Internet Banking</a>
+              <a href="./mobile-banking.html">Mobile Banking</a>
+              <a href="./security.html">Security</a>
+            </div>
           </div>
-          <div class="loc">
-            <div class="loc-bold">New York Branch</div>
-            1250 Broadway, 37th Floor, New York, NY 10001, USA
+
+          <div class="acc">
+            <button class="acc-head" type="button">
+              <span>Company</span><span class="acc-caret">▾</span>
+            </button>
+            <div class="acc-body">
+              <a href="./about.html">About KIB</a>
+              <a href="./branches.html">Branches</a>
+              <a href="./careers.html">Careers</a>
+            </div>
           </div>
-          <div class="loc">
-            Mubarak Al-Kabeer Street, Darwazat Al-Abdul Razzak, Kuwait City, State of Kuwait
+
+          <div class="acc">
+            <button class="acc-head" type="button">
+              <span>Financial</span><span class="acc-caret">▾</span>
+            </button>
+            <div class="acc-body">
+              <a href="./rates.html">Rates</a>
+              <a href="./fees.html">Fees</a>
+              <a href="./exchange.html">Exchange</a>
+            </div>
+          </div>
+
+          <div class="acc">
+            <button class="acc-head" type="button">
+              <span>News</span><span class="acc-caret">▾</span>
+            </button>
+            <div class="acc-body">
+              <a href="./news.html">Latest News</a>
+              <a href="./notices.html">Notices</a>
+            </div>
+          </div>
+
+          <div class="footer-brandline">
+            <span>KIB Group Company:</span>
+            <a href="#" class="brand-chip">spot.kibbank.com</a>
           </div>
         </div>
       </div>
 
       <div class="footer-bottom">
-        <div class="rights">All rights reserved 2023</div>
+        <div class="container footer-bottom-inner">
+          <div class="copyright">All rights reserved 2023</div>
+        </div>
       </div>
-    </div>
-  </footer>
+    </footer>
 
-  <script src="loan.js"></script>
+    <!-- Floating chat bubble like inspo -->
+    <button class="chat-bubble" type="button" aria-label="Chat">
+      <span class="chat-dot">1</span>
+      💬
+    </button>
+  </main>
+
+  <script src="./loan.js"></script>
 </body>
 </html>
