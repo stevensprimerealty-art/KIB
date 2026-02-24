@@ -556,3 +556,27 @@ img{ max-width: 100%; display: block; }
   opacity: 1 !important;
 }
 
+/* ===== Footer Brand Line ===== */
+.footer-brandline{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-size:14px;
+  color:#ffffff;
+  opacity:0.9;
+  margin-top:12px;
+}
+
+/* Email looks like normal text */
+.brand-link{
+  color:#ffffff;
+  text-decoration:none;
+  font-weight:400;
+  cursor:pointer;
+  transition:opacity .25s ease;
+}
+
+/* subtle banking hover effect */
+.brand-link:hover{
+  opacity:0.7;
+}
