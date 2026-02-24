@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>KIB — Personal Loan</title>
+  <link rel="stylesheet" href="./personal-loan.css" />
+</head>
+
+<body>
+  <!-- HEADER (match Planned Savings Account header style) -->
+  <header class="site-header">
+    <div class="hdr-inner">
+      <div class="hdr-left">
+        <div class="brand">
+          <span class="brand-title">KOREA INTERNATIONAL</span>
+          <span class="brand-title bold">BANKING <span class="muted">(KIB)</span></span>
+        </div>
+      </div>
+
+      <div class="hdr-right">
+        <div class="lang">
+          <button class="pill is-active" type="button">ENG</button>
+          <button class="pill" type="button">KOR</button>
+          <button class="pill" type="button">ESPAÑOL</button>
+        </div>
+        <button class="menu-btn" type="button" aria-label="Open menu">
+          <span class="menu-dot"></span><span class="menu-dot"></span><span class="menu-dot"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO: 3-image slider (fade + touch + auto 3s) -->
+    <section class="hero">
+      <div class="hero-slider" id="heroSlider" aria-label="Personal Loan hero slider">
+        <!-- Leave images blank but keep filenames as requested -->
+        <div class="hero-slide is-active" style="background-image:url('./personal-loan-hero-1.jpg');"></div>
+        <div class="hero-slide" style="background-image:url('./personal-loan-hero-2.jpg');"></div>
+        <div class="hero-slide" style="background-image:url('./personal-loan-hero-3.jpg');"></div>
+
+        <div class="hero-dots" aria-hidden="true">
+          <span class="dot is-active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+      </div>
+
+      <div class="hero-card-wrap">
+        <div class="hero-card reveal">
+          <div class="breadcrumb">
+            Home <span class="sep">»</span> <span class="crumb">Personal Banking</span>
+            <span class="sep">»</span> <span class="crumb">Loan</span>
+            <span class="sep">»</span> <span class="crumb is-link">Personal Loan</span>
+          </div>
+
+          <h1 class="hero-title">Personal Loan</h1>
+          <div class="title-line"></div>
+
+          <div class="hero-row">
+            <p class="hero-sub">
+              Upgrade your lifestyles with us through fast and convenient loan application.
+            </p>
+
+            <a class="btn-primary" href="#how-to-apply">APPLY NOW</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Intro text (centered, grey background like inspo) -->
+    <section class="intro">
+      <div class="container reveal">
+        <p class="intro-text">
+          A kind of consumption loan used for purchasing personal or household assets as well as funding of household
+          consumption in the purpose of improving the basic living conditions.
+        </p>
+      </div>
+    </section>
+
+    <!-- Condition -->
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title reveal">Condition</h2>
+
+        <div class="card condition-card reveal">
+          <div class="cond-block">
+            <h3 class="cond-title">Currency</h3>
+            <ul class="cond-list">
+              <li>KHR/USD</li>
+            </ul>
+          </div>
+
+          <div class="cond-block">
+            <h3 class="cond-title">Maximum Loan Size</h3>
+            <ul class="cond-list">
+              <li>KHR 200,000,000</li>
+              <li>USD 50,000</li>
+            </ul>
+          </div>
+
+          <div class="cond-block">
+            <h3 class="cond-title">Maximum Loan Term</h3>
+            <ul class="cond-list">
+              <li>Up to 72 Months</li>
+            </ul>
+          </div>
+
+          <div class="cond-block">
+            <h3 class="cond-title">Monthly Interest Rate</h3>
+            <ul class="cond-list">
+              <li>From 0.90% to 1.50%</li>
+            </ul>
+          </div>
+
+          <div class="cond-block">
+            <h3 class="cond-title">Payment</h3>
+            <ul class="cond-list">
+              <li>Based on client’s business cash flow</li>
+            </ul>
+          </div>
+
+          <div class="cond-block">
+            <h3 class="cond-title">Mode Lending Methodologies</h3>
+            <ul class="cond-list">
+              <li>Group Loan or Individual Loan</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How To Apply -->
+    <section class="section" id="how-to-apply">
+      <div class="container">
+        <div class="card apply-card reveal">
+          <h2 class="apply-title">How To Apply</h2>
+
+          <p class="apply-text">
+            Please visit the nearest KIB Bank’s branch networks nationwide.
+          </p>
+
+          <p class="apply-text">
+            For more information, please contact us at
+            <a class="link" href="tel:+85523963333">023 96 3333</a>
+            <span class="pipe">|</span>
+            <a class="link" href="tel:+85581331333">081 331 333</a>.
+          </p>
+
+          <a class="btn-soft" href="#footer-contact">Contact us</a>
+
+          <!-- Image placeholder name (you will replace later) -->
+          <div class="apply-img" aria-label="Branch image placeholder">
+            <img src="./personal-loan-apply-branch.jpg" alt="personal-loan-apply-branch.jpg (replace later)" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Customer Service Care (image 6 style) -->
+    <section class="cs-section" id="footer-contact">
+      <div class="container">
+        <div class="cs-card reveal">
+          <h2 class="cs-title">Customer Service Care</h2>
+          <p class="cs-text">We always available to solve your problem in just a few minute!</p>
+
+          <div class="cs-phone">
+            <span class="phone-ico" aria-hidden="true">📞</span>
+            <a class="cs-link" href="tel:+85523963333">+855 23 963 333</a>
+          </div>
+
+          <a class="btn-soft cs-btn" href="#footer-contact">Contact us</a>
+
+          <!-- Footer image placeholder name (replace later) -->
+          <div class="cs-img">
+            <img src="./customer-service-care.jpg" alt="customer-service-care.jpg (replace later)" />
+          </div>
+
+          <div class="brand-chip">kibinternational.co.site</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BLUE FOOTER (accordion like inspo) -->
+    <footer class="footer">
+      <div class="footer-blue">
+        <div class="container">
+          <div class="footer-accordion">
+            <details open>
+              <summary>Personal Banking</summary>
+              <div class="foot-links">
+                <a href="./planned-savings.html">Planned Savings Account</a>
+                <a href="./loan.html">Loan</a>
+              </div>
+            </details>
+
+            <details>
+              <summary>Business Banking</summary>
+              <div class="foot-links">
+                <a href="./business-loan.html">Business Loan</a>
+                <a href="./trade.html">Trade Services</a>
+              </div>
+            </details>
+
+            <details>
+              <summary>Digital Banking</summary>
+              <div class="foot-links">
+                <a href="./internet-banking.html">Internet Banking</a>
+                <a href="./mobile-banking.html">Mobile Banking</a>
+              </div>
+            </details>
+
+            <details>
+              <summary>Company</summary>
+              <div class="foot-links">
+                <a href="./about.html">About Us</a>
+                <a href="./contact.html">Contact</a>
+              </div>
+            </details>
+
+            <details>
+              <summary>Financial</summary>
+              <div class="foot-links">
+                <a href="./rates.html">Rates</a>
+                <a href="./fees.html">Fees</a>
+              </div>
+            </details>
+
+            <details>
+              <summary>News</summary>
+              <div class="foot-links">
+                <a href="./notices.html">Notices</a>
+                <a href="./news.html">Updates</a>
+              </div>
+            </details>
+          </div>
+
+          <!-- This line appears like the inspo -->
+          <div class="footer-brandline">
+            <span>KIB Group Company:</span>
+            <!-- ORDINARY TEXT (not a link) -->
+            <span class="brand-plain">info@kibinternational.co.site</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-blue-label">
+        <div class="container">
+          <span>KOREA INTERNATIONAL BANKING</span>
+        </div>
+      </div>
+
+      <!-- White address section (like inspo screenshot) -->
+      <section class="footer-address-section">
+        <div class="container reveal">
+          <h3 class="addr-title">Location Address</h3>
+
+          <div class="addr-block">
+            <p>39 Namdaemun-ro, Jung-gu, Seoul (04531), Republic of Korea.</p>
+            <p>Piazza di Spagna, 59, 00187 Roma RM, Italy</p>
+            <p>Tower 42 , Level 38, 25 Old Broad Street, EC2N 1HQ, London, United Kingdom</p>
+
+            <h4 class="addr-sub">New York Branch</h4>
+            <p>1250 Broadway, 37th Floor, New York, NY 10001, USA</p>
+            <p>Mubarak Al-Kabeer Street, Darwazat Al-Abdul Razzak, Kuwait City, State of Kuwait</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer-bottom">
+        <div class="container">
+          <span>All rights reserved 2023</span>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script src="./personal-loan.js"></script>
+</body>
+</html>
