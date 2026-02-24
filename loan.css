@@ -515,3 +515,44 @@ img{ max-width: 100%; display: block; }
   .card-title{ font-size: 30px; }
   .btn-primary{ min-width: 130px; }
 }
+/* FOOTER extra: blue label + white address section like inspo */
+.footer-blue-label{
+  padding: 14px 0 18px;
+  border-top: 1px solid rgba(255,255,255,.18);
+  border-bottom: 1px solid rgba(255,255,255,.18);
+}
+.footer-blue-label span{
+  font-weight: 950;
+  letter-spacing: .5px;
+  opacity: .95;
+  font-size: 14px;
+}
+
+/* WHITE ADDRESS AREA */
+.footer-address-section{
+  background: #fff;
+  color: #111827;
+  padding: 22px 0 18px;
+}
+
+.addr-title{
+  margin: 0 0 12px;
+  font-size: 26px;
+  font-weight: 950;
+  letter-spacing: .2px;
+}
+
+.addr-block p{
+  margin: 0 0 14px;
+  font-size: 18px;
+  line-height: 1.55;
+  color: #111827;
+  opacity: .92;
+}
+
+.addr-subtitle{
+  margin-top: 16px !important;
+  font-weight: 950;
+  opacity: 1 !important;
+}
+
