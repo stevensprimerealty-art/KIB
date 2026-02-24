@@ -1,145 +1,132 @@
-// loan.js
-
-// ---------- Mobile menu toggle ----------
-const menuBtn = document.getElementById("menuBtn");
+/* -------------------------
+   Header mobile menu
+-------------------------- */
+const hamburgerBtn = document.getElementById("hamburgerBtn");
 const mobileMenu = document.getElementById("mobileMenu");
 
-if (menuBtn && mobileMenu) {
-  menuBtn.addEventListener("click", () => {
-    const open = mobileMenu.classList.toggle("is-open");
-    menuBtn.setAttribute("aria-expanded", String(open));
-    mobileMenu.setAttribute("aria-hidden", String(!open));
-  });
+function setMenu(open) {
+  hamburgerBtn.setAttribute("aria-expanded", open ? "true" : "false");
+  mobileMenu.style.display = open ? "block" : "none";
+  mobileMenu.setAttribute("aria-hidden", open ? "false" : "true");
 }
+setMenu(false);
 
-// ---------- Accordions (header menu + footer) ----------
-function setupAccordions(selectorBtn, selectorPanelPrefix = "") {
-  const btns = document.querySelectorAll(selectorBtn);
-  btns.forEach(btn => {
-    btn.setAttribute("aria-expanded", "false");
-    btn.addEventListener("click", () => {
-      const id = btn.getAttribute("data-acc");
-      if (!id) return;
-      const panel = document.getElementById(id);
-      if (!panel) return;
+hamburgerBtn.addEventListener("click", () => {
+  const isOpen = hamburgerBtn.getAttribute("aria-expanded") === "true";
+  setMenu(!isOpen);
+});
 
-      const isOpen = panel.classList.toggle("is-open");
-      btn.setAttribute("aria-expanded", String(isOpen));
+/* -------------------------
+   Hero slider (auto 3s + swipe)
+-------------------------- */
+const heroTrack = document.getElementById("heroTrack");
+const heroDotsWrap = document.getElementById("heroDots");
+const dots = Array.from(heroDotsWrap.querySelectorAll(".dot"));
 
-      // rotate chevron by toggling aria-expanded (CSS handles it where needed)
-      // Close other panels in the same group (nice mobile behavior)
-      btns.forEach(other => {
-        if (other === btn) return;
-        const otherId = other.getAttribute("data-acc");
-        const otherPanel = otherId ? document.getElementById(otherId) : null;
-        if (otherPanel) otherPanel.classList.remove("is-open");
-        other.setAttribute("aria-expanded", "false");
-      });
-    });
-  });
-}
+let slideIndex = 0;
+let autoTimer = null;
 
-setupAccordions(".accordion-btn");
-setupAccordions(".footer-acc-btn");
-
-// ---------- Fade-in on scroll ----------
-const revealEls = document.querySelectorAll(".reveal");
-const io = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) e.target.classList.add("in-view");
-  });
-}, { threshold: 0.12 });
-
-revealEls.forEach(el => io.observe(el));
-
-// ---------- Hero slider (3 images, auto 3s, touch swipe) ----------
-const slider = document.getElementById("heroSlider");
-const slidesEl = document.getElementById("slides");
-const dotsEl = document.getElementById("dots");
-
-let index = 0;
-let timer = null;
-
-function slideCount() {
-  return slidesEl ? slidesEl.children.length : 0;
-}
-
-function renderDots() {
-  if (!dotsEl || !slidesEl) return;
-  dotsEl.innerHTML = "";
-  for (let i = 0; i < slideCount(); i++) {
-    const d = document.createElement("div");
-    d.className = "dot" + (i === index ? " is-active" : "");
-    d.addEventListener("click", () => goTo(i, true));
-    dotsEl.appendChild(d);
+function renderSlide(index, animate = true) {
+  slideIndex = index;
+  if (!animate) heroTrack.style.transition = "none";
+  heroTrack.style.transform = `translateX(-${index * 100}%)`;
+  if (!animate) {
+    // force reflow then restore transition
+    void heroTrack.offsetHeight;
+    heroTrack.style.transition = "transform 520ms ease";
   }
+
+  dots.forEach((d, i) => {
+    d.classList.toggle("dot-active", i === index);
+  });
 }
 
-function goTo(i, userAction = false) {
-  if (!slidesEl) return;
-  const n = slideCount();
-  if (n === 0) return;
-
-  index = (i + n) % n;
-  slidesEl.style.transform = `translateX(${-index * 100}%)`;
-  renderDots();
-
-  if (userAction) restartAuto();
+function nextSlide() {
+  const next = (slideIndex + 1) % 3;
+  renderSlide(next);
 }
 
-function next() {
-  goTo(index + 1);
+function startAuto() {
+  stopAuto();
+  autoTimer = setInterval(nextSlide, 3000);
+}
+function stopAuto() {
+  if (autoTimer) clearInterval(autoTimer);
+  autoTimer = null;
 }
 
-function restartAuto() {
-  if (timer) clearInterval(timer);
-  timer = setInterval(next, 3000);
-}
+dots.forEach((dot, i) => {
+  dot.addEventListener("click", () => {
+    renderSlide(i);
+    startAuto();
+  });
+});
 
-// Touch swipe
+startAuto();
+
+/* Touch swipe */
 let startX = 0;
-let dx = 0;
+let currentX = 0;
 let dragging = false;
 
-function onTouchStart(e) {
-  if (!slidesEl) return;
+heroTrack.addEventListener("touchstart", (e) => {
+  stopAuto();
   dragging = true;
   startX = e.touches[0].clientX;
-  dx = 0;
-  if (timer) clearInterval(timer);
-}
+  currentX = startX;
+}, { passive: true });
 
-function onTouchMove(e) {
+heroTrack.addEventListener("touchmove", (e) => {
   if (!dragging) return;
-  dx = e.touches[0].clientX - startX;
-}
+  currentX = e.touches[0].clientX;
+}, { passive: true });
 
-function onTouchEnd() {
+heroTrack.addEventListener("touchend", () => {
   if (!dragging) return;
   dragging = false;
 
-  const threshold = 50; // px
-  if (dx > threshold) goTo(index - 1, true);
-  else if (dx < -threshold) goTo(index + 1, true);
-  else restartAuto();
-}
+  const diff = currentX - startX;
+  const threshold = 50;
 
-if (slider && slidesEl) {
-  renderDots();
-  restartAuto();
+  if (diff > threshold) {
+    // swipe right
+    const prev = (slideIndex - 1 + 3) % 3;
+    renderSlide(prev);
+  } else if (diff < -threshold) {
+    // swipe left
+    const next = (slideIndex + 1) % 3;
+    renderSlide(next);
+  }
+  startAuto();
+});
 
-  slider.addEventListener("touchstart", onTouchStart, { passive: true });
-  slider.addEventListener("touchmove", onTouchMove, { passive: true });
-  slider.addEventListener("touchend", onTouchEnd);
-  slider.addEventListener("touchcancel", onTouchEnd);
-}
+/* -------------------------
+   Fade-in on scroll (reveal)
+-------------------------- */
+const revealEls = document.querySelectorAll(".reveal");
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("in");
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
 
-// Safety: if images fail to load (because you haven't added .jpg yet), keep layout clean
-document.querySelectorAll("img").forEach(img => {
-  img.addEventListener("error", () => {
-    img.style.display = "none";
-    const parent = img.parentElement;
-    if (parent) parent.style.background =
-      "linear-gradient(135deg, rgba(11,103,178,.18), rgba(13,23,38,.06))";
+revealEls.forEach((el) => io.observe(el));
+
+/* -------------------------
+   Footer accordion
+-------------------------- */
+const accHeads = document.querySelectorAll(".acc-head");
+accHeads.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const body = btn.nextElementSibling;
+    const isOpen = body.style.display === "block";
+
+    // close others (match clean mobile feel)
+    document.querySelectorAll(".acc-body").forEach((b) => (b.style.display = "none"));
+
+    body.style.display = isOpen ? "none" : "block";
   });
 });
