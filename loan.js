@@ -118,15 +118,18 @@ revealEls.forEach((el) => io.observe(el));
 /* -------------------------
    Footer accordion
 -------------------------- */
+/* -------------------------
+   Footer accordion (smooth)
+-------------------------- */
 const accHeads = document.querySelectorAll(".acc-head");
+
 accHeads.forEach((btn) => {
   btn.addEventListener("click", () => {
     const body = btn.nextElementSibling;
-    const isOpen = body.style.display === "block";
+    const isOpen = body.classList.contains("open");
 
-    // close others (match clean mobile feel)
-    document.querySelectorAll(".acc-body").forEach((b) => (b.style.display = "none"));
+    document.querySelectorAll(".acc-body").forEach((b) => b.classList.remove("open"));
 
-    body.style.display = isOpen ? "none" : "block";
+    if (!isOpen) body.classList.add("open");
   });
 });
