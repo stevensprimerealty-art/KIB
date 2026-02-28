@@ -1,107 +1,172 @@
-// ===========================
-// Footer year
-// ===========================
-document.getElementById("year").textContent = new Date().getFullYear();
+/* ===============================
+   HEADER DRAWER
+=================================*/
+(function () {
+  const btn = document.getElementById("menuBtn");
+  const drawer = document.getElementById("drawer");
+  const close = document.getElementById("menuClose");
+  const backdrop = document.getElementById("drawerBackdrop");
 
-// ===========================
-// Mobile drawer (menu)
-// ===========================
-const menuBtn = document.getElementById("menuBtn");
-const drawer = document.getElementById("drawer");
-const menuClose = document.getElementById("menuClose");
-const drawerBackdrop = document.getElementById("drawerBackdrop");
+  if (!btn || !drawer) return;
 
-function openDrawer(){
-  drawer.classList.add("is-open");
-  drawer.setAttribute("aria-hidden","false");
-  menuBtn.setAttribute("aria-expanded","true");
-}
-function closeDrawer(){
-  drawer.classList.remove("is-open");
-  drawer.setAttribute("aria-hidden","true");
-  menuBtn.setAttribute("aria-expanded","false");
-}
+  function openDrawer() {
+    drawer.classList.add("is-open");
+    drawer.setAttribute("aria-hidden", "false");
+    btn.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
+  }
+  function closeDrawer() {
+    drawer.classList.remove("is-open");
+    drawer.setAttribute("aria-hidden", "true");
+    btn.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+  }
 
-menuBtn?.addEventListener("click", openDrawer);
-menuClose?.addEventListener("click", closeDrawer);
-drawerBackdrop?.addEventListener("click", closeDrawer);
+  btn.addEventListener("click", openDrawer);
+  close && close.addEventListener("click", closeDrawer);
+  backdrop && backdrop.addEventListener("click", closeDrawer);
 
-// ===========================
-// Hero Slider (auto 3s + swipe)
-// ===========================
-const track = document.getElementById("heroTrack");
-const dotsWrap = document.getElementById("heroDots");
-const dots = dotsWrap ? Array.from(dotsWrap.querySelectorAll(".dot")) : [];
-
-let index = 0;
-let timer = null;
-
-function setSlide(i){
-  index = (i + 3) % 3;
-  track.style.transform = `translateX(-${index * 100}%)`;
-  dots.forEach((d, di) => d.classList.toggle("is-active", di === index));
-}
-
-function startAuto(){
-  stopAuto();
-  timer = setInterval(() => setSlide(index + 1), 3000);
-}
-function stopAuto(){
-  if (timer) clearInterval(timer);
-  timer = null;
-}
-
-dots.forEach((d, i) => {
-  d.addEventListener("click", () => {
-    setSlide(i);
-    startAuto();
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeDrawer();
   });
-});
+})();
 
-// Swipe
-let startX = 0;
-let currentX = 0;
-let isDown = false;
+/* ===============================
+   HERO SLIDER (auto 3s + touch)
+=================================*/
+(function () {
+  const track = document.getElementById("heroTrack");
+  const dotsWrap = document.getElementById("heroDots");
+  if (!track || !dotsWrap) return;
 
-track.addEventListener("touchstart", (e) => {
-  stopAuto();
-  isDown = true;
-  startX = e.touches[0].clientX;
-}, {passive:true});
+  const dots = Array.from(dotsWrap.querySelectorAll(".dot"));
+  const total = dots.length;
 
-track.addEventListener("touchmove", (e) => {
-  if (!isDown) return;
-  currentX = e.touches[0].clientX;
-}, {passive:true});
+  let index = 0;
+  let timer = null;
 
-track.addEventListener("touchend", () => {
-  if (!isDown) return;
-  const dx = currentX - startX;
-  const threshold = 40;
+  function setActiveDot(i) {
+    dots.forEach((d, idx) => d.classList.toggle("is-active", idx === i));
+  }
 
-  if (dx > threshold) setSlide(index - 1);
-  else if (dx < -threshold) setSlide(index + 1);
+  function goTo(i) {
+    index = (i + total) % total;
+    track.style.transform = `translateX(-${index * 100}%)`;
+    setActiveDot(index);
+  }
 
-  isDown = false;
-  startX = 0;
-  currentX = 0;
-  startAuto();
-});
+  function start() {
+    stop();
+    timer = setInterval(() => goTo(index + 1), 3000);
+  }
+  function stop() {
+    if (timer) clearInterval(timer);
+    timer = null;
+  }
 
-setSlide(0);
-startAuto();
+  dots.forEach((dot, i) => {
+    dot.addEventListener("click", () => {
+      goTo(i);
+      start();
+    });
+  });
 
-// ===========================
-// Fade-in on scroll (IntersectionObserver)
-// ===========================
-const reveals = document.querySelectorAll(".reveal");
-const io = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add("in-view");
-      io.unobserve(entry.target);
+  // touch swipe
+  let startX = 0;
+  let deltaX = 0;
+  let isDown = false;
+
+  track.addEventListener("touchstart", (e) => {
+    isDown = true;
+    startX = e.touches[0].clientX;
+    deltaX = 0;
+    stop();
+  }, { passive: true });
+
+  track.addEventListener("touchmove", (e) => {
+    if (!isDown) return;
+    deltaX = e.touches[0].clientX - startX;
+  }, { passive: true });
+
+  track.addEventListener("touchend", () => {
+    if (!isDown) return;
+    isDown = false;
+
+    if (Math.abs(deltaX) > 40) {
+      if (deltaX < 0) goTo(index + 1);
+      else goTo(index - 1);
     }
+    start();
   });
-}, { threshold: 0.12 });
 
-reveals.forEach(el => io.observe(el));
+  goTo(0);
+  start();
+})();
+
+/* ===============================
+   REVEAL ON SCROLL
+=================================*/
+(function () {
+  const els = document.querySelectorAll(".reveal");
+  if (!els.length) return;
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) e.target.classList.add("is-visible");
+      });
+    },
+    { threshold: 0.15 }
+  );
+
+  els.forEach((el) => io.observe(el));
+})();
+
+/* ===============================
+   FOOTER ACCORDION (matches your CSS)
+=================================*/
+(function () {
+  const items = document.querySelectorAll(".kib-acc-item");
+  if (!items.length) return;
+
+  function closeAll(except) {
+    items.forEach((item) => {
+      if (item === except) return;
+      item.classList.remove("is-open");
+      const btn = item.querySelector(".kib-acc-header");
+      const body = item.querySelector(".kib-acc-body");
+      if (btn) btn.setAttribute("aria-expanded", "false");
+      if (body) body.style.maxHeight = "0px";
+    });
+  }
+
+  items.forEach((item) => {
+    const btn = item.querySelector(".kib-acc-header");
+    const body = item.querySelector(".kib-acc-body");
+    if (!btn || !body) return;
+
+    // init height if open
+    if (item.classList.contains("is-open")) {
+      btn.setAttribute("aria-expanded", "true");
+      body.style.maxHeight = body.scrollHeight + "px";
+    } else {
+      btn.setAttribute("aria-expanded", "false");
+      body.style.maxHeight = "0px";
+    }
+
+    btn.addEventListener("click", () => {
+      const isOpen = item.classList.contains("is-open");
+      closeAll(item);
+
+      if (isOpen) {
+        item.classList.remove("is-open");
+        btn.setAttribute("aria-expanded", "false");
+        body.style.maxHeight = "0px";
+      } else {
+        item.classList.add("is-open");
+        btn.setAttribute("aria-expanded", "true");
+        body.style.maxHeight = body.scrollHeight + "px";
+      }
+    });
+  });
+})();
