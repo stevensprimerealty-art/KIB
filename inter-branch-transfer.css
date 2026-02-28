@@ -352,104 +352,189 @@ body{
   .fee-cell{ font-size: 16px; padding: 16px 12px; }
 }
 /* ===============================
-   FIX FOOTER (MATCH YOUR HTML)
+   KIB FOOTER (MATCH IMAGE 2 & 3)
 =================================*/
 
-.kib-footer {
+.kib-footer{
   margin-top: 30px;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 
-/* BLUE ACCORDION AREA */
-.kib-footer__nav {
-  background: #3b6ea8;
-  color: #fff;
-  padding: 18px 0;
+/* ===============================
+   BLUE ACCORDION AREA (NAV)
+=================================*/
+.kib-footer__nav{
+  background:#3b6ea8;
+  color:#fff;
+  padding:16px 0 12px;
 }
 
-/* ADDRESS AREA */
-.kib-footer__address {
-  background: #f4f6f9;
-  padding: 18px;
+/* each accordion row */
+.kib-acc-item{
+  border-top:1px solid rgba(255,255,255,.18);
+}
+.kib-acc-item:first-child{
+  border-top:none;
 }
 
-.kib-footer__address-card {
-  background: #fff;
-  border-radius: 18px;
-  padding: 22px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+.kib-acc-header{
+  width:100%;
+  background:transparent;
+  border:none;
+  color:#fff;
+  font-weight:900;
+  font-size:26px;
+  padding:18px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  cursor:pointer;
 }
 
-.kib-footer__badge {
-  background: #3b6ea8;
-  color: #fff;
-  display: inline-block;
-  padding: 10px 18px;
-  border-radius: 14px;
-  font-weight: 900;
-  font-size: 16px;
-  margin-bottom: 14px;
+.kib-acc-icon{
+  font-size:18px;
+  opacity:.9;
+  transform: rotate(0deg);
+  transition: transform .25s ease;
 }
 
-.kib-footer__address h3 {
-  font-size: 34px;
-  font-weight: 900;
-  margin: 0 0 16px;
-  color: #0c0c0c;
+/* open state */
+.kib-acc-item.is-open .kib-acc-icon{
+  transform: rotate(180deg);
 }
 
-.kib-footer__address p {
-  font-size: 20px;
-  font-weight: 700;
-  line-height: 1.4;
-  margin: 0 0 14px;
-  color: #1a1a1a;
+/* accordion body */
+.kib-acc-body{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .3s ease;
+  padding:0 18px;
+}
+.kib-acc-item.is-open .kib-acc-body{
+  padding-bottom:12px;
 }
 
-.kib-footer__branchTitle {
-  font-weight: 900;
-  margin-top: 18px;
+/* links inside */
+.kib-acc-links a{
+  display:block;
+  color:#fff;
+  text-decoration:none;
+  font-size:22px;
+  font-weight:700;
+  padding:10px 0;
+  opacity:.95;
 }
 
-/* BOTTOM BAR (THIS IS THE PART YOU SHOWED) */
-.kib-footer__bottom {
-  background: linear-gradient(180deg,#4f7fba,#3b6ea8);
-  color: #fff;
-  text-align: center;
-  padding: 18px 12px;
-  border-bottom-left-radius: 22px;
-  border-bottom-right-radius: 22px;
+/* group company line */
+.kib-footer__group{
+  padding:14px 18px 6px;
+  font-size:20px;
+  font-weight:800;
+  border-top:1px solid rgba(255,255,255,.18);
+  margin-top:10px;
+  opacity:.95;
 }
 
-/* Social icons row */
-.kib-footer__social {
-  display: flex;
-  justify-content: center;
-  gap: 14px;
-  margin-bottom: 10px;
+/* ===============================
+   ADDRESS AREA (WHITE PAGE)
+=================================*/
+.kib-footer__address{
+  background:#ffffff;
+  padding:18px 16px 0;
 }
 
-.kib-social {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  text-decoration: none;
-  font-weight: 900;
+/* address card (rounded white card) */
+.kib-footer__address-card{
+  background:#fff;
+  border-radius:18px;
+  padding:22px 20px 26px;
+  box-shadow:0 6px 18px rgba(0,0,0,.08);
 }
 
-/* Copyright text */
-.kib-footer__copy {
-  font-weight: 800;
-  font-size: 18px;
+/* KOREA INTERNATIONAL BANKING badge */
+.kib-footer__badge{
+  background:#3b6ea8;
+  color:#fff;
+  display:block;
+  width:100%;
+  text-align:center;
+  padding:14px 18px;
+  border-radius:14px;
+  font-weight:900;
+  font-size:18px;
+  letter-spacing:.5px;
+  margin-bottom:18px;
 }
 
-/* Mobile tweaks */
-@media (max-width:420px) {
-  .kib-footer__address h3 { font-size: 30px; }
-  .kib-footer__address p  { font-size: 18px; }
+/* Location Address title */
+.kib-footer__address h3{
+  font-size:38px;
+  font-weight:900;
+  margin:0 0 16px;
+  color:#0c0c0c;
+}
+
+/* address text */
+.kib-footer__address p{
+  font-size:20px;
+  font-weight:700;
+  line-height:1.45;
+  margin:0 0 14px;
+  color:#1a1a1a;
+}
+
+.kib-footer__branchTitle{
+  font-weight:900;
+  margin-top:18px;
+  margin-bottom:6px;
+}
+
+/* ===============================
+   BOTTOM BAR
+=================================*/
+.kib-footer__bottom{
+  margin-top:18px;
+  background:linear-gradient(180deg,#4f7fba,#3b6ea8);
+  color:#fff;
+  text-align:center;
+  padding:18px 12px;
+  border-bottom-left-radius:22px;
+  border-bottom-right-radius:22px;
+}
+
+/* social icons row */
+.kib-footer__social{
+  display:flex;
+  justify-content:center;
+  gap:14px;
+  margin-bottom:10px;
+}
+
+.kib-social{
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  background:rgba(255,255,255,.22);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  text-decoration:none;
+  font-weight:900;
+}
+
+/* copyright */
+.kib-footer__copy{
+  font-weight:900;
+  font-size:18px;
+}
+
+/* ===============================
+   MOBILE TWEAKS
+=================================*/
+@media (max-width:420px){
+  .kib-acc-header{ font-size:24px; }
+  .kib-acc-links a{ font-size:20px; }
+  .kib-footer__address h3{ font-size:32px; }
+  .kib-footer__address p{ font-size:18px; }
 }
