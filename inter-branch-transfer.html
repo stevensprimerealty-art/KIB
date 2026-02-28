@@ -161,83 +161,93 @@
     <!-- =======================
          FOOTER (same style)
     ======================== -->
-    <footer class="kib-footer">
-      <div class="kib-footer__menu">
-        <details class="foot-acc" open>
-          <summary>Personal Banking</summary>
-          <div class="foot-acc__body">
-            <a href="loan.html">Loan</a>
-            <a href="money-transfer.html">Money Transfer</a>
-            <a href="saving-deposit.html">Saving / Deposit</a>
-          </div>
-        </details>
+    <footer class="kib-footer" id="kibFooter">
+  <!-- BLUE ACCORDION MENU -->
+  <section class="kib-footer__nav">
+    <button class="kib-acc" type="button" aria-expanded="true">
+      <span>Personal Banking</span>
+      <span class="kib-acc__icon" aria-hidden="true">▾</span>
+    </button>
+    <div class="kib-acc__panel is-open">
+      <a href="loan.html" class="kib-footer__link">Loan</a>
+      <a href="money-transfer.html" class="kib-footer__link">Money Transfer</a>
+      <a href="saving-deposit.html" class="kib-footer__link">Saving / Deposit</a>
+    </div>
 
-        <details class="foot-acc">
-          <summary>Business Banking</summary>
-          <div class="foot-acc__body">
-            <a href="business-loan.html">Business Loan</a>
-            <a href="trade-finance.html">Trade Finance</a>
-          </div>
-        </details>
+    <button class="kib-acc" type="button" aria-expanded="false">
+      <span>Business Banking</span>
+      <span class="kib-acc__icon" aria-hidden="true">▾</span>
+    </button>
+    <div class="kib-acc__panel">
+      <a href="business-banking.html" class="kib-footer__link">Business Banking</a>
+    </div>
 
-        <details class="foot-acc">
-          <summary>Digital Banking</summary>
-          <div class="foot-acc__body">
-            <a href="mobile-banking.html">Mobile Banking</a>
-            <a href="internet-banking.html">Internet Banking</a>
-          </div>
-        </details>
+    <button class="kib-acc" type="button" aria-expanded="false">
+      <span>Digital Banking</span>
+      <span class="kib-acc__icon" aria-hidden="true">▾</span>
+    </button>
+    <div class="kib-acc__panel">
+      <a href="digital-banking.html" class="kib-footer__link">Digital Banking</a>
+    </div>
 
-        <details class="foot-acc">
-          <summary>Company</summary>
-          <div class="foot-acc__body">
-            <a href="about.html">About Us</a>
-            <a href="branches.html">Branches</a>
-          </div>
-        </details>
+    <button class="kib-acc" type="button" aria-expanded="false">
+      <span>Company</span>
+      <span class="kib-acc__icon" aria-hidden="true">▾</span>
+    </button>
+    <div class="kib-acc__panel">
+      <a href="about.html" class="kib-footer__link">About Us</a>
+    </div>
 
-        <details class="foot-acc">
-          <summary>Financial</summary>
-          <div class="foot-acc__body">
-            <a href="fees.html">Fees</a>
-            <a href="rates.html">Rates</a>
-          </div>
-        </details>
+    <button class="kib-acc" type="button" aria-expanded="false">
+      <span>Financial</span>
+      <span class="kib-acc__icon" aria-hidden="true">▾</span>
+    </button>
+    <div class="kib-acc__panel">
+      <a href="financial.html" class="kib-footer__link">Financial</a>
+    </div>
 
-        <details class="foot-acc">
-          <summary>News</summary>
-          <div class="foot-acc__body">
-            <a href="news.html">Latest News</a>
-            <a href="events.html">Events</a>
-          </div>
-        </details>
+    <button class="kib-acc" type="button" aria-expanded="false">
+      <span>News</span>
+      <span class="kib-acc__icon" aria-hidden="true">▾</span>
+    </button>
+    <div class="kib-acc__panel">
+      <a href="news.html" class="kib-footer__link">News</a>
+    </div>
 
-        <div class="foot-group">KIB Group Company: spot.kibbank.com</div>
-      </div>
+    <div class="kib-footer__group">
+      KIB Group Company: <a class="kib-footer__groupLink" href="https://spot.kibbank.com" target="_blank" rel="noopener">spot.kibbank.com</a>
+    </div>
+  </section>
 
-      <div class="kib-footer__addresses">
-        <h3 class="addr-title">Location Address</h3>
-        <div class="addr-list">
-          <p>39 Namdaemun-ro, Jung-gu, Seoul (04531), Republic of Korea.</p>
-          <p>Piazza di Spagna, 59, 00187 Roma RM, Italy</p>
-          <p>Tower 42, Level 38, 25 Old Broad Street, EC2N 1HQ, London, United Kingdom</p>
-          <p><strong>New York Branch</strong><br/>1250 Broadway, 37th Floor, New York, NY 10001, USA</p>
-          <p>Mubarak Al-Kabeer Street, Darwazat Al-Abdul Razzak, Kuwait City, State of Kuwait</p>
-        </div>
-      </div>
+  <!-- LOCATION ADDRESS (WHITE AREA) -->
+  <section class="kib-footer__address">
+    <h3>Location Address</h3>
 
-      <div class="kib-footer__bottom">
-        <div class="social">
-          <a href="#" aria-label="Facebook">Fb</a>
-          <a href="#" aria-label="Instagram">Ig</a>
-          <a href="#" aria-label="LinkedIn">In</a>
-          <a href="#" aria-label="YouTube">Yt</a>
-        </div>
-        <div class="copyright">© <span id="year"></span> KIB. All rights reserved.</div>
-      </div>
-    </footer>
+    <p>39 Namdaemun-ro, Jung-gu, Seoul (04531), Republic of Korea.</p>
+    <p>Piazza di Spagna, 59, 00187 Roma RM, Italy</p>
+    <p>Tower 42, Level 38, 25 Old Broad Street, EC2N 1HQ, London, United Kingdom</p>
 
-  </main>
+    <p class="kib-footer__branchTitle">New York Branch</p>
+    <p>1250 Broadway, 37th Floor, New York, NY 10001, USA</p>
+
+    <p>Mubarak Al-Kabeer Street, Darwazat Al-Abdul Razzak, Kuwait City, State of Kuwait</p>
+  </section>
+
+  <!-- BOTTOM BAR -->
+  <section class="kib-footer__bottom">
+    <div class="kib-footer__social">
+      <a class="kib-social" href="#" aria-label="Facebook">Fb</a>
+      <a class="kib-social" href="#" aria-label="Instagram">Ig</a>
+      <a class="kib-social" href="#" aria-label="LinkedIn">In</a>
+      <a class="kib-social" href="#" aria-label="YouTube">Yt</a>
+    </div>
+
+    <div class="kib-footer__copy">© 2023 KIB. All rights reserved.</div>
+    </div>
+
+</section>
+</footer>
+</main>
 
   <script src="inter-branch-transfer.js"></script>
 </body>
