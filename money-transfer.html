@@ -56,22 +56,23 @@
 
     <!-- =======================
          HERO (3-image auto slider)
-         - Uses loan hero container style
     ======================== -->
     <section class="hero">
       <div class="hero__wrap">
 
         <div class="hero-slider" id="heroSlider" aria-roledescription="carousel" aria-label="Money Transfer hero">
           <div class="hero-slider__track" id="heroTrack">
-            <!-- NOTE: placeholders (you will replace JPGs later) -->
             <div class="hero-slide" aria-label="Slide 1">
-              <img class="hero-slide__img" src="money-transfer-hero-1.jpg" alt="" onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
+              <img class="hero-slide__img" src="money-transfer-hero-1.jpg" alt=""
+                   onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
             </div>
             <div class="hero-slide" aria-label="Slide 2">
-              <img class="hero-slide__img" src="money-transfer-hero-2.jpg" alt="" onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
+              <img class="hero-slide__img" src="money-transfer-hero-2.jpg" alt=""
+                   onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
             </div>
             <div class="hero-slide" aria-label="Slide 3">
-              <img class="hero-slide__img" src="money-transfer-hero-3.jpg" alt="" onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
+              <img class="hero-slide__img" src="money-transfer-hero-3.jpg" alt=""
+                   onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
             </div>
           </div>
 
@@ -101,39 +102,37 @@
     </section>
 
     <!-- =======================
-         CONTENT CARDS (as inspo)
+         CONTENT CARDS
     ======================== -->
     <section class="section">
       <div class="container">
 
-        <!-- Inter-Branch Money Transfer card -->
         <article class="card reveal">
           <h2 class="card__title">Inter-Branch Money Transfer</h2>
           <p class="card__text">
             Inter-branch Money Transfer allows customers in one location to transfer or receive money in the same or
             different location within KIB based on their intended purpose.
           </p>
-
           <a class="btn btn--soft" href="inter-branch-transfer.html">Discover more</a>
 
           <div class="card__banner">
-            <!-- left blank image placeholder (JPG) -->
-            <img src="inter-branch-money-transfer-banner.jpg" alt="" onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
+            <img src="inter-branch-money-transfer-banner.jpg" alt=""
+                 onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
           </div>
         </article>
 
-        <!-- Service image card (staff image in your inspo) -->
         <article class="card card--imageOnly reveal">
           <a class="btn btn--soft btn--overlay" href="inter-branch-transfer.html">Discover more</a>
           <div class="card__banner card__banner--tall">
-            <img src="money-transfer-service-banner.jpg" alt="" onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
+            <img src="money-transfer-service-banner.jpg" alt=""
+                 onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
           </div>
         </article>
 
-        <!-- International Remittance -->
         <article class="card card--remit reveal">
           <div class="remit-banner">
-            <img src="international-remittance-banner.jpg" alt="" onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
+            <img src="international-remittance-banner.jpg" alt=""
+                 onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
             <div class="remit-overlay">
               <h2 class="remit-title">International Remittance</h2>
               <p class="remit-sub">Fast, Easy, Reasonable Fee, High Security</p>
@@ -142,7 +141,6 @@
           </div>
         </article>
 
-        <!-- Standing Order -->
         <article class="card reveal">
           <h2 class="card__title">Standing Order</h2>
           <p class="card__text">
@@ -150,23 +148,22 @@
             business partners or payment partners weekly, monthly, quarterly or specific time &amp; amount of money for transfer
             schedule according to customer’s needs.
           </p>
-
           <a class="btn btn--soft" href="standing-order.html">Discover more</a>
 
           <div class="card__banner">
-            <img src="standing-order-banner.jpg" alt="" onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
+            <img src="standing-order-banner.jpg" alt=""
+                 onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
           </div>
         </article>
 
-        <!-- Another banner card (phone/app transfer image in your inspo) -->
         <article class="card card--imageOnly reveal">
           <a class="btn btn--soft btn--overlay" href="money-transfer-app.html">Discover more</a>
           <div class="card__banner card__banner--tall">
-            <img src="money-transfer-app-banner.jpg" alt="" onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
+            <img src="money-transfer-app-banner.jpg" alt=""
+                 onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
           </div>
         </article>
 
-        <!-- Customer Service Care -->
         <article class="support-card reveal">
           <div class="support-card__head">
             <h2 class="support-card__title">Customer Service Care</h2>
@@ -183,7 +180,8 @@
           </div>
 
           <div class="support-card__image">
-            <img src="customer-service.jpg" alt="" onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
+            <img src="customer-service.jpg" alt=""
+                 onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
           </div>
         </article>
 
@@ -191,94 +189,127 @@
     </section>
 
     <!-- =======================
-         FOOTER (accordion + addresses)
-         - “WOORI Group Company …” replaced with KIB
+         FOOTER (MATCH IMAGE 2 & 3)
+         IMPORTANT: HTML matches your footer CSS classes
     ======================== -->
-<footer class="kib-footer" id="kibFooter">
-  <!-- BLUE ACCORDION MENU -->
-  <section class="kib-footer__nav">
-    <button class="kib-acc" type="button" aria-expanded="true">
-      <span>Personal Banking</span>
-      <span class="kib-acc__icon" aria-hidden="true">▾</span>
-    </button>
-    <div class="kib-acc__panel is-open">
-      <a href="loan.html" class="kib-footer__link">Loan</a>
-      <a href="money-transfer.html" class="kib-footer__link">Money Transfer</a>
-      <a href="saving-deposit.html" class="kib-footer__link">Saving / Deposit</a>
-    </div>
+    <footer class="kib-footer" id="kibFooter">
 
-    <button class="kib-acc" type="button" aria-expanded="false">
-      <span>Business Banking</span>
-      <span class="kib-acc__icon" aria-hidden="true">▾</span>
-    </button>
-    <div class="kib-acc__panel">
-      <a href="business-banking.html" class="kib-footer__link">Business Banking</a>
-    </div>
+      <!-- BLUE ACCORDION AREA -->
+      <section class="kib-footer__nav">
 
-    <button class="kib-acc" type="button" aria-expanded="false">
-      <span>Digital Banking</span>
-      <span class="kib-acc__icon" aria-hidden="true">▾</span>
-    </button>
-    <div class="kib-acc__panel">
-      <a href="digital-banking.html" class="kib-footer__link">Digital Banking</a>
-    </div>
+        <div class="kib-acc-item is-open">
+          <button class="kib-acc-header" type="button" aria-expanded="true">
+            <span>Personal Banking</span>
+            <span class="kib-acc-icon" aria-hidden="true">▾</span>
+          </button>
+          <div class="kib-acc-body">
+            <div class="kib-acc-links">
+              <a href="loan.html">Loan</a>
+              <a href="money-transfer.html">Money Transfer</a>
+              <a href="saving-deposit.html">Saving / Deposit</a>
+            </div>
+          </div>
+        </div>
 
-    <button class="kib-acc" type="button" aria-expanded="false">
-      <span>Company</span>
-      <span class="kib-acc__icon" aria-hidden="true">▾</span>
-    </button>
-    <div class="kib-acc__panel">
-      <a href="about.html" class="kib-footer__link">About Us</a>
-    </div>
+        <div class="kib-acc-item">
+          <button class="kib-acc-header" type="button" aria-expanded="false">
+            <span>Business Banking</span>
+            <span class="kib-acc-icon" aria-hidden="true">▾</span>
+          </button>
+          <div class="kib-acc-body">
+            <div class="kib-acc-links">
+              <a href="business-banking.html">Business Banking</a>
+            </div>
+          </div>
+        </div>
 
-    <button class="kib-acc" type="button" aria-expanded="false">
-      <span>Financial</span>
-      <span class="kib-acc__icon" aria-hidden="true">▾</span>
-    </button>
-    <div class="kib-acc__panel">
-      <a href="financial.html" class="kib-footer__link">Financial</a>
-    </div>
+        <div class="kib-acc-item">
+          <button class="kib-acc-header" type="button" aria-expanded="false">
+            <span>Digital Banking</span>
+            <span class="kib-acc-icon" aria-hidden="true">▾</span>
+          </button>
+          <div class="kib-acc-body">
+            <div class="kib-acc-links">
+              <a href="digital-banking.html">Digital Banking</a>
+            </div>
+          </div>
+        </div>
 
-    <button class="kib-acc" type="button" aria-expanded="false">
-      <span>News</span>
-      <span class="kib-acc__icon" aria-hidden="true">▾</span>
-    </button>
-    <div class="kib-acc__panel">
-      <a href="news.html" class="kib-footer__link">News</a>
-    </div>
+        <div class="kib-acc-item">
+          <button class="kib-acc-header" type="button" aria-expanded="false">
+            <span>Company</span>
+            <span class="kib-acc-icon" aria-hidden="true">▾</span>
+          </button>
+          <div class="kib-acc-body">
+            <div class="kib-acc-links">
+              <a href="about.html">About Us</a>
+            </div>
+          </div>
+        </div>
 
-    <div class="kib-footer__group">
-      KIB Group Company: <a class="kib-footer__groupLink" href="https://spot.kibbank.com" target="_blank" rel="noopener">spot.kibbank.com</a>
-    </div>
-  </section>
+        <div class="kib-acc-item">
+          <button class="kib-acc-header" type="button" aria-expanded="false">
+            <span>Financial</span>
+            <span class="kib-acc-icon" aria-hidden="true">▾</span>
+          </button>
+          <div class="kib-acc-body">
+            <div class="kib-acc-links">
+              <a href="financial.html">Financial</a>
+            </div>
+          </div>
+        </div>
 
-  <!-- LOCATION ADDRESS (WHITE AREA) -->
-  <section class="kib-footer__address">
-    <h3>Location Address</h3>
+        <div class="kib-acc-item">
+          <button class="kib-acc-header" type="button" aria-expanded="false">
+            <span>News</span>
+            <span class="kib-acc-icon" aria-hidden="true">▾</span>
+          </button>
+          <div class="kib-acc-body">
+            <div class="kib-acc-links">
+              <a href="news.html">News</a>
+            </div>
+          </div>
+        </div>
 
-    <p>39 Namdaemun-ro, Jung-gu, Seoul (04531), Republic of Korea.</p>
-    <p>Piazza di Spagna, 59, 00187 Roma RM, Italy</p>
-    <p>Tower 42, Level 38, 25 Old Broad Street, EC2N 1HQ, London, United Kingdom</p>
+        <div class="kib-footer__group">
+          KIB Group Company: <span>info@kibinternational.co.site</span>
+        </div>
 
-    <p class="kib-footer__branchTitle">New York Branch</p>
-    <p>1250 Broadway, 37th Floor, New York, NY 10001, USA</p>
+      </section>
 
-    <p>Mubarak Al-Kabeer Street, Darwazat Al-Abdul Razzak, Kuwait City, State of Kuwait</p>
-  </section>
+      <!-- ADDRESS CARD -->
+      <section class="kib-footer__address">
+        <div class="kib-footer__address-card">
+          <div class="kib-footer__badge">KOREA INTERNATIONAL BANKING</div>
 
-  <!-- BOTTOM BAR -->
-  <section class="kib-footer__bottom">
-    <div class="kib-footer__social">
-      <a class="kib-social" href="#" aria-label="Facebook">Fb</a>
-      <a class="kib-social" href="#" aria-label="Instagram">Ig</a>
-      <a class="kib-social" href="#" aria-label="LinkedIn">In</a>
-      <a class="kib-social" href="#" aria-label="YouTube">Yt</a>
-    </div>
+          <h3>Location Address</h3>
 
-    <div class="kib-footer__copy">© 2023 KIB. All rights reserved.</div>
-  </section>
-</footer>
-</main>
+          <p>39 Namdaemun-ro, Jung-gu, Seoul (04531), Republic of Korea.</p>
+          <p>Piazza di Spagna, 59, 00187 Roma RM, Italy</p>
+          <p>Tower 42, Level 38, 25 Old Broad Street, EC2N 1HQ, London, United Kingdom</p>
+
+          <p class="kib-footer__branchTitle">New York Branch</p>
+          <p>1250 Broadway, 37th Floor, New York, NY 10001, USA</p>
+
+          <p>Mubarak Al-Kabeer Street, Darwazat Al-Abdul Razzak, Kuwait City, State of Kuwait</p>
+
+          <!-- BOTTOM BAR (inside card look like your screenshot) -->
+          <section class="kib-footer__bottom">
+            <div class="kib-footer__social">
+              <a class="kib-social" href="#" aria-label="Facebook">Fb</a>
+              <a class="kib-social" href="#" aria-label="Instagram">Ig</a>
+              <a class="kib-social" href="#" aria-label="LinkedIn">In</a>
+              <a class="kib-social" href="#" aria-label="YouTube">Yt</a>
+            </div>
+            <div class="kib-footer__copy">All rights reserved 2023</div>
+          </section>
+
+        </div>
+      </section>
+
+    </footer>
+
+  </main>
 
   <script src="money-transfer.js"></script>
 </body>
