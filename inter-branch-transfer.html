@@ -8,9 +8,7 @@
 </head>
 <body>
 
-  <!-- =======================
-       HEADER (Same Loan header style)
-  ======================== -->
+  <!-- HEADER (same as loan header) -->
   <header class="kib-header">
     <div class="kib-header__inner">
       <a class="kib-brand" href="index.html" aria-label="KIB Home">
@@ -53,22 +51,23 @@
 
   <main class="page">
 
-    <!-- =======================
-         HERO (3-image slider)
-    ======================== -->
+    <!-- HERO slider (your inter-branch slide images 2,3,4 -> 3 slides) -->
     <section class="hero">
       <div class="hero__wrap">
 
         <div class="hero-slider" id="heroSlider" aria-roledescription="carousel" aria-label="Inter-Branch hero">
           <div class="hero-slider__track" id="heroTrack">
             <div class="hero-slide" aria-label="Slide 1">
-              <img class="hero-slide__img" src="inter-branch-hero-1.jpg" alt="" onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
+              <img class="hero-slide__img" src="inter-branch-hero-1.jpg" alt=""
+                   onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
             </div>
             <div class="hero-slide" aria-label="Slide 2">
-              <img class="hero-slide__img" src="inter-branch-hero-2.jpg" alt="" onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
+              <img class="hero-slide__img" src="inter-branch-hero-2.jpg" alt=""
+                   onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
             </div>
             <div class="hero-slide" aria-label="Slide 3">
-              <img class="hero-slide__img" src="inter-branch-hero-3.jpg" alt="" onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
+              <img class="hero-slide__img" src="inter-branch-hero-3.jpg" alt=""
+                   onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
             </div>
           </div>
 
@@ -80,16 +79,9 @@
         </div>
 
         <div class="hero-card reveal">
-          <div class="crumbs">
-            <span>Home</span> <span class="sep">»</span>
-            <span>Personal Banking</span> <span class="sep">»</span>
-            <span>Money Transfer</span> <span class="sep">»</span>
-            <span class="is-current">Inter-Branch Money Transfer</span>
-          </div>
-
+          <div class="hero-mini">Inter-Branch Money Transfer</div>
           <h1 class="hero-title">Inter-Branch Money Transfer</h1>
           <div class="hero-underline"></div>
-
           <p class="hero-subtitle">
             Inter-branch Money Transfer allows customers in one location to transfer or receive money in the same or
             different location within KIB based on their intended purpose.
@@ -99,40 +91,78 @@
       </div>
     </section>
 
-    <!-- =======================
-         Fee Charge (table like inspo)
-    ======================== -->
+    <!-- Fee Charge + Tables -->
     <section class="section">
       <div class="container">
 
         <h2 class="big-title reveal">Fee Charge</h2>
 
-        <div class="fee-box reveal">
-          <div class="fee-head">
-            <div class="fee-head__left">Type of<br/>Transaction</div>
-            <div class="fee-head__right">Cash to Cash or Account to Cash</div>
+        <!-- Table 1 (matches your screenshot with USD/THB/KHR fee/min) -->
+        <article class="fee-card reveal">
+          <div class="fee-tableWrap">
+            <table class="fee-table" aria-label="Cash to Cash or Account to Cash Fee Charge">
+              <thead>
+                <tr>
+                  <th class="fee-th--left" colspan="1">Type of Transaction</th>
+                  <th colspan="3">Cash to Cash or Account to Cash</th>
+                </tr>
+                <tr>
+                  <th class="fee-th--left">Currency</th>
+                  <th>USD</th>
+                  <th>THB</th>
+                  <th>KHR</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="fee-td--left"><b>Fee Charge</b></td>
+                  <td>0.10%</td>
+                  <td>0.10%</td>
+                  <td>0.08%</td>
+                </tr>
+                <tr>
+                  <td class="fee-td--left"><b>Minimum Charge</b></td>
+                  <td>1</td>
+                  <td>40</td>
+                  <td>3,000</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
+        </article>
 
-          <div class="fee-grid">
-            <div class="fee-row fee-row--hdr">
-              <div class="fee-cell fee-cell--label">Currency</div>
-              <div class="fee-cell fee-cell--col">KHR</div>
-              <div class="fee-cell fee-cell--col">USD</div>
-            </div>
-
-            <div class="fee-row">
-              <div class="fee-cell fee-cell--label">Fee Charge</div>
-              <div class="fee-cell">0.10%</div>
-              <div class="fee-cell">0.10%</div>
-            </div>
-
-            <div class="fee-row">
-              <div class="fee-cell fee-cell--label">Minimum Charge</div>
-              <div class="fee-cell">4,000</div>
-              <div class="fee-cell">1</div>
-            </div>
+        <!-- Table 2 (Cash to Account / Account to Account) -->
+        <article class="fee-card reveal">
+          <div class="fee-tableWrap">
+            <table class="fee-table" aria-label="Cash to Account or Account to Account Fee Charge">
+              <thead>
+                <tr>
+                  <th colspan="4">Cash to Account or<br/>Account to Account</th>
+                </tr>
+                <tr>
+                  <th class="fee-th--left"></th>
+                  <th>KHR</th>
+                  <th>USD</th>
+                  <th>THB</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="fee-td--left"><b>Fee Charge</b></td>
+                  <td>0.08%</td>
+                  <td>0.08%</td>
+                  <td>0.08%</td>
+                </tr>
+                <tr>
+                  <td class="fee-td--left"><b>Minimum Charge</b></td>
+                  <td>3,000</td>
+                  <td>1</td>
+                  <td>40</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-        </div>
+        </article>
 
         <!-- Customer Service Care -->
         <article class="support-card reveal">
@@ -151,103 +181,130 @@
           </div>
 
           <div class="support-card__image">
-            <img src="customer-service.jpg" alt="" onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
+            <img src="customer-service.jpg" alt=""
+                 onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
           </div>
         </article>
 
       </div>
     </section>
 
-    <!-- =======================
-         FOOTER (same style)
-    ======================== -->
+    <!-- FOOTER (same correct one) -->
     <footer class="kib-footer" id="kibFooter">
-  <!-- BLUE ACCORDION MENU -->
-  <section class="kib-footer__nav">
-    <button class="kib-acc" type="button" aria-expanded="true">
-      <span>Personal Banking</span>
-      <span class="kib-acc__icon" aria-hidden="true">▾</span>
-    </button>
-    <div class="kib-acc__panel is-open">
-      <a href="loan.html" class="kib-footer__link">Loan</a>
-      <a href="money-transfer.html" class="kib-footer__link">Money Transfer</a>
-      <a href="saving-deposit.html" class="kib-footer__link">Saving / Deposit</a>
-    </div>
 
-    <button class="kib-acc" type="button" aria-expanded="false">
-      <span>Business Banking</span>
-      <span class="kib-acc__icon" aria-hidden="true">▾</span>
-    </button>
-    <div class="kib-acc__panel">
-      <a href="business-banking.html" class="kib-footer__link">Business Banking</a>
-    </div>
+      <section class="kib-footer__nav">
 
-    <button class="kib-acc" type="button" aria-expanded="false">
-      <span>Digital Banking</span>
-      <span class="kib-acc__icon" aria-hidden="true">▾</span>
-    </button>
-    <div class="kib-acc__panel">
-      <a href="digital-banking.html" class="kib-footer__link">Digital Banking</a>
-    </div>
+        <div class="kib-acc-item is-open">
+          <button class="kib-acc-header" type="button" aria-expanded="true">
+            <span>Personal Banking</span>
+            <span class="kib-acc-icon" aria-hidden="true">▾</span>
+          </button>
+          <div class="kib-acc-body">
+            <div class="kib-acc-links">
+              <a href="loan.html">Loan</a>
+              <a href="money-transfer.html">Money Transfer</a>
+              <a href="saving-deposit.html">Saving / Deposit</a>
+            </div>
+          </div>
+        </div>
 
-    <button class="kib-acc" type="button" aria-expanded="false">
-      <span>Company</span>
-      <span class="kib-acc__icon" aria-hidden="true">▾</span>
-    </button>
-    <div class="kib-acc__panel">
-      <a href="about.html" class="kib-footer__link">About Us</a>
-    </div>
+        <div class="kib-acc-item">
+          <button class="kib-acc-header" type="button" aria-expanded="false">
+            <span>Business Banking</span>
+            <span class="kib-acc-icon" aria-hidden="true">▾</span>
+          </button>
+          <div class="kib-acc-body">
+            <div class="kib-acc-links">
+              <a href="business-banking.html">Business Banking</a>
+            </div>
+          </div>
+        </div>
 
-    <button class="kib-acc" type="button" aria-expanded="false">
-      <span>Financial</span>
-      <span class="kib-acc__icon" aria-hidden="true">▾</span>
-    </button>
-    <div class="kib-acc__panel">
-      <a href="financial.html" class="kib-footer__link">Financial</a>
-    </div>
+        <div class="kib-acc-item">
+          <button class="kib-acc-header" type="button" aria-expanded="false">
+            <span>Digital Banking</span>
+            <span class="kib-acc-icon" aria-hidden="true">▾</span>
+          </button>
+          <div class="kib-acc-body">
+            <div class="kib-acc-links">
+              <a href="digital-banking.html">Digital Banking</a>
+            </div>
+          </div>
+        </div>
 
-    <button class="kib-acc" type="button" aria-expanded="false">
-      <span>News</span>
-      <span class="kib-acc__icon" aria-hidden="true">▾</span>
-    </button>
-    <div class="kib-acc__panel">
-      <a href="news.html" class="kib-footer__link">News</a>
-    </div>
+        <div class="kib-acc-item">
+          <button class="kib-acc-header" type="button" aria-expanded="false">
+            <span>Company</span>
+            <span class="kib-acc-icon" aria-hidden="true">▾</span>
+          </button>
+          <div class="kib-acc-body">
+            <div class="kib-acc-links">
+              <a href="about.html">About Us</a>
+            </div>
+          </div>
+        </div>
 
-    <div class="kib-footer__group">
-      KIB Group Company: <a class="kib-footer__groupLink" href="https://spot.kibbank.com" target="_blank" rel="noopener">spot.kibbank.com</a>
-    </div>
-  </section>
+        <div class="kib-acc-item">
+          <button class="kib-acc-header" type="button" aria-expanded="false">
+            <span>Financial</span>
+            <span class="kib-acc-icon" aria-hidden="true">▾</span>
+          </button>
+          <div class="kib-acc-body">
+            <div class="kib-acc-links">
+              <a href="financial.html">Financial</a>
+            </div>
+          </div>
+        </div>
 
-  <!-- LOCATION ADDRESS (WHITE AREA) -->
-  <section class="kib-footer__address">
-    <h3>Location Address</h3>
+        <div class="kib-acc-item">
+          <button class="kib-acc-header" type="button" aria-expanded="false">
+            <span>News</span>
+            <span class="kib-acc-icon" aria-hidden="true">▾</span>
+          </button>
+          <div class="kib-acc-body">
+            <div class="kib-acc-links">
+              <a href="news.html">News</a>
+            </div>
+          </div>
+        </div>
 
-    <p>39 Namdaemun-ro, Jung-gu, Seoul (04531), Republic of Korea.</p>
-    <p>Piazza di Spagna, 59, 00187 Roma RM, Italy</p>
-    <p>Tower 42, Level 38, 25 Old Broad Street, EC2N 1HQ, London, United Kingdom</p>
+        <div class="kib-footer__group">
+          KIB Group Company: <span>info@kibinternational.co.site</span>
+        </div>
 
-    <p class="kib-footer__branchTitle">New York Branch</p>
-    <p>1250 Broadway, 37th Floor, New York, NY 10001, USA</p>
+      </section>
 
-    <p>Mubarak Al-Kabeer Street, Darwazat Al-Abdul Razzak, Kuwait City, State of Kuwait</p>
-  </section>
+      <section class="kib-footer__address">
+        <div class="kib-footer__address-card">
+          <div class="kib-footer__badge">KOREA INTERNATIONAL BANKING</div>
 
-  <!-- BOTTOM BAR -->
-  <section class="kib-footer__bottom">
-    <div class="kib-footer__social">
-      <a class="kib-social" href="#" aria-label="Facebook">Fb</a>
-      <a class="kib-social" href="#" aria-label="Instagram">Ig</a>
-      <a class="kib-social" href="#" aria-label="LinkedIn">In</a>
-      <a class="kib-social" href="#" aria-label="YouTube">Yt</a>
-    </div>
+          <h3>Location Address</h3>
 
-    <div class="kib-footer__copy">© 2023 KIB. All rights reserved.</div>
-    </div>
+          <p>39 Namdaemun-ro, Jung-gu, Seoul (04531), Republic of Korea.</p>
+          <p>Piazza di Spagna, 59, 00187 Roma RM, Italy</p>
+          <p>Tower 42, Level 38, 25 Old Broad Street, EC2N 1HQ, London, United Kingdom</p>
 
-</section>
-</footer>
-</main>
+          <p class="kib-footer__branchTitle">New York Branch</p>
+          <p>1250 Broadway, 37th Floor, New York, NY 10001, USA</p>
+
+          <p>Mubarak Al-Kabeer Street, Darwazat Al-Abdul Razzak, Kuwait City, State of Kuwait</p>
+
+          <section class="kib-footer__bottom">
+            <div class="kib-footer__social">
+              <a class="kib-social" href="#" aria-label="Facebook">Fb</a>
+              <a class="kib-social" href="#" aria-label="Instagram">Ig</a>
+              <a class="kib-social" href="#" aria-label="LinkedIn">In</a>
+              <a class="kib-social" href="#" aria-label="YouTube">Yt</a>
+            </div>
+            <div class="kib-footer__copy">All rights reserved 2023</div>
+          </section>
+
+        </div>
+      </section>
+
+    </footer>
+
+  </main>
 
   <script src="inter-branch-transfer.js"></script>
 </body>
