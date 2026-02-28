@@ -565,3 +565,105 @@ body{
   .support-card__phone{ font-size: 20px; }
   .kib-pill{ padding: 9px 10px; font-size: 11px; }
 }
+/* ===============================
+   FIX FOOTER (MATCH YOUR HTML)
+=================================*/
+
+.kib-footer {
+  margin-top: 30px;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+/* BLUE ACCORDION AREA */
+.kib-footer__nav {
+  background: #3b6ea8;
+  color: #fff;
+  padding: 18px 0;
+}
+
+/* ADDRESS AREA */
+.kib-footer__address {
+  background: #f4f6f9;
+  padding: 18px;
+}
+
+.kib-footer__address-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+.kib-footer__badge {
+  background: #3b6ea8;
+  color: #fff;
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 14px;
+  font-weight: 900;
+  font-size: 16px;
+  margin-bottom: 14px;
+}
+
+.kib-footer__address h3 {
+  font-size: 34px;
+  font-weight: 900;
+  margin: 0 0 16px;
+  color: #0c0c0c;
+}
+
+.kib-footer__address p {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 0 0 14px;
+  color: #1a1a1a;
+}
+
+.kib-footer__branchTitle {
+  font-weight: 900;
+  margin-top: 18px;
+}
+
+/* BOTTOM BAR (THIS IS THE PART YOU SHOWED) */
+.kib-footer__bottom {
+  background: linear-gradient(180deg,#4f7fba,#3b6ea8);
+  color: #fff;
+  text-align: center;
+  padding: 18px 12px;
+  border-bottom-left-radius: 22px;
+  border-bottom-right-radius: 22px;
+}
+
+/* Social icons row */
+.kib-footer__social {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+
+.kib-social {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 900;
+}
+
+/* Copyright text */
+.kib-footer__copy {
+  font-weight: 800;
+  font-size: 18px;
+}
+
+/* Mobile tweaks */
+@media (max-width:420px) {
+  .kib-footer__address h3 { font-size: 30px; }
+  .kib-footer__address p  { font-size: 18px; }
+}
