@@ -1,0 +1,762 @@
+<!-- savings-deposit.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KIB — Saving / Deposit</title>
+
+  <style>
+    :root{
+      --bg:#f3f5f7;
+      --card:#ffffff;
+      --text:#0b1220;
+      --muted:#6b7280;
+      --primary:#1f5fae;
+      --primary-2:#0f4f9b;
+      --soft:#e8f1ff;
+      --btn:#dceefc;
+      --shadow: 0 10px 28px rgba(16,24,40,.08);
+      --radius: 22px;
+      --radius-lg: 28px;
+      --max: 1100px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background:var(--bg);
+    }
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+
+    /* ===== Header (replace with your main page “Money transfer” header code if you already have it) ===== */
+    header.kib-header{
+      position:sticky; top:0; z-index:50;
+      background:#fff;
+      border-bottom:1px solid rgba(15,23,42,.06);
+    }
+    .kib-header .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:14px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:800; letter-spacing:.2px;
+    }
+    .brand .logo-dot{
+      width:34px;height:34px;border-radius:12px;
+      background:linear-gradient(180deg,var(--primary),var(--primary-2));
+      box-shadow:0 10px 20px rgba(31,95,174,.25);
+    }
+    .brand .name{
+      line-height:1.1;
+      font-size:14px;
+      font-weight:900;
+    }
+    .brand .name span{display:block;font-weight:700;opacity:.75}
+
+    .hdr-right{
+      display:flex; align-items:center; gap:10px;
+    }
+    .lang{
+      display:flex; gap:8px; align-items:center;
+    }
+    .pill{
+      border:1px solid rgba(15,23,42,.10);
+      background:#fff;
+      padding:8px 14px;
+      border-radius:999px;
+      font-weight:700;
+      font-size:12px;
+      color:rgba(15,23,42,.75);
+    }
+    .pill.active{
+      background:#0b1220;
+      color:#fff;
+      border-color:#0b1220;
+    }
+    .menu-btn{
+      width:42px;height:42px;border-radius:999px;
+      border:1px solid rgba(15,23,42,.12);
+      background:#fff;
+      display:grid; place-items:center;
+      cursor:pointer;
+    }
+    .menu-btn .bars{
+      width:18px; height:12px; position:relative;
+    }
+    .menu-btn .bars:before,
+    .menu-btn .bars:after,
+    .menu-btn .bars div{
+      content:"";
+      position:absolute; left:0; right:0;
+      height:2px; border-radius:2px;
+      background:rgba(15,23,42,.70);
+    }
+    .menu-btn .bars:before{top:0}
+    .menu-btn .bars div{top:5px}
+    .menu-btn .bars:after{bottom:0}
+
+    /* ===== Mobile menu (simple) ===== */
+    .drawer{
+      display:none;
+      background:linear-gradient(180deg,#2d65a6,#2b5c99);
+      color:#fff;
+      padding:18px 16px;
+    }
+    .drawer.open{display:block}
+    .drawer .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+    }
+    .drawer .section{
+      padding:14px 0;
+      border-top:1px solid rgba(255,255,255,.16);
+    }
+    .drawer .section:first-child{border-top:none}
+    .drawer .sec-head{
+      display:flex; justify-content:space-between; align-items:center;
+      font-weight:800;
+    }
+    .drawer .sec-links{
+      margin-top:10px;
+      display:grid;
+      gap:8px;
+      opacity:.95;
+    }
+    .drawer .sec-links a{opacity:.95}
+    .drawer small{opacity:.9}
+
+    /* ===== Page layout ===== */
+    main{max-width:var(--max); margin:0 auto; padding:18px 16px 28px}
+    .spacer{height:14px}
+
+    /* ===== Hero (Image 9 style) ===== */
+    .hero{
+      background: #d9e8ff;
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .hero-top{
+      display:flex;
+      justify-content:center;
+      padding:10px 0 4px;
+    }
+    .dots{
+      display:flex; gap:10px; align-items:center;
+      background:rgba(255,255,255,.55);
+      border:1px solid rgba(15,23,42,.06);
+      padding:8px 12px;
+      border-radius:999px;
+      backdrop-filter: blur(6px);
+    }
+    .dot{
+      width:10px;height:10px;border-radius:999px;
+      background:rgba(15,23,42,.20);
+    }
+    .dot.active{
+      width:34px;
+      background:rgba(255,255,255,.95);
+      border:1px solid rgba(15,23,42,.10);
+    }
+
+    .slider{
+      position:relative;
+      height: 340px;
+      border-radius: 22px;
+      overflow:hidden;
+      background:rgba(255,255,255,.40);
+      border:1px solid rgba(15,23,42,.06);
+    }
+    .slide{
+      position:absolute; inset:0;
+      opacity:0;
+      transition: opacity .45s ease;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+      user-select:none;
+    }
+    .slide.active{opacity:1}
+    .slide .banner{
+      width:100%;
+      height:100%;
+      border-radius:18px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.25));
+      display:grid;
+      place-items:center;
+      position:relative;
+    }
+    .banner .placeholder{
+      font-weight:800;
+      color:rgba(15,23,42,.45);
+      text-align:center;
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px dashed rgba(15,23,42,.25);
+      background:rgba(255,255,255,.40);
+    }
+
+    .hero-card{
+      position:absolute;
+      left:14px; right:14px;
+      bottom:14px;
+      background:var(--card);
+      border-radius: 22px;
+      padding: 18px 18px 16px;
+      box-shadow: 0 12px 30px rgba(16,24,40,.10);
+    }
+    .crumbs{
+      font-weight:700;
+      color:rgba(15,23,42,.55);
+      margin-bottom:10px;
+    }
+    .crumbs b{color:rgba(31,95,174,.95)}
+    .hero-title{
+      font-size:40px;
+      letter-spacing:-.8px;
+      line-height:1.05;
+      margin:0 0 6px;
+      font-weight:900;
+    }
+    .hero-rule{
+      width:70px;height:2px;
+      background:rgba(15,23,42,.35);
+      border-radius:99px;
+      margin:10px 0 12px;
+    }
+    .hero-sub{
+      margin:0;
+      color:rgba(15,23,42,.72);
+      font-weight:650;
+    }
+
+    /* ===== Cards (product blocks) ===== */
+    .grid{
+      display:grid;
+      gap:18px;
+      margin-top:18px;
+    }
+    .card{
+      background:var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      border:1px solid rgba(15,23,42,.05);
+    }
+    .card .content{
+      padding:22px 20px 0;
+    }
+    .card h2{
+      margin:0 0 8px;
+      font-size:30px;
+      letter-spacing:-.4px;
+      font-weight:900;
+    }
+    .card p{
+      margin:0 0 16px;
+      color:rgba(15,23,42,.72);
+      font-weight:650;
+      line-height:1.5;
+      font-size:18px;
+    }
+    .btn{
+      display:inline-block;
+      background:var(--btn);
+      color:rgba(31,95,174,.95);
+      padding:14px 18px;
+      border-radius:14px;
+      font-weight:800;
+      border:1px solid rgba(31,95,174,.12);
+      box-shadow: 0 10px 18px rgba(31,95,174,.08);
+      margin-bottom:16px;
+    }
+    .btn.primary{
+      background: #4aa3e4;
+      color:#fff;
+      border-color: rgba(31,95,174,.12);
+    }
+    .media{
+      padding:0 20px 20px;
+    }
+    .media-box{
+      height:260px;
+      border-radius:18px;
+      background: linear-gradient(180deg, rgba(0,0,0,.02), rgba(0,0,0,.00));
+      border:1px solid rgba(15,23,42,.06);
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      position:relative;
+    }
+    .media-box .imgname{
+      position:absolute;
+      top:14px; left:14px;
+      font-size:12px;
+      font-weight:800;
+      color:rgba(15,23,42,.55);
+      background:rgba(255,255,255,.75);
+      border:1px solid rgba(15,23,42,.10);
+      padding:8px 10px;
+      border-radius:999px;
+      backdrop-filter: blur(6px);
+    }
+    .media-box .blank{
+      font-weight:900;
+      color:rgba(15,23,42,.35);
+      border:1px dashed rgba(15,23,42,.25);
+      background:rgba(255,255,255,.40);
+      padding:10px 14px;
+      border-radius:999px;
+    }
+
+    /* ===== Customer service block ===== */
+    .service{
+      display:grid;
+      gap:18px;
+      align-items:stretch;
+    }
+    .service .left{
+      padding:22px 20px 20px;
+    }
+    .service h2{font-size:30px;margin:0 0 10px;font-weight:900}
+    .service p{margin:0 0 14px;font-size:18px;color:rgba(15,23,42,.72);font-weight:650}
+    .phone{
+      display:flex; align-items:center; gap:10px;
+      font-weight:900;
+      color:rgba(31,95,174,.95);
+      font-size:20px;
+      margin:6px 0 16px;
+    }
+    .phone .icon{
+      width:44px;height:44px;border-radius:14px;
+      display:grid;place-items:center;
+      background:rgba(31,95,174,.08);
+      border:1px solid rgba(31,95,174,.14);
+    }
+    .service .right{
+      background:linear-gradient(180deg,#7fb7ea,#2d65a6);
+      min-height:320px;
+      position:relative;
+      border-top-left-radius:18px;
+      border-top-right-radius:18px;
+      overflow:hidden;
+      border:1px solid rgba(15,23,42,.06);
+    }
+    .service .agent{
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:0;
+      width:min(320px, 72%);
+      aspect-ratio: 3/4;
+      border-radius:18px 18px 0 0;
+      background:rgba(255,255,255,.18);
+      border:1px dashed rgba(255,255,255,.35);
+      display:grid;
+      place-items:center;
+      color:rgba(255,255,255,.90);
+      font-weight:900;
+      text-align:center;
+      padding:12px;
+    }
+
+    /* ===== Fade-in on scroll ===== */
+    .reveal{
+      opacity:0;
+      transform: translateY(14px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .reveal.in{
+      opacity:1;
+      transform:none;
+    }
+
+    /* ===== Footer (Image 7 & 8 style) ===== */
+    footer.kib-footer{
+      margin-top:22px;
+      background:linear-gradient(180deg,#2d65a6,#2b5c99);
+      color:#fff;
+    }
+    .footer-wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:18px 16px 22px;
+    }
+    .footer-grid{
+      display:grid;
+      gap:12px;
+    }
+    .f-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:12px 0;
+      border-top:1px solid rgba(255,255,255,.16);
+      font-weight:800;
+    }
+    .f-row:first-child{border-top:none}
+    .f-row .chev{opacity:.9}
+    .f-note{
+      margin-top:14px;
+      opacity:.95;
+      font-weight:700;
+    }
+    .social{
+      margin-top:18px;
+      padding-top:18px;
+      border-top:1px solid rgba(255,255,255,.18);
+    }
+    .social h3{margin:0 0 12px;font-size:22px;font-weight:900}
+    .icons{
+      display:flex; gap:10px; flex-wrap:wrap;
+    }
+    .ic{
+      width:42px;height:42px;border-radius:999px;
+      background:rgba(255,255,255,.16);
+      border:1px solid rgba(255,255,255,.22);
+    }
+
+    /* Desktop tweaks */
+    @media (min-width: 900px){
+      .slider{height:380px}
+      .hero-card{left:26px; right:26px; bottom:22px; padding:22px 22px 18px}
+      .grid{grid-template-columns:1fr 1fr}
+      .card.tall{grid-column:1/-1}
+      .service{grid-template-columns: 1.05fr .95fr}
+      .service .right{border-radius:18px}
+    }
+  </style>
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header class="kib-header">
+    <div class="wrap">
+      <a class="brand" href="#">
+        <div class="logo-dot" aria-hidden="true"></div>
+        <div class="name">
+          KOREA INTERNATIONAL<br/>BANKING <span>(KIB)</span>
+        </div>
+      </a>
+
+      <div class="hdr-right">
+        <div class="lang" aria-label="Language switcher">
+          <button class="pill active" type="button">ENG</button>
+          <button class="pill" type="button">KOR</button>
+          <button class="pill" type="button">ESPAÑOL</button>
+        </div>
+        <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu">
+          <span class="bars"><div></div></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Drawer (simple) -->
+    <div class="drawer" id="drawer">
+      <div class="wrap">
+        <div class="section">
+          <div class="sec-head">Personal Banking <span class="chev">▾</span></div>
+          <div class="sec-links">
+            <a href="#">Planned Savings Account</a>
+            <a href="#">Loan</a>
+          </div>
+        </div>
+        <div class="section">
+          <div class="sec-head">Business Banking <span class="chev">▾</span></div>
+          <div class="sec-links">
+            <a href="#">Saving / Deposit</a>
+            <a href="#">Standing Order</a>
+          </div>
+        </div>
+        <div class="section">
+          <div class="sec-head">Digital Banking <span class="chev">▾</span></div>
+          <div class="sec-links"><a href="#">Mobile Banking</a></div>
+        </div>
+        <div class="section">
+          <div class="sec-head">Company <span class="chev">▾</span></div>
+          <div class="sec-links"><a href="#">About Us</a></div>
+        </div>
+        <div class="section">
+          <div class="sec-head">Financial <span class="chev">▾</span></div>
+          <div class="sec-links"><a href="#">Reports</a></div>
+        </div>
+        <div class="section">
+          <div class="sec-head">News <span class="chev">▾</span></div>
+          <div class="sec-links"><a href="#">Announcements</a></div>
+        </div>
+
+        <small class="f-note">KIB Group Company: info@kibinternational.co.site</small>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero reveal" id="hero">
+      <div class="hero-top">
+        <div class="dots" id="dots" aria-label="Hero slider dots">
+          <div class="dot active" aria-hidden="true"></div>
+          <div class="dot" aria-hidden="true"></div>
+          <div class="dot" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <div class="slider" id="slider" aria-label="Hero slider">
+        <!-- NOTE: All banner images left blank by request.
+             Just replace background with your jpg later. -->
+        <div class="slide active">
+          <div class="banner">
+            <div class="placeholder">banner-1.jpg (add later)</div>
+          </div>
+        </div>
+        <div class="slide">
+          <div class="banner">
+            <div class="placeholder">banner-2.jpg (add later)</div>
+          </div>
+        </div>
+        <div class="slide">
+          <div class="banner">
+            <div class="placeholder">banner-3.jpg (add later)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div class="crumbs">Home » <b>Business Banking</b> » <b>Saving / Deposit</b></div>
+        <h1 class="hero-title">Saving / Deposit</h1>
+        <div class="hero-rule"></div>
+        <p class="hero-sub">Watch your money grow with us</p>
+      </div>
+    </section>
+
+    <div class="spacer"></div>
+
+    <!-- PRODUCT CARDS -->
+    <section class="grid">
+      <article class="card reveal">
+        <div class="content">
+          <h2>Corporate Savings Account</h2>
+          <p>2% interest with free usage of Mobile Banking and ATM service.</p>
+          <a class="btn" href="#">Discover more</a>
+        </div>
+        <div class="media">
+          <div class="media-box">
+            <div class="imgname">corporate-savings.jpg</div>
+            <div class="blank">Image later</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card reveal">
+        <div class="content">
+          <h2>Corporate Saving Account Plus</h2>
+          <p>3.5% interest with free usage of Mobile Banking and ATM service.</p>
+          <a class="btn" href="#">Discover more</a>
+        </div>
+        <div class="media">
+          <div class="media-box">
+            <div class="imgname">corporate-saving-plus.jpg</div>
+            <div class="blank">Image later</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card reveal">
+        <div class="content">
+          <h2>Community Deposit Support (CDS)</h2>
+          <p>Make your saving worth for you and others. Deposit with CDS to get higher interest rate and chance to help people in need.</p>
+          <a class="btn" href="#">Discover more</a>
+        </div>
+        <div class="media">
+          <div class="media-box">
+            <div class="imgname">cds.jpg</div>
+            <div class="blank">Image later</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card reveal">
+        <div class="content">
+          <h2>Fortune Deposit Account (Corporate)</h2>
+          <p>Make more money through your deposit.</p>
+          <a class="btn" href="#">Discover more</a>
+        </div>
+        <div class="media">
+          <div class="media-box">
+            <div class="imgname">fortune-deposit.jpg</div>
+            <div class="blank">Image later</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card tall reveal">
+        <div class="content">
+          <h2>Planned Savings Account</h2>
+          <p>Start setting aside a small amount every month and save towards your financial goals &amp; future dreams.</p>
+          <a class="btn primary" href="#">APPLY NOW</a>
+          <a class="btn" href="#" style="margin-left:10px">Discover more</a>
+        </div>
+        <div class="media">
+          <div class="media-box" style="height:320px">
+            <div class="imgname">planned-savings.jpg</div>
+            <div class="blank">Image later</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card tall reveal">
+        <div class="content">
+          <h2>Planned Savings PLUS Account</h2>
+          <p>Start setting aside a small amount every month and save towards your financial goals &amp; future dreams.</p>
+          <a class="btn" href="#">Discover more</a>
+        </div>
+        <div class="media">
+          <div class="media-box" style="height:320px">
+            <div class="imgname">planned-savings-plus.jpg</div>
+            <div class="blank">Image later</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card tall reveal">
+        <div class="service">
+          <div class="left">
+            <h2>Customer Service Care</h2>
+            <p>We always available to solve your problem in just a few minute!</p>
+            <div class="phone">
+              <div class="icon" aria-hidden="true">📞</div>
+              +855 23 963 333
+            </div>
+            <a class="btn" href="#">Contact us</a>
+          </div>
+          <div class="right">
+            <div class="agent">agent.jpg (add later)</div>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <!-- FOOTER (Image 7 & 8 style) -->
+  <footer class="kib-footer">
+    <div class="footer-wrap">
+      <div class="footer-grid">
+        <div class="f-row"><span>Personal Banking</span><span class="chev">▾</span></div>
+        <div class="f-row"><span>Business Banking</span><span class="chev">▾</span></div>
+        <div class="f-row"><span>Digital Banking</span><span class="chev">▾</span></div>
+        <div class="f-row"><span>Company</span><span class="chev">▾</span></div>
+        <div class="f-row"><span>Financial</span><span class="chev">▾</span></div>
+        <div class="f-row"><span>News</span><span class="chev">▾</span></div>
+
+        <div class="f-note">KIB Group Company: info@kibinternational.co.site</div>
+      </div>
+
+      <div class="social">
+        <h3>Social Media</h3>
+        <div class="icons" aria-label="Social icons">
+          <div class="ic" aria-hidden="true"></div>
+          <div class="ic" aria-hidden="true"></div>
+          <div class="ic" aria-hidden="true"></div>
+          <div class="ic" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ===== Menu ===== */
+    const menuBtn = document.getElementById('menuBtn');
+    const drawer = document.getElementById('drawer');
+    menuBtn.addEventListener('click', () => {
+      drawer.classList.toggle('open');
+    });
+
+    /* ===== Hero slider: auto 3s + touch swipe ===== */
+    const slider = document.getElementById('slider');
+    const slides = Array.from(slider.querySelectorAll('.slide'));
+    const dotsWrap = document.getElementById('dots');
+    const dots = Array.from(dotsWrap.querySelectorAll('.dot'));
+    let index = 0;
+    let timer = null;
+
+    function setActive(i){
+      index = (i + slides.length) % slides.length;
+      slides.forEach((s, n) => s.classList.toggle('active', n === index));
+      dots.forEach((d, n) => d.classList.toggle('active', n === index));
+    }
+
+    function start(){
+      stop();
+      timer = setInterval(() => setActive(index + 1), 3000);
+    }
+    function stop(){
+      if (timer) clearInterval(timer);
+      timer = null;
+    }
+
+    // Touch swipe
+    let startX = 0, startY = 0, dragging = false;
+    slider.addEventListener('touchstart', (e) => {
+      if (!e.touches || !e.touches[0]) return;
+      dragging = true;
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      stop();
+    }, {passive:true});
+
+    slider.addEventListener('touchend', (e) => {
+      if (!dragging) return;
+      dragging = false;
+      const t = e.changedTouches && e.changedTouches[0];
+      if (!t) { start(); return; }
+      const dx = t.clientX - startX;
+      const dy = t.clientY - startY;
+
+      // Only treat as swipe if mostly horizontal and enough distance
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)){
+        if (dx < 0) setActive(index + 1);
+        else setActive(index - 1);
+      }
+      start();
+    }, {passive:true});
+
+    // Dot click (optional)
+    dots.forEach((d, i) => {
+      d.style.cursor = 'pointer';
+      d.addEventListener('click', () => {
+        setActive(i);
+        start();
+      });
+    });
+
+    start();
+
+    /* ===== Fade-in on scroll ===== */
+    const revealEls = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting){
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    revealEls.forEach(el => io.observe(el));
+  </script>
+</body>
+</html>
