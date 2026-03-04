@@ -1,0 +1,805 @@
+<!-- File name: business-banking-moneytransfer.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>KIB | Money Transfer</title>
+
+  <style>
+    :root{
+      --bg:#eef4ff;
+      --card:#ffffff;
+      --text:#0f172a;
+      --muted:#667085;
+      --brand:#2f6fb2;
+      --brand-dark:#245e9b;
+      --soft:#d8ecff;
+      --shadow: 0 12px 30px rgba(16,24,40,.10);
+      --radius: 22px;
+      --radius2: 18px;
+      --max: 1080px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+      color:var(--text);
+      background: linear-gradient(180deg, #eaf2ff 0%, #f6f8fc 50%, #f6f8fc 100%);
+    }
+    a{color:inherit; text-decoration:none}
+    img{max-width:100%; display:block}
+
+    /* ===== Header (same as your Loan header) ===== */
+    .topbar{
+      position: sticky;
+      top:0;
+      z-index:50;
+      background:#fff;
+      border-bottom: 1px solid rgba(15,23,42,.06);
+    }
+    .topbar-inner{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 12px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width: 220px;
+    }
+    .brand-mark{
+      width:34px;height:34px;
+      border-radius: 9px;
+      background: radial-gradient(circle at 30% 30%, #7cc4ff, #2f6fb2);
+      box-shadow: 0 8px 18px rgba(47,111,178,.25);
+      flex:0 0 auto;
+    }
+    .brand-text{
+      line-height:1.05;
+      font-weight: 800;
+      letter-spacing: .2px;
+      text-transform: uppercase;
+      font-size: 14px;
+    }
+    .brand-text span{display:block; font-weight: 800}
+    .brand-text small{
+      display:block;
+      font-size: 12px;
+      font-weight: 800;
+      opacity:.7;
+    }
+
+    .lang{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin-left:auto;
+    }
+    .pill{
+      border:1px solid rgba(15,23,42,.12);
+      background:#fff;
+      padding:8px 14px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .pill.active{
+      background: #0f172a;
+      color:#fff;
+      border-color:#0f172a;
+    }
+
+    .menu-btn{
+      width:44px; height:44px;
+      border-radius: 999px;
+      border: 1px solid rgba(15,23,42,.12);
+      background:#fff;
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      flex:0 0 auto;
+    }
+    .menu-ico{
+      width:18px; height:12px; position:relative;
+    }
+    .menu-ico:before,.menu-ico:after,.menu-ico i{
+      content:"";
+      position:absolute; left:0; right:0;
+      height:2px; background:#0f172a;
+      border-radius: 4px;
+    }
+    .menu-ico:before{top:0}
+    .menu-ico i{top:5px}
+    .menu-ico:after{bottom:0}
+
+    /* ===== Layout ===== */
+    .wrap{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 18px 16px 40px;
+    }
+
+    /* ===== Hero slider ===== */
+    .hero{
+      background: var(--bg);
+      border-radius: 28px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .slider{
+      position:relative;
+      border-radius: 22px;
+      overflow:hidden;
+      background: #dbeafe;
+      height: 320px;
+      touch-action: pan-y;
+    }
+    .slides{
+      display:flex;
+      height:100%;
+      transition: transform 450ms ease;
+      will-change: transform;
+    }
+    .slide{
+      min-width:100%;
+      height:100%;
+      position:relative;
+      background:#dbeafe;
+    }
+    .slide::after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(255,255,255,.0) 0%, rgba(255,255,255,.08) 60%, rgba(255,255,255,.14) 100%);
+      pointer-events:none;
+    }
+    .slide img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+    }
+
+    .dots{
+      position:absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      display:flex;
+      gap:10px;
+      z-index:3;
+    }
+    .dot{
+      width:10px; height:10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.65);
+      border:1px solid rgba(15,23,42,.08);
+      cursor:pointer;
+    }
+    .dot.active{
+      width:28px;
+      background: rgba(255,255,255,.92);
+    }
+
+    .hero-card{
+      margin-top: -84px;
+      position:relative;
+      z-index:4;
+      background: #fff;
+      border-radius: 22px;
+      box-shadow: 0 16px 40px rgba(16,24,40,.12);
+      padding: 18px 18px 22px;
+      max-width: 760px;
+    }
+    .crumb{
+      font-size: 14px;
+      color:#667085;
+      margin-bottom: 6px;
+    }
+    .crumb b{
+      color: var(--brand);
+      font-weight: 800;
+    }
+    .hero-title{
+      font-size: 44px;
+      line-height:1.05;
+      margin: 0 0 10px;
+      font-weight: 900;
+      letter-spacing: -0.8px;
+    }
+    .hero-line{
+      width: 78px;
+      height: 2px;
+      background: rgba(15,23,42,.45);
+      border-radius: 2px;
+      margin: 10px 0 14px;
+    }
+    .hero-sub{
+      margin:0;
+      font-size: 18px;
+      color:#111827;
+      max-width: 52ch;
+    }
+
+    /* ===== Cards ===== */
+    .section{ margin-top: 18px; }
+    .card{
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .card-pad{ padding: 18px; }
+    .card-title{
+      margin:0 0 10px;
+      font-size: 30px;
+      font-weight: 900;
+      letter-spacing: -0.4px;
+    }
+    .card-text{
+      margin:0 0 14px;
+      color:#111827;
+      font-size: 16px;
+      line-height:1.6;
+      max-width: 66ch;
+    }
+    .btn-row{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top: 10px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      height: 46px;
+      padding: 0 18px;
+      border-radius: 14px;
+      font-weight: 800;
+      border: 1px solid transparent;
+      cursor:pointer;
+      user-select:none;
+      transition: transform .08s ease, background .2s ease, border-color .2s ease;
+    }
+    .btn:active{transform: translateY(1px)}
+    .btn-soft{
+      background: var(--soft);
+      color: #2563a7;
+      border-color: rgba(37,99,167,.12);
+    }
+    .btn-soft:hover{background:#cfe6ff}
+
+    .media{ padding: 0 18px 18px; }
+    .media img{
+      width:100%;
+      border-radius: 18px;
+      height: 360px;
+      object-fit: cover;
+      background:#dbeafe;
+    }
+
+    /* ===== Support section ===== */
+    .support{
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .support-top{ padding: 18px; }
+    .support h3{
+      margin:0 0 10px;
+      font-size: 30px;
+      font-weight: 900;
+      letter-spacing:-0.3px;
+    }
+    .support p{ margin:0 0 10px; color:#111827; }
+    .support-phone{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color:#1b6fb5;
+      font-weight: 900;
+      font-size: 20px;
+      margin: 6px 0 14px;
+    }
+    .phone-ico{
+      width:40px; height:40px;
+      border-radius: 12px;
+      background: #e6f3ff;
+      display:grid;
+      place-items:center;
+      border: 1px solid rgba(27,111,181,.14);
+    }
+    .support-bottom{
+      background: linear-gradient(180deg, #5aa7e4 0%, #2f6fb2 100%);
+      padding: 16px 16px 0;
+      border-top-left-radius: 26px;
+      border-top-right-radius: 26px;
+    }
+    .support-bottom img{
+      width:100%;
+      height: 320px;
+      object-fit: cover;
+      border-top-left-radius: 22px;
+      border-top-right-radius: 22px;
+      background:#2f6fb2;
+    }
+
+    /* ===== Footer (image 6/7 feel: tiles + blue accordion) ===== */
+    .footer{
+      margin-top: 18px;
+      background: var(--brand);
+      color:#fff;
+      border-radius: 22px;
+      overflow:hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .footer-tiles{
+      padding: 18px;
+      display:grid;
+      gap:14px;
+      grid-template-columns: 1fr 1fr;
+      background: rgba(255,255,255,.08);
+    }
+    .tile{
+      background: rgba(255,255,255,.92);
+      color:#0f172a;
+      border-radius: 18px;
+      padding: 18px;
+      min-height: 128px;
+      position:relative;
+      overflow:hidden;
+      box-shadow: 0 10px 20px rgba(16,24,40,.08);
+    }
+    .tile .ico{
+      width:52px;height:52px;
+      border-radius: 999px;
+      background: #1f6fb5;
+      display:grid;
+      place-items:center;
+      color:#fff;
+      font-weight: 900;
+      margin-bottom: 14px;
+    }
+    .tile h4{
+      margin:0;
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: -0.3px;
+      line-height:1.1;
+    }
+    .tile .arrow{
+      position:absolute;
+      right: 16px;
+      bottom: 16px;
+      width: 44px; height: 44px;
+      border-radius: 999px;
+      display:grid;
+      place-items:center;
+      background: rgba(47,111,178,.10);
+      color:#1f6fb5;
+      font-weight: 900;
+      border:1px solid rgba(47,111,178,.16);
+    }
+
+    .footer-accs{
+      padding: 14px 18px 18px;
+      display:grid;
+      gap:12px;
+    }
+    .footer-acc{
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 16px;
+      overflow:hidden;
+    }
+    .footer-acc button{
+      width:100%;
+      background: transparent;
+      border:0;
+      color:#fff;
+      padding: 14px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      font-weight: 900;
+      font-size: 16px;
+      cursor:pointer;
+    }
+    .footer-acc .panel{
+      max-height:0;
+      overflow:hidden;
+      transition: max-height 260ms ease;
+      padding: 0 14px;
+    }
+    .footer-acc.open .panel{
+      max-height: 280px;
+      padding-bottom: 12px;
+    }
+    .footer-acc .panel a{
+      display:block;
+      padding: 8px 0;
+      opacity:.95;
+      font-weight: 650;
+    }
+    .footer-acc .panel a:hover{opacity:1; text-decoration:underline}
+
+    .social{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      padding: 12px 18px 18px;
+    }
+    .social .chip{
+      width:46px;height:46px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.18);
+      display:grid;
+      place-items:center;
+      font-weight: 900;
+    }
+    .copyright{
+      background: rgba(15,23,42,.20);
+      padding: 14px 18px;
+      font-weight: 800;
+      text-align:center;
+    }
+
+    /* ===== Fade-in on scroll ===== */
+    .reveal{
+      opacity:0;
+      transform: translateY(18px);
+      transition: opacity 520ms ease, transform 520ms ease;
+    }
+    .reveal.show{
+      opacity:1;
+      transform: translateY(0);
+    }
+
+    /* ===== Responsive ===== */
+    @media (min-width: 860px){
+      .slider{height: 380px}
+      .hero-title{font-size: 54px}
+      .media img{height: 420px}
+      .support-bottom img{height: 360px}
+      .footer-tiles{grid-template-columns: repeat(4, 1fr)}
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ===== HEADER (exact same style as your Loan page header) ===== -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html" aria-label="KIB Home">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <div class="brand-text">
+          <span>KOREA INTERNATIONAL</span>
+          <small>BANKING (KIB)</small>
+        </div>
+      </a>
+
+      <div class="lang" aria-label="Language selector">
+        <div class="pill active">ENG</div>
+        <div class="pill">KOR</div>
+        <div class="pill">ESPAÑOL</div>
+      </div>
+
+      <button class="menu-btn" type="button" aria-label="Open menu" id="menuBtn">
+        <span class="menu-ico" aria-hidden="true"><i></i></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- ===== HERO (3-image slider) ===== -->
+    <section class="hero reveal">
+      <div class="slider" id="heroSlider">
+        <div class="dots" id="dots" aria-label="Slider dots"></div>
+
+        <div class="slides" id="slides">
+          <!-- keep these blank jpg names; you will add images later -->
+          <div class="slide"><img src="moneytransfer-hero-1.jpg" alt="" /></div>
+          <div class="slide"><img src="moneytransfer-hero-2.jpg" alt="" /></div>
+          <div class="slide"><img src="moneytransfer-hero-3.jpg" alt="" /></div>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div class="crumb">Home » <b>Business Banking</b> » <b>Money Transfer</b></div>
+        <h1 class="hero-title">Money Transfer</h1>
+        <div class="hero-line"></div>
+        <p class="hero-sub">Transfer and receive fund from business partners locally and internationally</p>
+      </div>
+    </section>
+
+    <!-- ===== Inter-Branch Money Transfer ===== -->
+    <section class="section card reveal">
+      <div class="card-pad">
+        <h2 class="card-title">Inter-Branch Money Transfer</h2>
+        <p class="card-text">
+          Inter-branch Money Transfer allows customers in one location to transfer or receive money in the same or
+          different location within KIB bank based on their intended purpose.
+        </p>
+
+        <div class="btn-row">
+          <a class="btn btn-soft" href="#">Discover more</a>
+        </div>
+      </div>
+
+      <div class="media">
+        <img src="inter-branch-money-transfer.jpg" alt="" />
+      </div>
+    </section>
+
+    <!-- ===== International Remittance ===== -->
+    <section class="section card reveal">
+      <div class="card-pad">
+        <h2 class="card-title">International Remittance</h2>
+        <p class="card-text">Fast, Easy, Reasonable Fee, High Security</p>
+
+        <div class="btn-row">
+          <a class="btn btn-soft" href="#">Discover more</a>
+        </div>
+      </div>
+
+      <div class="media">
+        <img src="international-remittance.jpg" alt="" />
+      </div>
+    </section>
+
+    <!-- ===== Standing Order ===== -->
+    <section class="section card reveal">
+      <div class="card-pad">
+        <h2 class="card-title">Standing Order</h2>
+        <p class="card-text">
+          Standing Order Service is financial service that allow customers to schedule fund transfers to their families,
+          business partners or payment partners weekly, monthly, quarterly or specific time &amp; amount of money for
+          transfer schedule according to customer’s needs.
+        </p>
+
+        <div class="btn-row">
+          <a class="btn btn-soft" href="#">Discover more</a>
+        </div>
+      </div>
+
+      <div class="media">
+        <img src="standing-order.jpg" alt="" />
+      </div>
+    </section>
+
+    <!-- ===== Fund Transfer (phone image section like inspo) ===== -->
+    <section class="section card reveal">
+      <div class="card-pad">
+        <h2 class="card-title">Fund Transfer</h2>
+        <p class="card-text">Transfer money between your own accounts or intended receiver simply and quickly.</p>
+
+        <div class="btn-row">
+          <a class="btn btn-soft" href="#">Discover more</a>
+        </div>
+      </div>
+
+      <div class="media">
+        <img src="fund-transfer.jpg" alt="" />
+      </div>
+    </section>
+
+    <!-- ===== Customer Service Care (same style) ===== -->
+    <section class="section support reveal">
+      <div class="support-top">
+        <h3>Customer Service Care</h3>
+        <p>We always available to solve your problem in just a few minute!</p>
+
+        <div class="support-phone">
+          <span class="phone-ico" aria-hidden="true">☎</span>
+          <span>+855 23 963 333</span>
+        </div>
+
+        <a class="btn btn-soft" href="contact.html">Contact us</a>
+      </div>
+
+      <div class="support-bottom">
+        <img src="support-agent.jpg" alt="" />
+      </div>
+    </section>
+
+    <!-- ===== FOOTER (tiles + accordion like image 6/7) ===== -->
+    <footer class="footer reveal">
+      <div class="footer-tiles">
+        <a class="tile" href="#">
+          <div class="ico">👤</div>
+          <h4>Personal<br/>Banking</h4>
+          <div class="arrow">→</div>
+        </a>
+
+        <a class="tile" href="#">
+          <div class="ico">💳</div>
+          <h4>Business<br/>Banking</h4>
+          <div class="arrow">→</div>
+        </a>
+
+        <a class="tile" href="#">
+          <div class="ico">📱</div>
+          <h4>Digital<br/>Banking</h4>
+          <div class="arrow">→</div>
+        </a>
+
+        <a class="tile" href="#">
+          <div class="ico">❓</div>
+          <h4>About Us</h4>
+          <div class="arrow">→</div>
+        </a>
+      </div>
+
+      <div class="footer-accs">
+        <div class="footer-acc" data-acc>
+          <button type="button">
+            Personal Banking <span aria-hidden="true">▾</span>
+          </button>
+          <div class="panel">
+            <a href="#">Planned Savings Account</a>
+            <a href="personal-loan.html">Loan</a>
+          </div>
+        </div>
+
+        <div class="footer-acc" data-acc>
+          <button type="button">
+            Business Banking <span aria-hidden="true">▾</span>
+          </button>
+          <div class="panel">
+            <a href="business-saving-deposit.html">Saving / Deposit</a>
+            <a href="business-banking-loan.html">Loan</a>
+            <a href="business-banking-moneytransfer.html">Money Transfer</a>
+          </div>
+        </div>
+
+        <div class="footer-acc" data-acc>
+          <button type="button">
+            Digital Banking <span aria-hidden="true">▾</span>
+          </button>
+          <div class="panel">
+            <a href="#">Mobile Banking</a>
+            <a href="#">Internet Banking</a>
+          </div>
+        </div>
+
+        <div class="footer-acc" data-acc>
+          <button type="button">
+            Company <span aria-hidden="true">▾</span>
+          </button>
+          <div class="panel">
+            <a href="#">Location Address</a>
+            <a href="#">Financial</a>
+            <a href="#">News</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="social">
+        <span style="font-weight:900; opacity:.95">Social Media</span>
+        <a class="chip" href="#" aria-label="Facebook">f</a>
+        <a class="chip" href="#" aria-label="Instagram">⌁</a>
+        <a class="chip" href="#" aria-label="LinkedIn">in</a>
+        <a class="chip" href="#" aria-label="YouTube">▶</a>
+      </div>
+
+      <div class="copyright">All rights reserved 2023</div>
+    </footer>
+  </main>
+
+  <script>
+    // ===== Hero slider: auto 3s + swipe =====
+    (function(){
+      const slider = document.getElementById('heroSlider');
+      const slidesEl = document.getElementById('slides');
+      const dotsEl = document.getElementById('dots');
+      const slideCount = slidesEl.children.length;
+
+      let index = 0;
+      let timer = null;
+
+      function renderDots(){
+        dotsEl.innerHTML = '';
+        for(let i=0;i<slideCount;i++){
+          const d = document.createElement('button');
+          d.className = 'dot' + (i===index ? ' active' : '');
+          d.type = 'button';
+          d.setAttribute('aria-label', 'Go to slide ' + (i+1));
+          d.addEventListener('click', () => goTo(i, true));
+          dotsEl.appendChild(d);
+        }
+      }
+
+      function goTo(i, userAction=false){
+        index = (i + slideCount) % slideCount;
+        slidesEl.style.transform = `translateX(${-index * 100}%)`;
+        renderDots();
+        if(userAction) restart();
+      }
+
+      function next(){ goTo(index + 1); }
+      function start(){ timer = setInterval(next, 3000); }
+      function stop(){ if(timer) clearInterval(timer); timer = null; }
+      function restart(){ stop(); start(); }
+
+      // touch swipe
+      let startX = 0;
+      let dx = 0;
+      let isDown = false;
+
+      function onStart(x){
+        isDown = true;
+        startX = x;
+        dx = 0;
+        stop();
+      }
+      function onMove(x){
+        if(!isDown) return;
+        dx = x - startX;
+      }
+      function onEnd(){
+        if(!isDown) return;
+        isDown = false;
+
+        const threshold = 45;
+        if(dx > threshold) goTo(index - 1, true);
+        else if(dx < -threshold) goTo(index + 1, true);
+        else restart();
+      }
+
+      slider.addEventListener('touchstart', (e)=> onStart(e.touches[0].clientX), {passive:true});
+      slider.addEventListener('touchmove', (e)=> onMove(e.touches[0].clientX), {passive:true});
+      slider.addEventListener('touchend', onEnd);
+
+      slider.addEventListener('mouseenter', stop);
+      slider.addEventListener('mouseleave', start);
+
+      renderDots();
+      goTo(0);
+      start();
+    })();
+
+    // ===== Fade-in on scroll =====
+    (function(){
+      const els = document.querySelectorAll('.reveal');
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){
+            e.target.classList.add('show');
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      els.forEach(el=>io.observe(el));
+    })();
+
+    // ===== Footer accordion =====
+    (function(){
+      const accs = document.querySelectorAll('[data-acc]');
+      accs.forEach(acc=>{
+        const btn = acc.querySelector('button');
+        btn.addEventListener('click', ()=> acc.classList.toggle('open'));
+      });
+    })();
+
+    // ===== Menu button placeholder (connect to your real menu) =====
+    document.getElementById('menuBtn').addEventListener('click', function(){
+      alert('Menu: connect this button to your existing header menu.');
+    });
+  </script>
+</body>
+</html>
