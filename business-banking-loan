@@ -1,0 +1,779 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Business Banking | Loan</title>
+
+  <style>
+    :root{
+      --kib-blue:#1f5f8f;
+      --kib-blue-2:#2e74a6;
+      --bg:#eef2f7;
+      --card:#ffffff;
+      --muted:#6b7280;
+      --text:#0f172a;
+      --soft:#dbeefe;
+      --radius:26px;
+      --shadow: 0 18px 40px rgba(15, 23, 42, .10);
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background: var(--bg);
+      overflow-x:hidden;
+    }
+
+    /* ===== Header (use same structure as your main header) ===== */
+    .site-header{
+      position: sticky;
+      top:0;
+      z-index:1000;
+      background:#fff;
+      border-bottom:1px solid rgba(15,23,42,.06);
+    }
+    .header-inner{
+      max-width:1100px;
+      margin:0 auto;
+      padding:14px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      color:inherit;
+    }
+    .brand-mark{
+      width:34px;height:34px;border-radius:999px;
+      background: radial-gradient(circle at 30% 30%, #6fb6ff, var(--kib-blue));
+    }
+    .brand-text{
+      display:flex; align-items:baseline; gap:8px;
+      font-weight:800;
+      letter-spacing:.2px;
+    }
+    .brand-text .name{ font-size:18px; }
+    .brand-text .country{ font-size:13px; color:var(--muted); font-weight:700; }
+
+    .header-actions{
+      display:flex; align-items:center; gap:10px;
+    }
+    .lang{
+      display:flex; align-items:center; gap:6px;
+      padding:8px 10px; border-radius:999px;
+      background:#f3f6fb; color:#0f172a; border:1px solid rgba(15,23,42,.06);
+      font-weight:700; font-size:12px;
+    }
+    .hamburger{
+      width:44px;height:40px;border-radius:12px;
+      border:1px solid rgba(15,23,42,.10);
+      background:#fff;
+      display:grid; place-items:center;
+      cursor:pointer;
+    }
+    .hamburger span{
+      display:block; width:18px; height:2px; background:#0f172a; margin:2px 0;
+      border-radius:2px;
+    }
+
+    /* ===== Mobile drawer (optional, matches your footer menu style) ===== */
+    .drawer{
+      position: fixed;
+      inset: 0 0 0 auto;
+      width: min(92vw, 390px);
+      background: linear-gradient(180deg, #2c6ea0, #1f5f8f);
+      color:#fff;
+      transform: translateX(105%);
+      transition: transform .28s ease;
+      z-index: 1200;
+      box-shadow: -10px 0 35px rgba(0,0,0,.18);
+      display:flex;
+      flex-direction:column;
+    }
+    .drawer.open{ transform: translateX(0); }
+    .drawer-top{
+      padding:14px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      border-bottom:1px solid rgba(255,255,255,.16);
+    }
+    .drawer-title{
+      font-weight:900;
+      letter-spacing:.3px;
+      display:flex; gap:8px; align-items:baseline;
+    }
+    .drawer-close{
+      width:42px;height:38px;border-radius:12px;
+      border:1px solid rgba(255,255,255,.25);
+      background: rgba(255,255,255,.10);
+      color:#fff;
+      cursor:pointer;
+      font-weight:900;
+    }
+    .drawer-body{
+      padding:10px 14px 18px;
+      overflow:auto;
+    }
+    .drawer-item{
+      padding:14px 12px;
+      border-bottom:1px solid rgba(255,255,255,.14);
+      font-weight:800;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+    }
+    .drawer-item small{ font-weight:700; opacity:.9; }
+    .drawer-item .chev{ opacity:.9; }
+
+    .backdrop{
+      position: fixed;
+      inset:0;
+      background: rgba(15,23,42,.55);
+      z-index:1100;
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .2s ease;
+    }
+    .backdrop.show{
+      opacity:1;
+      pointer-events:auto;
+    }
+
+    /* ===== Page wrapper ===== */
+    .wrap{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 18px 16px 0;
+    }
+
+    /* ===== Hero slider (3 images, auto 3s, swipe) ===== */
+    .hero{
+      position: relative;
+      border-radius: 28px;
+      overflow:hidden;
+      background:#dbe7f7;
+      box-shadow: var(--shadow);
+      min-height: 300px;
+    }
+    .slides{
+      display:flex;
+      width:300%;
+      transform: translateX(0%);
+      transition: transform .6s ease;
+      touch-action: pan-y;
+    }
+    .slide{
+      width:100%;
+      min-height: 300px;
+      position: relative;
+      flex: 0 0 100%;
+      background: linear-gradient(180deg, #e8f0ff, #d8e6ff);
+    }
+
+    /* Banner images placeholder (you will add .jpg later) */
+    .slide::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,.9), rgba(255,255,255,0) 55%),
+        radial-gradient(circle at 80% 40%, rgba(255,255,255,.65), rgba(255,255,255,0) 60%),
+        linear-gradient(180deg, rgba(0,0,0,.0), rgba(0,0,0,.0));
+    }
+    .slide .banner-img{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      opacity:0; /* keep blank until you add */
+      pointer-events:none;
+    }
+
+    .hero-card{
+      position:absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 16px;
+      background: rgba(255,255,255,.96);
+      border-radius: 22px;
+      padding: 16px 16px 14px;
+      box-shadow: 0 12px 30px rgba(15,23,42,.12);
+      backdrop-filter: blur(6px);
+    }
+    .breadcrumb{
+      font-size: 13px;
+      color: #7b8596;
+      font-weight: 700;
+    }
+    .breadcrumb b{
+      color: var(--kib-blue);
+      font-weight: 900;
+    }
+    .hero-title{
+      margin: 8px 0 8px;
+      font-size: 42px;
+      line-height: 1.02;
+      letter-spacing: -.8px;
+      font-weight: 950;
+    }
+    .hero-rule{
+      width: 64px;
+      height: 3px;
+      border-radius: 999px;
+      background: rgba(15,23,42,.16);
+      margin: 10px 0 14px;
+    }
+    .hero-sub{
+      margin: 0;
+      color:#1f2937;
+      font-size: 18px;
+      line-height: 1.35;
+      font-weight: 700;
+      max-width: 520px;
+    }
+
+    .dots{
+      position:absolute;
+      top: 16px;
+      left: 0;
+      right: 0;
+      display:flex;
+      justify-content:center;
+      gap:8px;
+      pointer-events:none;
+    }
+    .dot{
+      width:8px;height:8px;border-radius:999px;
+      background: rgba(255,255,255,.7);
+      outline: 1px solid rgba(15,23,42,.08);
+      opacity:.75;
+    }
+    .dot.active{
+      width:18px;
+      opacity:1;
+    }
+
+    /* ===== Product cards ===== */
+    .section{
+      margin-top: 18px;
+      padding-bottom: 18px;
+    }
+
+    .product{
+      margin-top: 16px;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .product-head{
+      padding: 18px 18px 10px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:14px;
+    }
+    .product h2{
+      margin:0;
+      font-size: 30px;
+      letter-spacing:-.4px;
+      font-weight: 950;
+    }
+    .product p{
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.35;
+      font-weight: 700;
+      max-width: 560px;
+    }
+    .btn-row{
+      margin-top: 14px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-weight: 900;
+      font-size: 14px;
+      text-decoration:none;
+      border: 1px solid transparent;
+      cursor:pointer;
+      user-select:none;
+    }
+    .btn-primary{
+      background: #2ea2df;
+      color:#fff;
+      border-color: rgba(46,162,223,.2);
+    }
+    .btn-soft{
+      background: #d9efff;
+      color: #2b6c9a;
+      border-color: rgba(43,108,154,.15);
+    }
+
+    .product-media{
+      padding: 0 18px 18px;
+    }
+    .media{
+      width:100%;
+      height: 320px;
+      border-radius: 22px;
+      background: #e9edf3;
+      overflow:hidden;
+      position: relative;
+    }
+    .media img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      opacity:0; /* keep blank until you add */
+      display:block;
+    }
+    .media::after{
+      content:"banner-loan-1.jpg";
+      position:absolute;
+      left:16px;
+      bottom:14px;
+      font-size: 12px;
+      font-weight: 900;
+      color: rgba(15,23,42,.55);
+      background: rgba(255,255,255,.70);
+      padding: 8px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(15,23,42,.08);
+    }
+    .product:nth-of-type(2) .media::after{ content:"banner-loan-2.jpg"; }
+
+    /* ===== Customer Service Care (matches your inspo card) ===== */
+    .support{
+      margin: 18px 0 24px;
+      border-radius: var(--radius);
+      overflow:hidden;
+      box-shadow: var(--shadow);
+      background:#fff;
+    }
+    .support-top{
+      padding: 18px 18px 14px;
+      background: #f2f6fb;
+    }
+    .support-title{
+      margin:0;
+      font-size: 30px;
+      font-weight: 950;
+      letter-spacing:-.4px;
+    }
+    .support-desc{
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.35;
+      font-weight: 700;
+      max-width: 520px;
+    }
+    .support-row{
+      margin-top: 12px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color: #2b6c9a;
+      font-weight: 950;
+    }
+    .support-row svg{ flex:0 0 auto; }
+    .support-actions{
+      margin-top: 12px;
+    }
+    .support-media{
+      height: 310px;
+      background: linear-gradient(180deg, #4aa5d8, #2d84b9);
+      position:relative;
+      overflow:hidden;
+    }
+    .support-media img{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      opacity:0; /* keep blank until you add */
+    }
+    .support-chip{
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      bottom: 16px;
+      background: rgba(255,255,255,.25);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.28);
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-weight: 900;
+      font-size: 12px;
+      backdrop-filter: blur(6px);
+    }
+
+    /* ===== Footer (use same structure as your main footer) ===== */
+    .site-footer{
+      margin-top: 10px;
+      background: linear-gradient(180deg, #2c6ea0, #1f5f8f);
+      color:#fff;
+      padding: 22px 0 0;
+    }
+    .footer-inner{
+      max-width:1100px;
+      margin:0 auto;
+      padding: 0 16px 18px;
+    }
+    .footer-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:16px;
+    }
+    .footer-card{
+      background: rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.18);
+      border-radius: 22px;
+      padding: 16px;
+    }
+    .footer-card h4{
+      margin:0 0 10px;
+      font-size: 18px;
+      font-weight: 950;
+    }
+    .footer-card ul{
+      list-style:none;
+      padding:0;
+      margin:0;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      font-weight: 800;
+      opacity:.95;
+    }
+    .footer-bottom{
+      border-top:1px solid rgba(255,255,255,.18);
+      padding: 14px 16px;
+      text-align:center;
+      font-weight: 800;
+      opacity:.95;
+    }
+
+    /* ===== Fade-in on scroll ===== */
+    .reveal{
+      opacity:0;
+      transform: translateY(18px);
+      transition: opacity .65s ease, transform .65s ease;
+      will-change: opacity, transform;
+    }
+    .reveal.in{
+      opacity:1;
+      transform: translateY(0);
+    }
+
+    /* ===== Responsive tweaks ===== */
+    @media (max-width: 520px){
+      .hero-title{ font-size: 36px; }
+      .media{ height: 280px; }
+      .footer-grid{ grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html" aria-label="KIB Home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="name">KIB</span>
+          <span class="country">CAMBODIA</span>
+        </span>
+      </a>
+
+      <div class="header-actions">
+        <div class="lang" aria-label="Language">
+          ENG <span style="opacity:.7">▾</span>
+        </div>
+        <button class="hamburger" id="openDrawer" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Drawer -->
+  <div class="backdrop" id="backdrop"></div>
+  <aside class="drawer" id="drawer" aria-label="Menu">
+    <div class="drawer-top">
+      <div class="drawer-title">
+        <span style="font-weight:950;">KIB</span> <span style="opacity:.9;">Menu</span>
+      </div>
+      <button class="drawer-close" id="closeDrawer" aria-label="Close menu">✕</button>
+    </div>
+    <div class="drawer-body">
+      <div class="drawer-item">Personal Banking <span class="chev">▾</span></div>
+      <div class="drawer-item">Business Banking <span class="chev">▾</span></div>
+      <div class="drawer-item">Digital Banking <span class="chev">▾</span></div>
+      <div class="drawer-item">Company <span class="chev">▾</span></div>
+      <div class="drawer-item">Financial <span class="chev">▾</span></div>
+      <div class="drawer-item">News <span class="chev">▾</span></div>
+      <div class="drawer-item"><small>KIB Group Company:</small> <small>info@kibinternational.co.site</small></div>
+    </div>
+  </aside>
+
+  <main class="wrap">
+    <!-- Hero slider -->
+    <section class="hero reveal" id="hero">
+      <div class="dots" aria-hidden="true">
+        <span class="dot active" data-dot="0"></span>
+        <span class="dot" data-dot="1"></span>
+        <span class="dot" data-dot="2"></span>
+      </div>
+
+      <div class="slides" id="slides">
+        <div class="slide" data-slide="0">
+          <!-- keep blank; you will add jpg later -->
+          <img class="banner-img" src="banner-loan-hero-1.jpg" alt="">
+        </div>
+        <div class="slide" data-slide="1">
+          <img class="banner-img" src="banner-loan-hero-2.jpg" alt="">
+        </div>
+        <div class="slide" data-slide="2">
+          <img class="banner-img" src="banner-loan-hero-3.jpg" alt="">
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div class="breadcrumb">Home » <b>Business Banking</b> » <b>Loan</b></div>
+        <div class="hero-title">Loan</div>
+        <div class="hero-rule"></div>
+        <p class="hero-sub">Start your dream business, build your warmhearted and enhance your living standard.</p>
+      </div>
+    </section>
+
+    <!-- SME Loan -->
+    <section class="section">
+      <article class="product reveal">
+        <div class="product-head">
+          <div>
+            <h2>SME Loan</h2>
+            <p>A loan for Small and Medium Enterprises.</p>
+
+            <div class="btn-row">
+              <a class="btn btn-primary" href="apply.html">APPLY NOW</a>
+              <a class="btn btn-soft" href="business-loan.html#sme-loan">Discover more</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-media">
+          <div class="media">
+            <!-- keep blank; you will add jpg later -->
+            <img src="banner-loan-1.jpg" alt="">
+          </div>
+        </div>
+      </article>
+
+      <!-- Commercial Loan -->
+      <article class="product reveal" id="commercial-loan">
+        <div class="product-head">
+          <div>
+            <h2>Commercial Loan</h2>
+            <p>Support short term payment or capital to support its business operation and investment.</p>
+
+            <div class="btn-row">
+              <a class="btn btn-soft" href="business-loan.html#commercial-loan">Discover more</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-media">
+          <div class="media">
+            <img src="banner-loan-2.jpg" alt="">
+          </div>
+        </div>
+      </article>
+
+      <!-- Customer Service Care -->
+      <section class="support reveal" aria-label="Customer Service Care">
+        <div class="support-top">
+          <h3 class="support-title">Customer Service Care</h3>
+          <p class="support-desc">We always available to solve your problem in just a few minute!</p>
+
+          <div class="support-row">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M6.5 3.5c.8 2.7 2.4 5.3 4.6 7.5 2.2 2.2 4.8 3.8 7.5 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M8 14l-2 2c-.6.6-.7 1.5-.2 2.2 1 1.4 2.3 2.6 3.7 3.6.7.5 1.6.4 2.2-.2l2-2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M16 8l2-2c.6-.6.7-1.5.2-2.2-1-1.4-2.3-2.6-3.7-3.6-.7-.5-1.6-.4-2.2.2l-2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span>+855 23 963 333</span>
+          </div>
+
+          <div class="support-actions">
+            <a class="btn btn-soft" href="contact.html">Contact us</a>
+          </div>
+        </div>
+
+        <div class="support-media">
+          <!-- keep blank; you will add jpg later -->
+          <img src="banner-support.jpg" alt="">
+          <div class="support-chip">kibinternational.co.site</div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-card">
+          <h4>Personal Banking</h4>
+          <ul>
+            <li>Planned Savings Account</li>
+            <li>Loan</li>
+          </ul>
+        </div>
+        <div class="footer-card">
+          <h4>Business Banking</h4>
+          <ul>
+            <li>Saving / Deposit</li>
+            <li>Loan</li>
+            <li>Money Transfer</li>
+          </ul>
+        </div>
+        <div class="footer-card">
+          <h4>Digital Banking</h4>
+          <ul>
+            <li>Mobile Banking</li>
+            <li>Internet Banking</li>
+          </ul>
+        </div>
+        <div class="footer-card">
+          <h4>Company</h4>
+          <ul>
+            <li>About Us</li>
+            <li>News</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">All rights reserved 2023</div>
+  </footer>
+
+  <script>
+    /* ===== Drawer ===== */
+    const drawer = document.getElementById('drawer');
+    const backdrop = document.getElementById('backdrop');
+    const openDrawerBtn = document.getElementById('openDrawer');
+    const closeDrawerBtn = document.getElementById('closeDrawer');
+
+    function openDrawer(){
+      drawer.classList.add('open');
+      backdrop.classList.add('show');
+    }
+    function closeDrawer(){
+      drawer.classList.remove('open');
+      backdrop.classList.remove('show');
+    }
+    openDrawerBtn.addEventListener('click', openDrawer);
+    closeDrawerBtn.addEventListener('click', closeDrawer);
+    backdrop.addEventListener('click', closeDrawer);
+
+    /* ===== Hero Slider (3s auto + swipe) ===== */
+    const slidesEl = document.getElementById('slides');
+    const dots = Array.from(document.querySelectorAll('.dot'));
+    let idx = 0;
+    let autoTimer = null;
+
+    function setSlide(newIdx){
+      idx = (newIdx + 3) % 3;
+      slidesEl.style.transform = `translateX(-${idx * 100}%)`;
+      dots.forEach((d,i)=>d.classList.toggle('active', i===idx));
+    }
+
+    function startAuto(){
+      stopAuto();
+      autoTimer = setInterval(()=>setSlide(idx+1), 3000);
+    }
+    function stopAuto(){
+      if(autoTimer) clearInterval(autoTimer);
+      autoTimer = null;
+    }
+
+    // Swipe
+    let startX = 0;
+    let currentX = 0;
+    let isDown = false;
+
+    function pointerDown(e){
+      isDown = true;
+      startX = e.touches ? e.touches[0].clientX : e.clientX;
+      currentX = startX;
+      stopAuto();
+    }
+    function pointerMove(e){
+      if(!isDown) return;
+      currentX = e.touches ? e.touches[0].clientX : e.clientX;
+    }
+    function pointerUp(){
+      if(!isDown) return;
+      const dx = currentX - startX;
+      const threshold = 50;
+      if(dx > threshold) setSlide(idx - 1);
+      else if(dx < -threshold) setSlide(idx + 1);
+      isDown = false;
+      startAuto();
+    }
+
+    slidesEl.addEventListener('touchstart', pointerDown, {passive:true});
+    slidesEl.addEventListener('touchmove', pointerMove, {passive:true});
+    slidesEl.addEventListener('touchend', pointerUp);
+    slidesEl.addEventListener('mousedown', pointerDown);
+    window.addEventListener('mousemove', pointerMove);
+    window.addEventListener('mouseup', pointerUp);
+
+    dots.forEach((d)=>{
+      d.addEventListener('click', ()=> {
+        setSlide(Number(d.dataset.dot));
+        startAuto();
+      });
+    });
+
+    setSlide(0);
+    startAuto();
+
+    /* ===== Fade-in on scroll ===== */
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    reveals.forEach(el=>io.observe(el));
+  </script>
+</body>
+</html>
