@@ -695,3 +695,42 @@ button{font:inherit}
   .kib-footer__address h3{font-size:32px}
   .kib-footer__address p{font-size:18px}
 }
+/* existing styles above */
+
+/* About page tabs */
+.about-tabs{
+  display:flex;
+  width:100%;
+  background:#69b2eb;
+  border-bottom-left-radius:32px;
+  border-bottom-right-radius:32px;
+  overflow:hidden;
+  margin-top:-8px;
+}
+
+.about-tabs a{
+  flex:1;
+  text-align:center;
+  padding:18px 10px 22px;
+  text-decoration:none;
+  color:#ffffff;
+  font-weight:500;
+  font-size:16px;
+  position:relative;
+  background:#69b2eb;
+}
+
+.about-tabs a.active{
+  background:#78b9ec;
+}
+
+.about-tabs a.active::after{
+  content:"";
+  position:absolute;
+  left:18%;
+  right:18%;
+  bottom:0;
+  height:4px;
+  background:#ffffff;
+  border-radius:3px 3px 0 0;
+}
