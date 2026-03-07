@@ -1024,17 +1024,20 @@ body{
 
 /* CTA button */
 .kib-cta{
-  height: 46px;
-  padding: 0 18px;
-  border-radius: 14px;
-  border: 0;
-  background: #d7eef8;
-  color:#2f60b5;
-  font-weight: 900;
-  cursor:pointer;
-}
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
 
-.kib-cta:active{ transform: translateY(1px); }
+  height:46px;
+  padding:0 18px;
+  border-radius:14px;
+  border:0;
+  background:#d7eef8;
+  color:#2f60b5;
+  font-weight:900;
+  cursor:pointer;
+  text-decoration:none;
+}
 
 /* Dots stay the same */
 .kib-banner-dots{
