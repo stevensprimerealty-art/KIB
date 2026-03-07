@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>International Remittance | KIB</title>
+  <link rel="stylesheet" href="kib-international-remittance.css"/>
+</head>
+<body>
+
+  <!-- =======================
+       HEADER (same structure as Money Transfer header)
+  ======================== -->
+  <header class="kib-header">
+    <div class="kib-header__inner">
+      <a class="kib-brand" href="index.html" aria-label="KIB Home">
+        <div class="kib-brand__text">
+          <div class="kib-brand__name">KOREA INTERNATIONAL<br/>BANKING</div>
+          <div class="kib-brand__abbr">(KIB)</div>
+        </div>
+      </a>
+
+      <div class="kib-header__right">
+        <div class="kib-lang" role="tablist" aria-label="Language switcher">
+          <button class="kib-pill is-active" type="button" role="tab" aria-selected="true">ENG</button>
+          <button class="kib-pill" type="button" role="tab" aria-selected="false">KOR</button>
+          <button class="kib-pill" type="button" role="tab" aria-selected="false">ESPAÑOL</button>
+        </div>
+
+        <button class="kib-menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false">
+          <span class="kib-menu-btn__icon"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <nav class="kib-drawer" id="drawer" aria-hidden="true">
+      <div class="kib-drawer__panel">
+        <div class="kib-drawer__head">
+          <div class="kib-drawer__title">Menu</div>
+          <button class="kib-drawer__close" id="menuClose" type="button" aria-label="Close menu">✕</button>
+        </div>
+
+        <a class="kib-drawer__link" href="personal-banking.html">Personal Banking</a>
+        <a class="kib-drawer__link" href="business-banking.html">Business Banking</a>
+        <a class="kib-drawer__link" href="digital-banking.html">Digital Banking</a>
+        <a class="kib-drawer__link" href="about.html">About Us</a>
+        <a class="kib-drawer__link" href="news.html">News</a>
+        <a class="kib-drawer__link" href="contact.html">Contact</a>
+      </div>
+      <div class="kib-drawer__backdrop" id="drawerBackdrop"></div>
+    </nav>
+  </header>
+
+  <main class="page">
+
+    <!-- =======================
+         HERO (3-image auto slider)
+    ======================== -->
+    <section class="hero">
+      <div class="hero__wrap">
+
+        <div class="hero-slider" id="heroSlider" aria-roledescription="carousel" aria-label="International Remittance hero">
+          <div class="hero-slider__track" id="heroTrack">
+            <!-- JPG placeholders (you will add later) -->
+            <div class="hero-slide" aria-label="Slide 1">
+              <img class="hero-slide__img" src="international-remittance-hero-1.jpg" alt=""
+                   onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
+            </div>
+            <div class="hero-slide" aria-label="Slide 2">
+              <img class="hero-slide__img" src="international-remittance-hero-2.jpg" alt=""
+                   onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
+            </div>
+            <div class="hero-slide" aria-label="Slide 3">
+              <img class="hero-slide__img" src="international-remittance-hero-3.jpg" alt=""
+                   onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
+            </div>
+          </div>
+
+          <div class="hero-slider__dots" id="heroDots" aria-label="Slider pagination">
+            <button class="dot is-active" type="button" aria-label="Go to slide 1"></button>
+            <button class="dot" type="button" aria-label="Go to slide 2"></button>
+            <button class="dot" type="button" aria-label="Go to slide 3"></button>
+          </div>
+        </div>
+
+        <div class="hero-card reveal">
+          <div class="crumbs">
+            <span>Home</span> <span class="sep">»</span>
+            <span>Personal Banking</span> <span class="sep">»</span>
+            <span>Money Transfer</span> <span class="sep">»</span>
+            <span class="is-current">International Remittance</span>
+          </div>
+
+          <h1 class="hero-title">International Remittance</h1>
+          <div class="hero-underline"></div>
+
+          <p class="hero-subtitle">
+            Fast, Easy, Reasonable Fee, High Security
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =======================
+         CONTENT (match inspo text)
+    ======================== -->
+    <section class="section">
+      <div class="container">
+
+        <article class="info-card reveal">
+          <h2 class="info-title">Inward Remittance Service</h2>
+          <ul class="bullets">
+            <li>
+              Inward Remittance Service with KIB (Cambodia) Plc is quick, secure, and reliable. Customers who have saving
+              accounts with the KIB (Cambodia) Plc could receive money easily from oversea with the convenient add-on with
+              Mobile banking app which enable the easily checking the inward money or bank account balance in real time.
+            </li>
+          </ul>
+
+          <h2 class="info-title" style="margin-top:26px;">Outward Remittance Service</h2>
+          <ul class="bullets">
+            <li>
+              With the large banking network across the globe, customer could transfer the money to many countries around
+              the world with KIB (Cambodia) Plc via SWIFT channel. It is the most secure way to settle the bill, payment for good,
+              send to family with a very convenient outward remittance with all 142 branches throughout Cambodia.
+            </li>
+          </ul>
+        </article>
+
+        <article class="block-title reveal">
+          <h2>Outward Remittance Instruction<br/>(Sending money to oversea)</h2>
+        </article>
+
+        <!-- Table 1: instruction -->
+        <article class="table-card reveal">
+          <div class="table-scroll" aria-label="Outward Remittance Instruction table (scrollable)">
+            <table class="kib-table" role="table">
+              <thead>
+                <tr>
+                  <th>Currency</th>
+                  <th>USD, BAHT, KRW, MYR, EUR, AUD, SGD, JPY, CNY</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="rowhead">Beneficiary’s detail information (Receiver)</td>
+                  <td>
+                    <div class="stack">
+                      <div class="cell">Account Name</div>
+                      <div class="cell">Account Number</div>
+                      <div class="cell">Beneficiary's Address</div>
+                      <div class="cell">Bank Name</div>
+                      <div class="cell">Bank Swift Code</div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="note">
+            *Some Beneficiary’s bank may request information other than SWIFT code such as (Routing number, Sort code, BSB No, etc.)
+          </p>
+        </article>
+
+        <article class="block-title reveal">
+          <h2>Outward Fee (Over the Counter and<br/>Internet Banking)</h2>
+        </article>
+
+        <!-- Table 2: outward fee (scrollable wide like inspo slide) -->
+        <article class="table-card reveal">
+          <div class="table-scroll" aria-label="Outward Fee table (scrollable)">
+            <table class="kib-table kib-table--wide" role="table">
+              <thead>
+                <tr>
+                  <th>Amount (USD)</th>
+                  <th colspan="3">Outward Fee</th>
+                </tr>
+                <tr>
+                  <th class="subhead"></th>
+                  <th class="subhead">Telex</th>
+                  <th class="subhead">Commission Fee</th>
+                  <th class="subhead">OUR (FULLPAYFEE)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Less than $1,000</td>
+                  <td>$10</td>
+                  <td>$5</td>
+                  <td>$20</td>
+                </tr>
+                <tr>
+                  <td>From $1,001 to $10,000</td>
+                  <td>$10</td>
+                  <td>$10</td>
+                  <td>$20</td>
+                </tr>
+                <tr>
+                  <td>Form $10,001</td>
+                  <td>$10</td>
+                  <td>0.13% (min $10)</td>
+                  <td>$20</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="block-title reveal">
+          <h2>***Special Offer for Outward Remittance Via KIB Mobile</h2>
+        </article>
+
+        <!-- Table 3: special offer (scrollable) -->
+        <article class="table-card reveal">
+          <div class="table-scroll" aria-label="Special Offer table (scrollable)">
+            <table class="kib-table kib-table--wide" role="table">
+              <thead>
+                <tr>
+                  <th>Amount</th>
+                  <th>Commission rate</th>
+                  <th>Telex</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>≥$10 to $10,000</td>
+                  <td>Fixed $10</td>
+                  <td>Waived</td>
+                </tr>
+                <tr>
+                  <td>&gt; $10,000 to $50,000</td>
+                  <td>Amount x 0.10% (Min $10)</td>
+                  <td>Waived</td>
+                </tr>
+                <tr>
+                  <td colspan="3" class="note-row">Note: Intermediary fee (OUR): $20</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="block-title reveal">
+          <h2>Inward Fee</h2>
+        </article>
+
+        <!-- Table 4: inward fee -->
+        <article class="table-card reveal">
+          <div class="table-scroll" aria-label="Inward Fee table (scrollable)">
+            <table class="kib-table" role="table">
+              <thead>
+                <tr>
+                  <th colspan="2">Inward Fee</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="rowhead">Any amount of the transaction</td>
+                  <td>0.07% of total received amount or Min USD10</td>
+                </tr>
+                <tr>
+                  <td colspan="2" class="special-row">
+                    ***Special Offer: Free Of charge (Inward Commission Fee Until Further Notice)
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <!-- Customer Service Care (same style idea as your other pages) -->
+        <article class="support-card reveal">
+          <div class="support-card__head">
+            <h2 class="support-card__title">Customer Service Care</h2>
+            <p class="support-card__text">
+              We always available to solve your problem in just a few minute!
+            </p>
+
+            <div class="support-card__phone">
+              <span class="support-card__icon">📞</span>
+              <a href="tel:+85523963333" class="support-card__link">+855 23 963 333</a>
+            </div>
+
+            <a class="btn btn--soft btn--large" href="contact.html">Contact us</a>
+          </div>
+
+          <div class="support-card__image">
+            <!-- placeholder JPG -->
+            <img src="customer-service.jpg" alt=""
+                 onerror="this.classList.add('is-missing'); this.removeAttribute('src');">
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- =======================
+         FOOTER (use your main footer structure + WOORI -> KIB)
+    ======================== -->
+    <footer class="kib-footer" id="kibFooter">
+      <!-- BLUE ACCORDION MENU -->
+      <section class="kib-footer__nav">
+        <button class="kib-acc" type="button" aria-expanded="false">
+          <span>Personal Banking</span>
+          <span class="kib-acc__icon" aria-hidden="true">▾</span>
+        </button>
+        <div class="kib-acc__panel">
+          <a href="loan.html" class="kib-footer__link">Loan</a>
+          <a href="money-transfer.html" class="kib-footer__link">Money Transfer</a>
+          <a href="saving-deposit.html" class="kib-footer__link">Saving / Deposit</a>
+        </div>
+
+        <button class="kib-acc" type="button" aria-expanded="false">
+          <span>Business Banking</span>
+          <span class="kib-acc__icon" aria-hidden="true">▾</span>
+        </button>
+        <div class="kib-acc__panel">
+          <a href="business-banking.html" class="kib-footer__link">Business Banking</a>
+        </div>
+
+        <button class="kib-acc" type="button" aria-expanded="false">
+          <span>Digital Banking</span>
+          <span class="kib-acc__icon" aria-hidden="true">▾</span>
+        </button>
+        <div class="kib-acc__panel">
+          <a href="digital-banking.html" class="kib-footer__link">Digital Banking</a>
+        </div>
+
+        <button class="kib-acc" type="button" aria-expanded="false">
+          <span>Company</span>
+          <span class="kib-acc__icon" aria-hidden="true">▾</span>
+        </button>
+        <div class="kib-acc__panel">
+          <a href="about.html" class="kib-footer__link">About Us</a>
+        </div>
+
+        <button class="kib-acc" type="button" aria-expanded="false">
+          <span>Financial</span>
+          <span class="kib-acc__icon" aria-hidden="true">▾</span>
+        </button>
+        <div class="kib-acc__panel">
+          <a href="financial.html" class="kib-footer__link">Financial</a>
+        </div>
+
+        <button class="kib-acc" type="button" aria-expanded="false">
+          <span>News</span>
+          <span class="kib-acc__icon" aria-hidden="true">▾</span>
+        </button>
+        <div class="kib-acc__panel">
+          <a href="news.html" class="kib-footer__link">News</a>
+        </div>
+
+        <div class="kib-footer__group">
+          KIB Group Company:
+          <a class="kib-footer__groupLink" href="https://spot.kibbank.com" target="_blank" rel="noopener">spot.kibbank.com</a>
+        </div>
+      </section>
+
+      <!-- LOCATION ADDRESS (CARD STYLE LIKE INSPO) -->
+      <section class="kib-footer__address">
+        <div class="kib-footer__address-card">
+          <div class="kib-footer__badge">KOREA INTERNATIONAL BANKING</div>
+
+          <h3>Location Address</h3>
+
+          <p>39 Namdaemun-ro, Jung-gu, Seoul (04531), Republic of Korea.</p>
+          <p>Piazza di Spagna, 59, 00187 Roma RM, Italy</p>
+          <p>Tower 42, Level 38, 25 Old Broad Street, EC2N 1HQ, London, United Kingdom</p>
+
+          <p class="kib-footer__branchTitle">New York Branch</p>
+          <p>1250 Broadway, 37th Floor, New York, NY 10001, USA</p>
+
+          <p>Mubarak Al-Kabeer Street, Darwazat Al-Abdul Razzak, Kuwait City, State of Kuwait</p>
+
+          <section class="kib-footer__bottom">
+            <div class="kib-footer__social">
+              <a class="kib-social" href="#" aria-label="Facebook">Fb</a>
+              <a class="kib-social" href="#" aria-label="Instagram">Ig</a>
+              <a class="kib-social" href="#" aria-label="LinkedIn">In</a>
+              <a class="kib-social" href="#" aria-label="YouTube">Yt</a>
+            </div>
+
+            <div class="kib-footer__copy">All rights reserved 2023</div>
+          </section>
+        </div>
+      </section>
+    </footer>
+
+  </main>
+
+  <script src="kib-international-remittance.js"></script>
+</body>
+</html>
