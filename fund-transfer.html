@@ -10,17 +10,11 @@
 
 <style>
 
-/* GLOBAL */
-
 body{
 margin:0;
 font-family:system-ui;
-background:#f5f7fb;
+background:#f4f6f8;
 color:#111;
-}
-
-.section{
-padding:20px;
 }
 
 /* HEADER */
@@ -29,7 +23,7 @@ padding:20px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:16px 20px;
+padding:16px 18px;
 background:#fff;
 border-bottom:1px solid #eee;
 }
@@ -39,16 +33,31 @@ font-weight:700;
 font-size:18px;
 }
 
-.menu{
-font-size:22px;
+.lang{
+display:flex;
+gap:8px;
+}
+
+.lang button{
+border:none;
+background:#eee;
+padding:6px 12px;
+border-radius:16px;
+}
+
+.lang .active{
+background:#0f2a44;
+color:#fff;
 }
 
 /* HERO SLIDER */
 
-.hero{
-position:relative;
-height:280px;
+.hero-slider{
+height:260px;
+margin:20px;
+border-radius:22px;
 overflow:hidden;
+position:relative;
 background:#ddd;
 }
 
@@ -71,13 +80,11 @@ opacity:1;
 /* HERO CARD */
 
 .hero-card{
-
 background:#fff;
-margin:-70px 20px 20px;
+margin:-80px 20px 20px;
 padding:24px;
 border-radius:22px;
-box-shadow:0 10px 20px rgba(0,0,0,0.08);
-
+box-shadow:0 12px 20px rgba(0,0,0,0.08);
 }
 
 .breadcrumb{
@@ -88,7 +95,7 @@ margin-bottom:10px;
 
 .hero-card h1{
 margin:8px 0;
-font-size:30px;
+font-size:28px;
 }
 
 .hero-line{
@@ -98,16 +105,44 @@ background:#ddd;
 margin:12px 0;
 }
 
+.hero-card p{
+color:#444;
+}
+
+.btn{
+display:inline-block;
+background:#1aa1cf;
+padding:12px 22px;
+color:#fff;
+border-radius:10px;
+margin-top:10px;
+font-weight:600;
+}
+
+/* SECTION TEXT */
+
+.section{
+padding:20px;
+}
+
+.section h2{
+font-size:32px;
+margin-bottom:12px;
+}
+
+.section p{
+font-size:18px;
+line-height:1.6;
+}
+
 /* CARD */
 
 .card{
-
 background:#fff;
-padding:24px;
+border-radius:22px;
+padding:22px;
 margin:20px;
-border-radius:20px;
-box-shadow:0 6px 14px rgba(0,0,0,0.06);
-
+box-shadow:0 6px 16px rgba(0,0,0,0.06);
 }
 
 .card h3{
@@ -118,119 +153,100 @@ color:#2f5f9e;
 margin-bottom:10px;
 }
 
-/* BLUE SECTION */
+/* BENEFITS */
 
-.blue-section{
-
+.benefits{
 background:#3569a5;
-padding:20px;
-
+padding:24px;
 }
 
-.blue-section h2{
+.benefits h2{
 color:#fff;
 }
 
-.white-card{
-
+.benefit-card{
 background:#fff;
+border-radius:22px;
 padding:20px;
-border-radius:18px;
-margin-top:18px;
-
+margin-top:20px;
 }
 
-/* TABLE SECTION */
+/* CONDITIONS */
 
-.info{
-
+.condition{
 background:#fff;
-border-radius:18px;
 margin:20px;
+border-radius:22px;
 overflow:hidden;
-
 }
 
 .row{
-
 padding:18px;
 border-bottom:1px solid #eee;
-
 }
 
 .row h4{
-
 margin:0 0 6px;
 color:#777;
-
 }
 
-/* SERVICE */
+/* CUSTOMER SERVICE */
 
 .service{
-
-margin:20px;
+background:linear-gradient(#e7f0f7,#2e8cc7);
 padding:24px;
-background:linear-gradient(#e9f2fa,#2a8cc6);
+margin:20px;
 border-radius:22px;
 color:#fff;
-
 }
 
-/* TILES */
+/* NAV TILES */
 
 .tiles{
-
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:18px;
+gap:16px;
 padding:20px;
-
 }
 
 .tile{
-
 background:#fff;
-border-radius:20px;
-padding:26px;
+padding:24px;
+border-radius:22px;
 text-align:center;
-box-shadow:0 5px 14px rgba(0,0,0,0.06);
-
+box-shadow:0 6px 16px rgba(0,0,0,0.06);
 }
 
 /* FOOTER */
 
 .footer{
-
 background:#3569a5;
 color:#fff;
-padding:20px;
+padding:22px;
+}
 
+.footer h3{
+margin-top:0;
 }
 
 .footer-bottom{
-
 background:#2c5a93;
-padding:12px;
 text-align:center;
-
+padding:12px;
+margin-top:20px;
 }
 
 /* FADE */
 
 .fade{
-
 opacity:0;
 transform:translateY(40px);
-transition:.6s;
-
+transition:all .7s;
 }
 
 .fade.show{
-
 opacity:1;
-transform:none;
-
+transform:translateY(0);
 }
 
 </style>
@@ -248,8 +264,10 @@ transform:none;
 KOREA INTERNATIONAL BANKING (KIB)
 </div>
 
-<div class="menu">
-☰
+<div class="lang">
+<button class="active">ENG</button>
+<button>KOR</button>
+<button>ESPAÑOL</button>
 </div>
 
 </div>
@@ -257,19 +275,11 @@ KOREA INTERNATIONAL BANKING (KIB)
 
 <!-- HERO SLIDER -->
 
-<div class="hero">
+<div class="hero-slider">
 
-<div class="slide active">
-fund-transfer-hero-1.jpg
-</div>
-
-<div class="slide">
-fund-transfer-hero-2.jpg
-</div>
-
-<div class="slide">
-fund-transfer-hero-3.jpg
-</div>
+<div class="slide active">fund-transfer-hero-1.jpg</div>
+<div class="slide">fund-transfer-hero-2.jpg</div>
+<div class="slide">fund-transfer-hero-3.jpg</div>
 
 </div>
 
@@ -287,9 +297,25 @@ Home » Personal Banking » Money Transfer » Fund Transfer
 <div class="hero-line"></div>
 
 <p>
+Transfer money between your own accounts or intended receiver simply and quickly.
+</p>
 
-KIB Bank is one of the Fund Transfer members.  
-KIB Bank has integrated Fund Transfer in KIB Bank Mobile Cambodia which customers are able to access their Fund Transfer Account easily.
+<a class="btn">DISCOVER MORE</a>
+
+</div>
+
+
+<!-- TITLE -->
+
+<div class="section fade">
+
+<h2>
+Fast and Secure Fund Transfer with KIB Bank
+</h2>
+
+<p>
+
+KIB Bank provides convenient fund transfer services allowing customers to move money between accounts quickly and securely using digital banking solutions.
 
 </p>
 
@@ -300,106 +326,55 @@ KIB Bank has integrated Fund Transfer in KIB Bank Mobile Cambodia which customer
 
 <div class="card fade">
 
-<h3>Key Benefits</h3>
+<h3>Key Benefits:</h3>
 
 <ul>
 
-<li>Fund Transfer Account Registration on KIB Bank Mobile App</li>
+<li>Easy fund transfer between your KIB accounts</li>
 
-<li>Fund transfer from KIB Bank Hope Saving account to Fund Transfer member’s current/saving account or receive fund from Fund Transfer member via KIB Bank Mobile with free of charge until 31 December 2022</li>
+<li>Transfer funds to other bank accounts</li>
 
-<li>Deposit fund to Fund Transfer members</li>
+<li>Secure and fast transactions</li>
 
-<li>Make payment via QR</li>
+<li>24/7 digital banking convenience</li>
 
-<li>Create New Recovery QR Code</li>
-
-<li>Fund Transfer Account Restore Access on KIB Bank Mobile App</li>
-
-<li>View account balance & transaction history of Fund Transfer on KIB Bank Mobile App</li>
-
-<li>View Fund Transfer account information on KIB Bank Mobile App</li>
+<li>Simple and user-friendly mobile banking experience</li>
 
 </ul>
 
 </div>
 
 
-<!-- REGISTRATION -->
-
-<div class="blue-section fade">
-
-<h2>Registration</h2>
-
-<div class="white-card">
-
-✔ Registration is made through NBC’s Fund Transfer App (Generic App). Customer shall perform self-registration by choosing KIB Bank Mobile in the bank list.
-
-</div>
-
-<div class="white-card">
-
-✔ The registration can also be made through KIB Bank Mobile Banking, KIB Bank Mobile App.
-
-</div>
-
-</div>
-
-
 <!-- CONDITIONS -->
 
-<div class="info fade">
+<h2 style="padding-left:20px;">Transfer Information</h2>
+
+<div class="condition fade">
 
 <div class="row">
-
-<h4>Eligible</h4>
-
-<p>
-Customers are required to have Hope Saving Account with KIB Bank.
-</p>
-
-</div>
-
-<div class="row">
-
 <h4>Currency</h4>
-
 <p>KHR and USD</p>
-
 </div>
 
 <div class="row">
-
-<h4>Maximum Amount Transfer</h4>
-
-<p>
-
-1. Transfer funds transaction between Fund Transfer wallet and Fund Transfer wallet can transfer up to 40,000,000 Riels or 10,000 USD per day.
-
-</p>
-
-<p>
-
-2. Transfer funds transaction between KIB Bank account and Fund Transfer member’s Bank account can transfer up to 200,000,000 Riels or 50,000 USD per day.
-
-</p>
-
+<h4>Transfer Type</h4>
+<p>Internal and external bank transfers</p>
 </div>
 
+<div class="row">
+<h4>Daily Limit</h4>
+<p>Based on customer account type and verification level</p>
 </div>
 
+<div class="row">
+<h4>Processing Time</h4>
+<p>Instant for internal transfers</p>
+</div>
 
-<!-- GUIDE -->
-
-<div class="section fade">
-
-<h2>
-Link KIB Bank Account in Fund Transfer App 👇
-</h2>
-
-<p>
-CLICK HERE FOR USER GUIDE
-</p>
+<div class="row">
+<h4>Security</h4>
+<p>Protected by secure banking authentication systems</p>
+</div>
 
 </div>
 
@@ -410,34 +385,23 @@ CLICK HERE FOR USER GUIDE
 
 <h2>Customer Service Care</h2>
 
-<p>
-We always available to solve your problem in just a few minute!
-</p>
+<p>We always available to solve your problem in just a few minute!</p>
 
-<h3>+855 23 963 333</h3>
+<p style="font-size:20px;">+855 23 963 333</p>
+
+<a class="btn">Contact us</a>
 
 </div>
 
 
-<!-- CORPORATE TILES -->
+<!-- NAV TILES -->
 
 <div class="tiles fade">
 
-<div class="tile">
-Personal Banking
-</div>
-
-<div class="tile">
-Business Banking
-</div>
-
-<div class="tile">
-Digital Banking
-</div>
-
-<div class="tile">
-About Us
-</div>
+<div class="tile">Personal Banking</div>
+<div class="tile">Business Banking</div>
+<div class="tile">Digital Banking</div>
+<div class="tile">About Us</div>
 
 </div>
 
@@ -448,6 +412,8 @@ About Us
 
 <h3>KOREA INTERNATIONAL BANKING</h3>
 
+<h4>Location Address</h4>
+
 <p>
 39 Namdaemun-ro, Jung-gu, Seoul (04531), Republic of Korea.
 </p>
@@ -457,21 +423,18 @@ Piazza di Spagna, 59, 00187 Roma RM, Italy
 </p>
 
 <p>
-Tower 42 , Level 38, 25 Old Broad Street, London
+Tower 42 , Level 38, 25 Old Broad Street, EC2N 1HQ, London
 </p>
 
 <p>
 1250 Broadway, 37th Floor, New York, NY 10001, USA
 </p>
 
-</div>
-
 <div class="footer-bottom">
-
 All rights reserved 2023
-
 </div>
 
+</div>
 
 
 <script>
@@ -479,20 +442,19 @@ All rights reserved 2023
 /* HERO SLIDER */
 
 let slides=document.querySelectorAll(".slide")
-
-let i=0
+let index=0
 
 setInterval(()=>{
 
-slides[i].classList.remove("active")
+slides[index].classList.remove("active")
 
-i++
+index++
 
-if(i>=slides.length){
-i=0
+if(index>=slides.length){
+index=0
 }
 
-slides[i].classList.add("active")
+slides[index].classList.add("active")
 
 },3000)
 
@@ -518,6 +480,6 @@ observer.observe(el)
 
 </script>
 
-</body>
 
+</body>
 </html>
