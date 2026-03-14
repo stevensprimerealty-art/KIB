@@ -212,6 +212,85 @@ width:100%;
 margin-top:20px;
 }
 
+/* NAV TILES */
+
+.nav-tiles{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:16px;
+padding:40px 20px;
+background:#3c6aa4;
+}
+
+.tile{
+background:white;
+border-radius:22px;
+padding:24px;
+text-decoration:none;
+color:#111;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+height:160px;
+}
+
+.tile h3{
+font-size:22px;
+}
+
+.icon{
+width:50px;
+height:50px;
+background:#3c6aa4;
+border-radius:50%;
+margin-bottom:10px;
+}
+
+.arrow{
+align-self:flex-end;
+font-size:22px;
+color:#3c6aa4;
+}
+
+
+/* FOOTER MENU */
+
+.footer-menu{
+background:#3c6aa4;
+color:white;
+padding:20px;
+}
+
+.menu-item{
+border-top:1px solid rgba(255,255,255,.3);
+padding:14px 0;
+}
+
+.menu-header{
+font-weight:600;
+cursor:pointer;
+}
+
+.menu-content{
+display:none;
+padding-top:10px;
+}
+
+.menu-content p{
+margin:6px 0;
+}
+
+.menu-item.active .menu-content{
+display:block;
+}
+
+.group{
+margin-top:20px;
+font-size:14px;
+opacity:.9;
+}
+
+  
 /* FOOTER */
 
 footer{
@@ -641,7 +720,15 @@ entry.target.classList.add("show");
 });
 
 faders.forEach(el=>observer.observe(el));
+  
+/* FOOTER ACCORDION */
 
+document.querySelectorAll(".menu-header").forEach(header=>{
+header.addEventListener("click",()=>{
+header.parentElement.classList.toggle("active");
+});
+});
+  
 </script>
 
 </body>
