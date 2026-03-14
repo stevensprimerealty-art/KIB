@@ -116,3 +116,23 @@ else restart();
 go(0);
 
 start();
+
+document.querySelectorAll(".footer-btn").forEach(button => {
+
+button.addEventListener("click", () => {
+
+const panel = button.nextElementSibling;
+
+const open = panel.style.display === "block";
+
+document.querySelectorAll(".footer-panel").forEach(p=>{
+p.style.display="none";
+});
+
+if(!open){
+panel.style.display="block";
+}
+
+});
+
+});
