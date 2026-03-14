@@ -10,144 +10,199 @@
 <style>
 
 body{
+font-family:Arial,Helvetica,sans-serif;
 margin:0;
-font-family:Arial, Helvetica, sans-serif;
-background:#f4f6fb;
-color:#222;
+background:#f4f6f8;
+color:#111;
 }
 
 /* HEADER */
 
 .header{
-background:white;
-padding:18px 0;
-box-shadow:0 2px 8px rgba(0,0,0,0.06);
-position:sticky;
-top:0;
-z-index:100;
-}
-
-.container{
-width:92%;
-max-width:900px;
-margin:auto;
-}
-
-.header-flex{
 display:flex;
 justify-content:space-between;
 align-items:center;
+padding:18px;
+background:white;
+border-bottom:1px solid #eee;
 }
 
-.logo-wrap{
-display:flex;
-align-items:center;
-gap:10px;
-}
-
-.logo-circle{
-width:36px;
-height:36px;
-border-radius:50%;
-background:linear-gradient(135deg,#4a86d4,#2f63a3);
-}
-
-.logo-text{
-font-size:16px;
+.logo{
 font-weight:700;
+font-size:18px;
 }
 
-.logo-text span{
-font-weight:400;
-color:#777;
-margin-left:5px;
+.lang{
+display:flex;
+gap:8px;
 }
 
-.header-actions button{
+.lang button{
 border:none;
-background:#f2f4f8;
-padding:8px 14px;
-border-radius:10px;
-margin-left:10px;
-font-weight:600;
+background:#eee;
+padding:6px 12px;
+border-radius:16px;
+}
+
+.lang .active{
+background:#0f2a44;
+color:white;
 }
 
 /* HERO */
 
-.hero{
-margin-top:20px;
+.hero-slider{
+height:260px;
+margin:20px;
+border-radius:20px;
 overflow:hidden;
-border-radius:26px;
-}
-
-.slider{
-display:flex;
-transition:transform .6s ease;
+position:relative;
+background:#ddd;
 }
 
 .slide{
-min-width:100%;
-height:300px;
-background:#cfd6df;
+position:absolute;
+width:100%;
+height:100%;
 display:flex;
 align-items:center;
 justify-content:center;
-font-weight:600;
-color:#666;
+opacity:0;
+transition:opacity 1s;
+}
+
+.slide.active{
+opacity:1;
 }
 
 /* HERO CARD */
 
 .hero-card{
 background:white;
-margin-top:-60px;
-padding:30px;
-border-radius:22px;
-box-shadow:0 10px 30px rgba(0,0,0,0.1);
+margin:-80px 20px 20px;
+padding:25px;
+border-radius:20px;
+box-shadow:0 10px 20px rgba(0,0,0,0.08);
+}
+
+.breadcrumb{
+font-size:14px;
+color:#777;
+margin-bottom:10px;
 }
 
 .hero-card h1{
-margin:8px 0;
+margin:10px 0;
+font-size:28px;
+}
+
+.hero-line{
+width:80px;
+height:3px;
+background:#ddd;
+margin:10px 0;
+}
+
+.hero-card p{
+color:#444;
 }
 
 /* SECTIONS */
 
 .section{
-margin:60px 0;
+padding:20px;
 }
+
+.section p{
+line-height:1.6;
+}
+
+/* CARD */
 
 .card{
 background:white;
-padding:25px;
 border-radius:20px;
+padding:20px;
+margin:20px;
+box-shadow:0 6px 14px rgba(0,0,0,0.05);
 }
 
-.blue-section{
-background:#2f63a3;
-padding:60px 0;
+.card h3{
+color:#2c5d97;
+}
+
+.card ul{
+padding-left:20px;
+}
+
+.card li{
+margin-bottom:10px;
+}
+
+/* BENEFITS */
+
+.benefits{
+background:#3569a5;
+padding:20px;
+}
+
+.benefits h2{
 color:white;
+margin-bottom:20px;
 }
 
-.white-card{
+.benefit-card{
 background:white;
-color:#333;
-padding:25px;
+padding:20px;
 border-radius:20px;
-margin-top:20px;
+margin-bottom:20px;
+}
+
+/* CONDITION */
+
+.condition{
+margin:20px;
+background:white;
+border-radius:20px;
+overflow:hidden;
+}
+
+.condition-row{
+padding:16px;
+border-bottom:1px solid #eee;
+}
+
+.condition-row h4{
+margin:0 0 6px 0;
+color:#666;
+}
+
+/* APPLY */
+
+.apply{
+margin:20px;
+background:white;
+border-radius:20px;
+padding:20px;
 }
 
 .btn{
 display:inline-block;
-padding:14px 26px;
+background:#a7c5d8;
+padding:12px 20px;
 border-radius:12px;
-text-decoration:none;
-font-weight:600;
-margin-top:12px;
+margin-top:10px;
 }
 
-.btn-soft{
-background:#d7e7f4;
-color:#2e80c9;
+/* IMAGE PLACEHOLDER */
+
+.placeholder{
+background:#ddd;
+height:240px;
+border-radius:16px;
+display:flex;
+align-items:center;
+justify-content:center;
 }
 
 /* NAV TILES */
@@ -155,34 +210,43 @@ color:#2e80c9;
 .tiles{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:20px;
-margin-top:50px;
+gap:16px;
+padding:20px;
 }
 
 .tile{
 background:white;
 padding:25px;
-border-radius:18px;
+border-radius:20px;
 text-align:center;
-box-shadow:0 6px 18px rgba(0,0,0,0.07);
-font-weight:600;
+box-shadow:0 6px 14px rgba(0,0,0,0.05);
 }
 
 /* FOOTER */
 
 .footer{
-background:#2f63a3;
+background:#3569a5;
 color:white;
-padding:40px 0;
-margin-top:60px;
+padding:20px;
 }
 
-/* FADE ANIMATION */
+.footer h3{
+margin-top:0;
+}
+
+.footer-bottom{
+text-align:center;
+padding:12px;
+background:#2b568a;
+margin-top:20px;
+}
+
+/* SCROLL FADE */
 
 .fade{
 opacity:0;
 transform:translateY(40px);
-transition:all .7s ease;
+transition:all .8s ease;
 }
 
 .fade.show{
@@ -191,7 +255,6 @@ transform:translateY(0);
 }
 
 </style>
-
 </head>
 
 <body>
@@ -199,43 +262,35 @@ transform:translateY(0);
 
 <!-- HEADER -->
 
-<header class="header">
+<div class="header">
 
-<div class="container header-flex">
-
-<div class="logo-wrap">
-<div class="logo-circle"></div>
-<div class="logo-text">
-KIB <span>CAMBODIA</span>
-</div>
+<div class="logo">
+KOREA INTERNATIONAL BANKING (KIB)
 </div>
 
-<div class="header-actions">
-<button>ENG ▾</button>
-<button>☰</button>
+<div class="lang">
+<button class="active">ENG</button>
+<button>KOR</button>
+<button>ESPAÑOL</button>
 </div>
 
 </div>
-
-</header>
-
-
-
-<div class="container">
 
 
 <!-- HERO SLIDER -->
 
-<div class="hero">
+<div class="hero-slider">
 
-<div class="slider" id="slider">
+<div class="slide active">
+commercial-loan-hero-1.jpg
+</div>
 
-<div class="slide">commercial-loan-hero-1.jpg</div>
+<div class="slide">
+commercial-loan-hero-2.jpg
+</div>
 
-<div class="slide">commercial-loan-hero-2.jpg</div>
-
-<div class="slide">commercial-loan-hero-3.jpg</div>
-
+<div class="slide">
+commercial-loan-hero-3.jpg
 </div>
 
 </div>
@@ -245,9 +300,13 @@ KIB <span>CAMBODIA</span>
 
 <div class="hero-card fade">
 
-<p>Home » Business Banking » Loan » Commercial Loan</p>
+<div class="breadcrumb">
+Home » Business Banking » Loan » Commercial Loan
+</div>
 
 <h1>Commercial Loan</h1>
+
+<div class="hero-line"></div>
 
 <p>
 Support short term payment or capital to support its business operation and investment.
@@ -255,152 +314,140 @@ Support short term payment or capital to support its business operation and inve
 
 </div>
 
-</div>
-
-
 
 <!-- DESCRIPTION -->
 
-<div class="container section fade">
+<div class="section fade">
 
 <p>
+
 Commercial Loan that is a loan is given to larger legal entity / company demanding cash to support short term payment or capital to support its business operation and investment.
+
 </p>
 
 </div>
 
 
-
 <!-- PURPOSE -->
 
-<div class="container fade">
+<div class="card fade">
 
-<div class="card">
-
-<h2>Loan can be financed by following purposes:</h2>
+<h3>Loan can be financed by following purposes:</h3>
 
 <ul>
 
-<li>For working capital (it is applicable for applicants who need cash to support short term payment or need a short term financing for specific business activity);</li>
+<li>For working capital (it is applicable for applicants who need cash to support short term payment or need a short term financing for specific business activity)</li>
 
-<li>For capital expenditure / investment;</li>
+<li>For capital expenditure / investment</li>
 
-<li>For business expansion / diversification;</li>
+<li>For business expansion / diversification</li>
 
-<li>For refinancing loan from other FIs to serve any item above.</li>
+<li>For refinancing loan from other FIs to serve any item above</li>
 
 </ul>
 
 </div>
-
-</div>
-
 
 
 <!-- BENEFITS -->
 
-<div class="blue-section">
-
-<div class="container fade">
+<div class="benefits fade">
 
 <h2>Benefits:</h2>
 
-<div class="white-card">
+<div class="benefit-card">
 
 <ul>
-<li>Big loan size suitable for all types of business;</li>
-<li>Competitive interest rate;</li>
+<li>Big loan size suitable for all types of business</li>
+<li>Competitive interest rate</li>
 </ul>
 
 </div>
 
-<div class="white-card">
+<div class="benefit-card">
 
 <ul>
-<li>Loan term up to 120 months;</li>
-<li>Fast approval process.</li>
-</ul>
-
-</div>
-
-</div>
-
-</div>
-
-
-
-<!-- CONDITIONS -->
-
-<div class="container section fade">
-
-<h2>Condition</h2>
-
-<div class="card">
-
-<h3>Currency</h3>
-<ul><li>KHR and USD</li></ul>
-
-<h3>Loan Size</h3>
-<ul><li>Big loan size suitable for all types of business.</li></ul>
-
-<h3>Loan term</h3>
-<ul><li>Up to 120 months.</li></ul>
-
-<h3>Interest rate per annum</h3>
-<ul><li>Competitive interest rate.</li></ul>
-
-<h3>Repayment method</h3>
-<ul><li>Flexible repayment options</li></ul>
-
-<h3>Acceptable collateral</h3>
-
-<ul>
-
-<li>All types of real estate for all areas in Phnom Penh and all provinces in Kingdom of Cambodia;</li>
-
-<li>Fixed term deposit with KIB Bank;</li>
-
-<li>Third party guarantee;</li>
-
-<li>Bank Guarantee.</li>
-
+<li>Loan term up to 120 months</li>
+<li>Fast approval process</li>
 </ul>
 
 </div>
 
 </div>
 
+
+<!-- CONDITION -->
+
+<h2 style="padding-left:20px;">Condition</h2>
+
+<div class="condition fade">
+
+<div class="condition-row">
+<h4>Currency</h4>
+<p>KHR and USD</p>
+</div>
+
+<div class="condition-row">
+<h4>Loan Size</h4>
+<p>Big loan size suitable for all types of business.</p>
+</div>
+
+<div class="condition-row">
+<h4>Loan term</h4>
+<p>Up to 120 months.</p>
+</div>
+
+<div class="condition-row">
+<h4>Interest rate per annum</h4>
+<p>Competitive interest rate.</p>
+</div>
+
+<div class="condition-row">
+<h4>Repayment method</h4>
+<p>Flexible repayment options</p>
+</div>
+
+<div class="condition-row">
+
+<h4>Acceptable collateral</h4>
+
+<ul>
+<li>All types of real estate for all areas in Phnom Penh and all provinces in Kingdom of Cambodia</li>
+<li>Fixed term deposit with KIB Bank</li>
+<li>Third party guarantee</li>
+<li>Bank Guarantee</li>
+</ul>
+
+</div>
+
+</div>
 
 
 <!-- HOW TO APPLY -->
 
-<div class="container section fade">
+<div class="apply fade">
 
 <h2>How to apply:</h2>
 
 <ul>
-
 <li>Please visit the nearest KIB Bank’s branch networks nationwide.</li>
-
-<li>For more information, please contact us at 023 96 3333 | 081 331 333.</li>
-
+<li>For more information contact us at 023 96 3333 | 081 331 333</li>
 </ul>
 
-<a class="btn btn-soft">Contact us</a>
+<a class="btn">Contact us</a>
 
-<div class="hero" style="margin-top:30px">
+<br><br>
 
-<div class="slide">commercial-loan-building.jpg</div>
-
+<div class="placeholder">
+kib-bank-building.jpg
 </div>
 
 </div>
-
 
 
 <!-- NAV TILES -->
 
-<div class="container tiles fade">
+<div class="tiles fade">
 
 <div class="tile">Personal Banking</div>
 <div class="tile">Business Banking</div>
@@ -410,60 +457,78 @@ Commercial Loan that is a loan is given to larger legal entity / company demandi
 </div>
 
 
-
 <!-- FOOTER -->
 
 <div class="footer">
 
-<div class="container">
-
 <h3>KOREA INTERNATIONAL BANKING</h3>
 
-<p><strong>Location Address</strong></p>
+<p>
+39 Namdaemun-ro, Jung-gu, Seoul (04531), Republic of Korea
+</p>
 
-<p>39 Namdaemun-ro, Jung-gu, Seoul (04531), Republic of Korea</p>
+<p>
+Piazza di Spagna, 59, 00187 Roma RM, Italy
+</p>
 
-<p>Piazza di Spagna, 59, 00187 Roma RM, Italy</p>
+<p>
+Tower 42 , Level 38, 25 Old Broad Street, EC2N 1HQ, London
+</p>
 
-<p>Tower 42 , Level 38, 25 Old Broad Street, EC2N 1HQ, London, United Kingdom</p>
+<p>
+1250 Broadway, 37th Floor, New York, NY 10001
+</p>
 
-<p>1250 Broadway, 37th Floor, New York, NY 10001, USA</p>
-
+<div class="footer-bottom">
+All rights reserved 2023
 </div>
 
 </div>
-
 
 
 <script>
 
+/* HERO SLIDER */
+
+let slides=document.querySelectorAll(".slide")
 let index=0
-const slider=document.getElementById("slider")
-const slides=slider.children.length
 
 setInterval(()=>{
 
+slides[index].classList.remove("active")
+
 index++
 
-if(index>=slides){index=0}
+if(index>=slides.length){
+index=0
+}
 
-slider.style.transform="translateX(-"+index*100+"%)"
+slides[index].classList.add("active")
 
 },3000)
 
 
 
-const observer=new IntersectionObserver(entries=>{
+/* SCROLL FADE */
+
+let observer=new IntersectionObserver(entries=>{
+
 entries.forEach(entry=>{
+
 if(entry.isIntersecting){
 entry.target.classList.add("show")
 }
-})
+
 })
 
-document.querySelectorAll(".fade").forEach(el=>observer.observe(el))
+})
+
+document.querySelectorAll(".fade").forEach(el=>{
+observer.observe(el)
+})
 
 </script>
+
 
 </body>
 </html>
