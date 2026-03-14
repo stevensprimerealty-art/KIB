@@ -1,49 +1,118 @@
-// HERO SLIDER
+// FADE IN ON SCROLL
 
-const slides=document.querySelectorAll(".hero-slide")
-let index=0
+const revealEls = document.querySelectorAll(".reveal");
 
-function showSlide(i){
+const observer = new IntersectionObserver(entries => {
 
-slides.forEach(s=>s.classList.remove("active"))
+entries.forEach(entry => {
 
-slides[i].classList.add("active")
+if(entry.isIntersecting){
 
-}
-
-showSlide(index)
-
-setInterval(()=>{
-
-index++
-
-if(index>=slides.length) index=0
-
-showSlide(index)
-
-},3000)
-
-
-// FADE IN SCROLL
-
-const reveals=document.querySelectorAll(".reveal")
-
-function reveal(){
-
-reveals.forEach(el=>{
-
-const top=el.getBoundingClientRect().top
-
-if(top<window.innerHeight-80){
-
-el.classList.add("show")
+entry.target.classList.add("is-visible");
 
 }
 
-})
+});
+
+},{threshold:.12});
+
+revealEls.forEach(el => observer.observe(el));
+
+
+
+/* HERO SLIDER */
+
+const track = document.getElementById("heroTrack");
+const slides = track.children;
+const dotsWrap = document.getElementById("heroDots");
+
+let index = 0;
+let timer;
+
+/* create dots */
+
+for(let i=0;i<slides.length;i++){
+
+const dot=document.createElement("button");
+
+dot.addEventListener("click",()=>go(i,true));
+
+dotsWrap.appendChild(dot);
 
 }
 
-window.addEventListener("scroll",reveal)
+const dots=dotsWrap.children;
 
-reveal()
+function updateDots(){
+
+for(let i=0;i<dots.length;i++){
+
+dots[i].classList.toggle("is-active",i===index);
+
+}
+
+}
+
+function go(i,user=false){
+
+index=(i+slides.length)%slides.length;
+
+track.style.transform=`translateX(-${index*100}%)`;
+
+updateDots();
+
+if(user) restart();
+
+}
+
+function start(){
+
+timer=setInterval(()=>{
+
+go(index+1);
+
+},3000);
+
+}
+
+function stop(){
+
+clearInterval(timer);
+
+}
+
+function restart(){
+
+stop();
+
+start();
+
+}
+
+/* swipe */
+
+let startX=0;
+
+track.addEventListener("touchstart",e=>{
+
+startX=e.touches[0].clientX;
+
+stop();
+
+});
+
+track.addEventListener("touchend",e=>{
+
+let dx=e.changedTouches[0].clientX-startX;
+
+if(dx>50) go(index-1,true);
+
+else if(dx<-50) go(index+1,true);
+
+else restart();
+
+});
+
+go(0);
+
+start();
