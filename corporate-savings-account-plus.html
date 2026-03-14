@@ -1,85 +1,366 @@
-}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corporate Saving Account Plus | KIB</title>
 
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
 
-<title>KIB — Corporate Savings Account Plus</title>
+/* RESET */
 
-<link rel="stylesheet" href="corporate-savings-account-plus.css">
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:system-ui;
+}
 
+body{
+background:#f3f4f6;
+color:#111;
+}
+
+/* HEADER */
+
+header{
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:16px 20px;
+background:white;
+border-bottom:1px solid #eee;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+font-weight:700;
+}
+
+.logo-box{
+width:36px;
+height:36px;
+background:#2f5f9e;
+border-radius:8px;
+}
+
+.lang{
+display:flex;
+gap:10px;
+}
+
+.lang span{
+padding:6px 12px;
+border-radius:20px;
+border:1px solid #ccc;
+font-size:12px;
+}
+
+.lang .active{
+background:#0d1b34;
+color:white;
+border:none;
+}
+
+/* HERO */
+
+.hero{
+position:relative;
+overflow:hidden;
+height:320px;
+background:#2f67a1;
+}
+
+.hero-track{
+display:flex;
+height:100%;
+transition:transform .6s ease;
+}
+
+.hero-slide{
+min-width:100%;
+}
+
+.hero-slide img{
+width:100%;
+height:320px;
+object-fit:cover;
+}
+
+/* HERO CARD */
+
+.hero-card{
+background:white;
+margin-top:-80px;
+border-radius:24px;
+padding:24px;
+width:90%;
+max-width:850px;
+margin-left:auto;
+margin-right:auto;
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.crumb{
+font-size:14px;
+color:#777;
+margin-bottom:10px;
+}
+
+.hero-card h1{
+font-size:32px;
+margin-bottom:12px;
+}
+
+.hero-line{
+width:60px;
+height:2px;
+background:#ccc;
+margin-bottom:14px;
+}
+
+/* SECTION */
+
+.section{
+padding:40px 20px;
+max-width:900px;
+margin:auto;
+text-align:center;
+}
+
+.section h2{
+font-size:36px;
+margin-bottom:14px;
+}
+
+.section p{
+color:#555;
+line-height:1.6;
+}
+
+/* CARD */
+
+.card{
+background:white;
+padding:24px;
+border-radius:22px;
+margin:30px auto;
+max-width:900px;
+}
+
+.card ul{
+padding-left:20px;
+}
+
+.card li{
+margin:10px 0;
+}
+
+/* REQUIREMENTS */
+
+.requirements{
+background:#3c6aa4;
+color:white;
+padding:40px 20px;
+}
+
+.req-card{
+background:white;
+color:#111;
+padding:24px;
+border-radius:22px;
+margin:20px auto;
+max-width:900px;
+}
+
+/* CONDITIONS */
+
+.cond{
+padding:18px 0;
+border-bottom:1px solid #eee;
+}
+
+/* TABLE */
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+}
+
+th,td{
+padding:14px;
+border:1px solid #ddd;
+text-align:center;
+}
+
+/* BUTTON */
+
+.btn{
+background:#c8dced;
+padding:12px 20px;
+border-radius:12px;
+display:inline-block;
+margin:14px 0;
+text-decoration:none;
+}
+
+/* PRODUCT */
+
+.product{
+background:white;
+border-radius:22px;
+padding:20px;
+margin:30px auto;
+max-width:900px;
+}
+
+.product img{
+width:100%;
+border-radius:16px;
+margin-top:20px;
+}
+
+/* CUSTOMER CARE */
+
+.support{
+background:linear-gradient(#f3f4f6,#3c6aa4);
+padding:40px 20px;
+border-radius:22px;
+max-width:900px;
+margin:40px auto;
+}
+
+.support img{
+width:100%;
+margin-top:20px;
+}
+
+/* NAV TILES */
+
+.nav-tiles{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+padding:40px 20px;
+}
+
+.tile{
+background:white;
+border-radius:22px;
+padding:24px;
+text-decoration:none;
+color:#111;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+height:170px;
+}
+
+.icon{
+width:50px;
+height:50px;
+background:#3c6aa4;
+border-radius:50%;
+}
+
+.tile span{
+align-self:flex-end;
+font-size:22px;
+color:#3c6aa4;
+}
+
+/* FOOTER */
+
+footer{
+background:#3c6aa4;
+color:white;
+padding:30px 20px;
+margin-top:40px;
+}
+
+footer h3{
+margin-bottom:10px;
+}
+
+footer p{
+margin:6px 0;
+}
+
+footer .copy{
+margin-top:20px;
+text-align:center;
+font-size:14px;
+}
+
+/* FADE */
+
+.fade{
+opacity:0;
+transform:translateY(30px);
+transition:all .7s;
+}
+
+.fade.show{
+opacity:1;
+transform:none;
+}
+
+</style>
 </head>
 
 <body>
 
+<header>
 
-<header class="site-header">
-
-<div class="container bar">
-
-<div class="brand">
-KOREA INTERNATIONAL BANKING <small>(KIB)</small>
+<div class="logo">
+<div class="logo-box"></div>
+<div>KOREA INTERNATIONAL<br>BANKING (KIB)</div>
 </div>
-
-<div class="header-right">
 
 <div class="lang">
-<button class="is-active">ENG</button>
-<button>KOR</button>
-<button>ESPAÑOL</button>
-</div>
-
-<button class="menu-btn">☰</button>
-
-</div>
+<span class="active">ENG</span>
+<span>KOR</span>
+<span>ESPAÑOL</span>
 </div>
 
 </header>
 
 
 
-<main>
-
-
-<div class="container">
-
-
-<section class="hero reveal">
-
-<div class="hero-slider">
+<section class="hero">
 
 <div class="hero-track" id="heroTrack">
 
 <div class="hero-slide">
-<img src="assets/images/business/banner1.jpg">
+<img src="corporate-plus-banner1.jpg">
 </div>
 
 <div class="hero-slide">
-<img src="assets/images/business/banner2.jpg">
+<img src="corporate-plus-banner2.jpg">
 </div>
 
 <div class="hero-slide">
-<img src="assets/images/business/banner3.jpg">
+<img src="corporate-plus-banner3.jpg">
 </div>
 
 </div>
 
-<div class="hero-dots" id="heroDots"></div>
+</section>
 
-</div>
 
 
 <div class="hero-card">
 
 <p class="crumb">
 Home » Business Banking » Saving / Deposit »
-<span class="crumb-strong">Corporate Savings Account Plus</span>
+<span>Corporate Saving Account Plus</span>
 </p>
 
-<h1>Corporate Savings Account Plus</h1>
+<h1>Corporate Saving Account Plus</h1>
 
 <div class="hero-line"></div>
 
@@ -89,11 +370,9 @@ Home » Business Banking » Saving / Deposit »
 
 </div>
 
-</section>
 
 
-
-<section class="headline reveal">
+<section class="section fade">
 
 <h2>
 Flexible interest rate in accordance to your Cash Flow.
@@ -107,125 +386,100 @@ Providing customers with flexible choices of deposit and withdrawal based on the
 
 
 
-<section class="card reveal">
+<section class="card fade">
 
 <h3>Key Benefits</h3>
 
 <ul>
-
 <li>Reach financial goal</li>
 <li>High interest rate</li>
 <li>Deposit or withdrawal anytime</li>
 <li>Open an account without service charge</li>
 <li>High security for your cash</li>
 <li>Interest is calculated daily and paid monthly</li>
-
 </ul>
 
 </section>
 
 
 
-<section class="section-band reveal">
+<section class="requirements fade">
 
 <h2>Requirements</h2>
 
-
 <div class="req-card">
-
 <h3>For Individuals</h3>
-
 <ul>
-
 <li>A legal person, both Cambodian and Foreigner</li>
-
-<li>
-Identification documents such as ID Card, Passport and/or other documents
-</li>
-
+<li>Identification documents such as ID Card, Passport and/or other documents</li>
 </ul>
-
 </div>
-
 
 <div class="req-card">
-
 <h3>For Corporate</h3>
-
 <ul>
-
-<li>
-An entity that is legally registered under the Cambodian’s laws and regulations
-</li>
-
-<li>
-Business Registration Certificate, Memorandum and Articles of Association or Board Resolution
-</li>
-
+<li>An entity that is legally registered under the Cambodian’s laws and regulations</li>
+<li>Business Registration Certificate, Memorandum and Articles of Association</li>
 </ul>
-
 </div>
 
 </section>
 
 
 
-<section class="card reveal">
+<section class="card fade">
 
-<h3>Conditions</h3>
+<h2>Conditions</h2>
 
-
-<div class="kv">
-
-<div class="k">Currency</div>
-
-<div class="v">KHR and USD</div>
-
+<div class="cond">
+<h4>Currency</h4>
+<p>KHR and USD</p>
 </div>
 
-
-<div class="kv">
-
-<div class="k">Minimum Ongoing Balance</div>
-
-<div class="v">
-
-KHR 400,000 or USD 100 for Individual Customer
-
-<br>
-
-KHR 2,000,000 or USD 500 for Corporate Customer
-
+<div class="cond">
+<h4>Minimum Ongoing Balance</h4>
+<p>KHR 400,000 or USD 100 for Individual Customer</p>
+<p>KHR 2,000,000 or USD 500 for Corporate Customer</p>
 </div>
 
+<div class="cond">
+<h4>Interest Payment</h4>
+<p>Posted monthly</p>
 </div>
 
-
-<div class="kv">
-
-<div class="k">Interest Payment</div>
-
-<div class="v">Posted monthly</div>
-
+<div class="cond">
+<h4>Passbook</h4>
+<p>Free</p>
 </div>
-
-
-<div class="kv">
-
-<div class="k">Passbook</div>
-
-<div class="v">Free</div>
-
-</div>
-
 
 </section>
 
 
 
-<section class="card reveal">
+<section class="card fade">
 
-<h3>Annual Interest Rate</h3>
+<h2>How To Apply</h2>
+
+<p>
+Please visit our nearest KIB Bank branch office with any original copy of required original documents
+</p>
+
+<p>
+For more information contact us at
+<strong>023 96 3333 | 081 331 333</strong>
+</p>
+
+<a class="btn">Contact us</a>
+
+<img src="branch-building.jpg">
+
+</section>
+
+
+
+<section class="card fade">
+
+<h2>Annual Interest Rate</h2>
 
 <table>
 
@@ -259,58 +513,31 @@ KHR 2,000,000 or USD 500 for Corporate Customer
 
 
 
-<section class="card reveal">
+<section class="product fade">
 
-<h3>How To Apply</h3>
+<h2>Fortune Deposit Account</h2>
 
-<p>
-Please visit the nearest KIB Bank branch office with required documents
-</p>
+<a class="btn">Discover more</a>
 
-<p>
-Contact us at <strong>023 96 3333</strong>
-</p>
-
-<a class="btn-soft wide">Contact us</a>
-
-<div class="banner-img">
-
-<img src="assets/images/business/apply.jpg">
-
-</div>
+<img src="fortune-deposit.jpg">
 
 </section>
 
 
 
-<section class="products reveal">
+<section class="product fade">
 
-<div class="product-card">
+<h2>Planned Savings Account</h2>
 
-<h3>Fortune Deposit Account</h3>
+<a class="btn">Discover more</a>
 
-<a class="btn-soft">Discover more</a>
-
-<img src="assets/images/business/fortune.jpg">
-
-</div>
-
-
-<div class="product-card">
-
-<h3>Planned Savings Account</h3>
-
-<a class="btn-soft">Discover more</a>
-
-<img src="assets/images/business/planned.jpg">
-
-</div>
+<img src="planned-savings.jpg">
 
 </section>
 
 
 
-<section class="customer reveal">
+<section class="support fade">
 
 <h2>Customer Service Care</h2>
 
@@ -318,11 +545,11 @@ Contact us at <strong>023 96 3333</strong>
 We always available to solve your problem in just a few minute!
 </p>
 
-<p class="phone">+855 23 963 333</p>
+<p><strong>+855 23 963 333</strong></p>
 
-<a class="btn-soft">Contact us</a>
+<a class="btn">Contact us</a>
 
-<img src="assets/images/support/customer.jpg">
+<img src="customer-service.jpg">
 
 </section>
 
@@ -331,21 +558,25 @@ We always available to solve your problem in just a few minute!
 <section class="nav-tiles">
 
 <a class="tile">
+<div class="icon"></div>
 <h3>Personal Banking</h3>
 <span>→</span>
 </a>
 
 <a class="tile">
+<div class="icon"></div>
 <h3>Business Banking</h3>
 <span>→</span>
 </a>
 
 <a class="tile">
+<div class="icon"></div>
 <h3>Digital Banking</h3>
 <span>→</span>
 </a>
 
 <a class="tile">
+<div class="icon"></div>
 <h3>About Us</h3>
 <span>→</span>
 </a>
@@ -353,83 +584,53 @@ We always available to solve your problem in just a few minute!
 </section>
 
 
-</div>
 
+<footer>
 
-</main>
+<h3>KOREA INTERNATIONAL BANKING</h3>
 
+<p>39 Namdaemun-ro, Jung-gu, Seoul (04531), Republic of Korea.</p>
 
+<p>Piazza di Spagna, 59, 00187 Roma RM, Italy</p>
 
-<footer class="footer">
+<p>Tower 42 , Level 38, 25 Old Broad Street, London, UK</p>
 
+<p><b>New York Branch</b></p>
 
-<div class="footer-menu">
+<p>1250 Broadway, 37th Floor, New York, NY 10001, USA</p>
 
-<button class="footer-btn">Personal Banking</button>
+<p>Mubarak Al-Kabeer Street, Kuwait City</p>
 
-<div class="footer-panel">
-
-<p>Accounts</p>
-<p>Loans</p>
-
-</div>
-
-
-
-<button class="footer-btn">Business Banking</button>
-
-<div class="footer-panel">
-
-<p>Corporate Accounts</p>
-<p>Trade Finance</p>
-
-</div>
-
-
-
-<button class="footer-btn">Digital Banking</button>
-
-<div class="footer-panel">
-
-<p>Mobile Banking</p>
-<p>Online Banking</p>
-
-</div>
-
-
-</div>
-
-
-
-<div class="footer-address">
-
-<h3>Location Address</h3>
-
-<p>Seoul, Republic of Korea</p>
-
-<p>Rome, Italy</p>
-
-<p>London, United Kingdom</p>
-
-<p>New York, USA</p>
-
-</div>
-
-
-
-<div class="footer-bottom">
-
-All rights reserved 2023
-
-</div>
-
-
+<div class="copy">All rights reserved 2023</div>
 
 </footer>
 
 
 
-<script src="corporate-savings-account-plus.js"></script>
+<script>
+
+let track=document.getElementById("heroTrack");
+let slides=track.children;
+let index=0;
+
+setInterval(()=>{
+index=(index+1)%slides.length;
+track.style.transform=`translateX(-${index*100}%)`;
+},3000);
+
+const faders=document.querySelectorAll(".fade");
+
+const observer=new IntersectionObserver(entries=>{
+entries.forEach(entry=>{
+if(entry.isIntersecting){
+entry.target.classList.add("show");
+}
+});
+});
+
+faders.forEach(el=>observer.observe(el));
+
+</script>
 
 </body>
-</html
+</html>
