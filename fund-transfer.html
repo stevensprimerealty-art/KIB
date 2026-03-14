@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Fund Transfer | KIB</title>
+
+<style>
+
+/* GLOBAL */
+
+body{
+margin:0;
+font-family:system-ui;
+background:#f5f7fb;
+color:#111;
+}
+
+.section{
+padding:20px;
+}
+
+/* HEADER */
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:16px 20px;
+background:#fff;
+border-bottom:1px solid #eee;
+}
+
+.logo{
+font-weight:700;
+font-size:18px;
+}
+
+.menu{
+font-size:22px;
+}
+
+/* HERO SLIDER */
+
+.hero{
+position:relative;
+height:280px;
+overflow:hidden;
+background:#ddd;
+}
+
+.slide{
+position:absolute;
+width:100%;
+height:100%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:600;
+opacity:0;
+transition:opacity 1s;
+}
+
+.slide.active{
+opacity:1;
+}
+
+/* HERO CARD */
+
+.hero-card{
+
+background:#fff;
+margin:-70px 20px 20px;
+padding:24px;
+border-radius:22px;
+box-shadow:0 10px 20px rgba(0,0,0,0.08);
+
+}
+
+.breadcrumb{
+font-size:14px;
+color:#777;
+margin-bottom:10px;
+}
+
+.hero-card h1{
+margin:8px 0;
+font-size:30px;
+}
+
+.hero-line{
+width:80px;
+height:3px;
+background:#ddd;
+margin:12px 0;
+}
+
+/* CARD */
+
+.card{
+
+background:#fff;
+padding:24px;
+margin:20px;
+border-radius:20px;
+box-shadow:0 6px 14px rgba(0,0,0,0.06);
+
+}
+
+.card h3{
+color:#2f5f9e;
+}
+
+.card li{
+margin-bottom:10px;
+}
+
+/* BLUE SECTION */
+
+.blue-section{
+
+background:#3569a5;
+padding:20px;
+
+}
+
+.blue-section h2{
+color:#fff;
+}
+
+.white-card{
+
+background:#fff;
+padding:20px;
+border-radius:18px;
+margin-top:18px;
+
+}
+
+/* TABLE SECTION */
+
+.info{
+
+background:#fff;
+border-radius:18px;
+margin:20px;
+overflow:hidden;
+
+}
+
+.row{
+
+padding:18px;
+border-bottom:1px solid #eee;
+
+}
+
+.row h4{
+
+margin:0 0 6px;
+color:#777;
+
+}
+
+/* SERVICE */
+
+.service{
+
+margin:20px;
+padding:24px;
+background:linear-gradient(#e9f2fa,#2a8cc6);
+border-radius:22px;
+color:#fff;
+
+}
+
+/* TILES */
+
+.tiles{
+
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:18px;
+padding:20px;
+
+}
+
+.tile{
+
+background:#fff;
+border-radius:20px;
+padding:26px;
+text-align:center;
+box-shadow:0 5px 14px rgba(0,0,0,0.06);
+
+}
+
+/* FOOTER */
+
+.footer{
+
+background:#3569a5;
+color:#fff;
+padding:20px;
+
+}
+
+.footer-bottom{
+
+background:#2c5a93;
+padding:12px;
+text-align:center;
+
+}
+
+/* FADE */
+
+.fade{
+
+opacity:0;
+transform:translateY(40px);
+transition:.6s;
+
+}
+
+.fade.show{
+
+opacity:1;
+transform:none;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<!-- HEADER -->
+
+<div class="header">
+
+<div class="logo">
+KOREA INTERNATIONAL BANKING (KIB)
+</div>
+
+<div class="menu">
+☰
+</div>
+
+</div>
+
+
+<!-- HERO SLIDER -->
+
+<div class="hero">
+
+<div class="slide active">
+fund-transfer-hero-1.jpg
+</div>
+
+<div class="slide">
+fund-transfer-hero-2.jpg
+</div>
+
+<div class="slide">
+fund-transfer-hero-3.jpg
+</div>
+
+</div>
+
+
+<!-- HERO CARD -->
+
+<div class="hero-card fade">
+
+<div class="breadcrumb">
+Home » Personal Banking » Money Transfer » Fund Transfer
+</div>
+
+<h1>Fund Transfer</h1>
+
+<div class="hero-line"></div>
+
+<p>
+
+KIB Bank is one of the Fund Transfer members.  
+KIB Bank has integrated Fund Transfer in KIB Bank Mobile Cambodia which customers are able to access their Fund Transfer Account easily.
+
+</p>
+
+</div>
+
+
+<!-- KEY BENEFITS -->
+
+<div class="card fade">
+
+<h3>Key Benefits</h3>
+
+<ul>
+
+<li>Fund Transfer Account Registration on KIB Bank Mobile App</li>
+
+<li>Fund transfer from KIB Bank Hope Saving account to Fund Transfer member’s current/saving account or receive fund from Fund Transfer member via KIB Bank Mobile with free of charge until 31 December 2022</li>
+
+<li>Deposit fund to Fund Transfer members</li>
+
+<li>Make payment via QR</li>
+
+<li>Create New Recovery QR Code</li>
+
+<li>Fund Transfer Account Restore Access on KIB Bank Mobile App</li>
+
+<li>View account balance & transaction history of Fund Transfer on KIB Bank Mobile App</li>
+
+<li>View Fund Transfer account information on KIB Bank Mobile App</li>
+
+</ul>
+
+</div>
+
+
+<!-- REGISTRATION -->
+
+<div class="blue-section fade">
+
+<h2>Registration</h2>
+
+<div class="white-card">
+
+✔ Registration is made through NBC’s Fund Transfer App (Generic App). Customer shall perform self-registration by choosing KIB Bank Mobile in the bank list.
+
+</div>
+
+<div class="white-card">
+
+✔ The registration can also be made through KIB Bank Mobile Banking, KIB Bank Mobile App.
+
+</div>
+
+</div>
+
+
+<!-- CONDITIONS -->
+
+<div class="info fade">
+
+<div class="row">
+
+<h4>Eligible</h4>
+
+<p>
+Customers are required to have Hope Saving Account with KIB Bank.
+</p>
+
+</div>
+
+<div class="row">
+
+<h4>Currency</h4>
+
+<p>KHR and USD</p>
+
+</div>
+
+<div class="row">
+
+<h4>Maximum Amount Transfer</h4>
+
+<p>
+
+1. Transfer funds transaction between Fund Transfer wallet and Fund Transfer wallet can transfer up to 40,000,000 Riels or 10,000 USD per day.
+
+</p>
+
+<p>
+
+2. Transfer funds transaction between KIB Bank account and Fund Transfer member’s Bank account can transfer up to 200,000,000 Riels or 50,000 USD per day.
+
+</p>
+
+</div>
+
+</div>
+
+
+<!-- GUIDE -->
+
+<div class="section fade">
+
+<h2>
+Link KIB Bank Account in Fund Transfer App 👇
+</h2>
+
+<p>
+CLICK HERE FOR USER GUIDE
+</p>
+
+</div>
+
+
+<!-- CUSTOMER SERVICE -->
+
+<div class="service fade">
+
+<h2>Customer Service Care</h2>
+
+<p>
+We always available to solve your problem in just a few minute!
+</p>
+
+<h3>+855 23 963 333</h3>
+
+</div>
+
+
+<!-- CORPORATE TILES -->
+
+<div class="tiles fade">
+
+<div class="tile">
+Personal Banking
+</div>
+
+<div class="tile">
+Business Banking
+</div>
+
+<div class="tile">
+Digital Banking
+</div>
+
+<div class="tile">
+About Us
+</div>
+
+</div>
+
+
+<!-- FOOTER -->
+
+<div class="footer">
+
+<h3>KOREA INTERNATIONAL BANKING</h3>
+
+<p>
+39 Namdaemun-ro, Jung-gu, Seoul (04531), Republic of Korea.
+</p>
+
+<p>
+Piazza di Spagna, 59, 00187 Roma RM, Italy
+</p>
+
+<p>
+Tower 42 , Level 38, 25 Old Broad Street, London
+</p>
+
+<p>
+1250 Broadway, 37th Floor, New York, NY 10001, USA
+</p>
+
+</div>
+
+<div class="footer-bottom">
+
+All rights reserved 2023
+
+</div>
+
+
+
+<script>
+
+/* HERO SLIDER */
+
+let slides=document.querySelectorAll(".slide")
+
+let i=0
+
+setInterval(()=>{
+
+slides[i].classList.remove("active")
+
+i++
+
+if(i>=slides.length){
+i=0
+}
+
+slides[i].classList.add("active")
+
+},3000)
+
+
+
+/* FADE IN */
+
+let observer=new IntersectionObserver(entries=>{
+
+entries.forEach(entry=>{
+
+if(entry.isIntersecting){
+entry.target.classList.add("show")
+}
+
+})
+
+})
+
+document.querySelectorAll(".fade").forEach(el=>{
+observer.observe(el)
+})
+
+</script>
+
+</body>
+
+</html>
