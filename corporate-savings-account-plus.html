@@ -1,430 +1,231 @@
-<!DOCTYPE html>
+}
+<!doctype html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Corporate Saving Account Plus | KIB</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
-<style>
+<title>KIB — Corporate Savings Account Plus</title>
 
-/* ---------- RESET ---------- */
+<link rel="stylesheet" href="corporate-savings-account-plus.css">
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:system-ui;
-}
-
-body{
-background:#f4f6f9;
-color:#111;
-line-height:1.5;
-}
-
-
-/* ---------- HEADER ---------- */
-
-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:18px 20px;
-background:white;
-border-bottom:1px solid #eee;
-}
-
-.logo{
-display:flex;
-align-items:center;
-gap:10px;
-font-weight:700;
-}
-
-.logo-box{
-width:34px;
-height:34px;
-background:#2e5fa3;
-border-radius:8px;
-}
-
-.lang{
-display:flex;
-gap:10px;
-}
-
-.lang span{
-border:1px solid #ccc;
-padding:6px 12px;
-border-radius:20px;
-font-size:12px;
-}
-
-.lang .active{
-background:#0d1b34;
-color:white;
-border:none;
-}
-
-
-/* ---------- HERO ---------- */
-
-.hero{
-height:320px;
-background:#dbe4ef;
-display:flex;
-align-items:center;
-justify-content:center;
-}
-
-.hero-card{
-background:white;
-max-width:850px;
-margin:-90px auto 30px;
-padding:28px;
-border-radius:22px;
-box-shadow:0 8px 30px rgba(0,0,0,.08);
-}
-
-.hero-card h1{
-font-size:30px;
-margin-top:10px;
-}
-
-
-/* ---------- SECTIONS ---------- */
-
-.section{
-max-width:900px;
-margin:auto;
-padding:40px 20px;
-}
-
-.section h2{
-font-size:28px;
-margin-bottom:16px;
-}
-
-.card{
-background:white;
-border-radius:20px;
-padding:24px;
-margin-top:20px;
-}
-
-.card ul{
-padding-left:20px;
-}
-
-.card li{
-margin:10px 0;
-}
-
-
-/* ---------- BLUE SECTION ---------- */
-
-.blue{
-background:#3c6aa4;
-padding:50px 20px;
-color:white;
-}
-
-.blue .card{
-color:#111;
-}
-
-
-/* ---------- TABLE ---------- */
-
-table{
-width:100%;
-border-collapse:collapse;
-margin-top:20px;
-}
-
-th,td{
-border:1px solid #ddd;
-padding:14px;
-text-align:center;
-}
-
-th{
-background:#3c6aa4;
-color:white;
-}
-
-
-/* ---------- BUTTON ---------- */
-
-.btn{
-display:inline-block;
-background:#cfe1f1;
-padding:14px 26px;
-border-radius:14px;
-margin-top:14px;
-text-decoration:none;
-color:#2f5f9e;
-font-weight:600;
-}
-
-
-/* ---------- PRODUCT ---------- */
-
-.product{
-background:white;
-border-radius:22px;
-padding:24px;
-max-width:900px;
-margin:30px auto;
-}
-
-.product img{
-width:100%;
-border-radius:16px;
-margin-top:12px;
-}
-
-
-/* ---------- SUPPORT ---------- */
-
-.support{
-background:linear-gradient(#f5f7fb,#3c6aa4);
-padding:40px 20px;
-border-radius:22px;
-max-width:900px;
-margin:40px auto;
-}
-
-.support img{
-width:100%;
-border-radius:16px;
-margin-top:20px;
-}
-
-
-/* ---------- NAV TILES ---------- */
-
-.nav-tiles{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:18px;
-padding:40px 20px;
-background:#3c6aa4;
-}
-
-.tile{
-background:white;
-border-radius:22px;
-padding:24px;
-display:flex;
-flex-direction:column;
-justify-content:space-between;
-height:170px;
-position:relative;
-text-decoration:none;
-color:#111;
-}
-
-.icon{
-width:50px;
-height:50px;
-background:#3c6aa4;
-border-radius:50%;
-}
-
-.tile h3{
-font-size:22px;
-margin-top:10px;
-}
-
-.arrow{
-position:absolute;
-right:20px;
-bottom:20px;
-font-size:22px;
-color:#3c6aa4;
-}
-
-
-/* ---------- FOOTER MENU ---------- */
-
-.footer-menu{
-background:#3c6aa4;
-color:white;
-padding:20px;
-}
-
-.menu-item{
-border-top:1px solid rgba(255,255,255,.3);
-padding:14px 0;
-}
-
-.menu-header{
-cursor:pointer;
-font-weight:600;
-}
-
-.menu-content{
-display:none;
-padding-top:10px;
-}
-
-.menu-item.active .menu-content{
-display:block;
-}
-
-.group{
-margin-top:18px;
-font-size:14px;
-opacity:.9;
-}
-
-
-/* ---------- FINAL FOOTER ---------- */
-
-footer{
-background:#3c6aa4;
-color:white;
-padding:30px 20px;
-}
-
-footer h3{
-margin-bottom:10px;
-}
-
-footer p{
-margin:6px 0;
-}
-
-.copy{
-text-align:center;
-margin-top:18px;
-}
-
-</style>
 </head>
 
 <body>
 
 
-<header>
+<header class="site-header">
 
-<div class="logo">
-<div class="logo-box"></div>
-<div>KOREA INTERNATIONAL<br> BANKING (KIB)</div>
+<div class="container bar">
+
+<div class="brand">
+KOREA INTERNATIONAL BANKING <small>(KIB)</small>
 </div>
 
+<div class="header-right">
+
 <div class="lang">
-<span class="active">ENG</span>
-<span>KOR</span>
-<span>ESPAÑOL</span>
+<button class="is-active">ENG</button>
+<button>KOR</button>
+<button>ESPAÑOL</button>
+</div>
+
+<button class="menu-btn">☰</button>
+
+</div>
 </div>
 
 </header>
 
 
-<section class="hero">
-Hero Banner
-</section>
+
+<main>
 
 
-<div class="hero-card">
+<div class="container">
 
-<p>Home » Business Banking » Saving / Deposit » Corporate Saving Account Plus</p>
 
-<h1>Corporate Saving Account Plus</h1>
+<section class="hero reveal">
 
-<p>3.5% interest with free usage of Mobile Banking and ATM service.</p>
+<div class="hero-slider">
+
+<div class="hero-track" id="heroTrack">
+
+<div class="hero-slide">
+<img src="assets/images/business/banner1.jpg">
+</div>
+
+<div class="hero-slide">
+<img src="assets/images/business/banner2.jpg">
+</div>
+
+<div class="hero-slide">
+<img src="assets/images/business/banner3.jpg">
+</div>
+
+</div>
+
+<div class="hero-dots" id="heroDots"></div>
 
 </div>
 
 
-<section class="section">
+<div class="hero-card">
 
-<h2>Flexible interest rate in accordance to your Cash Flow.</h2>
+<p class="crumb">
+Home » Business Banking » Saving / Deposit »
+<span class="crumb-strong">Corporate Savings Account Plus</span>
+</p>
 
-<p>Providing customers with flexible choices of deposit and withdrawal based on their cash flows.</p>
+<h1>Corporate Savings Account Plus</h1>
 
-<div class="card">
+<div class="hero-line"></div>
+
+<p>
+3.5% interest with free usage of Mobile Banking and ATM service.
+</p>
+
+</div>
+
+</section>
+
+
+
+<section class="headline reveal">
+
+<h2>
+Flexible interest rate in accordance to your Cash Flow.
+</h2>
+
+<p>
+Providing customers with flexible choices of deposit and withdrawal based on their cash flows while earning attractive interest rates based on tier account balance.
+</p>
+
+</section>
+
+
+
+<section class="card reveal">
 
 <h3>Key Benefits</h3>
 
 <ul>
+
 <li>Reach financial goal</li>
 <li>High interest rate</li>
 <li>Deposit or withdrawal anytime</li>
 <li>Open an account without service charge</li>
 <li>High security for your cash</li>
-<li>Interest calculated daily and paid monthly</li>
-</ul>
+<li>Interest is calculated daily and paid monthly</li>
 
-</div>
+</ul>
 
 </section>
 
 
-<section class="blue">
 
-<div class="section">
+<section class="section-band reveal">
 
 <h2>Requirements</h2>
 
-<div class="card">
+
+<div class="req-card">
 
 <h3>For Individuals</h3>
 
 <ul>
+
 <li>A legal person, both Cambodian and Foreigner</li>
-<li>Identification documents such as ID Card, Passport and/or other documents</li>
+
+<li>
+Identification documents such as ID Card, Passport and/or other documents
+</li>
+
 </ul>
 
 </div>
 
-<div class="card">
+
+<div class="req-card">
 
 <h3>For Corporate</h3>
 
 <ul>
-<li>An entity legally registered under Cambodian law</li>
-<li>Business Registration Certificate and other documents</li>
+
+<li>
+An entity that is legally registered under the Cambodian’s laws and regulations
+</li>
+
+<li>
+Business Registration Certificate, Memorandum and Articles of Association or Board Resolution
+</li>
+
 </ul>
 
 </div>
 
+</section>
+
+
+
+<section class="card reveal">
+
+<h3>Conditions</h3>
+
+
+<div class="kv">
+
+<div class="k">Currency</div>
+
+<div class="v">KHR and USD</div>
+
 </div>
+
+
+<div class="kv">
+
+<div class="k">Minimum Ongoing Balance</div>
+
+<div class="v">
+
+KHR 400,000 or USD 100 for Individual Customer
+
+<br>
+
+KHR 2,000,000 or USD 500 for Corporate Customer
+
+</div>
+
+</div>
+
+
+<div class="kv">
+
+<div class="k">Interest Payment</div>
+
+<div class="v">Posted monthly</div>
+
+</div>
+
+
+<div class="kv">
+
+<div class="k">Passbook</div>
+
+<div class="v">Free</div>
+
+</div>
+
 
 </section>
 
 
-<section class="section">
 
-<h2>Conditions</h2>
+<section class="card reveal">
 
-<div class="card">
-
-<p><b>Currency</b></p>
-<p>KHR and USD</p>
-
-<hr>
-
-<p><b>Minimum Ongoing Balance</b></p>
-<p>KHR 400,000 or USD 100 for Individual Customer</p>
-<p>KHR 2,000,000 or USD 500 for Corporate Customer</p>
-
-<hr>
-
-<p><b>Interest Payment</b></p>
-<p>Posted monthly</p>
-
-</div>
-
-</section>
-
-
-<section class="section">
-
-<h2>Annual Interest Rate</h2>
+<h3>Annual Interest Rate</h3>
 
 <table>
 
@@ -457,117 +258,178 @@ Hero Banner
 </section>
 
 
-<section class="product">
 
-<h2>Fortune Deposit Account</h2>
+<section class="card reveal">
 
-<a class="btn">Discover more</a>
+<h3>How To Apply</h3>
 
-<img src="fortune.jpg">
+<p>
+Please visit the nearest KIB Bank branch office with required documents
+</p>
+
+<p>
+Contact us at <strong>023 96 3333</strong>
+</p>
+
+<a class="btn-soft wide">Contact us</a>
+
+<div class="banner-img">
+
+<img src="assets/images/business/apply.jpg">
+
+</div>
 
 </section>
 
 
-<section class="product">
 
-<h2>Planned Savings Account</h2>
+<section class="products reveal">
 
-<a class="btn">Discover more</a>
+<div class="product-card">
 
-<img src="planned.jpg">
+<h3>Fortune Deposit Account</h3>
+
+<a class="btn-soft">Discover more</a>
+
+<img src="assets/images/business/fortune.jpg">
+
+</div>
+
+
+<div class="product-card">
+
+<h3>Planned Savings Account</h3>
+
+<a class="btn-soft">Discover more</a>
+
+<img src="assets/images/business/planned.jpg">
+
+</div>
 
 </section>
 
 
-<section class="support">
+
+<section class="customer reveal">
 
 <h2>Customer Service Care</h2>
 
-<p>We always available to solve your problem in just a few minute!</p>
+<p>
+We always available to solve your problem in just a few minute!
+</p>
 
-<p><b>+855 23 963 333</b></p>
+<p class="phone">+855 23 963 333</p>
 
-<a class="btn">Contact us</a>
+<a class="btn-soft">Contact us</a>
 
-<img src="support.jpg">
+<img src="assets/images/support/customer.jpg">
 
 </section>
+
 
 
 <section class="nav-tiles">
 
 <a class="tile">
-<div class="icon"></div>
 <h3>Personal Banking</h3>
-<span class="arrow">→</span>
+<span>→</span>
 </a>
 
 <a class="tile">
-<div class="icon"></div>
 <h3>Business Banking</h3>
-<span class="arrow">→</span>
+<span>→</span>
 </a>
 
 <a class="tile">
-<div class="icon"></div>
 <h3>Digital Banking</h3>
-<span class="arrow">→</span>
+<span>→</span>
 </a>
 
 <a class="tile">
-<div class="icon"></div>
 <h3>About Us</h3>
-<span class="arrow">→</span>
+<span>→</span>
 </a>
 
 </section>
 
 
-<section class="footer-menu">
+</div>
 
-<div class="menu-item">
-<div class="menu-header">Personal Banking</div>
-<div class="menu-content">
+
+</main>
+
+
+
+<footer class="footer">
+
+
+<div class="footer-menu">
+
+<button class="footer-btn">Personal Banking</button>
+
+<div class="footer-panel">
+
 <p>Accounts</p>
-<p>Cards</p>
-<p>Savings</p>
-</div>
+<p>Loans</p>
+
 </div>
 
-<div class="menu-item">
-<div class="menu-header">Business Banking</div>
-<div class="menu-content">
+
+
+<button class="footer-btn">Business Banking</button>
+
+<div class="footer-panel">
+
 <p>Corporate Accounts</p>
+<p>Trade Finance</p>
+
 </div>
+
+
+
+<button class="footer-btn">Digital Banking</button>
+
+<div class="footer-panel">
+
+<p>Mobile Banking</p>
+<p>Online Banking</p>
+
 </div>
 
-<p class="group">KIB Group Company: info@kibinternational.co.site</p>
 
-</section>
+</div>
 
 
-<footer>
 
-<h3>KOREA INTERNATIONAL BANKING</h3>
+<div class="footer-address">
 
-<p>39 Namdaemun-ro, Jung-gu, Seoul</p>
-<p>Piazza di Spagna, Rome</p>
-<p>London United Kingdom</p>
+<h3>Location Address</h3>
 
-<div class="copy">All rights reserved 2023</div>
+<p>Seoul, Republic of Korea</p>
+
+<p>Rome, Italy</p>
+
+<p>London, United Kingdom</p>
+
+<p>New York, USA</p>
+
+</div>
+
+
+
+<div class="footer-bottom">
+
+All rights reserved 2023
+
+</div>
+
+
 
 </footer>
 
 
-<script>
 
-document.querySelectorAll(".menu-header").forEach(header=>{
-header.addEventListener("click",()=>{
-header.parentElement.classList.toggle("active");
-});
-});
-
-</script>
+<script src="corporate-savings-account-plus.js"></script>
 
 </body>
-</html>
+</html
