@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Planned Savings Account</title>
+
+<style>
+
+/* GENERAL */
+
+body{
+font-family:Arial,Helvetica,sans-serif;
+background:#f5f6f8;
+margin:0;
+color:#0d1b2a;
+}
+
+/* HEADER */
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:16px;
+background:#fff;
+border-bottom:1px solid #eee;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+font-weight:700;
+}
+
+.logo-box{
+width:36px;
+height:36px;
+background:#2f64a3;
+border-radius:10px;
+}
+
+.lang{
+display:flex;
+gap:8px;
+}
+
+.lang button{
+border:1px solid #ddd;
+background:#fff;
+padding:6px 12px;
+border-radius:20px;
+}
+
+.lang .active{
+background:#0d1b2a;
+color:#fff;
+}
+
+/* HERO */
+
+.hero{
+overflow:hidden;
+position:relative;
+}
+
+.hero-track{
+display:flex;
+transition:transform .5s ease;
+}
+
+.hero-slide{
+min-width:100%;
+height:260px;
+background:#e8edf3;
+display:flex;
+align-items:center;
+justify-content:center;
+color:#999;
+font-weight:600;
+}
+
+.hero-slide::after{
+content:"planned-savings-hero.jpg";
+}
+
+/* SECTION */
+
+.section{
+padding:28px 18px;
+}
+
+.section h1{
+font-size:30px;
+margin-bottom:10px;
+}
+
+.section p{
+line-height:1.6;
+}
+
+/* CARD */
+
+.card{
+background:#fff;
+padding:22px;
+border-radius:18px;
+margin-top:18px;
+box-shadow:0 6px 20px rgba(0,0,0,.05);
+}
+
+/* REQUIREMENT */
+
+.requirement{
+background:#2f64a3;
+color:#fff;
+padding:28px 18px;
+}
+
+.requirement .card{
+color:#0d1b2a;
+}
+
+/* TABLE SLIDER */
+
+.rate-slider{
+overflow:hidden;
+margin-top:30px;
+}
+
+.rate-track{
+display:flex;
+transition:.5s;
+}
+
+.rate-card{
+min-width:100%;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th{
+background:#2f64a3;
+color:#fff;
+padding:12px;
+}
+
+td{
+padding:10px;
+border:1px solid #d6e3f0;
+text-align:center;
+}
+
+/* CTA */
+
+.cta{
+background:#fff;
+border-radius:20px;
+padding:24px;
+margin:24px 18px;
+}
+
+.cta img{
+width:100%;
+border-radius:16px;
+}
+
+/* FOOTER */
+
+footer{
+background:#0d1b2a;
+color:#fff;
+padding:24px;
+margin-top:40px;
+}
+
+/* FADE IN */
+
+.reveal{
+opacity:0;
+transform:translateY(40px);
+transition:1s;
+}
+
+.reveal.visible{
+opacity:1;
+transform:translateY(0);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<header>
+
+<div class="logo">
+<div class="logo-box"></div>
+<div>KOREA INTERNATIONAL BANKING (KIB)</div>
+</div>
+
+<div class="lang">
+<button class="active">ENG</button>
+<button>KOR</button>
+<button>ESPAÑOL</button>
+</div>
+
+</header>
+
+<!-- HERO SLIDER -->
+
+<section class="hero">
+
+<div class="hero-track" id="heroTrack">
+
+<div class="hero-slide">hero-1.jpg</div>
+<div class="hero-slide">hero-2.jpg</div>
+<div class="hero-slide">hero-3.jpg</div>
+
+</div>
+
+</section>
+
+<!-- TITLE -->
+
+<section class="section reveal">
+
+<h1>Planned Savings Account</h1>
+
+<p>
+Start setting aside a small amount every month and save towards your financial goals & future dreams.
+</p>
+
+</section>
+
+<!-- DESCRIPTION -->
+
+<section class="section reveal">
+
+<h1>Start setting aside a small amount every month and save towards your financial goals & future dreams</h1>
+
+<p>
+Start setting aside a small amount every month and save towards your financial goals & future dreams with Planned Savings Account (PSA). You can make regular deposits with a specific amount and period for competitive interest rates.
+</p>
+
+<div class="card">
+
+<h3>Key Benefits</h3>
+
+<ul>
+
+<li>Reach your finance goals and future dreams</li>
+
+<li>Flexibility in deposit term from 3 months to 36 months</li>
+
+<li>Affordable monthly deposit with amount as low as KHR 40,000 or USD 10</li>
+
+<li>High interest rate</li>
+
+<li>Choose the most comfortable deposit term and amount</li>
+
+</ul>
+
+</div>
+
+</section>
+
+<!-- REQUIREMENTS -->
+
+<section class="requirement reveal">
+
+<h1>Requirement</h1>
+
+<div class="card">
+
+<h3>For Individual</h3>
+
+<ul>
+
+<li>A legal person, both Cambodian and Foreigner</li>
+
+<li>Identification Documents such as ID Card, Passport and/or other document</li>
+
+</ul>
+
+</div>
+
+<div class="card">
+
+<h3>For Corporate or Financial Institution</h3>
+
+<ul>
+
+<li>An entity that is legally registered under the Cambodian’s laws and regulations</li>
+
+<li>Business Registration Certificate, Memorandum and Articles of Association, and/or Letter of Authorization or Board Resolution as well as other documents (if available)</li>
+
+</ul>
+
+</div>
+
+</section>
+
+<!-- HOW TO APPLY -->
+
+<section class="section reveal">
+
+<h1>How To Apply</h1>
+
+<ul>
+
+<li>Please visit the nearest KIB Bank’s branch networks nationwide</li>
+
+<li>Apply online 👉 <b>APPLY NOW</b></li>
+
+</ul>
+
+<p>
+For more information please contact us at 023 96 3333 or 081 331 333
+</p>
+
+</section>
+
+<!-- INTEREST RATE -->
+
+<section class="section reveal">
+
+<h1>Interest Rate</h1>
+
+<div class="rate-slider">
+
+<div class="rate-track" id="rateTrack">
+
+<!-- INDIVIDUAL -->
+
+<div class="rate-card">
+
+<table>
+
+<tr>
+<th>Term (Months)</th>
+<th>KHR</th>
+<th>USD</th>
+</tr>
+
+<tr><td>3-5</td><td>2.50%</td><td>2.25%</td></tr>
+<tr><td>6-11</td><td>3.25%</td><td>2.50%</td></tr>
+<tr><td>12</td><td>4.75%</td><td>3.85%</td></tr>
+<tr><td>13-23</td><td>5.00%</td><td>3.95%</td></tr>
+<tr><td>24-35</td><td>5.10%</td><td>4.05%</td></tr>
+<tr><td>36</td><td>5.30%</td><td>4.15%</td></tr>
+
+</table>
+
+</div>
+
+<!-- CORPORATE -->
+
+<div class="rate-card">
+
+<table>
+
+<tr>
+<th>Term (Months)</th>
+<th>KHR</th>
+<th>USD</th>
+</tr>
+
+<tr><td>3-5</td><td>2.50%</td><td>2.00%</td></tr>
+<tr><td>6-11</td><td>3.25%</td><td>2.50%</td></tr>
+<tr><td>12</td><td>4.75%</td><td>3.85%</td></tr>
+<tr><td>13-23</td><td>5.00%</td><td>3.95%</td></tr>
+<tr><td>24-35</td><td>5.10%</td><td>4.05%</td></tr>
+<tr><td>36</td><td>5.30%</td><td>4.15%</td></tr>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- CUSTOMER SERVICE -->
+
+<div class="cta reveal">
+
+<h2>Customer Service Care</h2>
+
+<p>We always available to solve your problem in just a few minute!</p>
+
+<p><b>+855 23 963 333</b></p>
+
+<img src="customer-service.jpg">
+
+</div>
+
+<!-- FOOTER -->
+
+<footer>
+
+<h3>Korea International Banking (KIB)</h3>
+
+<p>© 2026 KIB Bank</p>
+
+</footer>
+
+<script>
+
+/* HERO SLIDER */
+
+let heroIndex=0
+const heroTrack=document.getElementById("heroTrack")
+
+setInterval(()=>{
+heroIndex++
+if(heroIndex>2) heroIndex=0
+heroTrack.style.transform="translateX(-"+heroIndex*100+"%)"
+},3000)
+
+/* RATE SLIDER */
+
+let rateIndex=0
+const rateTrack=document.getElementById("rateTrack")
+
+rateTrack.addEventListener("touchstart",e=>{
+startX=e.touches[0].clientX
+})
+
+rateTrack.addEventListener("touchend",e=>{
+let dx=e.changedTouches[0].clientX-startX
+if(dx<-50) rateIndex=1
+if(dx>50) rateIndex=0
+rateTrack.style.transform="translateX(-"+rateIndex*100+"%)"
+})
+
+/* FADE IN */
+
+const reveals=document.querySelectorAll(".reveal")
+
+function reveal(){
+reveals.forEach(el=>{
+const top=el.getBoundingClientRect().top
+if(top<window.innerHeight-80){
+el.classList.add("visible")
+}
+})
+}
+
+window.addEventListener("scroll",reveal)
+reveal()
+
+</script>
+
+</body>
+</html>
