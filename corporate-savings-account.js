@@ -1,41 +1,49 @@
-/* HERO AUTO SLIDER */
+// HERO SLIDER
 
-const track=document.querySelector('.hero-track');
-const slides=document.querySelectorAll('.hero-slide');
+const slides=document.querySelectorAll(".hero-slide")
+let index=0
 
-let index=0;
+function showSlide(i){
 
-function move(){
+slides.forEach(s=>s.classList.remove("active"))
 
-index++;
-
-if(index>=slides.length){
-index=0;
-}
-
-track.style.transform=`translateX(-${index*100}%)`;
+slides[i].classList.add("active")
 
 }
 
-setInterval(move,3000);
+showSlide(index)
+
+setInterval(()=>{
+
+index++
+
+if(index>=slides.length) index=0
+
+showSlide(index)
+
+},3000)
 
 
+// FADE IN SCROLL
 
-/* SCROLL FADE IN */
+const reveals=document.querySelectorAll(".reveal")
 
-const reveals=document.querySelectorAll(".reveal");
-
-window.addEventListener("scroll",()=>{
+function reveal(){
 
 reveals.forEach(el=>{
 
-const top=el.getBoundingClientRect().top;
-const windowHeight=window.innerHeight;
+const top=el.getBoundingClientRect().top
 
-if(top<windowHeight-100){
-el.classList.add("show");
+if(top<window.innerHeight-80){
+
+el.classList.add("show")
+
 }
 
-});
+})
 
-});
+}
+
+window.addEventListener("scroll",reveal)
+
+reveal()
