@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Community Deposit Support (CDS) | KIB</title>
+
+<style>
+
+/* RESET */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:system-ui,-apple-system,Segoe UI,Roboto;
+}
+
+body{
+background:#f4f5f7;
+color:#111;
+}
+
+
+/* HEADER */
+
+.header{
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:16px;
+background:white;
+border-bottom:1px solid #eee;
+}
+
+.logo{
+display:flex;
+gap:12px;
+align-items:center;
+font-weight:800;
+}
+
+.logo-box{
+width:36px;
+height:36px;
+background:#2f67a1;
+border-radius:10px;
+}
+
+.lang{
+display:flex;
+gap:8px;
+}
+
+.lang button{
+padding:6px 14px;
+border-radius:20px;
+border:1px solid #ddd;
+background:white;
+font-weight:700;
+}
+
+.lang .active{
+background:#0d1b34;
+color:white;
+border:none;
+}
+
+
+/* HERO */
+
+.hero{
+position:relative;
+height:320px;
+overflow:hidden;
+}
+
+.hero-track{
+display:flex;
+height:100%;
+transition:transform .6s ease;
+}
+
+.hero-slide{
+min-width:100%;
+}
+
+.hero-slide img{
+width:100%;
+height:320px;
+object-fit:cover;
+}
+
+
+/* HERO CARD */
+
+.hero-card{
+background:white;
+margin:-70px auto 30px;
+padding:24px;
+border-radius:26px;
+width:92%;
+max-width:850px;
+box-shadow:0 20px 40px rgba(0,0,0,.08);
+}
+
+.crumb{
+color:#666;
+font-size:14px;
+margin-bottom:10px;
+}
+
+.hero-card h1{
+font-size:34px;
+margin-bottom:14px;
+}
+
+.line{
+width:60px;
+height:2px;
+background:#ddd;
+margin-bottom:14px;
+}
+
+
+/* SECTION */
+
+.section{
+max-width:900px;
+margin:auto;
+padding:30px 20px;
+}
+
+.section h2{
+font-size:36px;
+margin-bottom:14px;
+}
+
+.section p{
+line-height:1.6;
+color:#555;
+}
+
+
+/* CARD */
+
+.card{
+background:white;
+padding:22px;
+border-radius:24px;
+margin-top:20px;
+}
+
+.card ul{
+padding-left:18px;
+}
+
+.card li{
+margin:10px 0;
+}
+
+
+/* REQUIREMENTS */
+
+.req-band{
+background:#3c6aa4;
+padding:30px 20px;
+color:white;
+margin-top:40px;
+}
+
+.req-card{
+background:white;
+color:#111;
+padding:20px;
+border-radius:20px;
+margin-top:20px;
+}
+
+
+/* CONDITIONS */
+
+.condition{
+background:white;
+border-radius:20px;
+padding:20px;
+margin-top:20px;
+}
+
+.condition div{
+border-bottom:1px solid #eee;
+padding:14px 0;
+}
+
+
+/* INTEREST SLIDER */
+
+.rate-slider{
+overflow:hidden;
+margin-top:20px;
+}
+
+.rate-track{
+display:flex;
+transition:transform .5s ease;
+}
+
+.rate-slide{
+min-width:100%;
+background:white;
+padding:20px;
+border-radius:20px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+}
+
+th,td{
+padding:12px;
+border:1px solid #ddd;
+text-align:center;
+}
+
+
+/* PRODUCT */
+
+.product{
+background:white;
+border-radius:24px;
+padding:20px;
+margin-top:30px;
+}
+
+.product img{
+width:100%;
+border-radius:16px;
+margin-top:10px;
+}
+
+
+/* CUSTOMER CARE */
+
+.support{
+background:linear-gradient(#f4f5f7,#3a8ec5);
+padding:30px 20px;
+border-radius:26px;
+margin-top:30px;
+}
+
+.support img{
+width:100%;
+margin-top:20px;
+}
+
+
+/* NAV TILES */
+
+.nav-tiles{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:18px;
+margin-top:40px;
+}
+
+.tile{
+background:white;
+border-radius:20px;
+padding:20px;
+height:160px;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+}
+
+.icon{
+width:50px;
+height:50px;
+background:#2f67a1;
+border-radius:50%;
+}
+
+.tile span{
+align-self:flex-end;
+font-size:24px;
+color:#2f67a1;
+}
+
+
+/* FOOTER */
+
+.footer{
+background:#3c6aa4;
+color:white;
+padding:30px 20px;
+margin-top:40px;
+}
+
+.footer h3{
+margin-bottom:10px;
+}
+
+.footer p{
+margin:6px 0;
+}
+
+.copy{
+margin-top:20px;
+text-align:center;
+}
+
+
+/* FADE */
+
+.fade{
+opacity:0;
+transform:translateY(30px);
+transition:.7s;
+}
+
+.fade.show{
+opacity:1;
+transform:none;
+}
+
+</style>
+</head>
+
+<body>
+
+
+<!-- HEADER -->
+
+<div class="header">
+
+<div class="logo">
+<div class="logo-box"></div>
+<div>KOREA INTERNATIONAL BANKING (KIB)</div>
+</div>
+
+<div class="lang">
+<button class="active">ENG</button>
+<button>KOR</button>
+<button>ESPAÑOL</button>
+</div>
+
+</div>
+
+
+
+<!-- HERO SLIDER -->
+
+<section class="hero">
+
+<div class="hero-track" id="heroTrack">
+
+<div class="hero-slide">
+<img src="cds-banner-1.jpg">
+</div>
+
+<div class="hero-slide">
+<img src="cds-banner-2.jpg">
+</div>
+
+<div class="hero-slide">
+<img src="cds-banner-3.jpg">
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- HERO CARD -->
+
+<div class="hero-card fade">
+
+<p class="crumb">
+Home » Business Banking » Saving / Deposit »
+Community Deposit Support (CDS)
+</p>
+
+<h1>Community Deposit Support (CDS)</h1>
+
+<div class="line"></div>
+
+<p>
+Make your saving worth for you and others.
+Deposit with CDS to get higher interest rate and chance to help people in need.
+</p>
+
+</div>
+
+
+
+<section class="section fade">
+
+<h2>Bigger Rate, Biggest Heart</h2>
+
+<p>
+Community Deposit Support (CDS) is a fixed-term deposit account with terms ranging from three to twelve months that is embedded in charity or social contribution. CDS allows customers to choose their preferred charity organizations that are KIB partners.
+KIB will cover the charity fund which will be donated to a charity organization's account in the customer's name.
+</p>
+
+</section>
+
+
+
+<section class="section fade">
+
+<div class="card">
+
+<h3>Key Benefits</h3>
+
+<ul>
+<li>High interest rate</li>
+<li>Interest is calculated daily and paid monthly or on maturity date</li>
+<li>Participation in charity act for society</li>
+<li>High security for your cash</li>
+</ul>
+
+</div>
+
+</section>
+
+
+
+<section class="req-band fade">
+
+<h2>Requirement</h2>
+
+<div class="req-card">
+
+<h3>For Individual</h3>
+
+<ul>
+<li>A legal person</li>
+<li>Identification documents such as ID card, passport</li>
+</ul>
+
+</div>
+
+<div class="req-card">
+
+<h3>For Corporate</h3>
+
+<ul>
+<li>An entity legally registered</li>
+<li>Business registration certificate</li>
+</ul>
+
+</div>
+
+</section>
+
+
+
+<section class="section fade">
+
+<h2>Condition</h2>
+
+<div class="condition">
+
+<div>
+<strong>Currency Minimum</strong>
+<p>KHR and USD</p>
+</div>
+
+<div>
+<strong>Initial Deposit</strong>
+<p>100,000 KHR or USD 25</p>
+</div>
+
+<div>
+<strong>Interest Payment</strong>
+<p>Monthly interest withdrawal</p>
+<p>Maturity interest withdrawal</p>
+</div>
+
+<div>
+<strong>Term</strong>
+<p>3 to 12 months</p>
+</div>
+
+<div>
+<strong>Certificate of Deposit</strong>
+<p>Free</p>
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- INTEREST RATE SLIDER -->
+
+<section class="section fade">
+
+<h2>Interest Rate</h2>
+
+<div class="rate-slider">
+
+<div class="rate-track" id="rateTrack">
+
+<div class="rate-slide">
+
+<table>
+
+<tr>
+<th>Term</th>
+<th>KHR</th>
+<th>USD</th>
+</tr>
+
+<tr>
+<td>3-5</td>
+<td>3.50%</td>
+<td>3.00%</td>
+</tr>
+
+<tr>
+<td>6-11</td>
+<td>4.25%</td>
+<td>3.50%</td>
+</tr>
+
+<tr>
+<td>12</td>
+<td>5.00%</td>
+<td>4.00%</td>
+</tr>
+
+</table>
+
+</div>
+
+
+<div class="rate-slide">
+
+<table>
+
+<tr>
+<th>Monthly Withdrawal</th>
+<th>KHR</th>
+<th>USD</th>
+</tr>
+
+<tr>
+<td></td>
+<td>3.25%</td>
+<td>2.75%</td>
+</tr>
+
+<tr>
+<td></td>
+<td>4.00%</td>
+<td>3.25%</td>
+</tr>
+
+<tr>
+<td></td>
+<td>4.75%</td>
+<td>3.75%</td>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<section class="section fade">
+
+<div class="product">
+
+<h2>Best Child Account</h2>
+
+<button>Discover more</button>
+
+<img src="best-child-account.jpg">
+
+</div>
+
+
+<div class="product">
+
+<h2>Hope Savings Account</h2>
+
+<button>Discover more</button>
+
+<img src="hope-savings.jpg">
+
+</div>
+
+</section>
+
+
+
+<section class="section fade">
+
+<div class="support">
+
+<h2>Customer Service Care</h2>
+
+<p>We always available to solve your problem in just a few minute!</p>
+
+<p><strong>+855 23 963 333</strong></p>
+
+<button>Contact us</button>
+
+<img src="customer-service.jpg">
+
+</div>
+
+</section>
+
+
+
+<section class="section">
+
+<div class="nav-tiles">
+
+<div class="tile">
+<div class="icon"></div>
+<h3>Personal Banking</h3>
+<span>→</span>
+</div>
+
+<div class="tile">
+<div class="icon"></div>
+<h3>Business Banking</h3>
+<span>→</span>
+</div>
+
+<div class="tile">
+<div class="icon"></div>
+<h3>Digital Banking</h3>
+<span>→</span>
+</div>
+
+<div class="tile">
+<div class="icon"></div>
+<h3>About Us</h3>
+<span>→</span>
+</div>
+
+</div>
+
+</section>
+
+
+
+<footer class="footer">
+
+<h3>KOREA INTERNATIONAL BANKING</h3>
+
+<p>39 Namdaemun-ro, Jung-gu, Seoul, Republic of Korea</p>
+
+<p>Piazza di Spagna 59, Rome Italy</p>
+
+<p>25 Old Broad Street London UK</p>
+
+<p>1250 Broadway New York USA</p>
+
+<p>Kuwait City, State of Kuwait</p>
+
+<div class="copy">All rights reserved 2026</div>
+
+</footer>
+
+
+
+<script>
+
+/* HERO AUTO SLIDE */
+
+let heroTrack=document.getElementById("heroTrack")
+let heroIndex=0
+
+setInterval(()=>{
+heroIndex=(heroIndex+1)%3
+heroTrack.style.transform="translateX(-"+heroIndex*100+"%)"
+},3000)
+
+
+/* INTEREST RATE SLIDE */
+
+let rateTrack=document.getElementById("rateTrack")
+let rateIndex=0
+
+rateTrack.addEventListener("click",()=>{
+rateIndex=(rateIndex+1)%2
+rateTrack.style.transform="translateX(-"+rateIndex*100+"%)"
+})
+
+
+/* FADE */
+
+const faders=document.querySelectorAll(".fade")
+
+const observer=new IntersectionObserver(entries=>{
+entries.forEach(entry=>{
+if(entry.isIntersecting){
+entry.target.classList.add("show")
+}
+})
+})
+
+faders.forEach(el=>observer.observe(el))
+
+</script>
+
+</body>
+</html>
