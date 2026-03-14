@@ -12,8 +12,19 @@
 body{
 margin:0;
 font-family:Arial, Helvetica, sans-serif;
-background:#f5f7fb;
+background:#f4f6fb;
 color:#222;
+}
+
+/* HEADER */
+
+.header{
+background:white;
+padding:18px 0;
+box-shadow:0 2px 8px rgba(0,0,0,0.06);
+position:sticky;
+top:0;
+z-index:100;
 }
 
 .container{
@@ -22,66 +33,61 @@ max-width:900px;
 margin:auto;
 }
 
-h1{
-font-size:32px;
-margin:10px 0;
+.header-flex{
+display:flex;
+justify-content:space-between;
+align-items:center;
 }
 
-h2{
-font-size:26px;
-margin-bottom:10px;
+.logo-wrap{
+display:flex;
+align-items:center;
+gap:10px;
 }
 
-p{
-line-height:1.6;
-color:#555;
+.logo-circle{
+width:36px;
+height:36px;
+border-radius:50%;
+background:linear-gradient(135deg,#4a86d4,#2f63a3);
 }
 
-.card{
-background:white;
-padding:28px;
-border-radius:20px;
-margin-top:-60px;
-box-shadow:0 8px 25px rgba(0,0,0,0.08);
+.logo-text{
+font-size:16px;
+font-weight:700;
 }
 
-.section{
-margin:60px 0;
+.logo-text span{
+font-weight:400;
+color:#777;
+margin-left:5px;
 }
 
-.btn{
-display:inline-block;
-padding:14px 28px;
-border-radius:12px;
-text-decoration:none;
+.header-actions button{
+border:none;
+background:#f2f4f8;
+padding:8px 14px;
+border-radius:10px;
+margin-left:10px;
 font-weight:600;
-margin-top:10px;
 }
 
-.btn-blue{
-background:#2e80c9;
-color:white;
-}
-
-.btn-soft{
-background:#d7e7f4;
-color:#2e80c9;
-}
+/* HERO */
 
 .hero{
-position:relative;
+margin-top:20px;
 overflow:hidden;
-border-radius:24px;
+border-radius:26px;
 }
 
 .slider{
 display:flex;
-transition:transform .5s ease;
+transition:transform .6s ease;
 }
 
 .slide{
 min-width:100%;
-height:320px;
+height:300px;
 background:#cfd6df;
 display:flex;
 align-items:center;
@@ -89,6 +95,89 @@ justify-content:center;
 font-weight:600;
 color:#666;
 }
+
+/* HERO CARD */
+
+.hero-card{
+background:white;
+margin-top:-60px;
+padding:30px;
+border-radius:22px;
+box-shadow:0 10px 30px rgba(0,0,0,0.1);
+}
+
+.hero-card h1{
+margin:8px 0;
+}
+
+/* SECTIONS */
+
+.section{
+margin:60px 0;
+}
+
+.card{
+background:white;
+padding:25px;
+border-radius:20px;
+}
+
+.blue-section{
+background:#2f63a3;
+padding:60px 0;
+color:white;
+}
+
+.white-card{
+background:white;
+color:#333;
+padding:25px;
+border-radius:20px;
+margin-top:20px;
+}
+
+.btn{
+display:inline-block;
+padding:14px 26px;
+border-radius:12px;
+text-decoration:none;
+font-weight:600;
+margin-top:12px;
+}
+
+.btn-soft{
+background:#d7e7f4;
+color:#2e80c9;
+}
+
+/* NAV TILES */
+
+.tiles{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+margin-top:50px;
+}
+
+.tile{
+background:white;
+padding:25px;
+border-radius:18px;
+text-align:center;
+box-shadow:0 6px 18px rgba(0,0,0,0.07);
+font-weight:600;
+}
+
+/* FOOTER */
+
+.footer{
+background:#2f63a3;
+color:white;
+padding:40px 0;
+margin-top:60px;
+}
+
+/* FADE ANIMATION */
 
 .fade{
 opacity:0;
@@ -101,63 +190,41 @@ opacity:1;
 transform:translateY(0);
 }
 
-.blue-section{
-background:#2f64a5;
-padding:50px 0;
-color:white;
-}
-
-.white-card{
-background:white;
-color:#333;
-border-radius:20px;
-padding:25px;
-margin:20px 0;
-}
-
-ul{
-line-height:1.7;
-}
-
-.footer{
-background:#2f64a5;
-color:white;
-padding:40px 0;
-margin-top:60px;
-}
-
-.footer h3{
-margin-top:0;
-}
-
-.nav-tiles{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:20px;
-margin:40px 0;
-}
-
-.tile{
-background:white;
-border-radius:18px;
-padding:25px;
-text-align:center;
-box-shadow:0 6px 18px rgba(0,0,0,0.07);
-}
-
-.tile h3{
-margin:10px 0;
-}
-
 </style>
+
 </head>
 
 <body>
 
 
-<!-- HERO SLIDER -->
+<!-- HEADER -->
+
+<header class="header">
+
+<div class="container header-flex">
+
+<div class="logo-wrap">
+<div class="logo-circle"></div>
+<div class="logo-text">
+KIB <span>CAMBODIA</span>
+</div>
+</div>
+
+<div class="header-actions">
+<button>ENG ▾</button>
+<button>☰</button>
+</div>
+
+</div>
+
+</header>
+
+
 
 <div class="container">
+
+
+<!-- HERO SLIDER -->
 
 <div class="hero">
 
@@ -174,7 +241,9 @@ margin:10px 0;
 </div>
 
 
-<div class="card fade">
+<!-- HERO CARD -->
+
+<div class="hero-card fade">
 
 <p>Home » Business Banking » Loan » Commercial Loan</p>
 
@@ -195,9 +264,7 @@ Support short term payment or capital to support its business operation and inve
 <div class="container section fade">
 
 <p>
-
 Commercial Loan that is a loan is given to larger legal entity / company demanding cash to support short term payment or capital to support its business operation and investment.
-
 </p>
 
 </div>
@@ -206,9 +273,9 @@ Commercial Loan that is a loan is given to larger legal entity / company demandi
 
 <!-- PURPOSE -->
 
-<div class="container section fade">
+<div class="container fade">
 
-<div class="white-card">
+<div class="card">
 
 <h2>Loan can be financed by following purposes:</h2>
 
@@ -241,11 +308,8 @@ Commercial Loan that is a loan is given to larger legal entity / company demandi
 <div class="white-card">
 
 <ul>
-
 <li>Big loan size suitable for all types of business;</li>
-
 <li>Competitive interest rate;</li>
-
 </ul>
 
 </div>
@@ -253,11 +317,8 @@ Commercial Loan that is a loan is given to larger legal entity / company demandi
 <div class="white-card">
 
 <ul>
-
 <li>Loan term up to 120 months;</li>
-
 <li>Fast approval process.</li>
-
 </ul>
 
 </div>
@@ -274,47 +335,22 @@ Commercial Loan that is a loan is given to larger legal entity / company demandi
 
 <h2>Condition</h2>
 
-<div class="white-card">
+<div class="card">
 
 <h3>Currency</h3>
-
-<ul>
-<li>KHR and USD</li>
-</ul>
-
-<hr>
+<ul><li>KHR and USD</li></ul>
 
 <h3>Loan Size</h3>
-
-<ul>
-<li>Big loan size suitable for all types of business.</li>
-</ul>
-
-<hr>
+<ul><li>Big loan size suitable for all types of business.</li></ul>
 
 <h3>Loan term</h3>
-
-<ul>
-<li>Up to 120 months.</li>
-</ul>
-
-<hr>
+<ul><li>Up to 120 months.</li></ul>
 
 <h3>Interest rate per annum</h3>
-
-<ul>
-<li>Competitive interest rate.</li>
-</ul>
-
-<hr>
+<ul><li>Competitive interest rate.</li></ul>
 
 <h3>Repayment method</h3>
-
-<ul>
-<li>Flexible repayment options</li>
-</ul>
-
-<hr>
+<ul><li>Flexible repayment options</li></ul>
 
 <h3>Acceptable collateral</h3>
 
@@ -354,7 +390,7 @@ Commercial Loan that is a loan is given to larger legal entity / company demandi
 
 <div class="hero" style="margin-top:30px">
 
-<div class="slide">commercial-loan-branch.jpg</div>
+<div class="slide">commercial-loan-building.jpg</div>
 
 </div>
 
@@ -364,23 +400,12 @@ Commercial Loan that is a loan is given to larger legal entity / company demandi
 
 <!-- NAV TILES -->
 
-<div class="container nav-tiles fade">
+<div class="container tiles fade">
 
-<div class="tile">
-<h3>Personal Banking</h3>
-</div>
-
-<div class="tile">
-<h3>Business Banking</h3>
-</div>
-
-<div class="tile">
-<h3>Digital Banking</h3>
-</div>
-
-<div class="tile">
-<h3>About Us</h3>
-</div>
+<div class="tile">Personal Banking</div>
+<div class="tile">Business Banking</div>
+<div class="tile">Digital Banking</div>
+<div class="tile">About Us</div>
 
 </div>
 
@@ -396,26 +421,13 @@ Commercial Loan that is a loan is given to larger legal entity / company demandi
 
 <p><strong>Location Address</strong></p>
 
-<p>
-39 Namdaemun-ro, Jung-gu, Seoul (04531), Republic of Korea
-</p>
+<p>39 Namdaemun-ro, Jung-gu, Seoul (04531), Republic of Korea</p>
 
-<p>
-Piazza di Spagna, 59, 00187 Roma RM, Italy
-</p>
+<p>Piazza di Spagna, 59, 00187 Roma RM, Italy</p>
 
-<p>
-Tower 42 , Level 38, 25 Old Broad Street, EC2N 1HQ, London, United Kingdom
-</p>
+<p>Tower 42 , Level 38, 25 Old Broad Street, EC2N 1HQ, London, United Kingdom</p>
 
-<p>
-New York Branch<br>
-1250 Broadway, 37th Floor, New York, NY 10001, USA
-</p>
-
-<p>
-Mubarak Al-Kabeer Street, Darwazat Al-Abdul Razzaq, Kuwait City, State of Kuwait
-</p>
+<p>1250 Broadway, 37th Floor, New York, NY 10001, USA</p>
 
 </div>
 
@@ -425,37 +437,31 @@ Mubarak Al-Kabeer Street, Darwazat Al-Abdul Razzaq, Kuwait City, State of Kuwait
 
 <script>
 
-let index = 0
-
-const slider = document.getElementById("slider")
-
-const slides = slider.children.length
+let index=0
+const slider=document.getElementById("slider")
+const slides=slider.children.length
 
 setInterval(()=>{
 
 index++
 
-if(index >= slides){index = 0}
+if(index>=slides){index=0}
 
-slider.style.transform = "translateX(-"+index*100+"%)"
+slider.style.transform="translateX(-"+index*100+"%)"
 
 },3000)
 
 
 
-const faders = document.querySelectorAll(".fade")
-
-const observer = new IntersectionObserver(entries=>{
-
+const observer=new IntersectionObserver(entries=>{
 entries.forEach(entry=>{
 if(entry.isIntersecting){
 entry.target.classList.add("show")
 }
 })
-
 })
 
-faders.forEach(el=>observer.observe(el))
+document.querySelectorAll(".fade").forEach(el=>observer.observe(el))
 
 </script>
 
