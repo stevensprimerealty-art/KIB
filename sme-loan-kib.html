@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SME Loan | KIB</title>
+
+<style>
+
+/* ===== ROOT ===== */
+
+:root{
+--blue:#2f67a1;
+--soft:#e7f4fb;
+--bg:#f3f4f6;
+--text:#111;
+}
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+font-family:system-ui;
+}
+
+body{
+background:#f3f4f6;
+color:#111;
+}
+
+/* ===== HEADER ===== */
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:16px;
+background:white;
+position:sticky;
+top:0;
+z-index:100;
+border-bottom:1px solid #eee;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+font-weight:700;
+}
+
+.logo-box{
+width:36px;
+height:36px;
+border-radius:50%;
+background:linear-gradient(#7aa6d8,#2f67a1);
+}
+
+.lang{
+display:flex;
+gap:6px;
+}
+
+.lang span{
+padding:8px 12px;
+border-radius:999px;
+background:#f1f3f6;
+font-size:13px;
+}
+
+.lang .active{
+background:#0f172a;
+color:white;
+}
+
+/* ===== HERO ===== */
+
+.hero{
+position:relative;
+}
+
+.hero-slider{
+height:300px;
+overflow:hidden;
+}
+
+.hero-track{
+display:flex;
+transition:transform .6s ease;
+}
+
+.hero-slide{
+min-width:100%;
+height:300px;
+background:#cbd5e1;
+display:flex;
+align-items:center;
+justify-content:center;
+color:#666;
+font-weight:600;
+}
+
+/* ===== HERO CARD ===== */
+
+.hero-card{
+background:white;
+margin:-80px 16px 0;
+padding:26px;
+border-radius:26px;
+box-shadow:0 20px 40px rgba(0,0,0,.1);
+position:relative;
+z-index:5;
+}
+
+.hero-card h1{
+font-size:32px;
+margin:10px 0;
+}
+
+.hero-line{
+width:60px;
+height:2px;
+background:#ccc;
+margin:14px 0;
+}
+
+/* ===== BUTTON ===== */
+
+.btn{
+display:inline-block;
+padding:14px 20px;
+border-radius:16px;
+font-weight:700;
+text-decoration:none;
+}
+
+.btn-blue{
+background:#3aa3d6;
+color:white;
+}
+
+.btn-soft{
+background:#dcecf7;
+color:#2f67a1;
+margin-left:10px;
+}
+
+/* ===== CARD ===== */
+
+.card{
+background:white;
+border-radius:26px;
+padding:22px;
+margin:24px 16px;
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+.card h2{
+margin-bottom:10px;
+}
+
+.card p{
+color:#555;
+line-height:1.6;
+}
+
+/* ===== IMAGE PLACEHOLDER ===== */
+
+.banner{
+margin-top:16px;
+border-radius:18px;
+overflow:hidden;
+background:#cbd5e1;
+height:260px;
+display:flex;
+align-items:center;
+justify-content:center;
+color:#666;
+}
+
+/* ===== CUSTOMER CARE ===== */
+
+.cs{
+margin:30px 16px;
+border-radius:26px;
+padding:26px;
+background:linear-gradient(#fff,#2f86c5);
+color:#111;
+}
+
+.cs img{
+width:100%;
+margin-top:16px;
+border-radius:20px;
+}
+
+/* ===== NAV TILES ===== */
+
+.nav{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:16px;
+padding:30px 16px;
+}
+
+.tile{
+background:white;
+border-radius:24px;
+padding:24px;
+min-height:160px;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+box-shadow:0 6px 20px rgba(0,0,0,0.08);
+}
+
+.tile h3{
+font-size:22px;
+}
+
+/* ===== FOOTER ===== */
+
+.footer{
+background:#3a6ea5;
+color:white;
+padding:20px;
+}
+
+.footer h4{
+padding:12px 0;
+border-bottom:1px solid rgba(255,255,255,0.2);
+}
+
+.footer-bottom{
+background:#2f67a1;
+text-align:center;
+padding:12px;
+color:white;
+}
+
+/* ===== FADE ===== */
+
+.reveal{
+opacity:0;
+transform:translateY(30px);
+transition:.6s;
+}
+
+.reveal.show{
+opacity:1;
+transform:none;
+}
+
+</style>
+
+</head>
+<body>
+
+
+<!-- HEADER -->
+
+<header class="header">
+
+<div class="logo">
+<div class="logo-box"></div>
+KOREA INTERNATIONAL BANKING (KIB)
+</div>
+
+<div class="lang">
+<span class="active">ENG</span>
+<span>KOR</span>
+<span>ESPAÑOL</span>
+</div>
+
+</header>
+
+
+
+<!-- HERO -->
+
+<section class="hero">
+
+<div class="hero-slider">
+
+<div class="hero-track" id="heroTrack">
+
+<div class="hero-slide">sme-loan-hero-1.jpg</div>
+<div class="hero-slide">sme-loan-hero-2.jpg</div>
+<div class="hero-slide">sme-loan-hero-3.jpg</div>
+
+</div>
+
+</div>
+
+
+<div class="hero-card">
+
+<p>Home » Business Banking » <b>Loan</b></p>
+
+<h1>Loan</h1>
+
+<div class="hero-line"></div>
+
+<p>
+Start your dream business, build your warmhearted and enhance your living standard.
+</p>
+
+</div>
+
+</section>
+
+
+
+<!-- SME LOAN -->
+
+<section class="card reveal">
+
+<h2>SME Loan</h2>
+
+<p>A loan for Small and Medium Enterprises.</p>
+
+<br>
+
+<a class="btn btn-blue">APPLY NOW</a>
+
+<a class="btn btn-soft">Discover more</a>
+
+<div class="banner">
+banner-loan-1.jpg
+</div>
+
+</section>
+
+
+
+<!-- COMMERCIAL LOAN -->
+
+<section class="card reveal">
+
+<h2>Commercial Loan</h2>
+
+<p>
+Support short term payment or capital to support its business operation and investment.
+</p>
+
+<br>
+
+<a class="btn btn-soft">Discover more</a>
+
+<div class="banner">
+banner-loan-2.jpg
+</div>
+
+</section>
+
+
+
+<!-- CUSTOMER SERVICE -->
+
+<section class="cs reveal">
+
+<h2>Customer Service Care</h2>
+
+<p>
+We always available to solve your problem in just a few minute!
+</p>
+
+<br>
+
+<b>+855 23 963 333</b>
+
+<br><br>
+
+<a class="btn btn-soft">Contact us</a>
+
+<img src="customer-service-agent.jpg">
+
+</section>
+
+
+
+<!-- NAV TILES -->
+
+<section class="nav">
+
+<div class="tile">
+<h3>Personal Banking</h3>
+→
+</div>
+
+<div class="tile">
+<h3>Business Banking</h3>
+→
+</div>
+
+<div class="tile">
+<h3>Digital Banking</h3>
+→
+</div>
+
+<div class="tile">
+<h3>About Us</h3>
+→
+</div>
+
+</section>
+
+
+
+<!-- FOOTER -->
+
+<footer class="footer">
+
+<h4>Personal Banking</h4>
+<h4>Business Banking</h4>
+<h4>Digital Banking</h4>
+<h4>Company</h4>
+<h4>Financial</h4>
+<h4>News</h4>
+
+<br>
+
+KIB Group Company: info@kibinternational.co.site
+
+</footer>
+
+<div class="footer-bottom">
+All rights reserved 2023
+</div>
+
+
+
+<script>
+
+/* HERO SLIDER */
+
+const track=document.getElementById("heroTrack");
+const slides=track.children;
+
+let index=0;
+
+setInterval(()=>{
+
+index=(index+1)%slides.length;
+
+track.style.transform="translateX(-"+index*100+"%)";
+
+},3000);
+
+
+/* FADE */
+
+const observer=new IntersectionObserver(entries=>{
+
+entries.forEach(entry=>{
+
+if(entry.isIntersecting){
+
+entry.target.classList.add("show");
+
+}
+
+});
+
+});
+
+document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
+
+</script>
+
+
+</body>
+</html>
