@@ -300,19 +300,71 @@ img{max-width:100%;display:block}
 
 /* FOOTER */
 
-.footer{
-  background:#0b74b8;
-  color:#fff;
-  margin-top:30px;
+.footer-blue{
+background:#3b6ea5;
+color:#fff;
+padding:20px 0;
 }
 
-.footer .inner{
-  padding:24px 16px;
+.footer-menu{
+display:flex;
+flex-direction:column;
+gap:10px;
 }
 
-.footer-brand{
-  font-weight:800;
-  margin-top:16px;
+.footer-btn{
+width:100%;
+text-align:left;
+background:none;
+border:none;
+color:#fff;
+font-size:18px;
+font-weight:700;
+padding:14px 0;
+border-bottom:1px solid rgba(255,255,255,0.2);
+cursor:pointer;
+}
+
+.footer-panel{
+display:none;
+padding:10px 0 10px 10px;
+}
+
+.footer-panel a{
+display:block;
+color:#fff;
+opacity:0.85;
+margin:6px 0;
+text-decoration:none;
+}
+
+.footer-company{
+margin-top:16px;
+opacity:0.8;
+font-size:14px;
+}
+
+.footer-address{
+background:#fff;
+padding:30px 0;
+}
+
+.footer-address h3{
+font-size:22px;
+margin-bottom:12px;
+}
+
+.footer-address p{
+margin:10px 0;
+line-height:1.5;
+}
+
+.footer-bottom{
+background:#3b6ea5;
+color:#fff;
+text-align:center;
+padding:14px;
+font-weight:600;
 }
 
 /* FADE ANIMATION */
