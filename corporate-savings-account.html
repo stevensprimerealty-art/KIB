@@ -2,34 +2,36 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>KIB — Corporate Savings Account</title>
 
 <link rel="stylesheet" href="corporate-savings-account.css">
 </head>
 
 <body>
+<div class="page">
 
-<!-- HEADER (same structure as your main page) -->
+<!-- HEADER (copied from Best Child page) -->
 <header class="site-header">
-<div class="container bar">
+  <div class="container bar">
 
-<div class="brand">
-KOREA INTERNATIONAL BANKING <small>(KIB)</small>
-</div>
+    <div class="brand">
+      KOREA INTERNATIONAL BANKING <small>(KIB)</small>
+    </div>
 
-<div class="header-right">
+    <div class="header-right">
 
-<div class="lang">
-<button class="is-active">ENG</button>
-<button>KOR</button>
-<button>ESPAÑOL</button>
-</div>
+      <div class="lang" aria-label="Language selector">
+        <button class="is-active" type="button">ENG</button>
+        <button type="button">KOR</button>
+        <button type="button">ESPAÑOL</button>
+      </div>
 
-<button class="menu-btn">☰</button>
+      <button class="menu-btn" type="button" aria-label="Open menu">☰</button>
 
-</div>
-</div>
+    </div>
+
+  </div>
 </header>
 
 
@@ -40,18 +42,19 @@ KOREA INTERNATIONAL BANKING <small>(KIB)</small>
 <section class="hero reveal">
 
 <div class="hero-slider" id="heroSlider">
+
 <div class="hero-track" id="heroTrack">
 
 <div class="hero-slide">
-<img src="assets/images/corporate/banner-1.jpg">
+<img src="assets/images/business/corporate-hero-1.jpg" alt="">
 </div>
 
 <div class="hero-slide">
-<img src="assets/images/corporate/banner-2.jpg">
+<img src="assets/images/business/corporate-hero-2.jpg" alt="">
 </div>
 
 <div class="hero-slide">
-<img src="assets/images/corporate/banner-3.jpg">
+<img src="assets/images/business/corporate-hero-3.jpg" alt="">
 </div>
 
 </div>
@@ -63,12 +66,13 @@ KOREA INTERNATIONAL BANKING <small>(KIB)</small>
 <div class="hero-card">
 
 <div class="crumb">
-Home » Business Banking » Saving / Deposit » Corporate Savings Account
+Home » Business Banking » Saving / Deposit »
+<span class="crumb-strong">Corporate Savings Account</span>
 </div>
 
 <h1>Corporate Savings Account</h1>
 
-<div class="line"></div>
+<div class="hero-line"></div>
 
 <p>
 2% interest with free usage of Mobile Banking and ATM service.
@@ -79,12 +83,11 @@ Home » Business Banking » Saving / Deposit » Corporate Savings Account
 </section>
 
 
-
-<!-- INTRO TEXT -->
-<section class="intro reveal">
+<!-- INTRO -->
+<section class="headline reveal">
 
 <h2>
-Welcome to KIB Cambodia, where financial stability meets business success.
+Welcome to KIB Bank, where financial stability meets business success.
 </h2>
 
 <p>
@@ -96,13 +99,12 @@ Secure your corporate finances with us today.
 </section>
 
 
-
 <!-- KEY BENEFITS -->
 <section class="card reveal">
 
-<h3>Key Benefits</h3>
+<h3 class="card-title">Key Benefits</h3>
 
-<ul>
+<ul class="bullets">
 
 <li>Receive high interest rate</li>
 
@@ -110,7 +112,7 @@ Secure your corporate finances with us today.
 
 <li>Safety for your cash</li>
 
-<li>Withdraw and deposit your money at KIB Bank’s branches in 25 City/Provinces</li>
+<li>Withdraw and deposit your money at KIB branches</li>
 
 <li>Secure your financial transactions</li>
 
@@ -121,119 +123,107 @@ Secure your corporate finances with us today.
 </section>
 
 
-
 <!-- REQUIREMENT DOCUMENTS -->
-<section class="requirement reveal">
+<section class="section-band reveal">
 
-<h2>Requirement Documents</h2>
+<div class="band-title">Requirement Documents</div>
 
-<div class="card">
+<div class="req-card">
 
-<ul>
+<div class="checkrow">
+<span class="check">✓</span>
+<span>Memorandum and Article of Association</span>
+</div>
 
-<li>Memorandum and Article of Association</li>
+<div class="checkrow">
+<span class="check">✓</span>
+<span>Certificate of Incorporation</span>
+</div>
 
-<li>Certificate of Incorporation</li>
+<div class="checkrow">
+<span class="check">✓</span>
+<span>Business License or Permission Documents</span>
+</div>
 
-<li>Business License or Permission Documents from Regulated Authority if applicable</li>
+<div class="checkrow">
+<span class="check">✓</span>
+<span>Power of Attorney or Authorized Letter</span>
+</div>
 
-<li>Power of Attorney or Authorized letter or other equivalent documents to approve the person who act as representative of the company.</li>
+<div class="checkrow">
+<span class="check">✓</span>
+<span>Patent Tax Certificate</span>
+</div>
 
-<li>Patent Tax Certificate</li>
+<div class="checkrow">
+<span class="check">✓</span>
+<span>ID Documents of Shareholders or Directors</span>
+</div>
 
-<li>Identification documents (valid NID/Passports) of Shareholders and directors/Senior Management or equivalent position.</li>
+<div class="checkrow">
+<span class="check">✓</span>
+<span>ID Documents of authorized signatory</span>
+</div>
 
-<li>Identification documents (valid NID/Passports) of authorized signatory(s)</li>
+<div class="checkrow">
+<span class="check">✓</span>
+<span>Ultimate Beneficial Owner Declaration</span>
+</div>
 
-<li>Ultimate Beneficial Owner (UBO) Declaration</li>
-
-<li>Other Related Documents</li>
-
-</ul>
+<div class="checkrow">
+<span class="check">✓</span>
+<span>Other Related Documents</span>
+</div>
 
 </div>
 
 </section>
 
 
-
 <!-- ACCOUNT INFO -->
 <section class="card reveal">
 
-<h3>Currency</h3>
-<p>• KHR and USD</p>
+<div class="kv">
+<div class="k">Currency</div>
+<div class="v">• KHR and USD</div>
+</div>
 
-<h3>Minimum Initial</h3>
-<p>• KHR 200,000 or USD 50</p>
+<div class="kv">
+<div class="k">Minimum Initial</div>
+<div class="v">• KHR 200,000 or USD 50</div>
+</div>
 
-<h3>Deposit Annual Interest Rate</h3>
-<p>• KHR 2.0%; USD 2.0%</p>
+<div class="kv">
+<div class="k">Deposit Annual Interest Rate</div>
+<div class="v">• KHR 2.0%; USD 2.0%</div>
+</div>
 
-<h3>Passbook</h3>
-<p>• Free</p>
-
-</section>
-
-
-
-<!-- FORMS -->
-<section class="card reveal">
-
-<h3>Forms</h3>
-
-<ol>
-
-<li>Corporate Account Opening Form</li>
-
-<li>Ultimate Beneficial Owner Declaration Form</li>
-
-<li>AML/CFT Questionnaire for Bank & Financial Institution</li>
-
-<li>Board of Directors Resolution (Sample)</li>
-
-</ol>
+<div class="kv">
+<div class="k">Passbook</div>
+<div class="v">• Free</div>
+</div>
 
 </section>
-
-
-
-<!-- TERMS -->
-<section class="card reveal">
-
-<h3>General Terms and Conditions</h3>
-
-<p>Download</p>
-
-<h3>More detail</h3>
-
-<p>KYC REQUIREMENT FOR CORPORATE/PARTNER</p>
-
-<p>Download</p>
-
-<ul>
-
-<li>Terms and conditions applied.</li>
-
-<li>KIB Bank reserves its full rights to refine interest rates and other conditions without prior notice.</li>
-
-</ul>
-
-</section>
-
 
 
 <!-- HOW TO APPLY -->
 <section class="card reveal">
 
-<h2>How to apply</h2>
+<h3 class="card-title">How to apply</h3>
 
 <p>
-Please visit the nearest KIB Bank’s branch office along with any Required documents
+Please visit the nearest KIB Bank branch office along with any required documents
 </p>
 
 <p>
 Contact us at <strong>023 96 3333</strong> for detailed information
 </p>
+
+<a class="btn-soft wide">Contact us</a>
+
+<div class="banner-img">
+<img src="assets/images/business/corporate-apply.jpg" alt="">
+</div>
 
 </section>
 
@@ -242,17 +232,67 @@ Contact us at <strong>023 96 3333</strong> for detailed information
 </main>
 
 
-<!-- FOOTER (same structure as your main page) -->
+<!-- FOOTER (copied exactly from Best Child page) -->
 <footer class="footer">
+
+<div class="container inner">
+
+<div class="footer-acc">
+
+<div class="acc-item">
+<button class="acc-btn">Personal Banking <span>▾</span></button>
+<div class="acc-panel">Accounts • Cards • Transfers • Savings • Loans</div>
+</div>
+
+<div class="acc-item">
+<button class="acc-btn">Business Banking <span>▾</span></button>
+<div class="acc-panel">Corporate accounts • Trade finance • Treasury solutions</div>
+</div>
+
+<div class="acc-item">
+<button class="acc-btn">Digital Banking <span>▾</span></button>
+<div class="acc-panel">Mobile banking • Online banking • Digital security</div>
+</div>
+
+<div class="acc-item">
+<button class="acc-btn">Company <span>▾</span></button>
+<div class="acc-panel">About KIB • Leadership • Governance</div>
+</div>
+
+</div>
+
+<div class="footer-info">
+
+<div class="footer-section">
+<div class="footer-h">Location Address</div>
+<div class="footer-p">
+Seoul, Republic of Korea<br>
+Rome, Italy<br>
+London, United Kingdom<br>
+New York, USA
+</div>
+</div>
+
+<div class="footer-section">
+<div class="footer-h">Contact</div>
+<div class="footer-p">
++000 00 000 0000<br>
++000 00 000 0000
+</div>
+</div>
+
+</div>
 
 <div class="footer-brand">
 KOREA INTERNATIONAL BANKING
 </div>
 
-</footer>
+</div>
 
+</footer>
 
 <script src="corporate-savings-account.js"></script>
 
+</div>
 </body>
 </html>
