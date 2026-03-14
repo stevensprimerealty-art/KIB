@@ -23,7 +23,7 @@ revealEls.forEach(el => observer.observe(el));
 /* HERO SLIDER */
 
 const track = document.getElementById("heroTrack");
-const slides = track.children;
+const slides = track ? track.children : [];
 const dotsWrap = document.getElementById("heroDots");
 
 let index = 0;
@@ -89,6 +89,7 @@ start();
 
 }
 
+
 /* swipe */
 
 let startX=0;
@@ -114,31 +115,11 @@ else restart();
 });
 
 go(0);
-
-// fade in when scrolling
-
-const reveals = document.querySelectorAll(".reveal");
-
-function revealOnScroll(){
-
-reveals.forEach(el=>{
-
-const top = el.getBoundingClientRect().top;
-
-if(top < window.innerHeight - 80){
-
-el.classList.add("visible");
-
-}
-
-});
-
-}
-
-window.addEventListener("scroll", revealOnScroll);
-revealOnScroll();
-
 start();
+
+
+
+/* FOOTER ACCORDION */
 
 document.querySelectorAll(".footer-btn").forEach(button => {
 
