@@ -914,6 +914,7 @@ window.addEventListener("load", () => {
   let y0 = null;
 
   banner.addEventListener("touchstart", (e) => {
+  if (e.target.closest("a")) return;
     const t = e.touches && e.touches[0];
     if (!t) return;
     stopAuto();
@@ -922,6 +923,7 @@ window.addEventListener("load", () => {
   }, { passive: true });
 
   banner.addEventListener("touchend", (e) => {
+  if (e.target.closest("a")) return;
     if (x0 === null || y0 === null) return;
     const t = e.changedTouches && e.changedTouches[0];
     if (!t) return;
@@ -999,3 +1001,20 @@ window.addEventListener("load", () => {
 
   io.observe(section);
 })();
+
+// ===============================
+// FIX: CTA links inside banner
+// ===============================
+document.querySelectorAll(".kib-cta").forEach(link => {
+  link.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
+
+  link.addEventListener("touchstart", (e) => {
+    e.stopPropagation();
+  }, { passive: true });
+
+  link.addEventListener("touchend", (e) => {
+    e.stopPropagation();
+  }, { passive: true });
+});
