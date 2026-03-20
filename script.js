@@ -820,14 +820,14 @@ window.addEventListener("load", () => {
   makeSlider({ trackId: "circleTrack", viewportId: "circleViewport", dotsId: "circleDots", interval: 3500 });
 });
 
-// ===============================
-// KIB BANNER (FADE + AUTO 3s + SWIPE + HIGHLIGHTS)
-// ===============================
+/* ===============================
+   KIB BANNER (FINAL FIXED)
+================================ */
 (function () {
   const banner = document.getElementById("kibBanner");
   const track = document.getElementById("kibBannerTrack");
   const dotsWrap = document.getElementById("kibBannerDots");
-  const highlightsWrap = document.getElementById("kibHighlights"); // optional
+  const highlightsWrap = document.getElementById("kibHighlights");
 
   if (!banner || !track || !dotsWrap) return;
 
@@ -838,112 +838,98 @@ window.addEventListener("load", () => {
   let index = 0;
   let timer = null;
 
-  function syncSlideContent() {
-  const active = slides[index];
-  if (!active) return;
-
-  const title = active.dataset.title;
-  const text  = active.dataset.text;
-
-  const h4 = active.querySelector(".kib-banner-info h4");
-  const p  = active.querySelector(".kib-banner-info p");
-
-  if (title && h4) h4.textContent = title;
-  if (text && p) p.textContent = text;
-}
-  
-  // Build dots
+  // ===== CREATE DOTS =====
   dotsWrap.innerHTML = "";
   const dots = slides.map((_, i) => {
     const b = document.createElement("button");
-    b.type = "button";
-    b.dataset.i = String(i);
-    b.setAttribute("aria-label", `Go to slide ${i + 1}`);
+    if (i === 0) b.classList.add("is-active");
+    b.dataset.i = i;
     dotsWrap.appendChild(b);
     return b;
   });
 
-  const hlBtns = highlightsWrap ? Array.from(highlightsWrap.querySelectorAll("[data-i]")) : [];
+  const highlights = highlightsWrap
+    ? Array.from(highlightsWrap.querySelectorAll("[data-i]"))
+    : [];
 
-    function render() {
+  // ===== RENDER =====
+  function render() {
     slides.forEach((s, i) => s.classList.toggle("is-active", i === index));
     dots.forEach((d, i) => d.classList.toggle("is-active", i === index));
-    hlBtns.forEach((h, i) => h.classList.toggle("is-active", i === index));
-    syncSlideContent();
+    highlights.forEach((h, i) => h.classList.toggle("is-active", i === index));
   }
 
-  function setActive(next, user = false) {
-    index = (next + total) % total;
+  // ===== CHANGE SLIDE =====
+  function goTo(i, user = false) {
+    index = (i + total) % total;
     render();
-    if (user) restartAuto();
+    if (user) restart();
   }
 
-  function startAuto() {
-    stopAuto();
-    timer = setInterval(() => setActive(index + 1), 3000);
+  // ===== AUTO =====
+  function start() {
+    stop();
+    timer = setInterval(() => goTo(index + 1), 3500);
   }
 
-  function stopAuto() {
+  function stop() {
     if (timer) clearInterval(timer);
-    timer = null;
   }
 
-  function restartAuto() {
-    stopAuto();
-    startAuto();
+  function restart() {
+    stop();
+    start();
   }
 
-  // Dot click
-  dotsWrap.addEventListener("click", (e) => {
-    const btn = e.target.closest("button[data-i]");
-    if (!btn) return;
-    setActive(parseInt(btn.dataset.i, 10), true);
+  // ===== DOT CLICK =====
+  dots.forEach((d, i) => {
+    d.addEventListener("click", () => goTo(i, true));
   });
 
-  // Highlight click
-  if (highlightsWrap) {
-    highlightsWrap.addEventListener("click", (e) => {
-      const el = e.target.closest("[data-i]");
-      if (!el) return;
-      setActive(parseInt(el.dataset.i, 10), true);
+  // ===== HIGHLIGHT CLICK =====
+  highlights.forEach((h) => {
+    h.addEventListener("click", () => {
+      goTo(Number(h.dataset.i), true);
     });
-  }
+  });
 
-  // Swipe
-  let x0 = null;
-  let y0 = null;
+  // ===== 🔥 FIX: STOP LINK FROM TRIGGERING SWIPE =====
+  banner.querySelectorAll("a").forEach(a => {
+    a.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
+  });
+
+  // ===== SWIPE =====
+  let startX = 0;
+  let isSwiping = false;
 
   banner.addEventListener("touchstart", (e) => {
-  if (e.target.closest("a")) return;
-    const t = e.touches && e.touches[0];
-    if (!t) return;
-    stopAuto();
-    x0 = t.clientX;
-    y0 = t.clientY;
+    if (e.target.closest("a")) return;
+    startX = e.touches[0].clientX;
+    isSwiping = true;
+    stop();
   }, { passive: true });
 
   banner.addEventListener("touchend", (e) => {
-  if (e.target.closest("a")) return;
-    if (x0 === null || y0 === null) return;
-    const t = e.changedTouches && e.changedTouches[0];
-    if (!t) return;
+    if (!isSwiping) return;
 
-    const dx = t.clientX - x0;
-    const dy = t.clientY - y0;
+    const endX = e.changedTouches[0].clientX;
+    const dx = endX - startX;
 
-    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) {
-      if (dx < 0) setActive(index + 1, true);
-      else setActive(index - 1, true);
+    if (Math.abs(dx) > 50) {
+      if (dx < 0) goTo(index + 1, true);
+      else goTo(index - 1, true);
     } else {
-      restartAuto();
+      restart();
     }
 
-    x0 = null;
-    y0 = null;
+    isSwiping = false;
   }, { passive: true });
 
+  // ===== INIT =====
   render();
-  startAuto();
+  start();
 })();
 
 /* ===============================
@@ -1001,20 +987,3 @@ window.addEventListener("load", () => {
 
   io.observe(section);
 })();
-
-// ===============================
-// FIX: CTA links inside banner
-// ===============================
-document.querySelectorAll(".kib-cta").forEach(link => {
-  link.addEventListener("click", (e) => {
-    e.stopPropagation();
-  });
-
-  link.addEventListener("touchstart", (e) => {
-    e.stopPropagation();
-  }, { passive: true });
-
-  link.addEventListener("touchend", (e) => {
-    e.stopPropagation();
-  }, { passive: true });
-});
