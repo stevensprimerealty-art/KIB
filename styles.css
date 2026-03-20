@@ -959,10 +959,20 @@ body{
   inset:0;
   margin:0;
   opacity:0;
+  pointer-events: none;   /* ❌ block hidden slides */
+  z-index: 0;
   transition: opacity .6s ease;
 }
 
-.kib-banner-slide.is-active{ opacity:1; }
+.kib-banner-slide.is-active{
+  opacity:1;
+  pointer-events: auto;   /* ✅ only active slide clickable */
+  z-index: 5;
+}
+
+.kib-banner-track{
+  position:relative;
+}
 
 /* Image area (top) */
 .kib-banner-media{
