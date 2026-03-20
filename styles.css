@@ -926,11 +926,10 @@ body{
 }
 
 /* =========================================
-   KIB BANNER — INSPO STYLE (PORTRAIT + INFO CARD)
-   Works with the updated HTML I sent
+   KIB BANNER — FINAL FIX (FULL IMAGE + FADE OK)
 ========================================= */
 
-/* Banner container stays portrait */
+/* Banner container */
 .kib-banner{
   position: relative;
   width: 100%;
@@ -951,93 +950,99 @@ body{
   }
 }
 
-.kib-banner-track{ position:absolute; inset:0; }
+/* Track */
+.kib-banner-track{
+  position: absolute;
+  inset: 0;
+}
 
-/* Each slide is a "stage" */
+/* Slides */
 .kib-banner-slide{
   position:absolute;
   inset:0;
-  margin:0;
   opacity:0;
-  pointer-events: none;   /* ❌ block hidden slides */
-  z-index: 0;
+  pointer-events:none;
+  z-index:0;
   transition: opacity .6s ease;
 }
 
 .kib-banner-slide.is-active{
   opacity:1;
-  pointer-events: auto;   /* ✅ only active slide clickable */
-  z-index: 5;
+  pointer-events:auto;
+  z-index:2;
 }
 
-.kib-banner-track{
-  position:relative;
-}
-
-/* Image area (top) */
+/* Media */
 .kib-banner-media{
   position:absolute;
   inset:0;
-  background: #e9edf3;
+
+  display:flex;              /* ✅ center image */
+  align-items:center;
+  justify-content:center;
+
+  background:#e9edf3;
 }
 
-/* Keep image full, but nice */
+/* ✅ KEY FIX — NO MORE CROPPING */
 .kib-banner-media img{
-  width:100%;
-  height:100%;
-  object-fit: cover;          /* looks like the inspo */
-  object-position: center top;
+  max-width:100%;
+  max-height:100%;
+  object-fit: contain;       /* ✅ FULL IMAGE SHOWS */
   display:block;
 }
 
-/* Optional soft fade so the info card reads well */
+/* Soft fade for card readability */
 .kib-banner-media::after{
   content:"";
   position:absolute;
   left:0; right:0; bottom:0;
-  height: 45%;
-  background: linear-gradient(to top, rgba(233,237,243,1), rgba(233,237,243,0));
+  height:45%;
+  background: linear-gradient(
+    to top,
+    rgba(233,237,243,1),
+    rgba(233,237,243,0)
+  );
   pointer-events:none;
 }
 
-/* White info card (bottom) */
+/* Info card */
 .kib-banner-info{
   position:absolute;
-  left: 16px;
-  right: 16px;
-  bottom: 16px;
+  left:16px;
+  right:16px;
+  bottom:16px;
 
   background: rgba(255,255,255,.92);
-  border: 1px solid rgba(0,0,0,.08);
-  border-radius: 18px;
-  box-shadow: 0 14px 40px rgba(0,0,0,.10);
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:18px;
+  box-shadow:0 14px 40px rgba(0,0,0,.10);
 
-  padding: 18px 18px 16px;
+  padding:18px 18px 16px;
   text-align:left;
 }
 
-/* Title + text like inspo */
+/* Text */
 .kib-banner-info h4{
   margin:0 0 8px;
-  font-weight: 900;
-  font-size: 22px;
-  letter-spacing: -0.02em;
+  font-weight:900;
+  font-size:22px;
+  letter-spacing:-0.02em;
   color:#111;
 }
 
 .kib-banner-info p{
   margin:0 0 14px;
   color:#6b7280;
-  font-weight: 700;
-  line-height: 1.45;
+  font-weight:700;
+  line-height:1.45;
 }
 
-/* CTA button */
+/* Button */
 .kib-cta{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-
   height:46px;
   padding:0 18px;
   border-radius:14px;
