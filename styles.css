@@ -931,13 +931,13 @@ body{
 
 /* Banner container */
 .kib-banner {
-  position: relative; /* 🔥 IMPORTANT (fixes stacking) */
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
-  border-radius: 0;
+  position: relative;
+
+  width: 100%;
+  border-radius: 28px; /* 🔥 curved edges */
   overflow: hidden;
-  min-height: 420px; 
+
+  min-height: 420px;
 }
 
 /* Mobile height */
@@ -1038,17 +1038,9 @@ body{
 }
 
 /* Remove container spacing influence */
-.kib-promo{
-  padding-left: 0;
-  padding-right: 0;
-}
-
-/* 🚨 FORCE TRUE EDGE-TO-EDGE BANNER */
-.kib-promo .wrap {
-  width: 100%;
-  max-width: none;
-  padding-left: 16px;
-  padding-right: 16px;
+.kib-promo {
+  padding-left: 12px;
+  padding-right: 12px;
 }
 
 /* Button */
