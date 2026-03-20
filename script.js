@@ -839,21 +839,18 @@ window.addEventListener("load", () => {
   let timer = null;
 
   function syncSlideContent() {
-    const active = slides[index];
-    if (!active) return;
+  const active = slides[index];
+  if (!active) return;
 
-    const title = active.dataset.title;
-    const text  = active.dataset.text;
-    const cta   = active.dataset.cta;
+  const title = active.dataset.title;
+  const text  = active.dataset.text;
 
-    const h4 = active.querySelector(".kib-banner-info h4");
-    const p  = active.querySelector(".kib-banner-info p");
-    const btn = active.querySelector(".kib-banner-info .kib-cta");
+  const h4 = active.querySelector(".kib-banner-info h4");
+  const p  = active.querySelector(".kib-banner-info p");
 
-    if (title && h4) h4.textContent = title;
-    if (text && p) p.textContent = text;
-    if (cta && btn) btn.textContent = cta;
-  }
+  if (title && h4) h4.textContent = title;
+  if (text && p) p.textContent = text;
+}
   
   // Build dots
   dotsWrap.innerHTML = "";
