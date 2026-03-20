@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>KIB Kids Junior Account</title>
+
+<link rel="stylesheet" href="styles.css">
+
+<style>
+
+/* ===== HERO SLIDER ===== */
+.hero-slider{
+height:260px;
+margin:20px;
+border-radius:22px;
+overflow:hidden;
+position:relative;
+background:#ddd;
+}
+
+.hero-slide{
+position:absolute;
+width:100%;
+height:100%;
+opacity:0;
+transition:opacity 1s;
+}
+
+.hero-slide img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.hero-slide.active{opacity:1;}
+
+/* ===== HERO CARD ===== */
+.hero-card{
+background:#fff;
+margin:-80px 20px 20px;
+padding:24px;
+border-radius:22px;
+box-shadow:0 12px 20px rgba(0,0,0,0.08);
+}
+
+.hero-card h1{font-size:26px;margin:10px 0;}
+.hero-line{width:80px;height:3px;background:#ddd;margin:12px 0;}
+
+/* ===== CONTENT ===== */
+.section{padding:20px;}
+
+.card{
+background:#fff;
+border-radius:22px;
+padding:22px;
+margin:20px;
+box-shadow:0 6px 16px rgba(0,0,0,0.06);
+}
+
+.blue-section{
+background:#3f6fa6;
+padding:30px 20px;
+color:#fff;
+}
+
+.blue-card{
+background:#fff;
+border-radius:20px;
+padding:20px;
+margin:20px 0;
+color:#000;
+}
+
+/* ===== FADE ===== */
+.fade{
+opacity:0;
+transform:translateY(40px);
+transition:.7s;
+}
+.fade.show{
+opacity:1;
+transform:translateY(0);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ✅ HEADER (same as your main site) -->
+<header class="topbar">
+  <div class="brand">
+    <span>KOREA INTERNATIONAL BANKING</span>
+    <span>(KIB)</span>
+  </div>
+</header>
+
+<!-- HERO SLIDER -->
+<div class="hero-slider">
+
+  <div class="hero-slide active">
+    <img src="assets/images/kids-hero-1.jpg">
+  </div>
+
+  <div class="hero-slide">
+    <img src="assets/images/kids-hero-2.jpg">
+  </div>
+
+  <div class="hero-slide">
+    <img src="assets/images/kids-hero-3.jpg">
+  </div>
+
+</div>
+
+<!-- HERO CARD -->
+<div class="hero-card fade">
+  <div>Home » Personal Banking » Saving / Deposit » Best Junior Account</div>
+
+  <h1>Best Junior Account</h1>
+  <div class="hero-line"></div>
+</div>
+
+<!-- INTRO -->
+<div class="section fade">
+  <h2>Smart savings choice for your kids!</h2>
+
+  <p>
+Best Junior Account is new initiative savings account designed to allow child aged from 10 to 17 years old to experience the banking services by allowing them with some financial transactions under the control of their Parents/Guardian.
+  </p>
+</div>
+
+<!-- BENEFITS -->
+<div class="card fade">
+  <h3>Key Benefits</h3>
+  <ul>
+    <li>Get high interest rate</li>
+    <li>Promote children’s financial literacy</li>
+    <li>Help children experience real banking services through KIB mobile</li>
+    <li>Help children understand how money works in daily lifestyle</li>
+    <li>Assist parent/guardian fully monitor and control their children’s habit</li>
+  </ul>
+</div>
+
+<!-- REQUIREMENTS -->
+<div class="blue-section fade">
+  <h2>Requirements</h2>
+
+  <div class="blue-card">
+    <h3>For Child</h3>
+    <ul>
+      <li>Cambodian and foreigner whose age is between 10 to 17 years old</li>
+      <li>Valid documents (Birth Certificate / ID / Passport)</li>
+    </ul>
+  </div>
+
+  <div class="blue-card">
+    <h3>For Parents/Guardian</h3>
+    <ul>
+      <li>At least 18 years old with valid ID</li>
+      <li>Relationship document required</li>
+    </ul>
+  </div>
+</div>
+
+<!-- CONDITIONS -->
+<div class="section fade">
+  <h2>Conditions</h2>
+
+  <div class="card">
+    <p><b>Currency:</b> KHR and USD</p>
+    <p><b>Initial Deposit:</b> Not Required</p>
+    <p><b>Minimum Balance:</b> Not Required</p>
+    <p><b>Interest Payment:</b> Posted monthly</p>
+    <p><b>Eligibility:</b> Individual Customer (10–17 years old)</p>
+  </div>
+</div>
+
+<!-- HOW TO APPLY -->
+<div class="card fade">
+  <h2>How To Apply</h2>
+  <ul>
+    <li>Visit nearest KIB branch</li>
+    <li>Contact KIB support for assistance</li>
+  </ul>
+</div>
+
+<!-- INTEREST TABLE -->
+<div class="section fade">
+  <h2>Interest Rate</h2>
+
+  <table style="width:100%;background:#fff;border-radius:12px;overflow:hidden">
+    <tr style="background:#1aa1cf;color:#fff">
+      <th>Tier Balance</th>
+      <th>KHR</th>
+      <th>USD</th>
+    </tr>
+    <tr>
+      <td>≤ $10,000</td>
+      <td>3%</td>
+      <td>3%</td>
+    </tr>
+    <tr>
+      <td>$10k - $50k</td>
+      <td>3.25%</td>
+      <td>3.25%</td>
+    </tr>
+    <tr>
+      <td>$50k+</td>
+      <td>3.50%</td>
+      <td>3.50%</td>
+    </tr>
+  </table>
+</div>
+
+<!-- FOOTER (same style) -->
+<footer class="kib-footer">
+  <div class="wrap">
+    <h3>KOREA INTERNATIONAL BANKING</h3>
+    <p>Seoul • London • New York</p>
+  </div>
+</footer>
+
+<script>
+
+/* HERO SLIDER */
+let slides = document.querySelectorAll(".hero-slide");
+let i = 0;
+
+setInterval(()=>{
+  slides[i].classList.remove("active");
+  i = (i+1) % slides.length;
+  slides[i].classList.add("active");
+},3000);
+
+/* FADE */
+let observer = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add("show");
+  });
+});
+
+document.querySelectorAll(".fade").forEach(el=>observer.observe(el));
+
+</script>
+
+</body>
+</html>
