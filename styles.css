@@ -957,27 +957,35 @@ body{
   height: 100%;
 }
 
-/* ✅ CLEAN SINGLE SLIDE RULE (VERY IMPORTANT) */
-/* ✅ CORRECT */
 .kib-banner-slide{
-  position: absolute;
-  inset: 0;
+  position:absolute;
+  inset:0;
 
-  opacity: 0;
-  pointer-events: none;
+  opacity:0;
+  visibility:hidden;   /* 👈 KEY FIX */
+  pointer-events:none;
+  z-index:0;
 
-  z-index: 0; /* ✅ FIXED */
-  transition: opacity .6s ease-in-out;
-
-  will-change: opacity;
-  backface-visibility: hidden;
-  transform: translateZ(0);
+  transition:
+    opacity .45s ease,
+    visibility 0s linear .45s; /* 👈 hides AFTER fade */
 }
 
+/* ACTIVE */
 .kib-banner-slide.is-active{
-  opacity: 1;
-  pointer-events: auto;
-  z-index: 1; /* ✅ active on top */
+  opacity:1;
+  visibility:visible;  /* 👈 KEY FIX */
+  pointer-events:auto;
+  z-index:2;
+
+  transition:
+    opacity .45s ease;
+}
+
+.kib-banner-slide:not(.is-active){
+  opacity:0 !important;
+  visibility:hidden !important;
+  z-index:0 !important;
 }
 
 /* Image area */
@@ -1007,6 +1015,10 @@ body{
     rgba(233,237,243,0)
   );
   pointer-events:none;
+}
+
+.kib-banner{
+  isolation: isolate;
 }
 
 /* Info card */
