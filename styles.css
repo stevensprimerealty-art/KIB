@@ -974,6 +974,10 @@ body{
   position:relative;
 }
 
+.kib-banner-slide:not(.is-active) a {
+  pointer-events: none;
+}
+
 /* Image area (top) */
 .kib-banner-media{
   position:absolute;
