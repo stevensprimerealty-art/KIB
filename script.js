@@ -821,7 +821,7 @@ window.addEventListener("load", () => {
 });
 
 /* ===============================
-   KIB BANNER (FINAL FIXED)
+   KIB BANNER (FINAL — CLEAN + FIXED)
 ================================ */
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -853,18 +853,45 @@ document.addEventListener("DOMContentLoaded", function () {
     ? Array.from(highlightsWrap.querySelectorAll("[data-i]"))
     : [];
 
-  function render() {
-    slides.forEach((s, i) => s.classList.toggle("is-active", i === index));
+  let currentSlide = slides[0];
+
+  // show first slide
+  currentSlide.classList.add("is-active");
+
+  function updateUI() {
     dots.forEach((d, i) => d.classList.toggle("is-active", i === index));
     highlights.forEach((h, i) => h.classList.toggle("is-active", i === index));
   }
 
+  // ✅ FIXED FADE (NO DELAY, NO GLITCH)
   function goTo(i, user = false) {
-    index = (i + total) % total;
-    render();
-    if (user) restart();
-  }
+  const nextIndex = (i + total) % total;
+  const nextSlide = slides[nextIndex];
 
+  if (nextSlide === currentSlide) return;
+
+  // 🔥 ensure proper stacking
+  slides.forEach(s => s.style.zIndex = 0);
+  currentSlide.style.zIndex = 1;
+  nextSlide.style.zIndex = 2;
+
+  // fade out current
+  currentSlide.classList.remove("is-active");
+
+  // force repaint
+  currentSlide.offsetHeight;
+
+  // fade in next
+  nextSlide.classList.add("is-active");
+
+  currentSlide = nextSlide;
+  index = nextIndex;
+
+  updateUI();
+
+  if (user) restart();
+}
+  
   function start() {
     stop();
     timer = setInterval(() => goTo(index + 1), 3500);
@@ -872,6 +899,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function stop() {
     if (timer) clearInterval(timer);
+    timer = null;
   }
 
   function restart() {
@@ -879,22 +907,26 @@ document.addEventListener("DOMContentLoaded", function () {
     start();
   }
 
+  // ===== DOT CLICK =====
   dots.forEach((d, i) => {
     d.addEventListener("click", () => goTo(i, true));
   });
 
+  // ===== HIGHLIGHT CLICK =====
   highlights.forEach((h) => {
     h.addEventListener("click", () => {
       goTo(Number(h.dataset.i), true);
     });
   });
 
+  // ===== LINK FIX =====
   banner.querySelectorAll("a").forEach(a => {
     a.addEventListener("click", (e) => {
       e.stopPropagation();
     });
   });
 
+  // ===== SWIPE =====
   let startX = 0;
   let isSwiping = false;
 
@@ -921,10 +953,9 @@ document.addEventListener("DOMContentLoaded", function () {
     isSwiping = false;
   }, { passive: true });
 
-  // ✅ FORCE FIRST SLIDE SHOW
-  render();
+  // ===== INIT =====
+  updateUI();
   start();
-
 });
 
 /* ===============================
