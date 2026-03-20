@@ -823,7 +823,8 @@ window.addEventListener("load", () => {
 /* ===============================
    KIB BANNER (FINAL FIXED)
 ================================ */
-(function () {
+document.addEventListener("DOMContentLoaded", function () {
+
   const banner = document.getElementById("kibBanner");
   const track = document.getElementById("kibBannerTrack");
   const dotsWrap = document.getElementById("kibBannerDots");
@@ -852,21 +853,18 @@ window.addEventListener("load", () => {
     ? Array.from(highlightsWrap.querySelectorAll("[data-i]"))
     : [];
 
-  // ===== RENDER =====
   function render() {
     slides.forEach((s, i) => s.classList.toggle("is-active", i === index));
     dots.forEach((d, i) => d.classList.toggle("is-active", i === index));
     highlights.forEach((h, i) => h.classList.toggle("is-active", i === index));
   }
 
-  // ===== CHANGE SLIDE =====
   function goTo(i, user = false) {
     index = (i + total) % total;
     render();
     if (user) restart();
   }
 
-  // ===== AUTO =====
   function start() {
     stop();
     timer = setInterval(() => goTo(index + 1), 3500);
@@ -881,26 +879,22 @@ window.addEventListener("load", () => {
     start();
   }
 
-  // ===== DOT CLICK =====
   dots.forEach((d, i) => {
     d.addEventListener("click", () => goTo(i, true));
   });
 
-  // ===== HIGHLIGHT CLICK =====
   highlights.forEach((h) => {
     h.addEventListener("click", () => {
       goTo(Number(h.dataset.i), true);
     });
   });
 
-  // ===== 🔥 FIX: STOP LINK FROM TRIGGERING SWIPE =====
   banner.querySelectorAll("a").forEach(a => {
     a.addEventListener("click", (e) => {
       e.stopPropagation();
     });
   });
 
-  // ===== SWIPE =====
   let startX = 0;
   let isSwiping = false;
 
@@ -927,10 +921,11 @@ window.addEventListener("load", () => {
     isSwiping = false;
   }, { passive: true });
 
-  // ===== INIT =====
+  // ✅ FORCE FIRST SLIDE SHOW
   render();
   start();
-})();
+
+});
 
 /* ===============================
    COUNT UP (KIB STATS)
