@@ -933,15 +933,18 @@ body{
 .kib-banner{
   position: relative;
   width: 100%;
-  max-width: 100%;     /* 🔥 FULL WIDTH */
-  margin: 0;           /* 🔥 remove spacing */
-  aspect-ratio: 4 / 5;
 
-  border-radius: 0;    /* 🔥 remove rounded frame */
+  /* 🔥 REMOVE LIMITS */
+  max-width: 100%;
+  margin: 0;
+
+  aspect-ratio: 9 / 16;
+
+  /* 🔥 EDGE TO EDGE */
+  border-radius: 0;
+
   overflow: hidden;
-
-  background: transparent; /* 🔥 remove grey */
-  box-shadow: none;        /* 🔥 remove floating */
+  background: #e9edf3;
 }
 
 @media (max-width: 768px){
