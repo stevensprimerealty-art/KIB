@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KIB ATM Card</title>
+
+<style>
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#f5f7fb;
+}
+
+/* HERO SLIDER */
+.hero{
+  overflow:hidden;
+  position:relative;
+}
+
+.slider{
+  display:flex;
+  transition:transform 0.5s ease;
+}
+
+.slide{
+  min-width:100%;
+  height:320px;
+  background:#ddd;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:20px;
+}
+
+/* HERO CARD */
+.hero-card{
+  background:#fff;
+  margin:-50px 15px 20px;
+  padding:20px;
+  border-radius:20px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+/* BUTTON */
+.btn{
+  display:inline-block;
+  background:#2aa7df;
+  color:#fff;
+  padding:10px 20px;
+  border-radius:8px;
+  text-decoration:none;
+}
+
+/* SECTION */
+.section{
+  padding:20px;
+}
+
+/* CARD */
+.card{
+  background:#fff;
+  padding:20px;
+  border-radius:20px;
+  margin-bottom:20px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.05);
+}
+
+/* TABLE */
+table{
+  width:100%;
+  border-collapse:collapse;
+  overflow:hidden;
+  border-radius:15px;
+}
+
+th{
+  background:#4ea3d1;
+  color:#fff;
+  padding:12px;
+}
+
+td{
+  padding:12px;
+  border-bottom:1px solid #eee;
+}
+
+/* CUSTOMER CARE */
+.care{
+  background:linear-gradient(#eaf3fb,#2f7fc0);
+  color:#000;
+}
+
+/* FADE */
+.fade{
+  opacity:0;
+  transform:translateY(30px);
+  transition:0.6s;
+}
+.fade.show{
+  opacity:1;
+  transform:translateY(0);
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🔵 HEADER (PASTE YOUR MAIN HEADER HERE) -->
+
+<!-- HERO -->
+<div class="hero">
+  <div class="slider" id="slider">
+    <div class="slide">card-hero1.jpg</div>
+    <div class="slide">card-hero2.jpg</div>
+    <div class="slide">card-hero3.jpg</div>
+  </div>
+</div>
+
+<!-- HERO CARD -->
+<div class="hero-card fade">
+  <p>Home » Digital Banking » KIB ATM CARD</p>
+  <h1>KIB ATM Card</h1>
+</div>
+
+<!-- DESCRIPTION -->
+<div class="section fade">
+  <h2>KIB ATM Card</h2>
+  <p>
+    provides customers convenient, fast and sure way to perform financial transactions.
+    KIB’s Card holder can use his/her ATM card to perform transactions for such as cash withdrawal,
+    fund transfer, purchase, balance inquiry and mini-statement, and other financial transactions through
+    KIB’s ATM and other ATM/POS of all CSS’s members anywhere, anytime throughout Cambodia.
+  </p>
+</div>
+
+<!-- BENEFITS -->
+<div class="section fade">
+  <div class="card">
+    <h3>Key Benefits</h3>
+    <ul>
+      <li>Get ATM Card for free of charge</li>
+      <li>Convenient and secure without carrying large amount of cash</li>
+      <li>Service is available 24 hours a day, 7 days a week</li>
+      <li>Can be operated through all ATM or POS with “CSS” Logo</li>
+      <li>Free of charge for all transactions though KIB ATM</li>
+      <li>One card can be operated for up to 03 (three) different Savings Accounts</li>
+    </ul>
+  </div>
+</div>
+
+<!-- FEE TABLE -->
+<div class="section fade">
+  <h2>Fee Charge</h2>
+
+  <div class="card">
+    <table>
+      <tr>
+        <th>Description</th>
+        <th colspan="2">Standard Card</th>
+      </tr>
+      <tr>
+        <th></th>
+        <th>KHR</th>
+        <th>USD</th>
+      </tr>
+
+      <tr>
+        <td>Initial Card Issuing (Main Card & Additional Card)</td>
+        <td>Free</td>
+        <td>Free</td>
+      </tr>
+
+      <tr>
+        <td>Monthly Card Maintenance</td>
+        <td>1,000*</td>
+        <td>0.25*</td>
+      </tr>
+
+      <tr>
+        <td>Card Reissue</td>
+        <td>12,000</td>
+        <td>3.00</td>
+      </tr>
+
+      <tr>
+        <td>Early Card Cancellation (Before 3 months)</td>
+        <td>12,000</td>
+        <td>3.00</td>
+      </tr>
+
+      <tr>
+        <td>PIN Reissue</td>
+        <td>Free</td>
+        <td>Free</td>
+      </tr>
+
+    </table>
+  </div>
+</div>
+
+<!-- CUSTOMER CARE -->
+<div class="section fade">
+  <div class="card care">
+    <h2>Customer Service Care</h2>
+    <p>We always available to solve your problem in just a few minute!</p>
+    <p><b>+855 23 963 333</b></p>
+
+    <a class="btn">Contact us</a>
+
+    <div style="height:250px;background:#ccc;margin-top:20px;">
+      support.jpg
+    </div>
+  </div>
+</div>
+
+<!-- 🔵 FOOTER (PASTE YOUR MAIN FOOTER HERE) -->
+
+<script>
+// AUTO SLIDE
+let index = 0;
+const slider = document.getElementById("slider");
+
+setInterval(()=>{
+  index = (index + 1) % 3;
+  slider.style.transform = `translateX(-${index * 100}%)`;
+},3000);
+
+// FADE IN
+const fadeEls = document.querySelectorAll('.fade');
+
+window.addEventListener('scroll', ()=>{
+  fadeEls.forEach(el=>{
+    const top = el.getBoundingClientRect().top;
+    if(top < window.innerHeight - 50){
+      el.classList.add('show');
+    }
+  });
+});
+</script>
+
+</body>
+</html>
