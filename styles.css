@@ -925,14 +925,8 @@ body{
   line-height: 1.45;
 }
 
-/* =========================================
-   KIB BANNER — INSPO STYLE (PORTRAIT + INFO CARD)
-   Works with the updated HTML I sent
-========================================= */
-
-/* Banner container stays portrait */
 /* ===============================
-   KIB BANNER (CLEAN FINAL)
+   KIB BANNER (FINAL CLEAN FIXED)
 ================================ */
 
 .kib-banner{
@@ -940,8 +934,7 @@ body{
   width: 100%;
   max-width: 420px;
   margin: 18px auto 12px;
-
-  height: 520px; /* ✅ FIXED instead of aspect-ratio */
+  height: 520px;
 
   border-radius: 22px;
   overflow: hidden;
@@ -952,7 +945,7 @@ body{
 @media (max-width: 768px){
   .kib-banner{
     max-width: 92vw;
-    height: 480px; /* ✅ FIXED */
+    height: 480px;
     border-radius: 20px;
   }
 }
@@ -962,6 +955,7 @@ body{
   position: relative;
   width: 100%;
   height: 100%;
+  will-change: transform; /* ✅ smoother */
 }
 
 /* Slides */
@@ -980,7 +974,7 @@ body{
   z-index:5;
 }
 
-/* Only active clickable */
+/* ✅ IMPORTANT */
 .kib-banner-slide:not(.is-active){
   pointer-events:none;
 }
@@ -996,61 +990,66 @@ body{
   height:100%;
   object-fit: cover;
   display:block;
+  image-rendering: -webkit-optimize-contrast; /* ✅ sharper */
 }
 
-/* ✅ FIX: lighter overlay */
+/* ❌ remove overlay */
 .kib-banner-media::after{
-  content:"";
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:0;
-  height: 30%; /* 🔥 reduced from 45% */
-  background: linear-gradient(to top, rgba(233,237,243,1), rgba(233,237,243,0));
-  pointer-events:none;
+  display:none;
 }
 
-/* Info card */
+/* Card */
 .kib-banner-info{
   position:absolute;
   left:16px;
   right:16px;
   bottom:16px;
 
-  background:#fff;
-  border-radius:18px;
-  padding:18px;
-  box-shadow: 0 14px 40px rgba(0,0,0,.10);
+  background: rgba(255,255,255,.96);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  border-radius:20px;
+  padding:20px 18px;
+
+  box-shadow: 0 18px 50px rgba(0,0,0,.18);
 }
 
+/* Title */
 .kib-banner-info h4{
   margin:0 0 8px;
   font-weight:900;
   font-size:22px;
+  letter-spacing:-0.02em;
   color:#111;
 }
 
+/* Text */
 .kib-banner-info p{
-  margin:0 0 14px;
+  margin:0 0 16px;
   color:#6b7280;
-  font-weight:700;
+  font-weight:600;
+  line-height:1.4;
 }
 
-/* CTA button */
+/* CTA */
 .kib-cta{
   display:inline-flex;
   align-items:center;
   justify-content:center;
 
-  height:46px;
-  padding:0 18px;
-  border-radius:14px;
+  height:44px;
+  padding:0 16px;
+
+  border-radius:12px;
   border:0;
-  background:#d7eef8;
-  color:#2f60b5;
-  font-weight:900;
-  cursor:pointer;
+
+  background:#dbeafe;
+  color:#2563eb;
+
+  font-weight:800;
   text-decoration:none;
+  cursor:pointer;
 }
 
 /* Dots stay the same */
