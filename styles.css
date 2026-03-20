@@ -935,7 +935,7 @@ body{
   width: 100%;
   max-width: 420px;
   margin: 18px auto 12px;
-  aspect-ratio: 3 / 5;
+  aspect-ratio: 4 / 5;
   border-radius: 22px;
   overflow: hidden;
   background: #e9edf3;
@@ -944,9 +944,7 @@ body{
 
 @media (max-width: 768px){
   .kib-banner{
-    max-width: 92vw;
-    aspect-ratio: 3 / 5.2;
-    border-radius: 20px;
+    aspect-ratio: 4 / 5.2;
   }
 }
 
@@ -960,15 +958,24 @@ body{
 .kib-banner-slide{
   position:absolute;
   inset:0;
+
   opacity:0;
   pointer-events:none;
-  z-index:0;
+  z-index:1;
+
   transition: opacity .6s ease;
 }
 
+/* active slide */
 .kib-banner-slide.is-active{
   opacity:1;
   pointer-events:auto;
+  z-index:3;
+}
+
+/* 👇 keeps previous slide visible during fade */
+.kib-banner-slide.was-active{
+  opacity:0;
   z-index:2;
 }
 
@@ -976,19 +983,14 @@ body{
 .kib-banner-media{
   position:absolute;
   inset:0;
-
-  display:flex;              /* ✅ center image */
-  align-items:center;
-  justify-content:center;
-
-  background:#e9edf3;
+  overflow:hidden;
 }
 
-/* ✅ KEY FIX — NO MORE CROPPING */
 .kib-banner-media img{
-  max-width:100%;
-  max-height:100%;
-  object-fit: contain;       /* ✅ FULL IMAGE SHOWS */
+  width:100%;
+  height:100%;
+  object-fit: cover;          /* 🔥 fill like image 1 */
+  object-position: center top; /* keeps face/logo visible */
   display:block;
 }
 
