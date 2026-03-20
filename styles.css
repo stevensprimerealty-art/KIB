@@ -925,28 +925,22 @@ body{
   line-height: 1.45;
 }
 
-/* =========================================
-   KIB BANNER — FINAL FIX (FULL IMAGE + FADE OK)
-========================================= */
+/* ===============================
+   KIB FULL WIDTH BANNER (FINAL)
+================================ */
 
 /* Banner container */
-.kib-banner{
-  position: relative;
-  width: 100%;
-
-  /* 🔥 REMOVE LIMITS */
-  max-width: 100%;
-  margin: 0;
-
-  aspect-ratio: 9 / 16;
-
-  /* 🔥 EDGE TO EDGE */
+.kib-banner {
+  position: relative; /* 🔥 IMPORTANT (fixes stacking) */
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
   border-radius: 0;
-
   overflow: hidden;
-  background: #e9edf3;
+  min-height: 420px; 
 }
 
+/* Mobile height */
 @media (max-width: 768px){
   .kib-banner{
     aspect-ratio: 4 / 5.2;
@@ -961,45 +955,45 @@ body{
 
 /* Slides */
 .kib-banner-slide{
-  position:absolute;
-  inset:0;
+  position: absolute;
+  inset: 0;
 
-  opacity:0;
-  pointer-events:none;
-  z-index:1;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
 
   transition: opacity .6s ease;
 }
 
-/* active slide */
+/* Active slide */
 .kib-banner-slide.is-active{
-  opacity:1;
-  pointer-events:auto;
-  z-index:3;
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 3;
 }
 
-/* 👇 keeps previous slide visible during fade */
+/* Previous slide (fade out) */
 .kib-banner-slide.was-active{
-  opacity:0;
-  z-index:2;
+  opacity: 0;
+  z-index: 2;
 }
 
 /* Media */
 .kib-banner-media{
-  position:absolute;
-  inset:0;
-  overflow:hidden;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
 }
 
-.kib-banner-media img{
-  width:100%;
-  height:100%;
-  object-fit: cover;          /* 🔥 fill like image 1 */
-  object-position: center;
-  display:block;
+.kib-banner-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%; /* 🔥 THIS is the key fix */
+  border-radius: 0;
 }
 
-/* Soft fade for card readability */
+/* Soft bottom fade */
 .kib-banner-media::after{
   content:"";
   position:absolute;
@@ -1022,7 +1016,6 @@ body{
 
   background: rgba(255,255,255,.95);
   border-radius:18px;
-
   padding:16px;
 
   box-shadow: 0 12px 30px rgba(0,0,0,.15);
@@ -1044,14 +1037,18 @@ body{
   line-height:1.45;
 }
 
-.kib-banner{
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-}
-
+/* Remove container spacing influence */
 .kib-promo{
   padding-left: 0;
   padding-right: 0;
+}
+
+/* 🚨 FORCE TRUE EDGE-TO-EDGE BANNER */
+.kib-promo .wrap {
+  width: 100%;
+  max-width: none;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 /* Button */
