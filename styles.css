@@ -1508,5 +1508,19 @@ body{
 }
 
 .kib-banner-info{
-  background: red !important;
+  position:absolute;
+  left:16px;
+  right:16px;
+  bottom:16px;
+
+  background: rgba(255,255,255,.88); /* soft glass */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius:16px;
+
+  padding:16px;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,.08);
 }
