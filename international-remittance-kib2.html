@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>International Remittance | KIB</title>
+
+<style>
+
+/* SAME SME STYLE */
+
+body{
+margin:0;
+font-family:system-ui;
+background:#f4f6f8;
+color:#111;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:16px 18px;
+background:#fff;
+border-bottom:1px solid #eee;
+}
+
+.logo{font-weight:700;font-size:18px;}
+
+.lang{display:flex;gap:8px;}
+
+.lang button{
+border:none;
+background:#eee;
+padding:6px 12px;
+border-radius:16px;
+}
+
+.lang .active{
+background:#0f2a44;
+color:#fff;
+}
+
+/* HERO */
+
+.hero-slider{
+height:260px;
+margin:20px;
+border-radius:22px;
+overflow:hidden;
+position:relative;
+background:#ddd;
+}
+
+.slide{
+position:absolute;
+width:100%;
+height:100%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:600;
+opacity:0;
+transition:opacity 1s;
+}
+
+.slide.active{opacity:1;}
+
+.hero-card{
+background:#fff;
+margin:-80px 20px 20px;
+padding:24px;
+border-radius:22px;
+box-shadow:0 12px 20px rgba(0,0,0,0.08);
+}
+
+.breadcrumb{font-size:14px;color:#777;margin-bottom:10px;}
+
+.hero-card h1{font-size:28px;margin:8px 0;}
+
+.hero-line{
+width:80px;
+height:3px;
+background:#ddd;
+margin:12px 0;
+}
+
+.btn{
+display:inline-block;
+background:#1aa1cf;
+padding:12px 22px;
+color:#fff;
+border-radius:10px;
+margin-top:10px;
+font-weight:600;
+}
+
+/* CONTENT */
+
+.section{padding:20px;}
+
+.card{
+background:#fff;
+border-radius:22px;
+padding:22px;
+margin:20px;
+box-shadow:0 6px 16px rgba(0,0,0,0.06);
+}
+
+.table{
+width:100%;
+border-collapse:collapse;
+}
+
+.table th{
+background:#4fa2d6;
+color:#fff;
+padding:12px;
+}
+
+.table td{
+padding:12px;
+border-bottom:1px solid #eee;
+}
+
+/* SERVICE */
+
+.service{
+background:linear-gradient(#e7f0f7,#2e8cc7);
+padding:24px;
+margin:20px;
+border-radius:22px;
+color:#fff;
+}
+
+/* TILES */
+
+.tiles{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:16px;
+padding:20px;
+}
+
+.tile{
+background:#fff;
+padding:24px;
+border-radius:22px;
+text-align:center;
+}
+
+/* FOOTER */
+
+.footer{
+background:#3569a5;
+color:#fff;
+padding:22px;
+}
+
+.footer-bottom{
+background:#2c5a93;
+text-align:center;
+padding:12px;
+margin-top:20px;
+}
+
+/* FADE */
+
+.fade{
+opacity:0;
+transform:translateY(40px);
+transition:.7s;
+}
+
+.fade.show{
+opacity:1;
+transform:translateY(0);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<div class="header">
+<div class="logo">KOREA INTERNATIONAL BANKING (KIB)</div>
+
+<div class="lang">
+<button class="active">ENG</button>
+<button>KOR</button>
+<button>ESPAÑOL</button>
+</div>
+</div>
+
+
+<!-- HERO SLIDER -->
+
+<div class="hero-slider">
+<div class="slide active">remittance-hero-1.jpg</div>
+<div class="slide">remittance-hero-2.jpg</div>
+<div class="slide">remittance-hero-3.jpg</div>
+</div>
+
+
+<!-- HERO CARD -->
+
+<div class="hero-card fade">
+
+<div class="breadcrumb">
+Home » Personal Banking » Money Transfer » International Remittance
+</div>
+
+<h1>International Remittance</h1>
+
+<div class="hero-line"></div>
+
+<p>
+Fast, Easy, Reasonable Fee, High Security
+</p>
+
+</div>
+
+
+<!-- INWARD -->
+
+<div class="card fade">
+
+<h3>Inward Remittance Service</h3>
+
+<p>
+Inward Remittance Service with KIB Bank (Cambodia) Plc is quick, secure, and reliable. Customers who have saving accounts with the KIB Bank (Cambodia) Plc could receive money easily from oversea with the convenient add-on with Mobile banking app which enable the easily checking the inward money or bank account balance in real time.
+</p>
+
+<h3>Outward Remittance Service</h3>
+
+<p>
+With the large banking network across the globe, customer could transfer the money to many countries around the world with KIB Bank (Cambodia) Plc via SWIFT channel. It is the most secure way to settle the bill, payment for goods, send to family with a very convenient outward remittance with all 142 branches throughout Cambodia.
+</p>
+
+</div>
+
+
+<!-- INWARD INFO -->
+
+<div class="section fade">
+
+<h2>Services Information</h2>
+
+<h3>Inward Remittance Service Information (Receiving money from oversea)</h3>
+
+</div>
+
+
+<div class="card fade">
+
+<table class="table">
+
+<tr>
+<th>Information</th>
+<th>Information to be input</th>
+</tr>
+
+<tr>
+<td>Beneficiary Name</td>
+<td>Your name as per KIB Bank (Cambodia) Plc record</td>
+</tr>
+
+<tr>
+<td>Beneficiary Address</td>
+<td>Your current address</td>
+</tr>
+
+<tr>
+<td>Beneficiary Account Number</td>
+<td>Your 8-digits account number with KIB Bank (Cambodia) Plc</td>
+</tr>
+
+<tr>
+<td>Beneficiary Bank Name</td>
+<td>KIB BANK (CAMBODIA) PLC</td>
+</tr>
+
+<tr>
+<td>Beneficiary Bank Address</td>
+<td>No.398, Preah Monivong Blvd, Phnom Penh, Cambodia</td>
+</tr>
+
+<tr>
+<td>Beneficiary Bank SWIFT Code</td>
+<td>HVBKKHPP</td>
+</tr>
+
+</table>
+
+</div>
+
+
+<!-- OUTWARD -->
+
+<div class="section fade">
+<h2>Outward Remittance Instruction (Sending money to oversea)</h2>
+</div>
+
+
+<div class="card fade">
+
+<table class="table">
+
+<tr>
+<th>Currency</th>
+<th>USD, BAHT, KRW, MYR, EUR, AUD, SGD, JPY, CNY</th>
+</tr>
+
+<tr>
+<td>Beneficiary's detail</td>
+<td>
+Account Name<br>
+Account Number<br>
+Beneficiary's Address<br>
+Bank Name<br>
+Bank Swift Code
+</td>
+</tr>
+
+</table>
+
+<p>*Some Beneficiary’s bank may request additional info.</p>
+
+</div>
+
+
+<!-- FEES -->
+
+<div class="section fade">
+<h2>Outward Fee (Over the Counter and Internet Banking)</h2>
+</div>
+
+<div class="card fade">
+
+<table class="table">
+
+<tr>
+<th>Amount</th>
+<th>Telex</th>
+<th>Commission</th>
+</tr>
+
+<tr>
+<td>Less than $1,000</td>
+<td>$10</td>
+<td>$5</td>
+</tr>
+
+<tr>
+<td>$1,001 - $10,000</td>
+<td>$10</td>
+<td>$10</td>
+</tr>
+
+<tr>
+<td>$10,001+</td>
+<td>$10</td>
+<td>0.13% (min $10)</td>
+</tr>
+
+</table>
+
+</div>
+
+
+<!-- INWARD FEE -->
+
+<div class="card fade">
+
+<h3>Inward Fee</h3>
+
+<table class="table">
+
+<tr>
+<th>Inward Fee</th>
+<th>0.07% or Min USD10</th>
+</tr>
+
+</table>
+
+<p><b>Special Offer:</b> Free Of charge (Until Further Notice)</p>
+
+</div>
+
+
+<!-- SERVICE -->
+
+<div class="service fade">
+
+<h2>Customer Service Care</h2>
+
+<p>We always available to solve your problem in just a few minute!</p>
+
+<p style="font-size:20px;">+855 23 963 333</p>
+
+<a class="btn">Contact us</a>
+
+</div>
+
+
+<!-- TILES -->
+
+<div class="tiles fade">
+<div class="tile">Personal Banking</div>
+<div class="tile">Business Banking</div>
+<div class="tile">Digital Banking</div>
+<div class="tile">About Us</div>
+</div>
+
+
+<!-- FOOTER -->
+
+<div class="footer">
+
+<h3>KOREA INTERNATIONAL BANKING</h3>
+
+<p>39 Namdaemun-ro, Seoul, Korea</p>
+<p>Rome, Italy</p>
+<p>London, UK</p>
+<p>New York, USA</p>
+
+<div class="footer-bottom">
+All rights reserved 2023
+</div>
+
+</div>
+
+
+<script>
+
+/* SLIDER */
+
+let slides=document.querySelectorAll(".slide")
+let i=0
+
+setInterval(()=>{
+slides[i].classList.remove("active")
+i=(i+1)%slides.length
+slides[i].classList.add("active")
+},3000)
+
+/* FADE */
+
+let observer=new IntersectionObserver(entries=>{
+entries.forEach(e=>{
+if(e.isIntersecting){e.target.classList.add("show")}
+})
+})
+
+document.querySelectorAll(".fade").forEach(el=>observer.observe(el))
+
+</script>
+
+</body>
+</html>
