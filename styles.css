@@ -1044,6 +1044,16 @@ body{
   line-height:1.45;
 }
 
+.kib-banner{
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+}
+
+.kib-promo{
+  padding-left: 0;
+  padding-right: 0;
+}
+
 /* Button */
 .kib-cta{
   display:inline-flex;
