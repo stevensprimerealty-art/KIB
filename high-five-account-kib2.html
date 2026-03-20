@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>High Five Account - KIB</title>
+
+<style>
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#f5f7fb;
+}
+
+/* HERO SLIDER */
+.hero{
+  position:relative;
+  overflow:hidden;
+}
+
+.slider{
+  display:flex;
+  transition:transform 0.5s ease;
+}
+
+.slide{
+  min-width:100%;
+  height:320px;
+  background:#ddd;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:20px;
+}
+
+/* HERO CARD */
+.hero-card{
+  background:#fff;
+  margin:-50px 15px 20px;
+  padding:20px;
+  border-radius:20px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+.hero-card h1{
+  margin:0;
+}
+
+.btn{
+  display:inline-block;
+  margin-top:10px;
+  background:#2aa7df;
+  color:#fff;
+  padding:10px 20px;
+  border-radius:8px;
+  text-decoration:none;
+}
+
+/* SECTION */
+.section{
+  padding:20px;
+}
+
+/* CARD */
+.card{
+  background:#fff;
+  padding:20px;
+  border-radius:20px;
+  margin-bottom:20px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.05);
+}
+
+/* BLUE SECTION */
+.blue{
+  background:#2f5f9e;
+  color:#fff;
+  padding:20px;
+}
+
+/* FADE-IN */
+.fade{
+  opacity:0;
+  transform:translateY(30px);
+  transition:all 0.6s ease;
+}
+.fade.show{
+  opacity:1;
+  transform:translateY(0);
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🔵 HEADER (PASTE YOUR MAIN HEADER HERE) -->
+
+<!-- HERO -->
+<div class="hero">
+  <div class="slider" id="slider">
+    <div class="slide">hero1.jpg</div>
+    <div class="slide">hero2.jpg</div>
+    <div class="slide">hero3.jpg</div>
+  </div>
+</div>
+
+<div class="hero-card fade">
+  <p>Home » Personal Banking » Saving / Deposit » High Five Savings Account</p>
+  <h1>High Five Savings Account</h1>
+  <p>Save Smart and Earn More, Deposit and Withdraw money anytime!</p>
+  <a href="#" class="btn">APPLY NOW</a>
+</div>
+
+<!-- TEXT -->
+<div class="section fade">
+  <h2>Save Smart and Earn More with High Five Savings Account!</h2>
+  <p>
+    High Five Savings Account is a saving account that offer multi-high interest rate on different amount of savings balance. 
+    HFA also allows customers to enjoy extra benefits such as getting access to mobile banking service, fund transfer, and other banking services.
+  </p>
+</div>
+
+<!-- BENEFITS -->
+<div class="section fade">
+  <div class="card">
+    <h3>Key Benefits</h3>
+    <ul>
+      <li>High security for your cash</li>
+      <li>Receive high interest rate</li>
+      <li>Deposit or withdrawal anytime</li>
+      <li>Open an account without service charge</li>
+      <li>Interest is calculated daily and paid monthly</li>
+      <li>Easy to make financial and non-financial transaction via KIB mobile banking</li>
+    </ul>
+  </div>
+</div>
+
+<!-- REQUIREMENTS -->
+<div class="blue fade">
+  <h2>Requirements for Individuals only</h2>
+
+  <div class="card">
+    <h3>A legal person, both Cambodian and Foreigner</h3>
+  </div>
+
+  <div class="card">
+    <h3>Identification documents such as ID Card, Passport and/or other documents</h3>
+  </div>
+</div>
+
+<!-- CONDITIONS -->
+<div class="section fade">
+  <h2>Conditions</h2>
+
+  <div class="card">
+    <p><b>Currency</b><br>KHR and USD</p>
+    <p><b>Initial Deposit</b><br>Not Require (Zero initial deposit)</p>
+    <p><b>Minimum Ongoing Balance</b><br>KHR 20,000 or USD 5</p>
+    <p><b>Eligibility</b><br>Individual Customer only</p>
+    <p><b>Annual Interest Rate</b><br>5% and 1%</p>
+
+    <p><b>Notes:</b></p>
+    <ul>
+      <li>Interest Rate 5% per annum will be applied for account balance ≤$555 or KHR 2,220,000.</li>
+      <li>For excess balance above this, 1% per annum applies.</li>
+    </ul>
+
+    <p><b>General Terms and Conditions</b><br>Download</p>
+
+    <ul>
+      <li>Terms and conditions apply</li>
+      <li>KIB reserves its full rights to refine interest rates without prior notice</li>
+    </ul>
+  </div>
+</div>
+
+<!-- HOW TO APPLY -->
+<div class="section fade">
+  <div class="card">
+    <h2>How To Apply</h2>
+    <ul>
+      <li>Please visit the nearest KIB branch networks nationwide</li>
+      <li>Apply online 👉 <b>APPLY NOW</b></li>
+    </ul>
+
+    <p>For more information, contact: 023 96 3333 or 081 331 333</p>
+
+    <a href="#" class="btn">Contact us</a>
+
+    <div style="height:200px;background:#ddd;margin-top:20px;">
+      branch-image.jpg
+    </div>
+  </div>
+</div>
+
+<!-- EXTRA CARDS -->
+<div class="section fade">
+  <div class="card">
+    <h3>Fortune Deposit Account</h3>
+    <a class="btn">Discover more</a>
+  </div>
+
+  <div class="card">
+    <h3>Planned Savings Account</h3>
+    <a class="btn">Discover more</a>
+  </div>
+</div>
+
+<!-- CUSTOMER CARE -->
+<div class="section fade">
+  <div class="card">
+    <h3>Customer Service Care</h3>
+    <p>We always available to solve your problem in just a few minute!</p>
+    <p><b>+855 23 963 333</b></p>
+    <a class="btn">Contact us</a>
+
+    <div style="height:250px;background:#ddd;margin-top:20px;">
+      support.jpg
+    </div>
+  </div>
+</div>
+
+<!-- 🔵 FOOTER (PASTE YOUR MAIN FOOTER HERE) -->
+
+<script>
+// AUTO SLIDER
+let index = 0;
+const slider = document.getElementById("slider");
+
+setInterval(()=>{
+  index = (index + 1) % 3;
+  slider.style.transform = `translateX(-${index * 100}%)`;
+},3000);
+
+// FADE IN
+const faders = document.querySelectorAll('.fade');
+
+window.addEventListener('scroll', ()=>{
+  faders.forEach(el=>{
+    const rect = el.getBoundingClientRect().top;
+    if(rect < window.innerHeight - 50){
+      el.classList.add('show');
+    }
+  });
+});
+</script>
+
+</body>
+</html>
