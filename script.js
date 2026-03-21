@@ -566,8 +566,9 @@ $$(".lang-btn").forEach((btn) => {
   btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
 });
 
-// Default language
-setLanguage("en");
+document.addEventListener("DOMContentLoaded", () => {
+  setLanguage("en");
+});
 
 // ---------- SCROLL REVEAL ----------
 let _io = null;
@@ -598,109 +599,105 @@ const dotsWrap = $("dots");
 if (sliderTrack && viewport && dotsWrap) {
 
   const slides = Array.from(sliderTrack.children);
-  if (!slides.length) return;
 
-  let index = 0;
-  let timer = null;
+  if (slides.length) {
+    let index = 0;
+    let timer = null;
 
-  dotsWrap.innerHTML = "";
+    dotsWrap.innerHTML = "";
 
-  slides.forEach((_, i) => {
-    const b = document.createElement("button");
-    b.className = "dot" + (i === 0 ? " is-active" : "");
-    b.type = "button";
-    b.setAttribute("aria-label", `Go to slide ${i + 1}`);
-    b.addEventListener("click", () => goTo(i, true));
-    dotsWrap.appendChild(b);
-  });
-
-  function setDots(i) {
-    dotsWrap.querySelectorAll(".dot").forEach((d, di) => {
-      const active = di === i;
-      d.classList.toggle("is-active", active);
-      d.classList.toggle("active", active);
+    slides.forEach((_, i) => {
+      const b = document.createElement("button");
+      b.className = "dot" + (i === 0 ? " is-active" : "");
+      b.type = "button";
+      b.setAttribute("aria-label", `Go to slide ${i + 1}`);
+      b.addEventListener("click", () => goTo(i, true));
+      dotsWrap.appendChild(b);
     });
-  }
 
-  function goTo(i, user = false) {
-    index = (i + slides.length) % slides.length;
-    sliderTrack.style.transform = `translateX(-${index * 100}%)`;
-    setDots(index);
-    if (user) restart();
-  }
+    function setDots(i) {
+      dotsWrap.querySelectorAll(".dot").forEach((d, di) => {
+        const active = di === i;
+        d.classList.toggle("is-active", active);
+        d.classList.toggle("active", active);
+      });
+    }
 
-  function next() {
-    goTo(index + 1);
-  }
+    function goTo(i, user = false) {
+      index = (i + slides.length) % slides.length;
+      sliderTrack.style.transform = `translateX(-${index * 100}%)`;
+      setDots(index);
+      if (user) restart();
+    }
 
-  function start() {
-    stop();
-    timer = setInterval(next, 3000);
-  }
+    function next() {
+      goTo(index + 1);
+    }
 
-  function stop() {
-    if (timer) clearInterval(timer);
-    timer = null;
-  }
+    function start() {
+      stop();
+      timer = setInterval(next, 3000);
+    }
 
-  function restart() {
+    function stop() {
+      if (timer) clearInterval(timer);
+      timer = null;
+    }
+
+    function restart() {
+      start();
+    }
+
     start();
+
+    viewport.addEventListener("touchstart", stop, { passive: true });
+    viewport.addEventListener("touchend", restart, { passive: true });
+    viewport.addEventListener("mouseenter", stop);
+    viewport.addEventListener("mouseleave", restart);
+
+    let startX = 0;
+    let dx = 0;
+    let isDown = false;
+
+    viewport.addEventListener("pointerdown", (e) => {
+      isDown = true;
+      startX = e.clientX;
+      dx = 0;
+      sliderTrack.style.transition = "none";
+      stop();
+      viewport.setPointerCapture?.(e.pointerId);
+    });
+
+    viewport.addEventListener("pointermove", (e) => {
+      if (!isDown) return;
+      dx = e.clientX - startX;
+
+      const w = viewport.getBoundingClientRect().width || 1;
+      const dragPercent = (dx / w) * 100;
+      sliderTrack.style.transform = `translateX(calc(-${index * 100}% + ${dragPercent}%))`;
+    });
+
+    function endSwipe(e) {
+      if (!isDown) return;
+      isDown = false;
+      sliderTrack.style.transition = "transform .35s ease";
+
+      const w = viewport.getBoundingClientRect().width || 1;
+      const thresholdPx = Math.min(70, w * 0.18);
+
+      if (dx > thresholdPx) goTo(index - 1, true);
+      else if (dx < -thresholdPx) goTo(index + 1, true);
+      else goTo(index, true);
+
+      restart();
+      viewport.releasePointerCapture?.(e.pointerId);
+    }
+
+    viewport.addEventListener("pointerup", endSwipe);
+    viewport.addEventListener("pointercancel", endSwipe);
+
+    window.addEventListener("resize", () => goTo(index));
   }
-
-  // Start autoplay
-  start();
-
-  // Pause while touching/hovering
-  viewport.addEventListener("touchstart", stop, { passive: true });
-  viewport.addEventListener("touchend", restart, { passive: true });
-  viewport.addEventListener("mouseenter", stop);
-  viewport.addEventListener("mouseleave", restart);
-
-  // Swipe / drag (pointer)
-  let startX = 0;
-  let dx = 0;
-  let isDown = false;
-
-  viewport.addEventListener("pointerdown", (e) => {
-    isDown = true;
-    startX = e.clientX;
-    dx = 0;
-    sliderTrack.style.transition = "none";
-    stop();
-    viewport.setPointerCapture?.(e.pointerId);
-  });
-
-  viewport.addEventListener("pointermove", (e) => {
-    if (!isDown) return;
-    dx = e.clientX - startX;
-
-    // drag in % based on viewport width
-    const w = viewport.getBoundingClientRect().width || 1;
-    const dragPercent = (dx / w) * 100;
-    sliderTrack.style.transform = `translateX(calc(-${index * 100}% + ${dragPercent}%))`;
-  });
-
-  function endSwipe(e) {
-    if (!isDown) return;
-    isDown = false;
-    sliderTrack.style.transition = "transform .35s ease";
-
-    const w = viewport.getBoundingClientRect().width || 1;
-    const thresholdPx = Math.min(70, w * 0.18);
-
-    if (dx > thresholdPx) goTo(index - 1, true);
-    else if (dx < -thresholdPx) goTo(index + 1, true);
-    else goTo(index, true);
-
-    restart();
-    viewport.releasePointerCapture?.(e.pointerId);
-  }
-
-  viewport.addEventListener("pointerup", endSwipe);
-  viewport.addEventListener("pointercancel", endSwipe);
-
-  // Keep correct position on resize
-  window.addEventListener("resize", () => goTo(index));
 }
 
 // ===============================
