@@ -1106,3 +1106,33 @@ $$(".lang-option").forEach((btn) => {
     langDropdown.hidden = true;
   });
 });
+
+// ===============================
+// KIB FOOTER ACCORDION
+// ===============================
+document.querySelectorAll("[data-kib-accordion]").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const key = btn.dataset.kibAccordion;
+    const panel = document.querySelector(`[data-kib-panel="${key}"]`);
+    if (!panel) return;
+
+    const isOpen = btn.classList.contains("is-open");
+
+    document.querySelectorAll("[data-kib-accordion]").forEach((b) => {
+      b.classList.remove("is-open");
+      b.setAttribute("aria-expanded", "false");
+    });
+
+    document.querySelectorAll("[data-kib-panel]").forEach((p) => {
+      p.hidden = true;
+      p.style.maxHeight = null;
+    });
+
+    if (!isOpen) {
+      btn.classList.add("is-open");
+      btn.setAttribute("aria-expanded", "true");
+      panel.hidden = false;
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    }
+  });
+});
