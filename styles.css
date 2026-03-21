@@ -1669,17 +1669,17 @@ body{
   width:74px;
   height:74px;
   border-radius:50%;
-  background:#2f67ad;
+  background: linear-gradient(135deg, #2f67ad, #1f5ea8); /* upgraded */
   display:flex;
   align-items:center;
   justify-content:center;
   margin-bottom:18px;
 }
 
-.kib-nav-icon img{
-  width:34px;
-  height:34px;
-  object-fit:contain;
+/* SVG icon size */
+.kib-nav-icon svg{
+  width:36px;
+  height:36px;
 }
 
 .kib-nav-card h3{
