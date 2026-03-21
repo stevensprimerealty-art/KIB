@@ -932,12 +932,12 @@ body{
 /* Banner container */
 .kib-banner {
   position: relative;
-
   width: 100%;
-  border-radius: 28px; /* 🔥 curved edges */
+
+  border-radius: 26px;
   overflow: hidden;
 
-  min-height: 420px;
+  box-shadow: 0 18px 55px rgba(0,0,0,.12); /* 🔥 add depth */
 }
 
 /* Mobile height */
@@ -989,8 +989,9 @@ body{
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 35%; /* 🔥 THIS is the key fix */
-  border-radius: 0;
+
+  /* 🔥 tweak this per image if needed */
+  object-position: center 40%;
 }
 
 /* Soft bottom fade */
@@ -1010,31 +1011,32 @@ body{
 /* Info card */
 .kib-banner-info{
   position:absolute;
-  left:14px;
-  right:14px;
-  bottom:18px;
+  left:0;
+  right:0;
+  bottom:0;
 
-  background: rgba(255,255,255,.95);
-  border-radius:18px;
-  padding:16px;
+  padding: 22px 18px 20px;
 
-  box-shadow: 0 12px 30px rgba(0,0,0,.15);
+  color:#111;
+
+  /* 🔥 soft fade instead of box */
+  background: linear-gradient(
+    to top,
+    rgba(255,255,255,0.95) 0%,
+    rgba(255,255,255,0.85) 40%,
+    rgba(255,255,255,0) 100%
+  );
 }
 
 /* Text */
 .kib-banner-info h4{
-  margin:0 0 8px;
-  font-weight:900;
-  font-size:22px;
-  letter-spacing:-0.02em;
-  color:#111;
+  font-size: 20px;
+  margin-bottom: 6px;
 }
 
 .kib-banner-info p{
-  margin:0 0 14px;
-  color:#6b7280;
-  font-weight:700;
-  line-height:1.45;
+  font-size: 14px;
+  margin-bottom: 12px;
 }
 
 /* Remove container spacing influence */
