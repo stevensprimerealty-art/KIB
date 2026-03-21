@@ -1048,12 +1048,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 // ===============================
-// FLAG DROPDOWN (KIB)
+// FLAG DROPDOWN (KIB) — FINAL
 // ===============================
 const langToggle = $("langToggle");
 const langDropdown = $("langDropdown");
 const currentFlag = $("currentFlag");
 
+// Toggle dropdown
 if (langToggle && langDropdown) {
   langToggle.addEventListener("click", (e) => {
     e.stopPropagation();
@@ -1063,23 +1064,23 @@ if (langToggle && langDropdown) {
   });
 }
 
-// click outside → close dropdown
+// 🔥 Close when clicking outside (clean + precise)
 document.addEventListener("click", (e) => {
-  if (!langDropdown) return;
+  if (!langToggle || !langDropdown) return;
 
-  if (!e.target.closest(".drawer-lang")) {
+  if (!langToggle.contains(e.target) && !langDropdown.contains(e.target)) {
     langDropdown.classList.remove("is-open");
     langDropdown.hidden = true;
   }
 });
 
-// select language
-$$(".lang-option").forEach(btn => {
+// Select language + update flag
+$$(".lang-option").forEach((btn) => {
   btn.addEventListener("click", () => {
     const lang = btn.dataset.lang;
     const flag = btn.dataset.flag;
 
-    // 🔥 connect to your existing system
+    // apply language
     setLanguage(lang);
 
     // update flag UI
