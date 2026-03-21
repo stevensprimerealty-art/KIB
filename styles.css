@@ -1664,6 +1664,8 @@ body{
   cursor: pointer;
 
   transition: background .2s ease;
+
+  backdrop-filter: blur(6px);
 }
 
 .lang-option:hover{
@@ -1672,8 +1674,4 @@ body{
 
 .lang-option:active{
   transform: scale(.97);
-}
-
-.lang-option{
-  backdrop-filter: blur(6px);
 }
