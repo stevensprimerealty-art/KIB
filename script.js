@@ -1023,3 +1023,48 @@ document.addEventListener("DOMContentLoaded", function () {
 
   io.observe(section);
 })();
+
+
+// ===============================
+// FLAG DROPDOWN (KIB)
+// ===============================
+const langToggle = $("langToggle");
+const langDropdown = $("langDropdown");
+const currentFlag = $("currentFlag");
+
+if (langToggle && langDropdown) {
+  langToggle.addEventListener("click", (e) => {
+    e.stopPropagation();
+
+    const isOpen = langDropdown.classList.toggle("is-open");
+    langDropdown.hidden = !isOpen;
+  });
+}
+
+// click outside → close dropdown
+document.addEventListener("click", (e) => {
+  if (!langDropdown) return;
+
+  if (!e.target.closest(".drawer-lang")) {
+    langDropdown.classList.remove("is-open");
+    langDropdown.hidden = true;
+  }
+});
+
+// select language
+$$(".lang-option").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const lang = btn.dataset.lang;
+    const flag = btn.dataset.flag;
+
+    // 🔥 connect to your existing system
+    setLanguage(lang);
+
+    // update flag UI
+    if (currentFlag) currentFlag.textContent = flag;
+
+    // close dropdown
+    langDropdown.classList.remove("is-open");
+    langDropdown.hidden = true;
+  });
+});
