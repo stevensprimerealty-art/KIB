@@ -24,19 +24,26 @@ document.addEventListener("DOMContentLoaded", () => {
   intro.style.display = "grid";
   app.hidden = true;
 
-  // Show intro for 2.5 seconds
+ // 🔥 fade IN text first
+setTimeout(() => {
+  intro.classList.add("is-in");
+}, 80);
+
+// 🔥 hold then fade OUT
+setTimeout(() => {
+  intro.classList.remove("is-in");
+  intro.classList.add("is-out");
+
   setTimeout(() => {
-    intro.classList.add("is-out");
+    intro.style.display = "none";
+    app.hidden = false;
+    app.classList.add("is-in");
 
-    setTimeout(() => {
-      intro.style.display = "none";
-      app.hidden = false;
-      app.classList.add("is-in");
-      if (typeof initScrollReveal === "function") initScrollReveal();
-    }, 600); // matches CSS fade
-  }, 2500);
-});
-
+    if (typeof initScrollReveal === "function") initScrollReveal();
+  }, 400); // match CSS
+}, 2500);
+});  
+  
 // ===============================
 // SUPABASE MAGIC LINK (CLEAN)
 // ===============================
