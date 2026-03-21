@@ -918,13 +918,13 @@
 </section>
 
 
-    <!-- ===============================
-   KIB NAVIGATION CARDS
+<!-- ===============================
+   KIB NAVIGATION TILES
 ================================ -->
-<section class="kib-nav-cards">
+<section class="kib-nav-cards" aria-label="KIB navigation tiles">
   <div class="wrap kib-nav-grid">
 
-    <a href="#" class="kib-nav-card">
+    <a href="personal-banking.html" class="kib-nav-card">
       <div class="kib-nav-icon">
         <img src="assets/icons/personal.svg" alt="">
       </div>
@@ -932,7 +932,7 @@
       <span class="kib-arrow">→</span>
     </a>
 
-    <a href="#" class="kib-nav-card">
+    <a href="business-banking.html" class="kib-nav-card">
       <div class="kib-nav-icon">
         <img src="assets/icons/business.svg" alt="">
       </div>
@@ -940,7 +940,7 @@
       <span class="kib-arrow">→</span>
     </a>
 
-    <a href="#" class="kib-nav-card">
+    <a href="internet-banking.html" class="kib-nav-card">
       <div class="kib-nav-icon">
         <img src="assets/icons/digital.svg" alt="">
       </div>
@@ -948,41 +948,116 @@
       <span class="kib-arrow">→</span>
     </a>
 
-    <a href="#" class="kib-nav-card">
+    <a href="about-us.html#read-more" class="kib-nav-card">
       <div class="kib-nav-icon">
         <img src="assets/icons/about.svg" alt="">
       </div>
-      <h3>About Us</h3>
+      <h3>About<br>Us</h3>
       <span class="kib-arrow">→</span>
     </a>
 
   </div>
 </section>
 
-
 <!-- ===============================
-   KIB FOOT NAV (ACCORDION)
+   KIB FOOTER (WHITE + ACCORDION)
 ================================ -->
-<section class="kib-foot-nav">
+<footer class="kib-footer-white">
   <div class="wrap">
 
-    <button class="kib-foot-item">Personal Banking</button>
-    <button class="kib-foot-item">Business Banking</button>
-    <button class="kib-foot-item">Digital Banking</button>
-    <button class="kib-foot-item">Company</button>
-    <button class="kib-foot-item">Financial</button>
-    <button class="kib-foot-item">News</button>
+    <div class="kib-footer-acc">
 
-    <div class="kib-foot-brand">
-      KOREA INTERNATIONAL BANKING
+      <!-- Personal -->
+      <div class="kib-acc-item">
+        <button class="kib-acc-btn" data-kib-accordion="personal">
+          <span>Personal Banking</span>
+          <span class="kib-acc-caret">⌄</span>
+        </button>
+        <div class="kib-acc-panel" data-kib-panel="personal" hidden>
+          <a href="personal-banking.html">Saving / Deposit</a>
+          <a href="personal-banking.html">Loan</a>
+          <a href="personal-banking.html">Money Transfer</a>
+          <a href="business-banking.html">Business Banking</a>
+        </div>
+      </div>
+
+      <!-- Business -->
+      <div class="kib-acc-item">
+        <button class="kib-acc-btn" data-kib-accordion="business">
+          <span>Business Banking</span>
+          <span class="kib-acc-caret">⌄</span>
+        </button>
+        <div class="kib-acc-panel" data-kib-panel="business" hidden>
+          <a href="business-banking.html">Saving / Deposit</a>
+          <a href="business-banking.html">Loan</a>
+          <a href="business-banking.html">Money Transfer</a>
+          <a href="business-banking.html">Payroll</a>
+        </div>
+      </div>
+
+      <!-- Digital -->
+      <div class="kib-acc-item">
+        <button class="kib-acc-btn" data-kib-accordion="digital">
+          <span>Digital Banking</span>
+          <span class="kib-acc-caret">⌄</span>
+        </button>
+        <div class="kib-acc-panel" data-kib-panel="digital" hidden>
+          <a href="cards-wallet-kib2.html">KIB’s ATM Card</a>
+          <a href="cards-wallet-kib2.html">Visa Debit Cards</a>
+        </div>
+      </div>
+
+      <!-- Company -->
+      <div class="kib-acc-item">
+        <button class="kib-acc-btn" data-kib-accordion="company">
+          <span>Company</span>
+          <span class="kib-acc-caret">⌄</span>
+        </button>
+        <div class="kib-acc-panel" data-kib-panel="company" hidden>
+          <a href="about-us.html">About Us</a>
+          <a href="about-us.html#mission">Vision & Mission</a>
+          <a href="about-us.html#ceo">CEO Message</a>
+          <a href="about-us.html#board">Board of Directors</a>
+          <a href="about-us.html#committee">Executive Committee</a>
+          <a href="careers.html">Careers</a>
+          <a href="contact.html">Contact Us</a>
+          <a href="request-form.html">Request Form</a>
+          <a href="map.html">Map</a>
+        </div>
+      </div>
+
+      <!-- Financial -->
+      <div class="kib-acc-item">
+        <button class="kib-acc-btn" data-kib-accordion="financial">
+          <span>Financial</span>
+          <span class="kib-acc-caret">⌄</span>
+        </button>
+        <div class="kib-acc-panel" data-kib-panel="financial" hidden>
+          <a href="financial-report.html">Financial Report</a>
+          <a href="financial-calculator.html">Financial Calculator</a>
+        </div>
+      </div>
+
+      <!-- News -->
+      <div class="kib-acc-item">
+        <button class="kib-acc-btn" data-kib-accordion="news">
+          <span>News</span>
+          <span class="kib-acc-caret">⌄</span>
+        </button>
+        <div class="kib-acc-panel" data-kib-panel="news" hidden>
+          <a href="news.html">News</a>
+          <a href="promotions.html">Promotions</a>
+        </div>
+      </div>
+
     </div>
 
   </div>
-</section>
-    
+</footer> <!-- ✅ CLOSE FIRST FOOTER -->
+
 
 <!-- ===============================
-   KIB FOOTER — LOCATIONS ONLY
+   KIB FOOTER — LOCATIONS
 ================================ -->
 <footer class="kib-footer">
   <div class="wrap">
@@ -990,37 +1065,30 @@
     <h3 class="kib-footer-title">Location Address</h3>
 
     <div class="kib-address-list">
-
-      <p>
-        39 Namdaemun-ro, Jung-gu, Seoul (04531), Republic of Korea.
-      </p>
-
-      <p>
-        Piazza di Spagna, 59, 00187 Roma RM, Italy
-      </p>
-
-      <p>
-        Tower 42, Level 38, 25 Old Broad Street, EC2N 1HQ, London, United Kingdom
-      </p>
-
-      <p>
-        <strong>New York Branch</strong><br>
-        1250 Broadway, 37th Floor, New York, NY 10001, USA
-      </p>
-
-      <p>
-        Mubarak Al-Kabeer Street, Darwazat Al-Abdul Razzak, Kuwait City, State of Kuwait
-      </p>
-
+      <p>39 Namdaemun-ro, Jung-gu, Seoul (04531), Republic of Korea.</p>
+      <p>Piazza di Spagna, 59, 00187 Roma RM, Italy</p>
+      <p>Tower 42, Level 38, 25 Old Broad Street, London</p>
+      <p><strong>New York Branch</strong><br>1250 Broadway, NY 10001</p>
+      <p>Kuwait City, State of Kuwait</p>
     </div>
 
-    <!-- Contact intentionally left blank -->
-    <div class="kib-footer-contact"></div>
+    <div class="kib-footer-meta">
+      <div class="kib-footer-line">
+        <span>Email</span>
+        <a href="mailto:info@kibinternational.co.site">
+          info@kibinternational.co.site
+        </a>
+      </div>
+
+      <div class="kib-footer-line">
+        <span>All rights reserved</span>
+        <span>@ 2022</span>
+      </div>
+    </div>
 
   </div>
 </footer>
-  
-    </main>
+
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="script.js?v=2"></script>
