@@ -398,7 +398,17 @@ body{
   color:#fff;
   text-align:left;
 
-  letter-spacing: .02em; /* ✅ ADD HERE */
+  letter-spacing: .02em;
+
+  transition: transform .2s ease, opacity .2s ease;
+
+  /* 🔥 ADD THIS */
+  -webkit-tap-highlight-color: transparent;
+}
+
+.drawer-link:active{
+  transform: scale(.97);
+  opacity: .85;
 }
 
 .drawer-link.plain{
