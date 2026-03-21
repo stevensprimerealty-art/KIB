@@ -325,7 +325,12 @@ body{
   right: 0;
   top: var(--topbar-h);
   height: calc(100vh - var(--topbar-h));
- background: rgba(10, 103, 183, 0.92);
+ background: linear-gradient(
+  180deg,
+  rgba(10,103,183,0.78),
+  rgba(10,103,183,0.95)
+);
+  
  backdrop-filter: blur(16px);
 -webkit-backdrop-filter: blur(16px);
 
@@ -406,12 +411,31 @@ body{
   opacity:.65;
 }
 
+.drawer-link .caret{
+  transition: transform 0.3s ease;
+}
+
+.drawer-link.is-open .caret{
+  transform: rotate(180deg);
+}
+
 .drawer-sub{
-  padding: 0 0 16px;
+  overflow: hidden;
+  max-height: 0;
+
   display:flex;
   flex-direction:column;
   gap: 10px;
+
+  transition: max-height 0.35s ease;
+  padding: 0; /* 🔥 important */
 }
+
+/* when open */
+.drawer-sub.is-open{
+  padding: 10px 0 16px;
+}
+
 .drawer-sub a{
   color:rgba(255,255,255,.85);
   text-decoration:none;
