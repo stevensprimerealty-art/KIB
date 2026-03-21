@@ -309,16 +309,36 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") closeDrawer();
 });
 
-// ---------- ABOUT accordion (and aria-expanded) ----------
+// ===============================
+// DRAWER ACCORDION (PRO VERSION)
+// ===============================
 $$("[data-accordion]").forEach((btn) => {
   btn.addEventListener("click", () => {
     const key = btn.getAttribute("data-accordion");
     const panel = document.querySelector(`[data-panel="${key}"]`);
     if (!panel) return;
 
-    const willOpen = panel.hidden === true;
-    panel.hidden = !willOpen;
-    btn.setAttribute("aria-expanded", String(willOpen));
+    const isOpen = btn.classList.contains("is-open");
+
+    // 🔥 CLOSE ALL FIRST (one open at a time)
+    $$("[data-accordion]").forEach((b) => {
+      b.classList.remove("is-open");
+      b.setAttribute("aria-expanded", "false");
+    });
+
+    $$("[data-panel]").forEach((p) => {
+      p.style.maxHeight = null;
+      p.classList.remove("is-open");
+    });
+
+    // 🔥 OPEN CURRENT
+    if (!isOpen) {
+      btn.classList.add("is-open");
+      btn.setAttribute("aria-expanded", "true");
+
+      panel.classList.add("is-open");
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    }
   });
 });
 
