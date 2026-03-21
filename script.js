@@ -262,11 +262,12 @@ const drawer = $("drawer");
 const backdrop = $("backdrop");
 const menuBtn = $("menuBtn");
 const closeBtn = $("closeBtn");
+
 function openDrawer() {
   if (!drawer || !backdrop || !menuBtn) return;
 
   drawer.classList.add("is-open");
-  menuBtn.classList.add("is-active"); // ✅ ADD THIS
+  menuBtn.classList.add("is-active");
 
   backdrop.hidden = false;
   requestAnimationFrame(() => backdrop.classList.add("is-on"));
@@ -279,7 +280,7 @@ function closeDrawer() {
   if (!drawer || !backdrop || !menuBtn) return;
 
   drawer.classList.remove("is-open");
-  menuBtn.classList.remove("is-active"); // ✅ ADD THIS
+  menuBtn.classList.remove("is-active");
 
   backdrop.classList.remove("is-on");
 
@@ -294,17 +295,22 @@ function toggleDrawer() {
   drawer.classList.contains("is-open") ? closeDrawer() : openDrawer();
 }
 
+// 🔥 THIS WAS MISSING
 if (menuBtn) menuBtn.addEventListener("click", toggleDrawer);
 
-// ✅ X button ALWAYS works
-if (closeBtn) closeBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-  closeDrawer();
-});
+// close button
+if (closeBtn) {
+  closeBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    closeDrawer();
+  });
+}
 
+// backdrop click
 if (backdrop) backdrop.addEventListener("click", closeDrawer);
 
+// ESC key
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") closeDrawer();
 });
