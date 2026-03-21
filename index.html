@@ -75,6 +75,133 @@
       </button>
     </header>
 
+
+    <!-- MENU DRAWER -->
+<aside id="drawer" class="drawer" aria-hidden="true">
+  <div class="drawer-shell">
+
+    <!-- TOP WHITE GLASS BAR -->
+    <div class="drawer-top">
+      <div class="drawer-brand">
+        <span>KOREA INTERNATIONAL BANKING</span>
+        <small>/ CAMBODIA</small>
+      </div>
+
+      <button id="closeBtn" class="drawer-close" type="button" aria-label="Close menu">✕</button>
+    </div>
+
+    <!-- MIDDLE MENU AREA -->
+    <div class="drawer-body">
+      <ul class="drawer-list" role="list">
+
+        <!-- HOME -->
+        <li class="drawer-item">
+          <a href="index.html" class="drawer-link plain">🏠 Home</a>
+        </li>
+
+        <!-- PERSONAL -->
+        <li class="drawer-item">
+          <button 
+            class="drawer-link" 
+            data-accordion="personal" 
+            aria-expanded="false"
+            aria-controls="panel-personal">
+            <span>👤 Personal Banking</span>
+            <span class="caret">▾</span>
+          </button>
+
+          <div id="panel-personal" class="drawer-sub" data-panel="personal" hidden>
+            <a href="personal-banking.html">Saving / Deposit</a>
+            <a href="personal-banking.html">Quick Account</a>
+            <a href="personal-banking.html">Hope Savings Account</a>
+            <a href="personal-banking.html">SOBOROS Deposit Account</a>
+            <a href="personal-banking.html">Fortune Deposit Account</a>
+            <a href="personal-banking.html">Planned Savings Account</a>
+            <a href="best-child-account-kib2.html">Best Child Account</a>
+            <a href="personal-banking.html">Current Account</a>
+            <a href="personal-banking.html">Loan</a>
+            <a href="personal-banking.html">Business Loan</a>
+            <a href="personal-banking.html">Mortgage Loan</a>
+            <a href="personal-banking.html">Education Loan</a>
+            <a href="personal-banking.html">Money Transfer</a>
+            <a href="international-remittance-kib2.html">International Remittance</a>
+            <a href="personal-banking.html">Fund Transfer</a>
+          </div>
+        </li>
+
+        <!-- BUSINESS -->
+        <li class="drawer-item">
+          <button 
+            class="drawer-link" 
+            data-accordion="business" 
+            aria-expanded="false"
+            aria-controls="panel-business">
+            <span>🏢 Business Banking</span>
+            <span class="caret">▾</span>
+          </button>
+
+          <div id="panel-business" class="drawer-sub" data-panel="business" hidden>
+            <a href="business-banking.html">Corporate Savings Account</a>
+            <a href="business-banking.html">Current Account</a>
+            <a href="business-banking.html">SME Loan</a>
+            <a href="business-banking.html">Commercial Loan</a>
+            <a href="business-banking.html">Trade Finance</a>
+            <a href="international-remittance-kib2.html">International Remittance</a>
+          </div>
+        </li>
+
+        <!-- DIGITAL -->
+        <li class="drawer-item">
+          <button 
+            class="drawer-link" 
+            data-accordion="digital" 
+            aria-expanded="false"
+            aria-controls="panel-digital">
+            <span>💳 Digital Banking</span>
+            <span class="caret">▾</span>
+          </button>
+
+          <div id="panel-digital" class="drawer-sub" data-panel="digital" hidden>
+            <a href="cards-wallet-kib2.html">Visa Debit Cards</a>
+            <a href="cards-wallet-kib2.html">Visa Credit Cards</a>
+            <a href="cards-wallet-kib2.html">ATM Card</a>
+            <a href="internet-banking.html">Internet Banking</a>
+            <a href="internet-banking.html">Firm Banking Service</a>
+          </div>
+        </li>
+
+        <!-- SIMPLE LINKS -->
+        <li class="drawer-item"><a href="promotions.html" class="drawer-link plain">🎁 Promotions</a></li>
+        <li class="drawer-item"><a href="news.html" class="drawer-link plain">📰 News</a></li>
+        <li class="drawer-item"><a href="careers.html" class="drawer-link plain">💼 Careers</a></li>
+        <li class="drawer-item"><a href="csr.html" class="drawer-link plain">🌱 CSR</a></li>
+        <li class="drawer-item"><a href="merchant.html" class="drawer-link plain">🏪 Merchant Discounts</a></li>
+        <li class="drawer-item"><a href="internet-banking.html" class="drawer-link plain">🌐 Internet Banking</a></li>
+
+      </ul>
+    </div>
+
+    <!-- BOTTOM BLUE GLASS BAR -->
+    <div class="drawer-bottom">
+      <div class="drawer-lang">
+        <button id="langToggle" class="drawer-flag" type="button">
+          <span id="currentFlag">🇺🇸</span>
+        </button>
+
+        <div id="langDropdown" class="lang-dropdown" hidden>
+          <button class="lang-option" data-lang="en" data-flag="🇺🇸">🇺🇸 English</button>
+          <button class="lang-option" data-lang="ko" data-flag="🇰🇷">🇰🇷 Korean</button>
+          <button class="lang-option" data-lang="it" data-flag="🇮🇹">🇮🇹 Italian</button>
+          <button class="lang-option" data-lang="ar" data-flag="🇰🇼">🇰🇼 Arabic</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</aside>
+
+    <div id="backdrop" class="backdrop" hidden></div>
+
     <!-- HERO -->
     <section class="hero is-in" role="region" aria-label="Hero">
       <div class="hero-bg" aria-hidden="true"></div>
@@ -897,128 +1024,7 @@
 
   </div>
 </footer>
-    
-    
-<!-- MENU DRAWER -->
-<aside id="drawer" class="drawer" aria-hidden="true">
-
-  <div class="drawer-top">
-    <div class="drawer-brand">kib</div>
-    <button id="closeBtn" class="drawer-close" type="button" aria-label="Close menu">✕</button>
-  </div>
-
-  <!-- ✅ MOVE IT HERE -->
-  <div class="drawer-lang">
-    <button id="langToggle" class="drawer-flag" type="button">
-      <span id="currentFlag">🇺🇸</span>
-    </button>
-
-    <div id="langDropdown" class="lang-dropdown" hidden>
-      <button class="lang-option" data-lang="en" data-flag="🇺🇸">🇺🇸 English</button>
-      <button class="lang-option" data-lang="ko" data-flag="🇰🇷">🇰🇷 Korean</button>
-      <button class="lang-option" data-lang="es" data-flag="🇮🇹">🇮🇹 Italian</button>
-      <button class="lang-option" data-lang="ar" data-flag="🇰🇼">🇰🇼 Kuwait</button>
-    </div>
-  </div>
-
-<ul class="drawer-list" role="list">
-
-  <!-- HOME -->
-  <li class="drawer-item">
-    <a href="index.html" class="drawer-link plain">Home</a>
-  </li>
-
-  <!-- PERSONAL BANKING -->
-  <li class="drawer-item">
-    <button class="drawer-link" data-accordion="personal" aria-expanded="false">
-      <span>Personal Banking</span>
-      <span class="caret">▾</span>
-    </button>
-
-    <div class="drawer-sub" data-panel="personal" hidden>
-      <a href="personal-banking.html">Saving / Deposit</a>
-      <a href="personal-banking.html">Quick Account</a>
-      <a href="personal-banking.html">Hope Savings Account</a>
-      <a href="personal-banking.html">SOBOROS Deposit Account</a>
-      <a href="personal-banking.html">Fortune Deposit Account</a>
-      <a href="personal-banking.html">Planned Savings Account</a>
-      <a href="best-child-account-kib2.html">Best Child Account</a>
-      <a href="personal-banking.html">Current Account</a>
-
-      <a href="personal-banking.html">Loan</a>
-      <a href="personal-banking.html">Business Loan</a>
-      <a href="personal-banking.html">Mortgage Loan</a>
-      <a href="personal-banking.html">Education Loan</a>
-
-      <a href="personal-banking.html">Money Transfer</a>
-      <a href="international-remittance-kib2.html">International Remittance</a>
-      <a href="personal-banking.html">Fund Transfer</a>
-    </div>
-  </li>
-
-  <!-- BUSINESS BANKING -->
-  <li class="drawer-item">
-    <button class="drawer-link" data-accordion="business" aria-expanded="false">
-      <span>Business Banking</span>
-      <span class="caret">▾</span>
-    </button>
-
-    <div class="drawer-sub" data-panel="business" hidden>
-      <a href="business-banking.html">Corporate Savings Account</a>
-      <a href="business-banking.html">Current Account</a>
-      <a href="business-banking.html">SME Loan</a>
-      <a href="business-banking.html">Commercial Loan</a>
-      <a href="business-banking.html">Trade Finance</a>
-      <a href="international-remittance-kib2.html">International Remittance</a>
-    </div>
-  </li>
-
-  <!-- DIGITAL BANKING -->
-  <li class="drawer-item">
-    <button class="drawer-link" data-accordion="digital" aria-expanded="false">
-      <span>Digital Banking</span>
-      <span class="caret">▾</span>
-    </button>
-
-    <div class="drawer-sub" data-panel="digital" hidden>
-      <a href="cards-wallet-kib2.html">Visa Debit Cards</a>
-      <a href="cards-wallet-kib2.html">Visa Credit Cards</a>
-      <a href="cards-wallet-kib2.html">ATM Card</a>
-      <a href="internet-banking.html">Internet Banking</a>
-      <a href="internet-banking.html">Firm Banking Service</a>
-    </div>
-  </li>
-
-  <!-- SIMPLE LINKS -->
-  <li class="drawer-item">
-    <a href="promotions.html" class="drawer-link plain">Promotions</a>
-  </li>
-
-  <li class="drawer-item">
-    <a href="news.html" class="drawer-link plain">News</a>
-  </li>
-
-  <li class="drawer-item">
-    <a href="careers.html" class="drawer-link plain">Careers</a>
-  </li>
-
-  <li class="drawer-item">
-    <a href="csr.html" class="drawer-link plain">CSR</a>
-  </li>
-
-  <li class="drawer-item">
-    <a href="merchant.html" class="drawer-link plain">Merchant Discounts</a>
-  </li>
-
-  <li class="drawer-item">
-    <a href="internet-banking.html" class="drawer-link plain">Internet Banking</a>
-  </li>
-
-</ul>
-
-  </aside>
   
-    <div id="backdrop" class="backdrop" hidden></div>
     </main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
