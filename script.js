@@ -300,9 +300,7 @@ if (menuBtn) menuBtn.addEventListener("click", toggleDrawer);
 
 // close button
 if (closeBtn) {
-  closeBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  closeBtn.addEventListener("click", () => {
     closeDrawer();
   });
 }
@@ -316,17 +314,20 @@ document.addEventListener("keydown", (e) => {
 });
 
 // ===============================
-// DRAWER ACCORDION (PRO VERSION)
+// DRAWER ACCORDION (FINAL FIX)
 // ===============================
 $$("[data-accordion]").forEach((btn) => {
-  btn.addEventListener("click", () => {
+  btn.addEventListener("click", (e) => {
+
+    e.stopPropagation(); // ✅ ONLY THIS
+
     const key = btn.getAttribute("data-accordion");
     const panel = document.querySelector(`[data-panel="${key}"]`);
     if (!panel) return;
 
     const isOpen = btn.classList.contains("is-open");
 
-    // 🔥 CLOSE ALL FIRST (one open at a time)
+    // close all
     $$("[data-accordion]").forEach((b) => {
       b.classList.remove("is-open");
       b.setAttribute("aria-expanded", "false");
@@ -337,7 +338,7 @@ $$("[data-accordion]").forEach((btn) => {
       p.classList.remove("is-open");
     });
 
-    // 🔥 OPEN CURRENT
+    // open current
     if (!isOpen) {
       btn.classList.add("is-open");
       btn.setAttribute("aria-expanded", "true");
@@ -345,6 +346,17 @@ $$("[data-accordion]").forEach((btn) => {
       panel.classList.add("is-open");
       panel.style.maxHeight = panel.scrollHeight + "px";
     }
+  });
+});
+ 
+// ===============================
+// CLOSE DRAWER ON LINK CLICK (SAFE)
+// ===============================
+document.querySelectorAll(".drawer-sub a, .drawer-link.plain").forEach(link => {
+  link.addEventListener("click", () => {
+    setTimeout(() => {
+      closeDrawer();
+    }, 50); // small delay = allows navigation
   });
 });
 
