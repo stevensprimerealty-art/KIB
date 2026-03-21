@@ -266,6 +266,7 @@ function openDrawer() {
   if (!drawer || !backdrop || !menuBtn) return;
 
   drawer.classList.add("is-open");
+  menuBtn.classList.add("is-active"); // ✅ ADD THIS
 
   backdrop.hidden = false;
   requestAnimationFrame(() => backdrop.classList.add("is-on"));
@@ -278,6 +279,8 @@ function closeDrawer() {
   if (!drawer || !backdrop || !menuBtn) return;
 
   drawer.classList.remove("is-open");
+  menuBtn.classList.remove("is-active"); // ✅ ADD THIS
+
   backdrop.classList.remove("is-on");
 
   drawer.setAttribute("aria-hidden", "true");
