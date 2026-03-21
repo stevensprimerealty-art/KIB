@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="styles.css?v=6" />
+</head>
 
 <body>
 
@@ -898,38 +899,54 @@
 </footer>
     
     
-    <!-- MENU DRAWER -->
-    <aside id="drawer" class="drawer" aria-hidden="true">
-      <div class="drawer-top">
-        <div class="drawer-brand">kib</div>
-        <button id="closeBtn" class="drawer-close" type="button" aria-label="Close menu">✕</button>
+<!-- MENU DRAWER -->
+<aside id="drawer" class="drawer" aria-hidden="true">
+
+  <div class="drawer-top">
+    <div class="drawer-brand">kib</div>
+    <button id="closeBtn" class="drawer-close" type="button" aria-label="Close menu">✕</button>
+  </div>
+
+  <!-- ✅ MOVE IT HERE -->
+  <div class="drawer-lang">
+    <button id="langToggle" class="drawer-flag" type="button">
+      <span id="currentFlag">🇺🇸</span>
+    </button>
+
+    <div id="langDropdown" class="lang-dropdown" hidden>
+      <button class="lang-option" data-lang="en" data-flag="🇺🇸">🇺🇸 English</button>
+      <button class="lang-option" data-lang="ko" data-flag="🇰🇷">🇰🇷 Korean</button>
+      <button class="lang-option" data-lang="es" data-flag="🇮🇹">🇮🇹 Italian</button>
+      <button class="lang-option" data-lang="ar" data-flag="🇰🇼">🇰🇼 Kuwait</button>
+    </div>
+  </div>
+
+  <ul class="drawer-list" role="list">
+    <li class="drawer-item">
+      <button class="drawer-link" type="button" data-accordion="about" aria-expanded="false">
+        <span id="navAbout">About Us</span>
+        <span class="caret">▾</span>
+      </button>
+      <div class="drawer-sub" data-panel="about" hidden>
+        <a href="#" id="navAboutStory">Our Story</a>
+        <a href="#" id="navAboutMission">Mission</a>
       </div>
+    </li>
 
-      <ul class="drawer-list" role="list">
-        <li class="drawer-item">
-          <button class="drawer-link" type="button" data-accordion="about" aria-expanded="false" aria-controls="panelAbout">
-            <span id="navAbout">About Us</span>
-            <span class="caret" aria-hidden="true">▾</span>
-          </button>
-          <div class="drawer-sub" id="panelAbout" data-panel="about" hidden>
-            <a href="#" id="navAboutStory">Our Story</a>
-            <a href="#" id="navAboutMission">Mission</a>
-          </div>
-        </li>
+    <li class="drawer-item">
+      <a href="#" class="drawer-link plain" id="navServices">Services</a>
+    </li>
 
-        <li class="drawer-item">
-          <a href="#" class="drawer-link plain" id="navServices">Services</a>
-        </li>
+    <li class="drawer-item">
+      <a href="#" class="drawer-link plain" id="navMedia">Media</a>
+    </li>
 
-        <li class="drawer-item">
-          <a href="#" class="drawer-link plain" id="navMedia">Media</a>
-        </li>
+    <li class="drawer-item">
+      <a href="#" class="drawer-link plain" id="navOverview">Overview</a>
+    </li>
+  </ul>
 
-        <li class="drawer-item">
-          <a href="#" class="drawer-link plain" id="navOverview">Overview</a>
-        </li>
-      </ul>
-    </aside>
+</aside>
 
     <div id="backdrop" class="backdrop" hidden></div>
     </main>
