@@ -591,18 +591,20 @@ function initScrollReveal() {
 }
 
 // ---------- SLIDER (AUTO 3s + SWIPE + DOTS) ----------
-// This version matches the corrected CSS: .slide { flex: 0 0 100%; }
-const track = $("sliderTrack");
+const sliderTrack = $("sliderTrack");
 const viewport = $("sliderViewport");
 const dotsWrap = $("dots");
 
-if (track && viewport && dotsWrap) {
-  const slides = Array.from(track.children);
+if (sliderTrack && viewport && dotsWrap) {
+
+  const slides = Array.from(sliderTrack.children);
+  if (!slides.length) return;
+
   let index = 0;
   let timer = null;
 
-  // Build dots
   dotsWrap.innerHTML = "";
+
   slides.forEach((_, i) => {
     const b = document.createElement("button");
     b.className = "dot" + (i === 0 ? " is-active" : "");
@@ -613,16 +615,16 @@ if (track && viewport && dotsWrap) {
   });
 
   function setDots(i) {
-  dotsWrap.querySelectorAll(".dot").forEach((d, di) => {
-    const active = di === i;
-    d.classList.toggle("is-active", active);
-    d.classList.toggle("active", active); // supports either CSS class
-  });
-}
+    dotsWrap.querySelectorAll(".dot").forEach((d, di) => {
+      const active = di === i;
+      d.classList.toggle("is-active", active);
+      d.classList.toggle("active", active);
+    });
+  }
 
   function goTo(i, user = false) {
     index = (i + slides.length) % slides.length;
-    track.style.transform = `translateX(-${index * 100}%)`;
+    sliderTrack.style.transform = `translateX(-${index * 100}%)`;
     setDots(index);
     if (user) restart();
   }
@@ -663,7 +665,7 @@ if (track && viewport && dotsWrap) {
     isDown = true;
     startX = e.clientX;
     dx = 0;
-    track.style.transition = "none";
+    sliderTrack.style.transition = "none";
     stop();
     viewport.setPointerCapture?.(e.pointerId);
   });
@@ -675,13 +677,13 @@ if (track && viewport && dotsWrap) {
     // drag in % based on viewport width
     const w = viewport.getBoundingClientRect().width || 1;
     const dragPercent = (dx / w) * 100;
-    track.style.transform = `translateX(calc(-${index * 100}% + ${dragPercent}%))`;
+    sliderTrack.style.transform = `translateX(calc(-${index * 100}% + ${dragPercent}%))`;
   });
 
   function endSwipe(e) {
     if (!isDown) return;
     isDown = false;
-    track.style.transition = "transform .35s ease";
+    sliderTrack.style.transition = "transform .35s ease";
 
     const w = viewport.getBoundingClientRect().width || 1;
     const thresholdPx = Math.min(70, w * 0.18);
