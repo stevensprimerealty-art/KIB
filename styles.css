@@ -181,6 +181,20 @@ body{
   background:#111;
   border-radius: 99px;
   margin: 2.6px 0;
+  transition: all .3s ease; /* ✅ ADD THIS */
+}
+
+/* 🔥 HAMBURGER → X */
+.hamburger.is-active span:nth-child(1){
+  transform: translateY(6px) rotate(45deg);
+}
+
+.hamburger.is-active span:nth-child(2){
+  opacity:0;
+}
+
+.hamburger.is-active span:nth-child(3){
+  transform: translateY(-6px) rotate(-45deg);
 }
 
 /* ---------- HERO ---------- */
@@ -311,7 +325,9 @@ body{
   right: 0;
   top: var(--topbar-h);
   height: calc(100vh - var(--topbar-h));
-  background: #fff;
+ background: rgba(10, 103, 183, 0.92);
+ backdrop-filter: blur(16px);
+-webkit-backdrop-filter: blur(16px);
 
   transform: translateY(-8px);
   opacity: 0;
@@ -353,9 +369,14 @@ body{
   list-style:none;
   padding: 0 18px 18px;
   margin: 0;
+
+  opacity:0;
+  transform: translateY(10px);
+  transition: all .35s ease;
 }
+
 .drawer-item{
-  border-top: 1px solid rgba(0,0,0,.08);
+  border-top: 1px solid rgba(255,255,255,.12);
 }
 .drawer-link{
   width:100%;
@@ -369,9 +390,12 @@ body{
   cursor:pointer;
   font-size: 22px;
   font-weight:700;
-  color:#111;
+  color:#fff;
   text-align:left;
+
+  letter-spacing: .02em; /* ✅ ADD HERE */
 }
+
 .drawer-link.plain{
   text-decoration:none;
   display:flex;
@@ -389,11 +413,16 @@ body{
   gap: 10px;
 }
 .drawer-sub a{
-  color:#333;
+  color:rgba(255,255,255,.85);
   text-decoration:none;
   font-weight:600;
   padding: 8px 0;
   opacity:.85;
+}
+
+.drawer.is-open .drawer-list{
+  opacity:1;
+  transform: translateY(0);
 }
 
 /* Backdrop covers only BELOW header */
