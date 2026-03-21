@@ -1635,125 +1635,182 @@ body{
 
 
 /* ===============================
-   KIB NAV CARDS (WOORI STYLE)
+   KIB NAV TILES — WHITE DESIGN
 ================================ */
 .kib-nav-cards{
-  background:#f1f1f1;
+  background:#f2f2f2;
   padding: 56px 0 70px;
 }
 
 .kib-nav-grid{
   display:grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
 }
 
 .kib-nav-card{
-  background:#fff;
-  border-radius: 20px;
-  padding: 22px;
-  text-decoration:none;
-  color:#000;
   position:relative;
-  min-height: 170px;
-  box-shadow: 0 14px 40px rgba(0,0,0,.08);
+  min-height: 280px;
+  padding: 22px;
+  border-radius: 28px;
+  background:#fff;
+  box-shadow: 0 16px 42px rgba(0,0,0,.08);
+  text-decoration:none;
+  color:#111;
+  overflow:hidden;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.kib-nav-card:active{
+  transform: scale(.99);
 }
 
 .kib-nav-icon{
-  width:56px;
-  height:56px;
+  width:74px;
+  height:74px;
   border-radius:50%;
-  background:#1f5ea8;
+  background:#2f67ad;
   display:flex;
   align-items:center;
   justify-content:center;
-  margin-bottom:16px;
+  margin-bottom:18px;
 }
 
 .kib-nav-icon img{
-  width:26px;
-  height:26px;
+  width:34px;
+  height:34px;
+  object-fit:contain;
 }
 
 .kib-nav-card h3{
   margin:0;
-  font-size:22px;
+  font-size: clamp(26px, 5vw, 34px);
+  line-height:1.08;
   font-weight:900;
-  line-height:1.15;
+  letter-spacing:-0.03em;
 }
 
 .kib-arrow{
   position:absolute;
-  right:20px;
-  bottom:20px;
-  font-size:22px;
-  font-weight:900;
-  color:#1f5ea8;
+  right:22px;
+  bottom:22px;
+  font-size:40px;
+  line-height:1;
+  color:#2f67ad;
+  font-weight:300;
 }
 
 /* ===============================
-   KIB FOOT NAV (BLUE LIST)
+   KIB WHITE FOOTER
 ================================ */
-.kib-foot-nav{
-  background:#0a5ea8;
-  padding: 40px 0 48px;
+.kib-footer-white{
+  background:#fff;
+  padding: 42px 0 54px;
 }
 
-.kib-foot-item{
+.kib-footer-acc{
+  border-top:1px solid rgba(0,0,0,.10);
+}
+
+.kib-acc-item{
+  border-bottom:1px solid rgba(0,0,0,.10);
+}
+
+.kib-acc-btn{
   width:100%;
-  background:none;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding: 18px 0;
   border:0;
-  border-bottom:1px solid rgba(255,255,255,.25);
-  padding:18px 6px;
-  color:#fff;
+  background:transparent;
+  color:#2f67ad;
   font-size:18px;
   font-weight:800;
   text-align:left;
   cursor:pointer;
 }
 
-.kib-foot-item::after{
-  content:"⌄";
-  float:right;
-  font-size:18px;
+.kib-acc-caret{
+  transition: transform .25s ease;
+  font-size: 18px;
 }
 
-.kib-foot-brand{
-  margin-top:28px;
-  color:#fff;
-  font-weight:900;
-  letter-spacing:.06em;
-  font-size:14px;
+.kib-acc-btn.is-open .kib-acc-caret{
+  transform: rotate(180deg);
 }
 
-/* Woori-like info block (Location Address / Email) */
-.woori-info{
-  width: min(1040px, 92vw);
-  margin: 0 auto;
-  padding: 38px 0 70px;
+.kib-acc-panel{
+  padding: 0 0 16px;
 }
 
-.woori-h{
-  margin: 0 0 14px;
-  font-weight: 900;
-  font-size: 34px;
-  color: #2f60b5;
-  letter-spacing: -0.02em;
+.kib-acc-panel a{
+  display:block;
+  padding: 9px 0;
+  color:#111;
+  text-decoration:none;
+  font-size:16px;
+  font-weight:500;
 }
 
-.woori-h-gap{
-  margin-top: 40px;
+.kib-footer-meta{
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top:1px solid rgba(0,0,0,.10);
+  display:grid;
+  gap:14px;
 }
 
-.woori-p{
-  margin: 0 0 18px;
-  font-size: 22px;
-  line-height: 1.55;
-  color: #111;
-  font-weight: 500;
-  max-width: 72ch;
+.kib-footer-line{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  color:#111;
+  font-size:15px;
+  font-weight:600;
 }
 
-.woori-muted{
-  color: rgba(0,0,0,.45);
+.kib-footer-line span:first-child{
+  color:#2f67ad;
+  font-weight:800;
+}
+
+.kib-footer-line a{
+  color:#111;
+  text-decoration:none;
+  font-weight:600;
+}
+
+/* mobile */
+@media (max-width: 768px){
+  .kib-nav-grid{
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .kib-nav-card{
+    min-height: 250px;
+    padding: 18px;
+    border-radius: 24px;
+  }
+
+  .kib-nav-icon{
+    width:64px;
+    height:64px;
+  }
+
+  .kib-nav-card h3{
+    font-size: 24px;
+  }
+
+  .kib-arrow{
+    font-size: 34px;
+  }
+
+  .kib-footer-line{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:6px;
+  }
 }
