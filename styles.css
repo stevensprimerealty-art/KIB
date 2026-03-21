@@ -18,22 +18,48 @@ body{
 
 /* ---------- INTRO ---------- */
 .intro{
-  position:fixed; inset:0;
-  display:grid; place-items:center;
+  position:fixed;
+  inset:0;
+  display:grid;
+  place-items:center;
   background:#fff;
   z-index:50;
+
+  transition: opacity .4s ease;
+
+  pointer-events: auto; /* ✅ ADD HERE */
 }
+
 .intro-inner{
   text-align:center;
   padding: 24px;
+
   opacity:0;
   transform: translateY(10px);
-  transition: opacity .9s ease, transform .9s ease;
+
+  transition: opacity .35s ease, transform .35s ease;
+
+  will-change: opacity, transform; /* ✅ ADD HERE */
 }
+
+/* ✅ FADE IN */
 .intro.is-in .intro-inner{
   opacity:1;
   transform: translateY(0);
 }
+
+/* ✅ FADE OUT */
+.intro.is-out .intro-inner{
+  opacity:0;
+  transform: translateY(-8px);
+  transition: opacity .4s ease, transform .4s ease;
+}
+
+.intro.is-out{
+  opacity:0;
+  pointer-events: none; /* ✅ ADD HERE */
+}
+
 .flag{
   width: 112px;
   height: 74px;
@@ -56,9 +82,19 @@ body{
 .app{
   min-height:100%;
   opacity:0;
-  transition: opacity .55s ease;
+  transform: translateY(8px) scale(.995);
+
+  transition:
+    opacity .6s ease,
+    transform .6s cubic-bezier(.22,1,.36,1);
+
+  will-change: opacity, transform; /* ✅ ADD HERE */
 }
-.app.is-in{ opacity:1; }
+
+.app.is-in{
+  opacity:1;
+  transform: translateY(0) scale(1);
+}
 
 /* HEADER stays above everything */
 .topbar{
