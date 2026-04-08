@@ -1,0 +1,166 @@
+/* ===============================
+   GLOBAL HEADER + DRAWER (FINAL)
+=============================== */
+
+/* HEADER */
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:#fff;
+  border-bottom:1px solid rgba(15,23,42,.06);
+}
+
+.topbar-inner{
+  max-width:1120px;
+  margin:0 auto;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.brand-text{
+  font-weight:900;
+  text-transform:uppercase;
+}
+
+.brand-text span{font-size:14px}
+.brand-text small{font-size:12px;color:#555}
+
+/* LANGUAGE */
+.lang{
+  display:flex;
+  gap:8px;
+  margin-left:auto;
+}
+
+.pill{
+  border:1px solid rgba(15,23,42,.12);
+  background:#fff;
+  padding:8px 14px;
+  border-radius:999px;
+  font-weight:700;
+}
+
+.pill.active{
+  background:#0f172a;
+  color:#fff;
+}
+
+/* HAMBURGER */
+.menu-btn{
+  width:44px;
+  height:44px;
+  border-radius:999px;
+  border:1px solid rgba(0,0,0,.1);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#fff;
+}
+
+.menu-ico{
+  width:18px;
+  height:2px;
+  background:#111;
+  position:relative;
+}
+
+.menu-ico::before,
+.menu-ico::after{
+  content:"";
+  position:absolute;
+  width:18px;
+  height:2px;
+  background:#111;
+  left:0;
+}
+
+.menu-ico::before{top:-6px}
+.menu-ico::after{top:6px}
+
+/* ===============================
+   DRAWER
+=============================== */
+
+.drawer{
+  position:fixed;
+  top:0;
+  right:-100%;
+  width:280px;
+  height:100%;
+  background:#fff;
+  z-index:999;
+  transition:.3s ease;
+  display:flex;
+  flex-direction:column;
+  box-shadow:-10px 0 30px rgba(0,0,0,.1);
+}
+
+.drawer.is-open{
+  right:0;
+}
+
+.drawer-shell{
+  padding:20px;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+}
+
+/* TOP */
+.drawer-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.drawer-brand{
+  font-weight:900;
+}
+
+.drawer-close{
+  font-size:22px;
+  background:none;
+  border:none;
+  cursor:pointer;
+}
+
+/* BODY */
+.drawer-body{
+  flex:1;
+}
+
+/* 🔥 FIXED LIST */
+.drawer-list{
+  list-style:none;      /* ✅ removes bullets */
+  padding:0;            /* ✅ removes left space */
+  margin:0;
+}
+
+.drawer-item{
+  margin-bottom:14px;
+}
+
+.drawer-link{
+  display:block;
+  font-size:18px;
+  font-weight:600;
+  padding:6px 0;
+}
+
+/* BACKDROP */
+.backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.4);
+  opacity:0;
+  transition:.3s;
+  z-index:998;
+}
+
+.backdrop.is-on{
+  opacity:1;
+}
