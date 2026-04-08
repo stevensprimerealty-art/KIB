@@ -12,27 +12,31 @@ const menuBtn = $("menuBtn");
 const closeBtn = $("closeBtn");
 
 function openDrawer() {
-  if (!drawer || !backdrop || !menuBtn) return;
+  if (!drawer || !menuBtn) return;
 
   drawer.classList.add("is-open");
 
-  backdrop.hidden = false;
-  requestAnimationFrame(() => backdrop.classList.add("is-on"));
+  if (backdrop) {
+    backdrop.hidden = false;
+    requestAnimationFrame(() => backdrop.classList.add("is-on"));
+  }
 
   menuBtn.setAttribute("aria-expanded", "true");
 }
 
 function closeDrawer() {
-  if (!drawer || !backdrop || !menuBtn) return;
+  if (!drawer || !menuBtn) return;
 
   drawer.classList.remove("is-open");
-  backdrop.classList.remove("is-on");
+
+  if (backdrop) {
+    backdrop.classList.remove("is-on");
+    setTimeout(() => {
+      backdrop.hidden = true;
+    }, 200);
+  }
 
   menuBtn.setAttribute("aria-expanded", "false");
-
-  setTimeout(() => {
-    backdrop.hidden = true;
-  }, 200);
 }
 
 function toggleDrawer() {
@@ -44,6 +48,16 @@ function toggleDrawer() {
 if (menuBtn) menuBtn.addEventListener("click", toggleDrawer);
 if (closeBtn) closeBtn.addEventListener("click", closeDrawer);
 if (backdrop) backdrop.addEventListener("click", closeDrawer);
+
+// Close drawer when clicking links
+document.querySelectorAll('.drawer-link').forEach(link => {
+  link.addEventListener('click', closeDrawer);
+});
+
+// ESC key closes drawer
+document.addEventListener('keydown', (e) => {
+  if (e.key === "Escape") closeDrawer();
+});
 
 // ===============================
 // HERO SLIDER
@@ -86,11 +100,12 @@ if (backdrop) backdrop.addEventListener("click", closeDrawer);
   }
 
   function start() {
+    stop();
     timer = setInterval(next, 3000);
   }
 
   function stop() {
-    clearInterval(timer);
+    if (timer) clearInterval(timer);
   }
 
   function restart() {
@@ -98,6 +113,7 @@ if (backdrop) backdrop.addEventListener("click", closeDrawer);
     start();
   }
 
+  // Touch support
   slider.addEventListener('touchstart', (e) => {
     touching = true;
     startX = e.touches[0].clientX;
@@ -113,10 +129,18 @@ if (backdrop) backdrop.addEventListener("click", closeDrawer);
   slider.addEventListener('touchend', () => {
     if (!touching) return;
     const diff = moveX - startX;
+
     if (diff > 50) goTo(index - 1);
     else if (diff < -50) goTo(index + 1);
+
     touching = false;
     restart();
+  });
+
+  // Pause when tab inactive
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) stop();
+    else start();
   });
 
   renderDots();
@@ -125,7 +149,7 @@ if (backdrop) backdrop.addEventListener("click", closeDrawer);
 })();
 
 // ===============================
-// REVEAL ON SCROLL (FIXED)
+// REVEAL ON SCROLL
 // ===============================
 (function () {
   const items = document.querySelectorAll('.reveal');
@@ -133,7 +157,7 @@ if (backdrop) backdrop.addEventListener("click", closeDrawer);
   const io = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible'); // ✅ FIXED
+        entry.target.classList.add('is-visible');
         io.unobserve(entry.target);
       }
     });
