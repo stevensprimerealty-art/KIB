@@ -1,0 +1,80 @@
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-title" id="brandTitle">
+      KOREA INTERNATIONAL BANKING
+    </div>
+    <div class="brand-sub" id="brandSub">(KIB)</div>
+  </div>
+
+  <div class="lang">
+    <button class="lang-btn is-active" data-lang="en">ENG</button>
+    <button class="lang-btn" data-lang="ko">KOR</button>
+    <button class="lang-btn" data-lang="es">ES</button>
+  </div>
+
+  <button id="menuBtn" class="hamburger" aria-label="Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</header>
+
+<!-- DRAWER -->
+<div id="drawer" class="drawer" aria-hidden="true">
+  <div class="drawer-shell">
+
+    <div class="drawer-top">
+      <div class="drawer-brand">
+        <span>KOREA INTERNATIONAL</span>
+        <small>BANKING</small>
+      </div>
+
+      <button id="closeBtn" class="drawer-close">✕</button>
+    </div>
+
+    <div class="drawer-body">
+      <ul class="drawer-list">
+
+        <li class="drawer-item">
+          <a class="drawer-link plain" href="index.html">Home</a>
+        </li>
+
+        <li class="drawer-item">
+          <a class="drawer-link plain" href="personal-banking.html">Personal Banking</a>
+        </li>
+
+        <li class="drawer-item">
+          <a class="drawer-link plain" href="business-banking.html">Business Banking</a>
+        </li>
+
+        <li class="drawer-item">
+          <a class="drawer-link plain" href="money-transfer.html">Money Transfer</a>
+        </li>
+
+        <li class="drawer-item">
+          <a class="drawer-link plain" href="news.html">News</a>
+        </li>
+
+        <li class="drawer-item">
+          <a class="drawer-link plain" href="contact.html">Contact</a>
+        </li>
+
+      </ul>
+    </div>
+
+    <div class="drawer-bottom">
+      <div class="drawer-lang">
+        <button id="langToggle" class="drawer-flag">🌐</button>
+
+        <div id="langDropdown" class="lang-dropdown" hidden>
+          <button class="lang-option" data-lang="en" data-flag="🇬🇧">🇬🇧</button>
+          <button class="lang-option" data-lang="ko" data-flag="🇰🇷">🇰🇷</button>
+          <button class="lang-option" data-lang="es" data-flag="🇪🇸">🇪🇸</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="backdrop" class="backdrop"></div>
