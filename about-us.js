@@ -5,6 +5,7 @@
   const slider = document.getElementById('heroSlider');
   const track = document.getElementById('heroTrack');
   const dotsWrap = document.getElementById('heroDots');
+
   if (!slider || !track || !dotsWrap) return;
 
   const total = track.children.length;
@@ -16,10 +17,12 @@
     for (let i = 0; i < total; i++) {
       const dot = document.createElement('button');
       if (i === index) dot.classList.add('active');
+
       dot.addEventListener('click', () => {
         goTo(i);
         restart();
       });
+
       dotsWrap.appendChild(dot);
     }
   }
@@ -30,15 +33,25 @@
     renderDots();
   }
 
-  function next() { goTo(index + 1); }
+  function next() {
+    goTo(index + 1);
+  }
 
-  function start() { timer = setInterval(next, 3000); }
+  function start() {
+    stop();
+    timer = setInterval(next, 3000);
+  }
 
-  function stop() { clearInterval(timer); }
+  function stop() {
+    if (timer) clearInterval(timer);
+  }
 
-  function restart() { stop(); start(); }
+  function restart() {
+    stop();
+    start();
+  }
 
-  // swipe
+  // Swipe
   let startX = 0, moveX = 0, touching = false;
 
   slider.addEventListener('touchstart', (e) => {
@@ -55,9 +68,12 @@
 
   slider.addEventListener('touchend', () => {
     if (!touching) return;
+
     const diff = moveX - startX;
+
     if (diff > 50) goTo(index - 1);
     else if (diff < -50) goTo(index + 1);
+
     touching = false;
     restart();
   });
@@ -69,15 +85,16 @@
 
 
 // ===============================
-// SCROLL REVEAL (FIXED)
+// SCROLL REVEAL
 // ===============================
 (function () {
   const items = document.querySelectorAll('.reveal');
+  if (!items.length) return;
 
   const io = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible'); // ✅ FIXED
+        entry.target.classList.add('is-visible');
         io.unobserve(entry.target);
       }
     });
@@ -88,7 +105,7 @@
 
 
 // ===============================
-// MILESTONES SLIDER
+// MILESTONES SLIDER (FIXED)
 // ===============================
 (function () {
 
@@ -103,12 +120,11 @@
 
   const yearEl = document.getElementById('mileYear');
   const titleEl = document.getElementById('mileTitle');
-  const imgEl = document.getElementById('mileImgTag');
-  const imgWrap = document.getElementById('mileImage');
+  const imgEl = document.getElementById('mileImg'); // ✅ FIXED ID
   const prev = document.querySelector('.mile-prev');
   const next = document.querySelector('.mile-next');
 
-  if (!yearEl || !titleEl || !imgEl || !imgWrap || !prev || !next) return;
+  if (!yearEl || !titleEl || !imgEl || !prev || !next) return;
 
   let current = 0;
 
@@ -132,7 +148,7 @@
 
 
 // ===============================
-// FOOTER ACCORDION (GLOBAL SAFE)
+// FOOTER ACCORDION
 // ===============================
 (function () {
   const items = document.querySelectorAll('.kib-acc-item');
@@ -142,7 +158,6 @@
     if (!btn) return;
 
     btn.addEventListener('click', () => {
-
       const isOpen = item.classList.contains('is-open');
 
       items.forEach((el) => el.classList.remove('is-open'));
@@ -171,6 +186,7 @@
     function step(now) {
       const progress = Math.min((now - startTime) / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
+
       el.textContent = Math.floor(target * eased).toLocaleString();
 
       if (progress < 1) requestAnimationFrame(step);
