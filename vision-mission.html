@@ -5,15 +5,17 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>KIB | Vision & Mission</title>
 
-  <!-- ✅ USE GLOBAL CSS -->
+  <!-- ✅ GLOBAL CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- ✅ PAGE CSS -->
   <link rel="stylesheet" href="about-us.css">
 </head>
 
 <body>
 
-  <!-- ✅ GLOBAL HEADER -->
+  <!-- GLOBAL HEADER -->
   <div id="header"></div>
-
 
   <main class="page-wrap">
 
@@ -21,10 +23,17 @@
     <section class="hero reveal">
       <div class="hero-slider" id="heroSlider">
         <div class="hero-track" id="heroTrack">
-          <div class="hero-slide"><img src="vision-mission-hero-1.jpg"></div>
-          <div class="hero-slide"><img src="vision-mission-hero-2.jpg"></div>
-          <div class="hero-slide"><img src="vision-mission-hero-3.jpg"></div>
+          <div class="hero-slide">
+            <img src="vision-mission-hero-1.jpg" alt="Vision Slide 1">
+          </div>
+          <div class="hero-slide">
+            <img src="vision-mission-hero-2.jpg" alt="Vision Slide 2">
+          </div>
+          <div class="hero-slide">
+            <img src="vision-mission-hero-3.jpg" alt="Vision Slide 3">
+          </div>
         </div>
+
         <div class="hero-dots" id="heroDots"></div>
       </div>
 
@@ -41,12 +50,11 @@
       </nav>
     </section>
 
-
     <!-- CONTENT -->
     <section class="content-card reveal">
 
-      <div class="media-box">
-        <img src="vision-mission-main.jpg" alt="">
+      <div class="image-box">
+        <img src="vision-mission-main.jpg" alt="Vision and Mission">
       </div>
 
       <div class="card-pad">
@@ -59,12 +67,13 @@
 
         <p style="font-size:20px;">
           Our mission:
-          <strong>Contributing to the Cambodian Economy through better Financial Services for our Customers.</strong>
+          <strong>
+            Contributing to the Cambodian Economy through better Financial Services for our Customers.
+          </strong>
         </p>
       </div>
 
     </section>
-
 
     <!-- SUPPORT -->
     <section class="support-card reveal">
@@ -78,20 +87,17 @@
       </div>
 
       <div class="image-box">
-        <img src="customer-service-care.jpg">
+        <img src="customer-service-care.jpg" alt="Customer Support">
       </div>
     </section>
 
   </main>
 
-
-  <!-- ✅ GLOBAL FOOTER -->
+  <!-- GLOBAL FOOTER -->
   <div id="footer"></div>
 
-
-  <!-- ✅ GLOBAL JS -->
+  <!-- ✅ ONLY MAIN JS -->
   <script src="script.js"></script>
-  <script src="about-us.js"></script>
 
 </body>
 </html>
