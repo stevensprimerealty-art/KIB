@@ -5,14 +5,17 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>KIB | CEO Message</title>
 
-  <link rel="stylesheet" href="about-us.css"> <!-- reuse -->
+  <!-- ✅ GLOBAL CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- ✅ PAGE CSS -->
+  <link rel="stylesheet" href="about-us.css">
 </head>
 
 <body>
 
-  <!-- ✅ GLOBAL HEADER -->
+  <!-- GLOBAL HEADER -->
   <div id="header"></div>
-
 
   <main class="page-wrap">
 
@@ -20,10 +23,17 @@
     <section class="hero reveal">
       <div class="hero-slider" id="heroSlider">
         <div class="hero-track" id="heroTrack">
-          <div class="hero-slide"><img src="ceo-message-hero-1.jpg"></div>
-          <div class="hero-slide"><img src="ceo-message-hero-2.jpg"></div>
-          <div class="hero-slide"><img src="ceo-message-hero-3.jpg"></div>
+          <div class="hero-slide">
+            <img src="ceo-message-hero-1.jpg" alt="CEO Slide 1">
+          </div>
+          <div class="hero-slide">
+            <img src="ceo-message-hero-2.jpg" alt="CEO Slide 2">
+          </div>
+          <div class="hero-slide">
+            <img src="ceo-message-hero-3.jpg" alt="CEO Slide 3">
+          </div>
         </div>
+
         <div class="hero-dots" id="heroDots"></div>
       </div>
 
@@ -40,12 +50,14 @@
       </nav>
     </section>
 
-
     <!-- MESSAGE -->
     <section class="content-card reveal">
       <div class="card-pad">
 
-        <h2>Message from <span style="color:#2f6fb2;">SOHN CHEOL SU, CEO</span></h2>
+        <h2>
+          Message from 
+          <span style="color:#2f6fb2;">SOHN CHEOL SU, CEO</span>
+        </h2>
 
         <p>Dear Valued Customers,</p>
 
@@ -73,37 +85,35 @@
 
       </div>
 
-      <div class="media-box">
-        <img src="ceo-portrait.jpg" alt="">
-        <img src="ceo-signature.png" alt="" style="margin-top:20px;">
+      <div class="image-box">
+        <img src="ceo-portrait.jpg" alt="CEO Portrait">
+        <img src="ceo-signature.png" alt="CEO Signature" style="margin-top:20px;">
       </div>
     </section>
-
 
     <!-- SUPPORT -->
     <section class="support-card reveal">
       <div class="card-pad">
         <h2>Customer Service Care</h2>
         <p>We always available to solve your problem!</p>
+
         <div>☎ +855 23 963 333</div>
+
         <a class="btn btn-soft" href="contact.html">Contact us</a>
       </div>
 
       <div class="image-box">
-        <img src="customer-service-care.jpg">
+        <img src="customer-service-care.jpg" alt="Customer Service">
       </div>
     </section>
 
   </main>
 
-
-  <!-- ✅ GLOBAL FOOTER -->
+  <!-- GLOBAL FOOTER -->
   <div id="footer"></div>
 
-
-  <!-- ✅ GLOBAL JS -->
+  <!-- ✅ ONLY MAIN JS -->
   <script src="script.js"></script>
-  <script src="about-us.js"></script>
 
 </body>
 </html>
