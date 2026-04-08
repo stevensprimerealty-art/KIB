@@ -257,98 +257,6 @@ async function buildCountries(selectEl) {
   }
 }
 
-// ---------- MENU DRAWER ----------
-const drawer = $("drawer");
-const backdrop = $("backdrop");
-const menuBtn = $("menuBtn");
-const closeBtn = $("closeBtn");
-
-function openDrawer() {
-  if (!drawer || !backdrop || !menuBtn) return;
-
-  drawer.classList.add("is-open");
-  menuBtn.classList.add("is-active");
-
-  backdrop.hidden = false;
-  requestAnimationFrame(() => backdrop.classList.add("is-on"));
-
-  drawer.setAttribute("aria-hidden", "false");
-  menuBtn.setAttribute("aria-expanded", "true");
-}
-
-function closeDrawer() {
-  if (!drawer || !backdrop || !menuBtn) return;
-
-  drawer.classList.remove("is-open");
-  menuBtn.classList.remove("is-active");
-
-  backdrop.classList.remove("is-on");
-
-  drawer.setAttribute("aria-hidden", "true");
-  menuBtn.setAttribute("aria-expanded", "false");
-
-  setTimeout(() => { if (backdrop) backdrop.hidden = true; }, 200);
-}
-
-function toggleDrawer() {
-  if (!drawer) return;
-  drawer.classList.contains("is-open") ? closeDrawer() : openDrawer();
-}
-
-// backdrop click
-if (backdrop) backdrop.addEventListener("click", closeDrawer);
-
-// ESC key
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") closeDrawer();
-});
-
-// ===============================
-// DRAWER ACCORDION (FINAL FIX)
-// ===============================
-$$("[data-accordion]").forEach((btn) => {
-  btn.addEventListener("click", (e) => {
-
-    e.stopPropagation(); // ✅ ONLY THIS
-
-    const key = btn.getAttribute("data-accordion");
-    const panel = document.querySelector(`[data-panel="${key}"]`);
-    if (!panel) return;
-
-    const isOpen = btn.classList.contains("is-open");
-
-    // close all
-    $$("[data-accordion]").forEach((b) => {
-      b.classList.remove("is-open");
-      b.setAttribute("aria-expanded", "false");
-    });
-
-    $$("[data-panel]").forEach((p) => {
-      p.style.maxHeight = null;
-      p.classList.remove("is-open");
-    });
-
-    // open current
-    if (!isOpen) {
-      btn.classList.add("is-open");
-      btn.setAttribute("aria-expanded", "true");
-
-      panel.classList.add("is-open");
-      panel.style.maxHeight = panel.scrollHeight + "px";
-    }
-  });
-});
- 
-// ===============================
-// CLOSE DRAWER ON LINK CLICK (SAFE)
-// ===============================
-document.querySelectorAll(".drawer-sub a, .drawer-link.plain").forEach(link => {
-  link.addEventListener("click", () => {
-    setTimeout(() => {
-      closeDrawer();
-    }, 50); // small delay = allows navigation
-  });
-});
 
 // ---------- Scroll down button (scroll to content) ----------
 const scrollBtn = $("scrollDownBtn") || document.querySelector(".scroll-down");
@@ -495,17 +403,6 @@ const translations = {
   }
 };
 
-function setText(id, value) {
-  const el = $(id);
-  if (!el || value == null) return;
-
-  if (typeof value === "string" && value.includes("\n")) {
-    el.innerHTML = value.replaceAll("\n", "<br>");
-  } else {
-    el.textContent = value;
-  }
-}
-
 function setLanguage(lang) {
   const dict = translations[lang] || translations.en;
 
@@ -527,7 +424,7 @@ function setLanguage(lang) {
   // Main headline
   setText("mainHeadline", dict.mainHeadline);
 
-  // Slider 5 cards
+  // Slider cards
   setText("s1Kicker", dict.s1Kicker);
   setText("s1Title", dict.s1Title);
   setText("s1Text", dict.s1Text);
@@ -548,7 +445,6 @@ function setLanguage(lang) {
   setText("s5Title", dict.s5Title);
   setText("s5Text", dict.s5Text);
 
-  // Optional showcase IDs (only if present in HTML)
   setText("showcaseTitle", dict.showcaseTitle);
   setText("cap1", dict.cap1);
   setText("cap2", dict.cap2);
@@ -556,7 +452,7 @@ function setLanguage(lang) {
   setText("cap4", dict.cap4);
   setText("cap5", dict.cap5);
 
-  // Update buttons state + aria-pressed
+  // Buttons active state
   $$(".lang-btn").forEach((b) => {
     const active = b.dataset.lang === lang;
     b.classList.toggle("is-active", active);
@@ -565,9 +461,6 @@ function setLanguage(lang) {
 
   // Set html lang
   document.documentElement.lang = lang;
-
-  // Close menu when language changed
-  closeDrawer();
 }
 
 $$(".lang-btn").forEach((btn) => {
@@ -1098,19 +991,100 @@ $$(".lang-option").forEach((btn) => {
 });
 
 // ===============================
-// INIT AFTER HEADER/FOOTER LOAD
+// INIT AFTER HEADER/FOOTER LOAD (FINAL FIX)
 // ===============================
 function initAfterLoad() {
-  // MENU
+
+  const drawer = $("drawer");
+  const backdrop = $("backdrop");
   const menuBtn = $("menuBtn");
   const closeBtn = $("closeBtn");
-  const backdrop = $("backdrop");
 
+  // ===============================
+  // DRAWER FUNCTIONS (MOVE UP ✅)
+  // ===============================
+  function openDrawer() {
+    if (!drawer || !backdrop || !menuBtn) return;
+
+    drawer.classList.add("is-open");
+
+    backdrop.hidden = false;
+    requestAnimationFrame(() => backdrop.classList.add("is-on"));
+
+    menuBtn.setAttribute("aria-expanded", "true");
+  }
+
+  function closeDrawer() {
+    if (!drawer || !backdrop || !menuBtn) return;
+
+    drawer.classList.remove("is-open");
+    backdrop.classList.remove("is-on");
+
+    setTimeout(() => {
+      backdrop.hidden = true;
+    }, 200);
+
+    menuBtn.setAttribute("aria-expanded", "false");
+  }
+
+  function toggleDrawer() {
+    if (!drawer) return;
+    drawer.classList.contains("is-open") ? closeDrawer() : openDrawer();
+  }
+
+  // ===============================
+  // MENU EVENTS (NOW SAFE ✅)
+  // ===============================
   if (menuBtn) menuBtn.addEventListener("click", toggleDrawer);
   if (closeBtn) closeBtn.addEventListener("click", closeDrawer);
   if (backdrop) backdrop.addEventListener("click", closeDrawer);
 
-  // FOOTER ACCORDION (ONLY HERE)
+  // ESC KEY
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeDrawer();
+  });
+
+  // ===============================
+  // HEADER ACCORDION
+  // ===============================
+  document.querySelectorAll("[data-accordion]").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+
+      e.stopPropagation();
+
+      const key = btn.dataset.accordion;
+      const panel = document.querySelector(`[data-panel="${key}"]`);
+      if (!panel) return;
+
+      const isOpen = btn.classList.contains("is-open");
+
+      document.querySelectorAll("[data-accordion]").forEach((b) => {
+        b.classList.remove("is-open");
+      });
+
+      document.querySelectorAll("[data-panel]").forEach((p) => {
+        p.style.maxHeight = null;
+      });
+
+      if (!isOpen) {
+        btn.classList.add("is-open");
+        panel.style.maxHeight = panel.scrollHeight + "px";
+      }
+    });
+  });
+
+  // ===============================
+  // CLOSE DRAWER ON LINK CLICK
+  // ===============================
+  document.querySelectorAll(".drawer-sub a, .drawer-link.plain").forEach(link => {
+    link.addEventListener("click", () => {
+      setTimeout(closeDrawer, 50);
+    });
+  });
+
+  // ===============================
+  // FOOTER ACCORDION
+  // ===============================
   document.querySelectorAll("[data-kib-accordion]").forEach((btn) => {
     btn.addEventListener("click", () => {
       const key = btn.dataset.kibAccordion;
@@ -1132,6 +1106,7 @@ function initAfterLoad() {
       if (!isOpen) {
         btn.classList.add("is-open");
         btn.setAttribute("aria-expanded", "true");
+
         panel.hidden = false;
         panel.style.maxHeight = panel.scrollHeight + "px";
       }
@@ -1151,10 +1126,14 @@ async function loadPart(id, file) {
   el.innerHTML = html;
 }
 
+
+// ===============================
+// INIT AFTER LOAD
+// ===============================
 window.addEventListener("DOMContentLoaded", async () => {
   await loadPart("header", "header.html");
   await loadPart("footer", "footer.html");
 
-  // 🔥 THIS ACTIVATES EVERYTHING
+  // 🔥 THIS FIXES EVERYTHING
   initAfterLoad();
 });
