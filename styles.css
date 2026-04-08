@@ -1814,3 +1814,50 @@ body{
     gap:6px;
   }
 }
+
+/* ===== GLOBAL BANKING TEXT SYSTEM ===== */
+body{
+  font-family: "Source Sans 3", "Helvetica Neue", Arial, sans-serif;
+  color:#0b1f33;
+  line-height:1.65;
+}
+
+h1, h2, h3, h4{
+  font-weight:700;
+  letter-spacing:-0.2px;
+  color:#0a2540;
+}
+
+h1{ font-size:42px; font-weight:800; }
+h2{ font-size:32px; }
+h3{ font-size:24px; }
+
+p{
+  font-size:16px;
+  color:#4a5a6a;
+}
+
+.hero-headline{
+  font-size:44px;
+  font-weight:800;
+}
+
+.hero-sub{
+  font-size:18px;
+}
+
+.headline,
+.overview-title,
+.banking-title,
+.newsroom-title{
+  font-size:34px;
+  font-weight:800;
+}
+
+.card-title{
+  font-size:20px;
+}
+
+.card-text{
+  font-size:15px;
+}
