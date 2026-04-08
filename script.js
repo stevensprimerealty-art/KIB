@@ -295,16 +295,6 @@ function toggleDrawer() {
   drawer.classList.contains("is-open") ? closeDrawer() : openDrawer();
 }
 
-// 🔥 THIS WAS MISSING
-if (menuBtn) menuBtn.addEventListener("click", toggleDrawer);
-
-// close button
-if (closeBtn) {
-  closeBtn.addEventListener("click", () => {
-    closeDrawer();
-  });
-}
-
 // backdrop click
 if (backdrop) backdrop.addEventListener("click", closeDrawer);
 
@@ -1108,31 +1098,63 @@ $$(".lang-option").forEach((btn) => {
 });
 
 // ===============================
-// KIB FOOTER ACCORDION
+// INIT AFTER HEADER/FOOTER LOAD
 // ===============================
-document.querySelectorAll("[data-kib-accordion]").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const key = btn.dataset.kibAccordion;
-    const panel = document.querySelector(`[data-kib-panel="${key}"]`);
-    if (!panel) return;
+function initAfterLoad() {
+  // MENU
+  const menuBtn = $("menuBtn");
+  const closeBtn = $("closeBtn");
+  const backdrop = $("backdrop");
 
-    const isOpen = btn.classList.contains("is-open");
+  if (menuBtn) menuBtn.addEventListener("click", toggleDrawer);
+  if (closeBtn) closeBtn.addEventListener("click", closeDrawer);
+  if (backdrop) backdrop.addEventListener("click", closeDrawer);
 
-    document.querySelectorAll("[data-kib-accordion]").forEach((b) => {
-      b.classList.remove("is-open");
-      b.setAttribute("aria-expanded", "false");
+  // FOOTER ACCORDION (ONLY HERE)
+  document.querySelectorAll("[data-kib-accordion]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const key = btn.dataset.kibAccordion;
+      const panel = document.querySelector(`[data-kib-panel="${key}"]`);
+      if (!panel) return;
+
+      const isOpen = btn.classList.contains("is-open");
+
+      document.querySelectorAll("[data-kib-accordion]").forEach((b) => {
+        b.classList.remove("is-open");
+        b.setAttribute("aria-expanded", "false");
+      });
+
+      document.querySelectorAll("[data-kib-panel]").forEach((p) => {
+        p.hidden = true;
+        p.style.maxHeight = null;
+      });
+
+      if (!isOpen) {
+        btn.classList.add("is-open");
+        btn.setAttribute("aria-expanded", "true");
+        panel.hidden = false;
+        panel.style.maxHeight = panel.scrollHeight + "px";
+      }
     });
-
-    document.querySelectorAll("[data-kib-panel]").forEach((p) => {
-      p.hidden = true;
-      p.style.maxHeight = null;
-    });
-
-    if (!isOpen) {
-      btn.classList.add("is-open");
-      btn.setAttribute("aria-expanded", "true");
-      panel.hidden = false;
-      panel.style.maxHeight = panel.scrollHeight + "px";
-    }
   });
+}
+
+// ===============================
+// LOAD HEADER + FOOTER
+// ===============================
+async function loadPart(id, file) {
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  const res = await fetch(file);
+  const html = await res.text();
+  el.innerHTML = html;
+}
+
+window.addEventListener("DOMContentLoaded", async () => {
+  await loadPart("header", "header.html");
+  await loadPart("footer", "footer.html");
+
+  // 🔥 THIS ACTIVATES EVERYTHING
+  initAfterLoad();
 });
