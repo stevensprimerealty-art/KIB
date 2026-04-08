@@ -5,8 +5,11 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>KIB | About Us</title>
 
-<link rel="stylesheet" href="global.css">
-<link rel="stylesheet" href="about-us.css">
+  <!-- ✅ GLOBAL FIRST -->
+  <link rel="stylesheet" href="global.css">
+
+  <!-- ✅ PAGE CSS -->
+  <link rel="stylesheet" href="about-us.css">
 </head>
 
 <body>
@@ -23,13 +26,13 @@
         <div class="hero-dots" id="heroDots"></div>
 
         <div class="hero-track" id="heroTrack">
-          <div class="hero-slide hero-image-box">
+          <div class="hero-slide">
             <img src="total-assets-hero-1.jpg" alt="">
           </div>
-          <div class="hero-slide hero-image-box">
+          <div class="hero-slide">
             <img src="total-assets-hero-2.jpg" alt="">
           </div>
-          <div class="hero-slide hero-image-box">
+          <div class="hero-slide">
             <img src="total-assets-hero-3.jpg" alt="">
           </div>
         </div>
@@ -59,7 +62,7 @@
         </p>
       </div>
 
-      <div class="media-box image-box">
+      <div class="image-box">
         <img src="our-company-building.jpg" alt="">
       </div>
     </section>
@@ -107,7 +110,7 @@
 
     <!-- GLOBAL NETWORK -->
     <section class="content-card reveal">
-      <div class="media-box image-box tall-network">
+      <div class="image-box">
         <img src="global-network-banner.jpg" alt="">
       </div>
 
@@ -119,23 +122,23 @@
     </section>
 
 
-    <!-- COUNTERS -->
-    <section class="network-stats reveal">
+    <!-- COUNTERS (✅ FIXED ID) -->
+    <section id="networkCounters" class="network-stats reveal">
       <div class="network-item">
         <span>Global Network</span>
-        <strong data-target="24">0</strong>
+        <strong class="network-number" data-target="24">0</strong>
         <span>countries</span>
       </div>
 
       <div class="network-item">
         <span>Korea Branches</span>
-        <strong data-target="718">0</strong>
+        <strong class="network-number" data-target="718">0</strong>
         <span>branches</span>
       </div>
 
       <div class="network-item">
         <span>Global Branches</span>
-        <strong data-target="472">0</strong>
+        <strong class="network-number" data-target="472">0</strong>
         <span>branches</span>
       </div>
     </section>
@@ -143,14 +146,16 @@
 
     <!-- SUPPORT -->
     <section class="support-card reveal">
-      <h2>Customer Service Care</h2>
-      <p>We always available to solve your problem!</p>
+      <div class="card-pad">
+        <h2>Customer Service Care</h2>
+        <p>We always available to solve your problem!</p>
 
-      <div class="support-phone">☎ +855 23 963 333</div>
+        <div class="support-phone">☎ +855 23 963 333</div>
 
-      <a class="btn btn-soft" href="contact.html">Contact us</a>
+        <a class="btn btn-soft" href="contact.html">Contact us</a>
+      </div>
 
-      <div class="support-image image-box">
+      <div class="image-box">
         <img src="customer-service-care.jpg" alt="">
       </div>
     </section>
@@ -162,7 +167,7 @@
   <div id="footer"></div>
 
 
-  <!-- ✅ MAIN SCRIPT (CRITICAL) -->
+  <!-- ✅ MAIN SCRIPT -->
   <script src="script.js"></script>
 
 </body>
