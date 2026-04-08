@@ -60,10 +60,7 @@ button{font:inherit}
   flex-direction:column;
   box-shadow:-10px 0 30px rgba(0,0,0,.1);
 }
-
-.drawer.is-open{
-  right:0;
-}
+.drawer.is-open{right:0}
 
 /* ===============================
    BACKDROP
@@ -76,10 +73,7 @@ button{font:inherit}
   z-index:998;
   transition:.3s ease;
 }
-
-.backdrop.is-on{
-  opacity:1;
-}
+.backdrop.is-on{opacity:1}
 
 /* ===============================
    PAGE
@@ -87,7 +81,7 @@ button{font:inherit}
 .page-wrap{
   max-width:1120px;
   margin:0 auto;
-  padding:18px 16px 48px;
+  padding:20px 16px 60px;
 }
 
 /* ===============================
@@ -99,10 +93,11 @@ button{font:inherit}
   box-shadow:var(--shadow);
   overflow:hidden;
   position:relative;
+  margin-bottom:30px;
 }
 
 .hero-slider{
-  height:360px;
+  height:320px;
   overflow:hidden;
   position:relative;
 }
@@ -123,9 +118,7 @@ button{font:inherit}
   object-fit:cover;
 }
 
-/* ===============================
-   DOTS
-=============================== */
+/* DOTS */
 .hero-dots{
   position:absolute;
   bottom:12px;
@@ -137,24 +130,18 @@ button{font:inherit}
 }
 
 .hero-dots button{
-  width:14px;
-  height:14px;
+  width:12px;
+  height:12px;
   border-radius:50%;
   background:#fff;
   border:none;
-  cursor:pointer;
 }
+.hero-dots button.active{width:26px}
 
-.hero-dots button.active{
-  width:32px;
-}
-
-/* ===============================
-   HERO CARD
-=============================== */
+/* HERO CARD */
 .hero-card{
   width:min(760px,calc(100% - 32px));
-  margin:-74px auto 0;
+  margin:-60px auto 0;
   background:#fff;
   border-radius:26px;
   box-shadow:var(--shadow);
@@ -164,16 +151,16 @@ button{font:inherit}
 }
 
 .hero-card h1{
-  font-size:62px;
+  font-size:42px;
   font-weight:900;
   margin:0;
 }
 
 .hero-line{
-  width:88px;
+  width:80px;
   height:3px;
   background:#8c8f96;
-  margin:16px 0;
+  margin:14px 0;
 }
 
 /* ===============================
@@ -181,7 +168,6 @@ button{font:inherit}
 =============================== */
 .about-tabs{
   display:flex;
-  overflow:auto;
   background:#56adeb;
 }
 
@@ -189,10 +175,9 @@ button{font:inherit}
   flex:1;
   text-align:center;
   color:#fff;
-  padding:18px;
+  padding:16px;
   font-weight:600;
 }
-
 .about-tabs a.active{
   background:rgba(255,255,255,.2);
 }
@@ -205,22 +190,34 @@ button{font:inherit}
   background:#fff;
   border-radius:30px;
   box-shadow:var(--shadow);
-  margin-bottom:22px;
+  margin-bottom:24px;
   overflow:hidden;
+}
+
+/* LAYOUT FIX */
+.content-card{
+  display:flex;
+  flex-direction:column;
+}
+
+@media (min-width:860px){
+  .content-card{
+    flex-direction:row;
+  }
 }
 
 .card-pad{
-  padding:28px;
+  padding:26px;
+  flex:1;
 }
 
 /* ===============================
-   IMAGE
+   IMAGE FIX (IMPORTANT)
 =============================== */
 .image-box{
   background:#dce8fb;
-  border-radius:24px;
-  min-height:320px;
-  overflow:hidden;
+  min-height:260px;
+  flex:1;
 }
 
 .image-box img{
@@ -235,20 +232,20 @@ button{font:inherit}
 .stats-section{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:20px;
-  margin-bottom:22px;
+  gap:18px;
+  margin-bottom:24px;
 }
 
 .stat-item{
   background:#fff;
-  padding:20px;
-  border-radius:20px;
+  padding:18px;
+  border-radius:18px;
   box-shadow:var(--shadow);
   text-align:center;
 }
 
 .stat-number{
-  font-size:72px;
+  font-size:48px;
   font-weight:900;
 }
 
@@ -256,8 +253,8 @@ button{font:inherit}
    BUTTON
 =============================== */
 .btn{
-  padding:14px 28px;
-  border-radius:20px;
+  padding:12px 22px;
+  border-radius:18px;
   display:inline-block;
 }
 
@@ -266,34 +263,32 @@ button{font:inherit}
 }
 
 /* ===============================
-   FOOTER CARDS
+   SUPPORT FIX
 =============================== */
-.footer-cards{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:18px;
+.support-card{
+  display:flex;
+  flex-direction:column;
 }
 
-.footer-card{
-  background:#fff;
-  border-radius:28px;
-  padding:28px;
+@media (min-width:860px){
+  .support-card{
+    flex-direction:row;
+  }
 }
 
 /* ===============================
    FOOTER
 =============================== */
 .kib-footer{
-  margin-top:-40px;
+  margin-top:20px; /* ✅ FIXED (no overlap) */
 }
 
 /* ===============================
-   🔥 REVEAL FIX (CRITICAL)
+   REVEAL FIX
 =============================== */
 .reveal{
   opacity:1;
   transform:none;
-  transition:.6s;
 }
 
 /* ===============================
@@ -301,27 +296,13 @@ button{font:inherit}
 =============================== */
 @media (max-width:860px){
 
-  .hero-slider{
-    height:240px;
-  }
-
-  .hero-card{
-    margin-top:-40px;
-  }
+  .hero-slider{height:220px}
 
   .hero-card h1{
-    font-size:34px;
-  }
-
-  .stat-number{
-    font-size:48px;
+    font-size:28px;
   }
 
   .stats-section{
-    grid-template-columns:1fr;
-  }
-
-  .footer-cards{
     grid-template-columns:1fr;
   }
 }
