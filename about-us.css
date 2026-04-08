@@ -4,11 +4,14 @@
   --text:#0b1220;
   --muted:#4b5563;
   --blue:#356db3;
+  --blue-light:#69b2eb;
+  --line:#d9dde5;
   --shadow:0 14px 34px rgba(15,23,42,.08);
   --radius:24px;
   --radius-lg:30px;
 }
 
+/* RESET */
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 
@@ -29,24 +32,28 @@ a{text-decoration:none;color:inherit}
   padding:18px 16px 48px;
 }
 
-/* HERO */
+/* =========================
+   HERO
+========================= */
 .hero{
   background:#f1f4fa;
   border-radius:30px;
   box-shadow:var(--shadow);
   overflow:hidden;
   margin-bottom:22px;
+  position:relative;
 }
 
 .hero-slider{
   height:360px;
   overflow:hidden;
+  position:relative;
 }
 
 .hero-track{
   display:flex;
   height:100%;
-  transition:.4s ease;
+  transition:transform .45s ease;
 }
 
 .hero-slide{
@@ -59,13 +66,39 @@ a{text-decoration:none;color:inherit}
   object-fit:cover;
 }
 
+/* DOTS */
+.hero-dots{
+  position:absolute;
+  bottom:14px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:10px;
+}
+
+.hero-dots button{
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  border:none;
+  background:rgba(255,255,255,.7);
+}
+
+.hero-dots button.active{
+  width:30px;
+  background:#fff;
+}
+
+/* HERO CARD */
 .hero-card{
   width:min(760px,calc(100% - 32px));
-  margin:-60px auto 0;
+  margin:-70px auto 0;
   background:#fff;
   border-radius:26px;
   box-shadow:var(--shadow);
-  padding:22px;
+  padding:24px;
+  position:relative;
+  z-index:2;
 }
 
 .crumb{
@@ -77,15 +110,16 @@ a{text-decoration:none;color:inherit}
 .crumb span{color:var(--blue)}
 
 .hero-card h1{
-  font-size:48px;
+  font-size:52px;
   font-weight:900;
   margin:0;
+  line-height:1;
 }
 
 .hero-line{
   width:80px;
   height:3px;
-  background:#999;
+  background:#9ca3af;
   margin:14px 0;
 }
 
@@ -94,36 +128,43 @@ a{text-decoration:none;color:inherit}
   color:#374151;
 }
 
-/* ABOUT TABS */
+/* =========================
+   ABOUT TABS
+========================= */
 .about-tabs{
   display:flex;
-  background:#69b2eb;
-  border-bottom-left-radius:32px;
-  border-bottom-right-radius:32px;
+  background:linear-gradient(90deg,#66b8ef,#24a8ea);
+  border-bottom-left-radius:30px;
+  border-bottom-right-radius:30px;
   overflow:hidden;
 }
 
 .about-tabs a{
   flex:1;
   text-align:center;
-  padding:16px;
+  padding:18px 12px;
   color:#fff;
   font-weight:600;
+  position:relative;
 }
 
 .about-tabs a.active{
-  background:#78b9ec;
+  background:rgba(255,255,255,.1);
 }
 
 .about-tabs a.active::after{
   content:"";
-  display:block;
+  position:absolute;
+  left:20%;
+  right:20%;
+  bottom:0;
   height:4px;
   background:#fff;
-  margin-top:8px;
 }
 
-/* CARDS */
+/* =========================
+   CONTENT CARD
+========================= */
 .content-card,
 .support-card{
   background:#fff;
@@ -138,19 +179,22 @@ a{text-decoration:none;color:inherit}
 }
 
 .card-pad h2{
-  font-size:32px;
+  font-size:34px;
   font-weight:900;
+  margin-bottom:14px;
 }
 
 .card-pad p{
   color:var(--muted);
-  line-height:1.6;
+  line-height:1.65;
+  font-size:18px;
 }
 
 /* IMAGE */
 .image-box{
   background:#dce8fb;
   min-height:300px;
+  position:relative;
 }
 
 .image-box img{
@@ -159,21 +203,27 @@ a{text-decoration:none;color:inherit}
   object-fit:cover;
 }
 
-/* STATS */
+/* =========================
+   STATS
+========================= */
 .stat-item{
   margin-bottom:30px;
 }
 
 .stat-item span{
   color:#346fb3;
+  font-size:20px;
 }
 
 .stat-item strong{
-  font-size:60px;
+  display:block;
+  font-size:64px;
   font-weight:900;
 }
 
-/* MILESTONES */
+/* =========================
+   MILESTONES
+========================= */
 .milestones{
   background:#e3e3e3;
   padding:30px 0;
@@ -186,11 +236,13 @@ a{text-decoration:none;color:inherit}
   padding:24px;
   max-width:900px;
   margin:auto;
+  text-align:center;
+  position:relative;
 }
 
 .milestone-image img{
   width:100%;
-  height:300px;
+  height:320px;
   object-fit:cover;
   border-radius:20px;
 }
@@ -198,20 +250,26 @@ a{text-decoration:none;color:inherit}
 .mile-year{
   color:#2f66a7;
   font-weight:800;
+  margin-top:10px;
 }
 
-/* NETWORK */
+/* =========================
+   NETWORK
+========================= */
 .network-stats{
   background:#fff;
   padding:20px;
+  border-radius:0 0 24px 24px;
 }
 
 .network-number{
-  font-size:60px;
+  font-size:64px;
   font-weight:900;
 }
 
-/* SUPPORT */
+/* =========================
+   SUPPORT
+========================= */
 .support-card{
   padding:24px;
 }
@@ -219,18 +277,23 @@ a{text-decoration:none;color:inherit}
 .support-phone{
   color:#1f6eb9;
   font-weight:900;
+  font-size:20px;
 }
 
-/* FOOTER (GLOBAL STYLE MATCH) */
+/* =========================
+   FOOTER (MATCH GLOBAL)
+========================= */
 .kib-footer{
-  margin-top:20px;
+  margin-top:-40px;
 }
 
-/* ANIMATION */
+/* =========================
+   REVEAL ANIMATION
+========================= */
 .reveal{
   opacity:0;
   transform:translateY(20px);
-  transition:.5s ease;
+  transition:opacity .5s ease, transform .5s ease;
 }
 
 .reveal.is-visible{
@@ -238,10 +301,45 @@ a{text-decoration:none;color:inherit}
   transform:none;
 }
 
-/* MOBILE */
+/* =========================
+   MOBILE
+========================= */
 @media (max-width:860px){
   .hero-slider{height:240px}
-  .hero-card h1{font-size:30px}
-  .stat-item strong{font-size:42px}
-  .network-number{font-size:42px}
+
+  .hero-card{
+    margin-top:-40px;
+  }
+
+  .hero-card h1{
+    font-size:32px;
+  }
+
+  .hero-card p{
+    font-size:15px;
+  }
+
+  .stat-item strong{
+    font-size:42px;
+  }
+
+  .network-number{
+    font-size:42px;
+  }
+
+  .card-pad{
+    padding:22px;
+  }
+
+  .card-pad h2{
+    font-size:26px;
+  }
+
+  .card-pad p{
+    font-size:15px;
+  }
+
+  .image-box img{
+    height:240px;
+  }
 }
