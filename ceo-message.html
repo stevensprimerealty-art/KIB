@@ -1,768 +1,248 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>KIB | CEO Message</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>KIB | CEO Message</title>
 
-  <style>
-    :root{
-      --bg:#f3f4f6;
-      --card:#ffffff;
-      --text:#0f172a;
-      --muted:#6b7280;
-      --brand:#2f6fb2;
-      --brand-2:#59b7f0;
-      --soft:#d9efff;
-      --line:#9ca3af;
-      --shadow:0 12px 28px rgba(15,23,42,.08);
-      --radius:24px;
-      --radius-lg:30px;
-      --max:1100px;
-    }
+<style>
+:root{
+  --bg:#f3f4f6;
+  --text:#0f172a;
+  --muted:#6b7280;
+  --brand:#2f6fb2;
+  --shadow:0 12px 28px rgba(15,23,42,.08);
+}
 
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      color:var(--text);
-      background:var(--bg);
-    }
-    a{text-decoration:none;color:inherit}
-    img{max-width:100%;display:block}
+/* RESET */
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui;background:var(--bg);color:var(--text)}
+a{text-decoration:none;color:inherit}
+img{width:100%;display:block}
 
-    .topbar{
-      position:sticky;
-      top:0;
-      z-index:100;
-      background:#fff;
-      border-bottom:1px solid rgba(15,23,42,.06);
-    }
-    .topbar-inner{
-      max-width:var(--max);
-      margin:0 auto;
-      padding:14px 18px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-    }
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      min-width:220px;
-    }
-    .brand-mark{
-      width:36px;height:36px;border-radius:50%;
-      background:radial-gradient(circle at 35% 30%, #8ed1ff, #2f6fb2 65%, #1d4d82);
-      box-shadow:0 8px 16px rgba(47,111,178,.22);
-      position:relative;
-      overflow:hidden;
-    }
-    .brand-mark::after{
-      content:"";
-      position:absolute;
-      left:4px; right:4px; bottom:6px;
-      height:10px;
-      border-radius:50%;
-      background:rgba(255,255,255,.9);
-    }
-    .brand-text{
-      font-weight:900;
-      line-height:1.03;
-      text-transform:uppercase;
-      font-size:13px;
-      letter-spacing:.2px;
-    }
-    .brand-text small{
-      display:block;
-      font-size:12px;
-      opacity:.7;
-      margin-top:3px;
-    }
-    .top-actions{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      margin-left:auto;
-    }
-    .lang{
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-    .pill{
-      padding:10px 16px;
-      border:1px solid rgba(15,23,42,.12);
-      border-radius:999px;
-      background:#fff;
-      font-size:13px;
-      font-weight:800;
-      cursor:pointer;
-    }
-    .pill.active{
-      background:#0f172a;
-      color:#fff;
-      border-color:#0f172a;
-    }
-    .menu-btn{
-      width:46px;height:46px;border-radius:50%;
-      border:1px solid rgba(15,23,42,.12);
-      background:#fff;
-      display:grid;
-      place-items:center;
-      cursor:pointer;
-    }
-    .menu-btn span,
-    .menu-btn span::before,
-    .menu-btn span::after{
-      display:block;
-      width:18px;height:2px;background:#0f172a;border-radius:999px;
-      position:relative;
-      content:"";
-    }
-    .menu-btn span::before{position:absolute;top:-6px}
-    .menu-btn span::after{position:absolute;top:6px}
+/* HEADER */
+.topbar{background:#fff;border-bottom:1px solid #eee}
+.topbar-inner{display:flex;justify-content:space-between;align-items:center;padding:14px 16px}
+.brand-text{font-weight:900;font-size:14px}
+.menu-btn{width:40px;height:40px;border:1px solid #ccc;border-radius:50%;background:#fff}
+.menu-btn span{display:block;height:2px;background:#000;margin:6px}
 
-    .wrap{
-      max-width:var(--max);
-      margin:0 auto;
-      padding:18px;
-    }
+/* DRAWER */
+.drawer{
+  position:fixed;top:0;right:-100%;width:280px;height:100%;
+  background:#fff;transition:.3s;padding:20px;z-index:200;
+}
+.drawer.open{right:0}
+.drawer a{display:block;padding:10px 0;font-weight:600}
+.backdrop{
+  position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:150;
+}
 
-    .hero-shell{
-      background:#eef5ff;
-      border-radius:30px;
-      overflow:hidden;
-      box-shadow:var(--shadow);
-    }
-    .hero-slider{
-      position:relative;
-      height:320px;
-      overflow:hidden;
-      background:#d9e8ff;
-      touch-action:pan-y;
-    }
-    .hero-track{
-      display:flex;
-      height:100%;
-      transition:transform .5s ease;
-    }
-    .hero-slide{
-      min-width:100%;
-      position:relative;
-      background:#dbeafe;
-    }
-    .hero-slide img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-    }
-    .hero-slide.placeholder{
-      background:linear-gradient(135deg,#dfeaff,#cfe0ff);
-    }
-    .hero-dots{
-      position:absolute;
-      left:50%;
-      bottom:12px;
-      transform:translateX(-50%);
-      display:flex;
-      gap:10px;
-      z-index:5;
-    }
-    .hero-dot{
-      width:14px;height:14px;border-radius:999px;
-      border:none;
-      background:rgba(255,255,255,.8);
-      cursor:pointer;
-    }
-    .hero-dot.active{background:#fff; width:30px}
+/* HERO */
+.hero{background:#eef5ff;border-radius:20px;margin:20px;overflow:hidden}
+.hero-slider{height:240px;overflow:hidden}
+.hero-track{display:flex;transition:.4s}
+.hero-slide{min-width:100%}
+.hero-card{
+  background:#fff;
+  margin:-40px auto 0;
+  padding:20px;
+  border-radius:20px;
+  width:90%;
+  box-shadow:var(--shadow);
+}
 
-    .hero-card{
-      background:#fff;
-      width:min(92%, 820px);
-      margin:-58px auto 0;
-      position:relative;
-      z-index:6;
-      border-radius:28px;
-      box-shadow:var(--shadow);
-      padding:26px 26px 30px;
-    }
-    .crumb{
-      color:var(--muted);
-      font-weight:700;
-      font-size:15px;
-      margin-bottom:8px;
-    }
-    .crumb b{color:var(--brand)}
-    .hero-title{
-      margin:0;
-      font-size:56px;
-      line-height:.98;
-      letter-spacing:-1px;
-      font-weight:900;
-    }
-    .hero-line{
-      width:78px;
-      height:3px;
-      background:var(--line);
-      margin:16px 0 18px;
-      border-radius:999px;
-    }
+/* TABS */
+.about-tabs{display:flex;background:#3aa9ec}
+.about-tabs a{flex:1;text-align:center;color:#fff;padding:12px;font-weight:600}
+.about-tabs a.active{background:#2f6fb2}
 
-    .about-tabs{
-      margin-top:0;
-      background:linear-gradient(90deg,#66b8ef,#24a8ea);
-      border-bottom-left-radius:28px;
-      border-bottom-right-radius:28px;
-      overflow:hidden;
-      display:grid;
-      grid-template-columns:1fr 1fr 1fr;
-      box-shadow:var(--shadow);
-    }
-    .about-tabs a{
-      color:#fff;
-      text-align:center;
-      padding:20px 12px;
-      font-weight:500;
-      font-size:18px;
-      position:relative;
-    }
-    .about-tabs a.active{
-      background:rgba(255,255,255,.08);
-    }
-    .about-tabs a.active::after{
-      content:"";
-      position:absolute;
-      left:14%;
-      right:14%;
-      bottom:0;
-      height:4px;
-      background:#fff;
-      border-top-left-radius:4px;
-      border-top-right-radius:4px;
-    }
+/* CONTENT */
+.card{
+  background:#fff;
+  margin:20px;
+  border-radius:20px;
+  padding:20px;
+  box-shadow:var(--shadow);
+}
+h2{margin-top:0}
+p{line-height:1.6}
 
-    .section{margin-top:26px}
-    .card{
-      background:#fff;
-      border-radius:30px;
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-    .card-inner{padding:30px 28px}
-    .message-title{
-      margin:0 0 20px;
-      font-size:32px;
-      line-height:1.2;
-      font-weight:900;
-    }
-    .message-title .accent{color:#2f6fb2}
-    .message-text{
-      font-size:19px;
-      line-height:1.75;
-      color:#111827;
-      margin:0 0 28px;
-    }
-    .message-signoff{
-      font-size:20px;
-      line-height:1.8;
-      margin-top:12px;
-    }
+/* ✅ NAV TILES */
+.footer-cards{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+  margin:20px;
+}
+.footer-card{
+  background:#fff;
+  border-radius:20px;
+  padding:20px;
+  box-shadow:var(--shadow);
+  display:flex;
+  flex-direction:column;
+}
+.footer-card span{
+  font-size:24px;
+  margin-bottom:10px;
+}
+.footer-card h3{
+  margin:0;
+  font-size:20px;
+  font-weight:900;
+}
 
-    .ceo-media{
-      padding:0 28px 28px;
-    }
-    .ceo-photo,
-    .signature-box,
-    .image-placeholder{
-      width:100%;
-      background:linear-gradient(135deg,#dfeeff,#cfe8ff);
-      border-radius:26px;
-      display:grid;
-      place-items:center;
-      color:#2f6fb2;
-      font-size:22px;
-      font-weight:900;
-      text-align:center;
-      border:2px dashed rgba(47,111,178,.15);
-    }
-    .ceo-photo{
-      height:520px;
-      object-fit:cover;
-      border:none;
-      background:#e8f2ff;
-    }
-    .signature-box{
-      margin-top:22px;
-      height:160px;
-    }
-    .ceo-name{
-      text-align:center;
-      margin-top:18px;
-      font-size:28px;
-      font-weight:900;
-      text-transform:uppercase;
-    }
-    .ceo-role{
-      text-align:center;
-      font-size:22px;
-      color:#d7d7d7;
-      margin-top:8px;
-      font-weight:700;
-    }
+/* FOOTER */
+.footer{background:#2f6fb2;color:#fff;padding:20px;margin-top:10px}
+.footer button{
+  width:100%;
+  background:none;
+  border:none;
+  color:#fff;
+  padding:12px;
+  text-align:left;
+  font-weight:600;
+}
 
-    .support{
-      background:#fff;
-      border-radius:30px;
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-    .support-top{
-      padding:28px 28px 0;
-    }
-    .support-title{
-      margin:0 0 16px;
-      font-size:34px;
-      font-weight:900;
-    }
-    .support-text{
-      font-size:22px;
-      line-height:1.6;
-      margin:0 0 18px;
-    }
-    .support-phone{
-      display:flex;
-      align-items:center;
-      gap:14px;
-      font-size:24px;
-      color:#2f6fb2;
-      font-weight:900;
-      margin-bottom:22px;
-    }
-    .btn-soft{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      min-width:168px;
-      height:68px;
-      padding:0 26px;
-      border-radius:20px;
-      background:#d9efff;
-      color:#58aee7;
-      border:1px solid rgba(88,174,231,.15);
-      font-size:22px;
-      font-weight:500;
-    }
-    .support-bottom{
-      margin-top:12px;
-      background:linear-gradient(180deg,#eef5fb 0%, #7bc2f3 45%, #1698e0 100%);
-      padding-top:12px;
-    }
-    .support-bottom .image-placeholder{
-      width:100%;
-      height:420px;
-      border:none;
-      border-radius:0;
-      background:transparent;
-      color:#fff;
-    }
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(20px);transition:.5s}
+.reveal.show{opacity:1;transform:none}
+</style>
 
-    .footer{
-      margin-top:28px;
-      background:#356cad;
-      color:#fff;
-      overflow:hidden;
-      box-shadow:var(--shadow);
-    }
-    .footer-panels{padding:22px 22px 0}
-    .footer-acc{
-      border-top:1px solid rgba(255,255,255,.18);
-    }
-    .footer-acc:last-child{border-bottom:1px solid rgba(255,255,255,.18)}
-    .footer-acc button{
-      width:100%;
-      background:none;
-      border:none;
-      color:#fff;
-      padding:18px 0;
-      text-align:left;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      font-size:18px;
-      font-weight:800;
-      cursor:pointer;
-    }
-    .footer-acc .panel{
-      max-height:0;
-      overflow:hidden;
-      transition:max-height .3s ease;
-    }
-    .footer-acc.open .panel{max-height:220px}
-    .footer-acc .panel a{
-      display:block;
-      padding:0 0 14px;
-      color:rgba(255,255,255,.92);
-      font-size:16px;
-    }
-
-    .footer-company{
-      padding:18px 22px 0;
-      font-size:18px;
-      font-weight:600;
-    }
-    .footer-label{
-      margin-top:18px;
-      background:rgba(0,0,0,.12);
-      padding:18px 22px;
-      font-size:18px;
-      font-weight:900;
-      letter-spacing:.5px;
-      text-transform:uppercase;
-    }
-    .footer-address{
-      background:#fff;
-      color:#111827;
-      padding:26px 22px;
-    }
-    .footer-address h3{
-      margin:0 0 18px;
-      font-size:24px;
-      font-weight:900;
-    }
-    .footer-address p{
-      margin:0 0 18px;
-      font-size:20px;
-      line-height:1.55;
-    }
-    .footer-copy{
-      background:#356cad;
-      color:#fff;
-      text-align:center;
-      font-size:20px;
-      font-weight:800;
-      padding:18px;
-    }
-    .social-wrap{
-      background:#fff;
-      padding:20px 22px 30px;
-    }
-    .social-wrap h4{
-      margin:0 0 14px;
-      font-size:22px;
-      color:#356cad;
-      font-weight:900;
-    }
-    .social-icons{
-      display:flex;
-      gap:14px;
-      flex-wrap:wrap;
-    }
-    .social-icons a{
-      width:56px;height:56px;border-radius:50%;
-      background:#356cad;
-      color:#fff;
-      display:grid;
-      place-items:center;
-      font-size:24px;
-      font-weight:900;
-    }
-
-    .reveal{
-      opacity:0;
-      transform:translateY(24px);
-      transition:opacity .55s ease, transform .55s ease;
-    }
-    .reveal.show{
-      opacity:1;
-      transform:translateY(0);
-    }
-
-    @media (max-width: 820px){
-      .hero-title{font-size:42px}
-      .message-text,.support-text{font-size:16px}
-      .support-phone{font-size:18px}
-      .btn-soft{height:56px; font-size:18px; min-width:140px}
-      .about-tabs a{font-size:16px; padding:16px 8px}
-      .hero-slider{height:260px}
-      .ceo-photo{height:320px}
-      .signature-box{height:120px}
-      .support-bottom .image-placeholder{height:300px}
-      .brand-text{font-size:11px}
-      .pill{padding:9px 12px}
-    }
-  </style>
 </head>
+
 <body>
 
-  <header class="topbar">
-    <div class="topbar-inner">
-      <a class="brand" href="index.html">
-        <div class="brand-mark"></div>
-        <div class="brand-text">
-          KOREA INTERNATIONAL BANKING
-          <small>(KIB)</small>
-        </div>
-      </a>
+<!-- HEADER -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand-text">KOREA INTERNATIONAL BANKING</div>
+    <button id="menuBtn" class="menu-btn">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
 
-      <div class="top-actions">
-        <div class="lang">
-          <button class="pill active" type="button">ENG</button>
-          <button class="pill" type="button">KOR</button>
-          <button class="pill" type="button">ESPAÑOL</button>
-        </div>
-        <button class="menu-btn" type="button" aria-label="menu"><span></span></button>
-      </div>
+<!-- DRAWER -->
+<aside id="drawer" class="drawer">
+  <button id="closeBtn">✕</button>
+  <a href="index.html">Home</a>
+  <a href="about-us.html">About Us</a>
+  <a href="vision-mission.html">Vision</a>
+  <a href="ceo-message.html">CEO Message</a>
+</aside>
+<div id="backdrop" class="backdrop" hidden></div>
+
+<main>
+
+<!-- HERO -->
+<section class="hero reveal">
+  <div class="hero-slider">
+    <div class="hero-track" id="heroTrack">
+      <div class="hero-slide"><img src="ceo-message-hero-1.jpg"></div>
+      <div class="hero-slide"><img src="ceo-message-hero-2.jpg"></div>
+      <div class="hero-slide"><img src="ceo-message-hero-3.jpg"></div>
     </div>
-  </header>
+  </div>
 
-  <main class="wrap">
-    <section class="hero-shell reveal">
-      <div class="hero-slider" id="heroSlider">
-        <div class="hero-track" id="heroTrack">
-          <div class="hero-slide placeholder"><img src="ceo-message-hero-1.jpg" alt=""></div>
-          <div class="hero-slide placeholder"><img src="ceo-message-hero-2.jpg" alt=""></div>
-          <div class="hero-slide placeholder"><img src="ceo-message-hero-3.jpg" alt=""></div>
-        </div>
-        <div class="hero-dots" id="heroDots"></div>
-      </div>
+  <div class="hero-card">
+    <h1>CEO Message</h1>
+  </div>
 
-      <div class="hero-card">
-        <div class="crumb">Home » <b>About Us</b> » <b>CEO Message</b></div>
-        <h1 class="hero-title">CEO Message</h1>
-        <div class="hero-line"></div>
-      </div>
+  <nav class="about-tabs">
+    <a href="about-us.html">About</a>
+    <a href="vision-mission.html">Vision</a>
+    <a href="#" class="active">CEO</a>
+  </nav>
+</section>
 
-      <nav class="about-tabs">
-        <a href="about-us.html">About Us</a>
-        <a href="vision-mission.html">Vision &amp; Mission</a>
-        <a href="ceo-message.html" class="active">CEO Message</a>
-      </nav>
-    </section>
+<!-- CONTENT -->
+<section class="card reveal">
+  <h2>Message from CEO</h2>
+  <p>Dear Valued Customers,</p>
+  <p>I am honored to be CEO of KIB Cambodia.</p>
+  <p>We are committed to innovation and excellence.</p>
+  <p><strong>Mr. CHEOL SU SOHN</strong></p>
+</section>
 
-    <section class="section card reveal">
-      <div class="card-inner">
-        <h2 class="message-title">Message from <span class="accent">SOHN CHEOL SU , CEO</span></h2>
+<!-- ✅ NAV TILES (NOW CORRECTLY ADDED) -->
+<section class="footer-cards reveal">
+  <a class="footer-card" href="#">
+    <span>◎</span>
+    <h3>Personal Banking</h3>
+  </a>
 
-        <p class="message-text">
-          Dear Valued Customers,
-        </p>
+  <a class="footer-card" href="#">
+    <span>▣</span>
+    <h3>Business Banking</h3>
+  </a>
 
-        <p class="message-text">
-          I am honored and excited to be appointed as the CEO of Korea International Banking (Cambodia) Plc. Joining Korea International Banking is a privilege, and I am eager to contribute to the continued success of the bank in the Cambodian market.
-        </p>
+  <a class="footer-card" href="#">
+    <span>◫</span>
+    <h3>Digital Banking</h3>
+  </a>
 
-        <p class="message-text">
-          Throughout my career at Korea International Banking, I have consistently focused on understanding and meeting the evolving financial needs of our customers. I believe in fostering strong customer relationships built on trust, transparency, and personalized services.
-        </p>
+  <a class="footer-card" href="about-us.html">
+    <span>?</span>
+    <h3>About Us</h3>
+  </a>
+</section>
 
-        <p class="message-text">
-          As a CEO, I am committed to leading Korea International Banking (Cambodia) Plc. towards new heights of excellence. We will leverage innovation, enhance our customer service, and strengthen our partnerships to provide our customers with the smartest and best possible financial solutions. We will continue to support the growth and development of the Cambodian economy while upholding the highest standards of corporate responsibility.
-        </p>
+<!-- FOOTER -->
+<footer class="footer reveal">
+  <button>Personal Banking</button>
+  <button>Business Banking</button>
+  <button>Digital Banking</button>
+</footer>
 
-        <p class="message-text">
-          I look forward to working closely with our dedicated team to serve our valued customers and the whole Cambodian community as we embark on this exciting new chapter.
-        </p>
+</main>
 
-        <p class="message-signoff">
-          Sincerely,
-          <br><br>
-          <strong>Mr. CHEOL SU SOHN</strong>
-          <br>
-          Chief Executive Officer
-          <br>
-          Korea International Banking (Cambodia) Plc.
-        </p>
-      </div>
+<script>
+// SLIDER (SAFE)
+(function(){
+  const track=document.getElementById("heroTrack");
+  if(!track) return;
+  const total=track.children.length;
+  let index=0;
 
-      <div class="ceo-media">
-        <div class="image-placeholder ceo-photo">ceo-portrait.jpg</div>
-        <div class="signature-box">ceo-signature.png</div>
-        <div class="ceo-name">MR. CHEOL SU SOHN</div>
-        <div class="ceo-role">Chief Executive Officer</div>
-      </div>
-    </section>
+  setInterval(()=>{
+    index=(index+1)%total;
+    track.style.transform=`translateX(-${index*100}%)`;
+  },3000);
+})();
 
-    <section class="section support reveal">
-      <div class="support-top">
-        <h2 class="support-title">Customer Service Care</h2>
-        <p class="support-text">We always available to solve your problem in just a few minute!</p>
-
-        <div class="support-phone">
-          <span>☎</span>
-          <span>+855 23 963 333</span>
-        </div>
-
-        <a class="btn-soft" href="contact.html">Contact us</a>
-      </div>
-
-      <div class="support-bottom">
-        <div class="image-placeholder">customer-service-care.jpg</div>
-      </div>
-    </section>
-
-    <footer class="footer reveal">
-      <div class="footer-panels">
-        <div class="footer-acc">
-          <button type="button">Personal Banking <span>⌄</span></button>
-          <div class="panel">
-            <a href="#">Planned Savings Account</a>
-            <a href="#">Loan</a>
-          </div>
-        </div>
-
-        <div class="footer-acc">
-          <button type="button">Business Banking <span>⌄</span></button>
-          <div class="panel">
-            <a href="business-saving-deposit.html">Saving / Deposit</a>
-            <a href="business-banking-loan.html">Loan</a>
-            <a href="business-banking-moneytransfer.html">Money Transfer</a>
-          </div>
-        </div>
-
-        <div class="footer-acc">
-          <button type="button">Digital Banking <span>⌄</span></button>
-          <div class="panel">
-            <a href="#">Mobile Banking</a>
-            <a href="#">Internet Banking</a>
-          </div>
-        </div>
-
-        <div class="footer-acc">
-          <button type="button">Company <span>⌄</span></button>
-          <div class="panel">
-            <a href="about-us.html">About Us</a>
-            <a href="vision-mission.html">Vision &amp; Mission</a>
-            <a href="ceo-message.html">CEO Message</a>
-          </div>
-        </div>
-
-        <div class="footer-acc">
-          <button type="button">Financial <span>⌄</span></button>
-          <div class="panel">
-            <a href="kib-total-assets.html">Total Assets</a>
-          </div>
-        </div>
-
-        <div class="footer-acc">
-          <button type="button">News <span>⌄</span></button>
-          <div class="panel">
-            <a href="#">Latest News</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="footer-company">KIB Group Company: info@kibinternational.co.site</div>
-      <div class="footer-label">KOREA INTERNATIONAL BANKING</div>
-
-      <div class="footer-address">
-        <h3>Location Address</h3>
-        <p>39 Namdaemun-ro, Jung-gu, Seoul (04531), Republic of Korea.</p>
-        <p>Piazza di Spagna, 59, 00187 Roma RM, Italy</p>
-        <p>Tower 42 , Level 38, 25 Old Broad Street, EC2N 1HQ, London, United Kingdom</p>
-        <p><strong>New York Branch</strong></p>
-        <p>1250 Broadway, 37th Floor, New York, NY 10001, USA</p>
-        <p>Mubarak Al-Kabeer Street, Darwazat Al-Abdul Razzak, Kuwait City, State of Kuwait</p>
-      </div>
-
-      <div class="footer-copy">All rights reserved 2023</div>
-
-      <div class="social-wrap">
-        <h4>Social Media</h4>
-        <div class="social-icons">
-          <a href="#" aria-label="facebook">f</a>
-          <a href="#" aria-label="instagram">◎</a>
-          <a href="#" aria-label="linkedin">in</a>
-          <a href="#" aria-label="youtube">▶</a>
-        </div>
-      </div>
-    </footer>
-  </main>
-
-  <script>
-    (function(){
-      const track = document.getElementById('heroTrack');
-      const dotsWrap = document.getElementById('heroDots');
-      const slides = Array.from(track.children);
-      const total = slides.length;
-      let index = 0;
-      let startX = 0;
-      let endX = 0;
-      let auto;
-
-      function renderDots(){
-        dotsWrap.innerHTML = '';
-        slides.forEach((_, i) => {
-          const btn = document.createElement('button');
-          btn.className = 'hero-dot' + (i === index ? ' active' : '');
-          btn.addEventListener('click', () => {
-            index = i;
-            update();
-            restart();
-          });
-          dotsWrap.appendChild(btn);
-        });
-      }
-
-      function update(){
-        track.style.transform = `translateX(-${index * 100}%)`;
-        renderDots();
-      }
-
-      function next(){
-        index = (index + 1) % total;
-        update();
-      }
-
-      function start(){
-        auto = setInterval(next, 3000);
-      }
-
-      function restart(){
-        clearInterval(auto);
-        start();
-      }
-
-      track.parentElement.addEventListener('touchstart', e => {
-        startX = e.touches[0].clientX;
-      }, {passive:true});
-
-      track.parentElement.addEventListener('touchend', e => {
-        endX = e.changedTouches[0].clientX;
-        const diff = startX - endX;
-        if(Math.abs(diff) > 40){
-          if(diff > 0) index = (index + 1) % total;
-          else index = (index - 1 + total) % total;
-          update();
-          restart();
-        }
-      }, {passive:true});
-
-      renderDots();
-      update();
-      start();
-    })();
-
-    (function(){
-      const items = document.querySelectorAll('.reveal');
-      const io = new IntersectionObserver((entries)=>{
-        entries.forEach(entry=>{
-          if(entry.isIntersecting){
-            entry.target.classList.add('show');
-          }
-        });
-      }, {threshold:.15});
-      items.forEach(item=>io.observe(item));
-    })();
-
-    document.querySelectorAll('.footer-acc button').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        btn.parentElement.classList.toggle('open');
-      });
+// REVEAL
+(function(){
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting) e.target.classList.add("show");
     });
-  </script>
+  });
+  document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+})();
+
+// DRAWER
+(function(){
+  const menu=document.getElementById("menuBtn");
+  const drawer=document.getElementById("drawer");
+  const backdrop=document.getElementById("backdrop");
+  const close=document.getElementById("closeBtn");
+
+  function open(){
+    drawer.classList.add("open");
+    backdrop.hidden=false;
+  }
+  function closeMenu(){
+    drawer.classList.remove("open");
+    backdrop.hidden=true;
+  }
+
+  menu.onclick=open;
+  close.onclick=closeMenu;
+  backdrop.onclick=closeMenu;
+})();
+</script>
+
 </body>
 </html>
