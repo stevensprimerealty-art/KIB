@@ -4,155 +4,321 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>KIB | Total Assets</title>
-
-  <!-- GLOBAL CSS -->
-  <link rel="stylesheet" href="style.css">
-
-  <!-- PAGE CSS -->
-  <link rel="stylesheet" href="kib-total-assets.css">
+  <link rel="stylesheet" href="kib-total-assets.css" />
 </head>
-
 <body>
+  <!-- HEADER -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html" aria-label="KIB Home">
+        <div class="brand-text">
+          <span>KOREA INTERNATIONAL BANKING</span>
+          <small>(KIB)</small>
+        </div>
+      </a>
 
-  <!-- GLOBAL HEADER -->
-  <div id="header"></div>
+      <div class="lang" aria-label="Language selector">
+        <button class="pill active" type="button">ENG</button>
+        <button class="pill" type="button">KOR</button>
+        <button class="pill" type="button">ESPAÑOL</button>
+      </div>
+
+      <button class="menu-btn" type="button" aria-label="Open menu" id="menuBtn">
+        <span class="menu-ico"><i></i></span>
+      </button>
+    </div>
+  </header>
 
   <main class="page-wrap">
-
     <!-- HERO -->
     <section class="hero reveal">
       <div class="hero-slider" id="heroSlider">
         <div class="hero-dots" id="heroDots"></div>
 
         <div class="hero-track" id="heroTrack">
-          <div class="hero-slide">
-            <img src="total-assets-hero-1.jpg" alt="">
+          <div class="hero-slide hero-image-box" data-file="total-assets-hero-1.jpg">
+            <img src="total-assets-hero-1.jpg" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('is-empty');">
           </div>
-          <div class="hero-slide">
-            <img src="total-assets-hero-2.jpg" alt="">
+          <div class="hero-slide hero-image-box" data-file="total-assets-hero-2.jpg">
+            <img src="total-assets-hero-2.jpg" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('is-empty');">
           </div>
-          <div class="hero-slide">
-            <img src="total-assets-hero-3.jpg" alt="">
+          <div class="hero-slide hero-image-box" data-file="total-assets-hero-3.jpg">
+            <img src="total-assets-hero-3.jpg" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('is-empty');">
           </div>
         </div>
       </div>
 
       <div class="hero-card">
-        <div class="crumb">Home » About Us » <span>Total Assets</span></div>
-        <h1>Total Assets</h1>
+        <div class="crumb">Home » <span>About Us</span></div>
+        <h1>About Us</h1>
         <div class="hero-line"></div>
-        <p>KIB delivers strong financial growth with trusted global banking services.</p>
+        <p>KIB makes life better through fast, convenient, and trustworthy banking experiences.</p>
       </div>
 
-      <nav class="about-tabs">
-        <a href="about-us.html">About Us</a>
-        <a href="vision-mission.html">Vision & Mission</a>
-        <a href="ceo-message.html">CEO Message</a>
+      <nav class="hero-tabs">
+        <a href="#company" class="active">About Us</a>
+        <a href="#milestones">Vision &amp; Mission</a>
+        <a href="#support">CEO Message</a>
       </nav>
     </section>
 
-    <!-- CONTENT -->
-    <section class="content-card reveal">
+    <!-- OUR COMPANY -->
+    <section class="content-card reveal" id="company">
       <div class="card-pad">
-        <h2>Total Assets Growth</h2>
-
+        <h2>Our Company</h2>
         <p>
-          Korea International Banking has demonstrated strong and consistent financial growth over the years.
+          Korea International Banking (Cambodia) Plc. is one of the leading commercial banks in Cambodia with
+          headquarter based in South Korea. KIB has rooted in Cambodia for almost 30 years in serving Cambodians
+          with smart financial services and solutions such as loans, deposit, domestic and international fund transfer,
+          mobile banking, bill payment, ATM services and other financial services.
         </p>
-
         <p>
-          Our total assets reflect our commitment to stability, innovation, and customer trust.
-        </p>
-
-        <p>
-          With a growing international presence, KIB continues to strengthen its asset base.
+          KIB (Cambodia) has committed to make life better through Fast, Convenient and Trustworthy banking
+          experiences. KIB (Cambodia) has extended its operational network nationwide. KIB is a global bank,
+          established from South Korea since 1899 with broad international coverage across multiple countries.
         </p>
       </div>
 
-      <div class="image-box">
-        <img src="total-assets-chart.jpg" alt="">
+      <div class="media-box image-box" data-file="our-company-building.jpg">
+        <img src="our-company-building.jpg" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('is-empty');">
       </div>
     </section>
 
     <!-- STATS -->
     <section class="stats-section reveal">
       <div class="stat-item">
-        <span>Total Assets</span>
-        <strong>$1.495 Billion</strong>
+        <span class="stat-label">Total Asset</span>
+        <strong class="stat-number">$1,495M</strong>
       </div>
 
       <div class="stat-item">
-        <span>Annual Growth</span>
-        <strong>+12%</strong>
+        <span class="stat-label">Customers</span>
+        <strong class="stat-number">515,000</strong>
       </div>
 
       <div class="stat-item">
-        <span>Global Customers</span>
-        <strong>515,000+</strong>
+        <span class="stat-label">Employees</span>
+        <strong class="stat-number">3,800</strong>
+      </div>
+    </section>
+
+    <!-- MILESTONES -->
+    <section class="milestones reveal" id="milestones">
+      <h2>Milestones</h2>
+
+      <div class="milestone-card">
+        <button class="mile-arrow mile-prev" type="button" aria-label="Previous milestone">‹</button>
+        <button class="mile-arrow mile-next" type="button" aria-label="Next milestone">›</button>
+
+        <div class="milestone-slidebox">
+          <div class="milestone-image image-box" id="mileImage" data-file="milestone-1990.jpg">
+            <img id="mileImgTag" src="milestone-1990.jpg" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('is-empty');">
+          </div>
+
+          <h3 id="mileTitle">Started as Funding Program</h3>
+
+          <div class="mile-line">
+            <span class="mile-dot"></span>
+          </div>
+
+          <div class="mile-year" id="mileYear">1990s</div>
+        </div>
       </div>
     </section>
 
     <!-- GLOBAL NETWORK -->
     <section class="content-card reveal">
-      <div class="image-box">
-        <img src="global-network-banner.jpg" alt="">
+      <div class="media-box image-box tall-network" data-file="global-network-banner.jpg">
+        <img src="global-network-banner.jpg" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('is-empty');">
       </div>
 
       <div class="card-pad">
-        <h2>Global Financial Strength</h2>
+        <h2>Our Global Network</h2>
         <p>
-          KIB’s total assets are supported by a strong global network spanning multiple countries.
+          We offer ONE-STOP financial service to all assistance from various affiliates and networks.
         </p>
 
-        <a class="btn btn-soft" href="#">Explore Global Network</a>
+        <a class="btn btn-soft" href="#">Discover Global Network</a>
       </div>
     </section>
 
     <!-- COUNTERS -->
     <section class="network-stats reveal" id="networkCounters">
       <div class="network-item">
-        <span>Countries</span>
+        <span class="network-label">Global Network</span>
         <strong class="network-number" data-target="24">0</strong>
-        <span>Global Presence</span>
+        <span class="network-suffix">countries</span>
       </div>
 
       <div class="network-item">
-        <span>Branches (Korea)</span>
+        <span class="network-label">Korea Branches</span>
         <strong class="network-number" data-target="718">0</strong>
-        <span>Locations</span>
+        <span class="network-suffix">branches</span>
       </div>
 
       <div class="network-item">
-        <span>International Branches</span>
+        <span class="network-label">Global Network Branches:</span>
         <strong class="network-number" data-target="472">0</strong>
-        <span>Offices</span>
+        <span class="network-suffix">branches</span>
       </div>
     </section>
 
     <!-- SUPPORT -->
-    <section class="support-card reveal">
-      <div class="card-pad">
+    <section class="support-card reveal" id="support">
+      <div class="support-top">
         <h2>Customer Service Care</h2>
-        <p>We are always available to assist you.</p>
+        <p>We always available to solve your problem in just a few minute!</p>
 
-        <div>☎ +855 23 963 333</div>
+        <div class="support-phone">
+          <span class="phone-icon">☎</span>
+          <span>+855 23 963 333</span>
+        </div>
 
         <a class="btn btn-soft" href="contact.html">Contact us</a>
       </div>
 
-      <div class="image-box">
-        <img src="customer-service-care.jpg" alt="">
+      <div class="support-bottom">
+        <div class="support-image image-box" data-file="customer-service-care.jpg">
+          <img src="customer-service-care.jpg" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('is-empty');">
+        </div>
       </div>
     </section>
 
+    <!-- FOOTER TOP CARDS -->
+    <section class="footer-cards reveal">
+      <a class="footer-card" href="#">
+        <span class="footer-icon">◎</span>
+        <h3>Personal Banking</h3>
+        <span class="footer-arrow">→</span>
+      </a>
+
+      <a class="footer-card" href="#">
+        <span class="footer-icon">▣</span>
+        <h3>Business Banking</h3>
+        <span class="footer-arrow">→</span>
+      </a>
+
+      <a class="footer-card" href="#">
+        <span class="footer-icon">◫</span>
+        <h3>Digital Banking</h3>
+        <span class="footer-arrow">→</span>
+      </a>
+
+      <a class="footer-card" href="#">
+        <span class="footer-icon">?</span>
+        <h3>About Us</h3>
+        <span class="footer-arrow">→</span>
+      </a>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="kib-footer reveal">
+      <section class="kib-footer__nav">
+        <div class="kib-acc-item is-open">
+          <button class="kib-acc-header" type="button">
+            <span>Personal Banking</span>
+            <span class="kib-acc-icon">▾</span>
+          </button>
+          <div class="kib-acc-body">
+            <div class="kib-acc-links">
+              <a href="#">Planned Savings Account</a>
+              <a href="#">Loan</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="kib-acc-item">
+          <button class="kib-acc-header" type="button">
+            <span>Business Banking</span>
+            <span class="kib-acc-icon">▾</span>
+          </button>
+          <div class="kib-acc-body">
+            <div class="kib-acc-links">
+              <a href="business-saving-deposit.html">Saving / Deposit</a>
+              <a href="business-banking-loan.html">Loan</a>
+              <a href="business-banking-moneytransfer.html">Money Transfer</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="kib-acc-item">
+          <button class="kib-acc-header" type="button">
+            <span>Digital Banking</span>
+            <span class="kib-acc-icon">▾</span>
+          </button>
+          <div class="kib-acc-body">
+            <div class="kib-acc-links">
+              <a href="#">Digital Banking</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="kib-acc-item">
+          <button class="kib-acc-header" type="button">
+            <span>Company</span>
+            <span class="kib-acc-icon">▾</span>
+          </button>
+          <div class="kib-acc-body">
+            <div class="kib-acc-links">
+              <a href="#">About Us</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="kib-acc-item">
+          <button class="kib-acc-header" type="button">
+            <span>Financial</span>
+            <span class="kib-acc-icon">▾</span>
+          </button>
+          <div class="kib-acc-body">
+            <div class="kib-acc-links">
+              <a href="#">Financial</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="kib-acc-item">
+          <button class="kib-acc-header" type="button">
+            <span>News</span>
+            <span class="kib-acc-icon">▾</span>
+          </button>
+          <div class="kib-acc-body">
+            <div class="kib-acc-links">
+              <a href="#">News</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="kib-footer__group">
+          KIB Group Company: info@kibinternational.co.site
+        </div>
+      </section>
+
+      <section class="kib-footer__address">
+        <div class="kib-footer__badge">KOREA INTERNATIONAL BANKING</div>
+        <h3>Location Address</h3>
+
+        <p>39 Namdaemun-ro, Jung-gu, Seoul (04531), Republic of Korea.</p>
+        <p>Piazza di Spagna, 59, 00187 Roma RM, Italy</p>
+        <p>Tower 42, Level 38, 25 Old Broad Street, EC2N 1HQ, London, United Kingdom</p>
+
+        <p class="kib-footer__branchTitle">New York Branch</p>
+        <p>1250 Broadway, 37th Floor, New York, NY 10001, USA</p>
+        <p>Mubarak Al-Kabeer Street, Darwazat Al-Abdul Razzak, Kuwait City, State of Kuwait</p>
+      </section>
+
+      <section class="kib-footer__bottom">
+        <div class="kib-footer__social">
+          <a class="kib-social" href="#" aria-label="Facebook">f</a>
+          <a class="kib-social" href="#" aria-label="Instagram">ig</a>
+          <a class="kib-social" href="#" aria-label="LinkedIn">in</a>
+          <a class="kib-social" href="#" aria-label="YouTube">▶</a>
+        </div>
+        <div class="kib-footer__copy">All rights reserved 2023</div>
+      </section>
+    </footer>
   </main>
 
-  <!-- GLOBAL FOOTER -->
-  <div id="footer"></div>
-
-  <!-- JS -->
-  <script src="script.js"></script>
-  <script src="about-us.js"></script>
-
+  <script src="kib-total-assets.js"></script>
 </body>
 </html>
