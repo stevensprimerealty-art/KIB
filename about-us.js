@@ -1,4 +1,6 @@
+// ===============================
 // HERO SLIDER
+// ===============================
 (function () {
   const slider = document.getElementById('heroSlider');
   const track = document.getElementById('heroTrack');
@@ -7,20 +9,14 @@
 
   const total = track.children.length;
   let index = 0;
-  let timer = null;
-  let startX = 0;
-  let moveX = 0;
-  let touching = false;
+  let timer;
 
   function renderDots() {
     dotsWrap.innerHTML = '';
     for (let i = 0; i < total; i++) {
       const dot = document.createElement('button');
       if (i === index) dot.classList.add('active');
-      dot.addEventListener('click', () => {
-        goTo(i);
-        restart();
-      });
+      dot.onclick = () => goTo(i);
       dotsWrap.appendChild(dot);
     }
   }
@@ -31,210 +27,176 @@
     renderDots();
   }
 
-  function next() {
-    goTo(index + 1);
+  function auto() {
+    timer = setInterval(() => goTo(index + 1), 3000);
   }
 
-  function start() {
-    timer = setInterval(next, 3000);
-  }
-
-  function stop() {
-    clearInterval(timer);
-  }
-
-  function restart() {
-    stop();
-    start();
-  }
-
-  slider.addEventListener('touchstart', (e) => {
-    touching = true;
-    startX = e.touches[0].clientX;
-    moveX = startX;
-    stop();
-  }, { passive: true });
-
-  slider.addEventListener('touchmove', (e) => {
-    if (!touching) return;
-    moveX = e.touches[0].clientX;
-  }, { passive: true });
-
-  slider.addEventListener('touchend', () => {
-    if (!touching) return;
-    const diff = moveX - startX;
-    if (diff > 50) goTo(index - 1);
-    else if (diff < -50) goTo(index + 1);
-    touching = false;
-    restart();
-  });
+  slider.addEventListener('mouseenter', () => clearInterval(timer));
+  slider.addEventListener('mouseleave', auto);
 
   renderDots();
   goTo(0);
-  start();
+  auto();
 })();
 
+
+// ===============================
 // REVEAL ON SCROLL
+// ===============================
 (function () {
   const items = document.querySelectorAll('.reveal');
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('show');
-        io.unobserve(entry.target);
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('show');
+        io.unobserve(e.target);
       }
     });
   }, { threshold: 0.15 });
 
-  items.forEach((item) => io.observe(item));
+  items.forEach(el => io.observe(el));
 })();
 
-// MILESTONES SLIDER
+
+// ===============================
+// MILESTONES
+// ===============================
 (function () {
   const milestones = [
-    {
-      year: "1990s",
-      title: "Started as Funding Program",
-      image: "milestone-1990.jpg"
-    },
-    {
-      year: "2003",
-      title: "Became a registered company",
-      image: "milestone-2003.jpg"
-    },
-    {
-      year: "2011",
-      title: "Granted MDI License",
-      image: "milestone-2011.jpg"
-    },
-    {
-      year: "2018",
-      title: "Ownership change (Jun’18) to KIB Korea International Banking",
-      image: "milestone-2018.jpg"
-    },
-    {
-      year: "2021",
-      title: "Received Approval as Commercial Bank",
-      image: "milestone-2021.jpg"
-    },
-    {
-      year: "2022",
-      title: "Official Launching as Commercial Bank",
-      image: "milestone-2022.jpg"
-    }
+    { year:"1990s", title:"Started as Funding Program", image:"milestone-1990.jpg" },
+    { year:"2003", title:"Became a registered company", image:"milestone-2003.jpg" },
+    { year:"2011", title:"Granted MDI License", image:"milestone-2011.jpg" },
+    { year:"2018", title:"Ownership change", image:"milestone-2018.jpg" },
+    { year:"2021", title:"Commercial Bank Approval", image:"milestone-2021.jpg" },
+    { year:"2022", title:"Official Launch", image:"milestone-2022.jpg" }
   ];
 
-  const yearEl = document.getElementById('mileYear');
-  const titleEl = document.getElementById('mileTitle');
-  const imgEl = document.getElementById('mileImgTag');
-  const imgWrap = document.getElementById('mileImage');
-  const prev = document.querySelector('.mile-prev');
-  const next = document.querySelector('.mile-next');
+  const year = document.getElementById('mileYear');
+  const title = document.getElementById('mileTitle');
+  const img = document.getElementById('mileImgTag');
 
-  if (!yearEl || !titleEl || !imgEl || !imgWrap || !prev || !next) return;
+  if (!year || !title || !img) return;
 
-  let current = 0;
-  let startX = 0;
-  let moveX = 0;
-  let isTouching = false;
+  let i = 0;
 
-  function renderMilestone() {
-    const item = milestones[current];
-    yearEl.textContent = item.year;
-    titleEl.textContent = item.title;
-    imgWrap.dataset.file = item.image;
-    imgWrap.classList.remove('is-empty');
-    imgEl.style.display = '';
-    imgEl.src = item.image;
+  function render() {
+    year.textContent = milestones[i].year;
+    title.textContent = milestones[i].title;
+    img.src = milestones[i].image;
   }
 
-  function go(step) {
-    current = (current + step + milestones.length) % milestones.length;
-    renderMilestone();
-  }
+  document.querySelector('.mile-prev')?.onclick = () => {
+    i = (i - 1 + milestones.length) % milestones.length;
+    render();
+  };
 
-  prev.addEventListener('click', () => go(-1));
-  next.addEventListener('click', () => go(1));
+  document.querySelector('.mile-next')?.onclick = () => {
+    i = (i + 1) % milestones.length;
+    render();
+  };
 
-  imgWrap.addEventListener('touchstart', (e) => {
-    isTouching = true;
-    startX = e.touches[0].clientX;
-    moveX = startX;
-  }, { passive: true });
-
-  imgWrap.addEventListener('touchmove', (e) => {
-    if (!isTouching) return;
-    moveX = e.touches[0].clientX;
-  }, { passive: true });
-
-  imgWrap.addEventListener('touchend', () => {
-    if (!isTouching) return;
-    const diff = moveX - startX;
-    if (diff > 50) go(-1);
-    else if (diff < -50) go(1);
-    isTouching = false;
-  });
-
-  renderMilestone();
+  render();
 })();
 
+
+// ===============================
 // FOOTER ACCORDION
+// ===============================
 (function () {
   const items = document.querySelectorAll('.kib-acc-item');
-  items.forEach((item) => {
+
+  items.forEach(item => {
     const btn = item.querySelector('.kib-acc-header');
     btn.addEventListener('click', () => {
-      if (item.classList.contains('is-open')) {
-        item.classList.remove('is-open');
-      } else {
-        items.forEach((x) => x.classList.remove('is-open'));
-        item.classList.add('is-open');
-      }
+      items.forEach(x => x.classList.remove('is-open'));
+      item.classList.toggle('is-open');
     });
   });
 })();
 
+
+// ===============================
 // COUNTER ANIMATION
+// ===============================
 (function () {
   const section = document.getElementById('networkCounters');
   if (!section) return;
 
   const nums = section.querySelectorAll('.network-number');
-  let started = false;
 
-  function animateNumber(el, target) {
-    const duration = 1600;
-    const start = 0;
-    const startTime = performance.now();
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        nums.forEach(el => {
+          const target = +el.dataset.target;
+          let count = 0;
 
-    function step(now) {
-      const progress = Math.min((now - startTime) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      const value = Math.floor(start + (target - start) * eased);
-      el.textContent = value.toLocaleString();
-      if (progress < 1) {
-        requestAnimationFrame(step);
-      }
-    }
+          const step = () => {
+            count += target / 60;
+            if (count < target) {
+              el.textContent = Math.floor(count);
+              requestAnimationFrame(step);
+            } else {
+              el.textContent = target.toLocaleString();
+            }
+          };
 
-    requestAnimationFrame(step);
-  }
-
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting && !started) {
-        started = true;
-        nums.forEach((num) => {
-          animateNumber(num, Number(num.dataset.target));
+          step();
         });
+        io.disconnect();
       }
     });
-  }, { threshold: 0.35 });
+  });
 
   io.observe(section);
 })();
 
-// MENU PLACEHOLDER
-document.getElementById('menuBtn')?.addEventListener('click', function () {
-  alert('Connect this button to your existing main menu drawer.');
-});
+
+// ===============================
+// DRAWER MENU (FIXED)
+// ===============================
+(function () {
+  const menuBtn = document.getElementById("menuBtn");
+  const closeBtn = document.getElementById("closeBtn");
+  const drawer = document.getElementById("drawer");
+  const backdrop = document.getElementById("backdrop");
+
+  if (!menuBtn || !drawer || !backdrop) return;
+
+  function openDrawer() {
+    drawer.classList.add("open");
+    backdrop.hidden = false;
+  }
+
+  function closeDrawer() {
+    drawer.classList.remove("open");
+    backdrop.hidden = true;
+  }
+
+  menuBtn.addEventListener("click", openDrawer);
+  closeBtn?.addEventListener("click", closeDrawer);
+  backdrop.addEventListener("click", closeDrawer);
+})();
+
+
+// ===============================
+// DRAWER ACCORDION
+// ===============================
+(function () {
+  document.querySelectorAll("[data-accordion]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const panel = btn.nextElementSibling;
+      if (!panel) return;
+
+      const isOpen = panel.style.maxHeight;
+
+      document.querySelectorAll(".drawer-sub").forEach(p => {
+        p.style.maxHeight = null;
+      });
+
+      if (!isOpen) {
+        panel.style.maxHeight = panel.scrollHeight + "px";
+      }
+    });
+  });
+})();
