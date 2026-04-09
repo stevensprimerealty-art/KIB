@@ -1,4 +1,6 @@
+// ===============================
 // HERO SLIDER
+// ===============================
 (function () {
   const slider = document.getElementById('heroSlider');
   const track = document.getElementById('heroTrack');
@@ -74,7 +76,10 @@
   start();
 })();
 
+
+// ===============================
 // REVEAL ON SCROLL
+// ===============================
 (function () {
   const items = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries) => {
@@ -89,39 +94,18 @@
   items.forEach((item) => io.observe(item));
 })();
 
+
+// ===============================
 // MILESTONES SLIDER
+// ===============================
 (function () {
   const milestones = [
-    {
-      year: "1990s",
-      title: "Started as Funding Program",
-      image: "milestone-1990.jpg"
-    },
-    {
-      year: "2003",
-      title: "Became a registered company",
-      image: "milestone-2003.jpg"
-    },
-    {
-      year: "2011",
-      title: "Granted MDI License",
-      image: "milestone-2011.jpg"
-    },
-    {
-      year: "2018",
-      title: "Ownership change (Jun’18) to KIB Korea International Banking",
-      image: "milestone-2018.jpg"
-    },
-    {
-      year: "2021",
-      title: "Received Approval as Commercial Bank",
-      image: "milestone-2021.jpg"
-    },
-    {
-      year: "2022",
-      title: "Official Launching as Commercial Bank",
-      image: "milestone-2022.jpg"
-    }
+    { year: "1990s", title: "Started as Funding Program", image: "milestone-1990.jpg" },
+    { year: "2003", title: "Became a registered company", image: "milestone-2003.jpg" },
+    { year: "2011", title: "Granted MDI License", image: "milestone-2011.jpg" },
+    { year: "2018", title: "Ownership change (Jun’18) to KIB Korea International Banking", image: "milestone-2018.jpg" },
+    { year: "2021", title: "Received Approval as Commercial Bank", image: "milestone-2021.jpg" },
+    { year: "2022", title: "Official Launching as Commercial Bank", image: "milestone-2022.jpg" }
   ];
 
   const yearEl = document.getElementById('mileYear');
@@ -178,23 +162,37 @@
   renderMilestone();
 })();
 
+
+// ===============================
 // FOOTER ACCORDION
+// ===============================
 (function () {
   const items = document.querySelectorAll('.kib-acc-item');
+
   items.forEach((item) => {
     const btn = item.querySelector('.kib-acc-header');
+    const panel = item.querySelector('.kib-acc-body');
+
     btn.addEventListener('click', () => {
-      if (item.classList.contains('is-open')) {
-        item.classList.remove('is-open');
-      } else {
-        items.forEach((x) => x.classList.remove('is-open'));
+      const isOpen = item.classList.contains('is-open');
+
+      items.forEach((x) => {
+        x.classList.remove('is-open');
+        x.querySelector('.kib-acc-body').hidden = true;
+      });
+
+      if (!isOpen) {
         item.classList.add('is-open');
+        panel.hidden = false;
       }
     });
   });
 })();
 
+
+// ===============================
 // COUNTER ANIMATION
+// ===============================
 (function () {
   const section = document.getElementById('networkCounters');
   if (!section) return;
@@ -204,17 +202,14 @@
 
   function animateNumber(el, target) {
     const duration = 1600;
-    const start = 0;
     const startTime = performance.now();
 
     function step(now) {
       const progress = Math.min((now - startTime) / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
-      const value = Math.floor(start + (target - start) * eased);
+      const value = Math.floor(target * eased);
       el.textContent = value.toLocaleString();
-      if (progress < 1) {
-        requestAnimationFrame(step);
-      }
+      if (progress < 1) requestAnimationFrame(step);
     }
 
     requestAnimationFrame(step);
@@ -234,7 +229,60 @@
   io.observe(section);
 })();
 
-// MENU PLACEHOLDER
-document.getElementById('menuBtn')?.addEventListener('click', function () {
-  alert('Connect this button to your existing main menu drawer.');
-});
+
+// ===============================
+// DRAWER MENU (FIXED)
+// ===============================
+(function () {
+  const menuBtn = document.getElementById("menuBtn");
+  const closeBtn = document.getElementById("closeBtn");
+  const drawer = document.getElementById("drawer");
+  const backdrop = document.getElementById("backdrop");
+
+  if (!menuBtn || !drawer || !backdrop) return;
+
+  function openDrawer() {
+    drawer.classList.add("open");
+    backdrop.hidden = false;
+    menuBtn.setAttribute("aria-expanded", "true");
+  }
+
+  function closeDrawer() {
+    drawer.classList.remove("open");
+    backdrop.hidden = true;
+    menuBtn.setAttribute("aria-expanded", "false");
+  }
+
+  function toggleDrawer() {
+    drawer.classList.contains("open") ? closeDrawer() : openDrawer();
+  }
+
+  menuBtn.addEventListener("click", toggleDrawer);
+  closeBtn?.addEventListener("click", closeDrawer);
+  backdrop.addEventListener("click", closeDrawer);
+})();
+
+
+// ===============================
+// DRAWER ACCORDION
+// ===============================
+(function () {
+  const buttons = document.querySelectorAll("[data-accordion]");
+
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const panel = btn.nextElementSibling;
+      if (!panel) return;
+
+      const isOpen = panel.style.maxHeight;
+
+      document.querySelectorAll(".drawer-sub").forEach(p => {
+        p.style.maxHeight = null;
+      });
+
+      if (!isOpen) {
+        panel.style.maxHeight = panel.scrollHeight + "px";
+      }
+    });
+  });
+})();
