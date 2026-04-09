@@ -6,6 +6,18 @@
 const $ = (id) => document.getElementById(id);
 const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
+// ✅ ADD THIS HERE
+function setText(id, value) {
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  if (typeof value === "string" && value.includes("\n")) {
+    el.innerHTML = value.replaceAll("\n", "<br>");
+  } else {
+    el.textContent = value;
+  }
+}
+
 
 // ===============================
 // INTRO SPLASH CONTROLLER (SAFE)
@@ -1115,25 +1127,8 @@ function initAfterLoad() {
 }
 
 // ===============================
-// LOAD HEADER + FOOTER
+// INIT AFTER LOAD (FINAL)
 // ===============================
-async function loadPart(id, file) {
-  const el = document.getElementById(id);
-  if (!el) return;
-
-  const res = await fetch(file);
-  const html = await res.text();
-  el.innerHTML = html;
-}
-
-
-// ===============================
-// INIT AFTER LOAD
-// ===============================
-window.addEventListener("DOMContentLoaded", async () => {
-  await loadPart("header", "header.html");
-  await loadPart("footer", "footer.html");
-
-  // 🔥 THIS FIXES EVERYTHING
+document.addEventListener("DOMContentLoaded", () => {
   initAfterLoad();
 });
