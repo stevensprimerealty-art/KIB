@@ -1013,13 +1013,12 @@ function initAfterLoad() {
   const closeBtn = $("closeBtn");
 
   // ===============================
-  // DRAWER FUNCTIONS (MOVE UP ✅)
+  // DRAWER FUNCTIONS
   // ===============================
   function openDrawer() {
     if (!drawer || !backdrop || !menuBtn) return;
 
     drawer.classList.add("is-open");
-
     backdrop.hidden = false;
     requestAnimationFrame(() => backdrop.classList.add("is-on"));
 
@@ -1045,13 +1044,12 @@ function initAfterLoad() {
   }
 
   // ===============================
-  // MENU EVENTS (NOW SAFE ✅)
+  // MENU EVENTS
   // ===============================
   if (menuBtn) menuBtn.addEventListener("click", toggleDrawer);
   if (closeBtn) closeBtn.addEventListener("click", closeDrawer);
   if (backdrop) backdrop.addEventListener("click", closeDrawer);
 
-  // ESC KEY
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") closeDrawer();
   });
@@ -1124,35 +1122,21 @@ function initAfterLoad() {
       }
     });
   });
-}
 
-// ===============================
-// INIT AFTER LOAD (FINAL)
-// ===============================
-document.addEventListener("DOMContentLoaded", () => {
-  initAfterLoad();
-});
-
-
-function initAfterLoad(){
-
-  /* ========= INTERNET BANKING NAV ========= */
+  // ===============================
+  // INTERNET BANKING NAV
+  // ===============================
   document.querySelectorAll(".go-internet").forEach(link => {
     link.addEventListener("click", function(e){
       e.preventDefault();
 
       const target = this.getAttribute("data-link");
 
-      const drawer = document.getElementById("drawer");
-      const backdrop = document.getElementById("backdrop");
-
-      /* CLOSE DRAWER */
-      if(drawer && drawer.classList.contains("open")){
-        drawer.classList.remove("open");
+      if(drawer && drawer.classList.contains("is-open")){
+        drawer.classList.remove("is-open");
         if(backdrop) backdrop.hidden = true;
       }
 
-      /* FADE OUT */
       document.body.style.opacity = "0";
       document.body.style.transition = "opacity 0.3s ease";
 
@@ -1162,4 +1146,12 @@ function initAfterLoad(){
     });
   });
 
-}
+} 
+
+
+// ===============================
+// INIT AFTER LOAD (FINAL)
+// ===============================
+document.addEventListener("DOMContentLoaded", () => {
+  initAfterLoad();
+});
