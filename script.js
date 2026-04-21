@@ -1013,13 +1013,12 @@ function initAfterLoad() {
   const closeBtn = $("closeBtn");
 
   // ===============================
-  // DRAWER FUNCTIONS (MOVE UP ✅)
+  // DRAWER FUNCTIONS
   // ===============================
   function openDrawer() {
     if (!drawer || !backdrop || !menuBtn) return;
 
     drawer.classList.add("is-open");
-
     backdrop.hidden = false;
     requestAnimationFrame(() => backdrop.classList.add("is-on"));
 
@@ -1045,13 +1044,12 @@ function initAfterLoad() {
   }
 
   // ===============================
-  // MENU EVENTS (NOW SAFE ✅)
+  // MENU EVENTS
   // ===============================
   if (menuBtn) menuBtn.addEventListener("click", toggleDrawer);
   if (closeBtn) closeBtn.addEventListener("click", closeDrawer);
   if (backdrop) backdrop.addEventListener("click", closeDrawer);
 
-  // ESC KEY
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") closeDrawer();
   });
@@ -1124,7 +1122,32 @@ function initAfterLoad() {
       }
     });
   });
-}
+
+  // ===============================
+  // INTERNET BANKING NAV
+  // ===============================
+  document.querySelectorAll(".go-internet").forEach(link => {
+    link.addEventListener("click", function(e){
+      e.preventDefault();
+
+      const target = this.getAttribute("data-link");
+
+      if(drawer && drawer.classList.contains("is-open")){
+        drawer.classList.remove("is-open");
+        if(backdrop) backdrop.hidden = true;
+      }
+
+      document.body.style.opacity = "0";
+      document.body.style.transition = "opacity 0.3s ease";
+
+      setTimeout(()=>{
+        window.location.href = target;
+      }, 300);
+    });
+  });
+
+} 
+
 
 // ===============================
 // INIT AFTER LOAD (FINAL)
