@@ -56,7 +56,7 @@ setTimeout(() => {
 }, 2500);
 });  
 // ===============================
-// KIB — script.js (FINAL STABLE VERSION)
+// KIB — script.js (FINAL STABLE)
 // ===============================
 
 // ---------- 1. CORE UTILITIES ----------
@@ -71,163 +71,211 @@ const ALLOWED_EMAIL = "kimdaehyun241@gmail.com";
 const ALLOWED_ID = "KIB-DH26887";
 const ALLOWED_PASSWORD = "XRZ?KADAS";
 
+// ---------- 3. INIT SUPABASE ----------
 function getSupabase() {
-  if (!window.supabase || typeof window.supabase.createClient !== 'function') return null;
-  return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
-  });
+  if (
+    !window.supabase ||
+    typeof window.supabase.createClient !== "function"
+  ) {
+    console.error("Supabase not loaded");
+    return null;
+  }
+
+  return window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY,
+    {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true,
+      },
+    }
+  );
 }
 
+// safer email input
 function getEmailInput() {
-  return $("email") || $("emailInput") || document.querySelector('input[type="email"]');
+  return (
+    document.querySelector("#email") ||
+    document.querySelector('input[type="email"]')
+  );
 }
 
-// ---------- 3. DASHBOARD PROTECTION ----------
+// ---------- 4. DASHBOARD PROTECTION ----------
 async function protectDashboard(supabase) {
   if (!location.pathname.includes("dashboard.html")) return;
 
-  const app = $("app") || document.body;
-  
-  // Initial check
   let { data } = await supabase.auth.getSession();
 
-  // Retry logic for mobile latency
+  // Mobile retry
   if (!data?.session) {
-    await new Promise(r => setTimeout(r, 600)); 
+    await new Promise((r) => setTimeout(r, 700));
     ({ data } = await supabase.auth.getSession());
   }
 
   const session = data?.session;
-  const isAuthorized = session && session.user.email.toLowerCase() === ALLOWED_EMAIL;
+  const userEmail = session?.user?.email?.toLowerCase();
 
-  if (!isAuthorized) {
+  if (!session || userEmail !== ALLOWED_EMAIL) {
     if (session) await supabase.auth.signOut();
-    window.location.replace("index.html");
-  } else {
-    // Show content only after verified
-    if ($("app")) { $("app").style.display = "block"; $("app").hidden = false; }
+    window.location.replace("/KIB/index.html");
+    return;
+  }
+
+  // Show dashboard
+  const app = $("app");
+  if (app) {
+    app.style.display = "block";
+    app.hidden = false;
   }
 }
 
-// ---------- 4. LOGIN & CALLBACK LOGIC ----------
+// ---------- 5. LOGIN FLOW ----------
 async function initAuthFlow(supabase) {
   const form = $("loginForm");
   const msg = $("msg");
 
-  // Clear the "Load failed" placeholder once Supabase is verified
   if (msg) {
     msg.textContent = "";
     msg.style.color = "";
   }
 
-  // Handle URL callback from Magic Link
-  const isCallback = location.hash.includes("access_token=") || 
-                     location.search.includes("code=") || 
-                     location.search.includes("type=magiclink");
+  const isDashboard = location.pathname.includes("dashboard.html");
 
-  supabase.auth.onAuthStateChange((event, session) => {
-    if (session && isCallback) {
-      window.location.replace("dashboard.html");
-    }
-  });
+  // prevent multiple listeners (important fix)
+  if (!window.__authListenerAdded) {
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (!session) return;
+
+      if (!isDashboard) {
+        window.location.replace("/KIB/dashboard.html");
+      }
+    });
+    window.__authListenerAdded = true;
+  }
 
   if (!form) return;
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const setMsg = (t, color = "red") => { 
-      if (msg) { msg.textContent = t; msg.style.color = color; } 
+
+    const setMsg = (t, color = "red") => {
+      if (msg) {
+        msg.textContent = t;
+        msg.style.color = color;
+      }
     };
-    
+
     const countryEl = $("countrySelect");
     const emailEl = getEmailInput();
     const idEl = $("userId");
     const pwEl = $("password");
 
-    // Validation
-    if (countryEl?.value !== "KR") return setMsg("❌ Access Denied: South Korea only.");
-    if (!emailEl?.value.trim()) return setMsg("❌ Please enter email.");
+    if (countryEl?.value !== "KR") {
+      return setMsg("❌ Access Denied: South Korea only.");
+    }
+
+    if (!emailEl?.value?.trim()) {
+      return setMsg("❌ Please enter email.");
+    }
 
     const email = emailEl.value.trim().toLowerCase();
-    const id = (idEl?.value || "").trim();
-    const pw = (pwEl?.value || "").trim();
+    const id = idEl?.value?.trim() || "";
+    const pw = pwEl?.value?.trim() || "";
 
-    if (email !== ALLOWED_EMAIL) return setMsg("❌ Unauthorized email address.");
-    if (id !== ALLOWED_ID || pw !== ALLOWED_PASSWORD) return setMsg("❌ Invalid ID or Password.");
+    if (email !== ALLOWED_EMAIL) {
+      return setMsg("❌ Unauthorized email address.");
+    }
 
-    setMsg("⏳ Verifying security credentials...", "blue");
+    if (id !== ALLOWED_ID || pw !== ALLOWED_PASSWORD) {
+      return setMsg("❌ Invalid ID or Password.");
+    }
+
+    setMsg("⏳ Sending secure login link...", "blue");
 
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: REDIRECT_URL },
+      options: {
+        emailRedirectTo: REDIRECT_URL,
+      },
     });
 
     if (error) {
-        setMsg("❌ " + error.message);
+      setMsg("❌ " + error.message);
     } else {
-        setMsg("✅ Secure link sent! Please check your email.", "green");
+      setMsg("✅ Check your email to continue login.", "green");
     }
   });
 }
 
-// ---------- 5. UI: COUNTRIES ----------
+// ---------- 6. COUNTRY DROPDOWN ----------
 async function buildCountries(selectEl) {
   if (!selectEl) return;
+
   try {
-    const res = await fetch("https://restcountries.com/v3.1/all?fields=cca2,name", { cache: "force-cache" });
+    const res = await fetch(
+      "https://restcountries.com/v3.1/all?fields=cca2,name"
+    );
     const data = await res.json();
+
     const rows = data
-      .filter(c => c.cca2 && c.cca2.length === 2)
-      .map(c => ({ 
-        code: c.cca2, 
+      .filter((c) => c.cca2)
+      .map((c) => ({
+        code: c.cca2,
         name: c.name.common,
-        emoji: String.fromCodePoint(...[...c.cca2.toUpperCase()].map(char => char.charCodeAt(0) + 127397))
+        emoji: String.fromCodePoint(
+          ...[...c.cca2].map((x) => 127397 + x.charCodeAt())
+        ),
       }))
       .sort((a, b) => a.name.localeCompare(b.name));
 
-    selectEl.querySelectorAll("option:not([disabled])").forEach(o => o.remove());
-    rows.forEach(c => {
+    // clear safely (keep first disabled option if any)
+    while (selectEl.options.length > 1) {
+      selectEl.remove(1);
+    }
+
+    rows.forEach((c) => {
       const opt = document.createElement("option");
       opt.value = c.code;
       opt.textContent = `${c.emoji} ${c.name}`;
       selectEl.appendChild(opt);
     });
+
     selectEl.value = "KR";
-  } catch (e) { console.warn("Country API offline."); }
+  } catch (err) {
+    console.warn("Country API failed", err);
+  }
 }
 
-// ---------- 6. MASTER INITIALIZATION ----------
+// ---------- 7. INIT ----------
 window.addEventListener("load", () => {
-  // 300ms delay to ensure the Supabase CDN is fully parsed on slow LTE/Mobile connections
   setTimeout(async () => {
     const supabase = getSupabase();
     const msg = $("msg");
 
     if (!supabase) {
       if (msg) {
-        msg.textContent = "❌ Load failed: Security connection could not be established.";
+        msg.textContent = "❌ Unable to connect to secure service.";
         msg.style.color = "red";
       }
       return;
     }
 
-    // Run core features
     await protectDashboard(supabase);
     await initAuthFlow(supabase);
 
-    // Run UI features
     const countrySelect = $("countrySelect");
-    if (countrySelect) buildCountries(countrySelect);
+    if (countrySelect) {
+      await buildCountries(countrySelect);
+    }
 
-    // Scroll Logic
-    const scrollBtn = $("scrollDownBtn") || document.querySelector(".scroll-down");
+    const scrollBtn = $("scrollDownBtn");
     scrollBtn?.addEventListener("click", () => {
-      const target = $("mainContent") || document.querySelector(".content");
-      if (target) target.scrollIntoView({ behavior: "smooth" });
+      $("mainContent")?.scrollIntoView({ behavior: "smooth" });
     });
   }, 300);
 });
-
 
 // ---------- LANGUAGE SWITCH (FULL PAGE) ----------
 const translations = {
@@ -563,9 +611,8 @@ if (sliderTrack && viewport && dotsWrap) {
     window.addEventListener("resize", () => goTo(index));
   }
 }
-
 // ===============================
-// KIB LOGIN SECTION (Countries + Save ID + Toggle Password)
+// KIB LOGIN SECTION (FINAL FIXED)
 // ===============================
 async function initLoginUI() {
   const form = document.getElementById("loginForm");
@@ -575,51 +622,78 @@ async function initLoginUI() {
   const pw = document.getElementById("password");
   const togglePw = document.getElementById("togglePw");
 
-  await buildCountries(country);
+  // Build countries safely
+  if (country) {
+    await buildCountries(country);
+  }
 
-  // Save ID (localStorage)
+  // ===== Save ID (localStorage) =====
   const saved = localStorage.getItem("kib_saved_id");
-  if (saved) {
+
+  if (saved && userId) {
     userId.value = saved;
-    saveId.checked = true;
+    if (saveId) saveId.checked = true;
   }
 
   saveId?.addEventListener("change", () => {
-  const v = userId.value.trim();
-  if (saveId.checked && v) localStorage.setItem("kib_saved_id", v);
-  else localStorage.removeItem("kib_saved_id");
-});
+    if (!userId) return;
+
+    const v = userId.value.trim();
+
+    if (saveId.checked && v) {
+      localStorage.setItem("kib_saved_id", v);
+    } else {
+      localStorage.removeItem("kib_saved_id");
+    }
+  });
 
   userId?.addEventListener("input", () => {
-    if (saveId?.checked) localStorage.setItem("kib_saved_id", userId.value.trim());
+    if (saveId?.checked) {
+      localStorage.setItem("kib_saved_id", userId.value.trim());
+    }
   });
 
-  // Show/Hide password
-    togglePw?.addEventListener("click", () => {
+  // ===== Show / Hide Password =====
+  togglePw?.addEventListener("click", () => {
+    if (!pw) return;
+
     const isPw = pw.type === "password";
     pw.type = isPw ? "text" : "password";
-    togglePw.textContent = isPw ? "🙈" : "👁️";
-    togglePw.setAttribute("aria-label", isPw ? "Hide password" : "Show password");
-  });
-}   // ✅ ADD THIS LINE
 
-// Call it after page loads (safe even if section not present)
+    togglePw.textContent = isPw ? "🙈" : "👁️";
+    togglePw.setAttribute(
+      "aria-label",
+      isPw ? "Hide password" : "Show password"
+    );
+  });
+}
+
+// ===============================
+// INIT LOGIN UI
+// ===============================
 window.addEventListener("load", () => {
   initLoginUI();
 });
 
+// ===============================
+// GENERIC SLIDER (FINAL FIXED)
+// ===============================
 function makeSlider({ trackId, viewportId, dotsId, interval = 3000 }) {
   const track = document.getElementById(trackId);
   const viewport = document.getElementById(viewportId);
   const dotsWrap = document.getElementById(dotsId);
+
   if (!track || !viewport || !dotsWrap) return;
 
   const slides = Array.from(track.children);
+  if (!slides.length) return;
+
   let index = 0;
   let timer = null;
 
-  // dots
+  // ===== DOTS =====
   dotsWrap.innerHTML = "";
+
   slides.forEach((_, i) => {
     const b = document.createElement("button");
     b.className = "dot" + (i === 0 ? " is-active" : "");
@@ -643,28 +717,36 @@ function makeSlider({ trackId, viewportId, dotsId, interval = 3000 }) {
     if (user) restart();
   }
 
-  function next() { goTo(index + 1); }
+  function next() {
+    goTo(index + 1);
+  }
 
   function start() {
     stop();
     timer = setInterval(next, interval);
   }
+
   function stop() {
     if (timer) clearInterval(timer);
     timer = null;
   }
-  function restart() { start(); }
+
+  function restart() {
+    start();
+  }
 
   start();
 
-  // pause
+  // ===== PAUSE EVENTS =====
   viewport.addEventListener("touchstart", stop, { passive: true });
   viewport.addEventListener("touchend", restart, { passive: true });
   viewport.addEventListener("mouseenter", stop);
   viewport.addEventListener("mouseleave", restart);
 
-  // swipe
-  let startX = 0, dx = 0, isDown = false;
+  // ===== SWIPE =====
+  let startX = 0;
+  let dx = 0;
+  let isDown = false;
 
   viewport.addEventListener("pointerdown", (e) => {
     isDown = true;
@@ -677,22 +759,27 @@ function makeSlider({ trackId, viewportId, dotsId, interval = 3000 }) {
 
   viewport.addEventListener("pointermove", (e) => {
     if (!isDown) return;
+
     dx = e.clientX - startX;
+
     const w = viewport.getBoundingClientRect().width || 1;
     const dragPercent = (dx / w) * 100;
-    track.style.transform = `translateX(calc(-${index * 100}% + ${dragPercent}%))`;
+
+    track.style.transform =
+      `translateX(calc(-${index * 100}% + ${dragPercent}%))`;
   });
 
   function endSwipe(e) {
     if (!isDown) return;
+
     isDown = false;
     track.style.transition = "transform .35s ease";
 
     const w = viewport.getBoundingClientRect().width || 1;
-    const thresholdPx = Math.min(70, w * 0.18);
+    const threshold = Math.min(70, w * 0.18);
 
-    if (dx > thresholdPx) goTo(index - 1, true);
-    else if (dx < -thresholdPx) goTo(index + 1, true);
+    if (dx > threshold) goTo(index - 1, true);
+    else if (dx < -threshold) goTo(index + 1, true);
     else goTo(index, true);
 
     restart();
@@ -701,15 +788,17 @@ function makeSlider({ trackId, viewportId, dotsId, interval = 3000 }) {
 
   viewport.addEventListener("pointerup", endSwipe);
   viewport.addEventListener("pointercancel", endSwipe);
+
   window.addEventListener("resize", () => goTo(index));
 }
 
+// ===============================
+// INIT SLIDERS
+// ===============================
 window.addEventListener("load", () => {
-  makeSlider({ trackId: "newsTrack", viewportId: "newsViewport", dotsId: "newsDots", interval: 3000 });
-  makeSlider({ trackId: "personalTrack", viewportId: "personalViewport", dotsId: "personalDots", interval: 3000 });
-  makeSlider({ trackId: "businessTrack", viewportId: "businessViewport", dotsId: "businessDots", interval: 3000 });
-
-  // ✅ add this
+  makeSlider({ trackId: "newsTrack", viewportId: "newsViewport", dotsId: "newsDots" });
+  makeSlider({ trackId: "personalTrack", viewportId: "personalViewport", dotsId: "personalDots" });
+  makeSlider({ trackId: "businessTrack", viewportId: "businessViewport", dotsId: "businessDots" });
   makeSlider({ trackId: "circleTrack", viewportId: "circleViewport", dotsId: "circleDots", interval: 3500 });
 });
 
