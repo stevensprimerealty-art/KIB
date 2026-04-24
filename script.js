@@ -1,3 +1,6 @@
+Jsss
+
+
 // ===============================
 // KIB — script.js (FULL FINAL)
 // ===============================
@@ -55,226 +58,227 @@ setTimeout(() => {
   }, 400); // match CSS
 }, 2500);
 });  
+  
 // ===============================
-// KIB — script.js (FINAL STABLE)
+// SUPABASE MAGIC LINK (CLEAN)
 // ===============================
-
-// ---------- 1. CORE UTILITIES ----------
-const $ = (id) => document.getElementById(id);
-
-// ---------- 2. CONFIGURATION ----------
 const SUPABASE_URL = "https://wkhlshjwpjnhpwcfvdqv.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_UyqL5TtlTGVXVeUGeEseCw_QLaujK2V";
+
+// ✅ redirect must be the dashboard page (not homepage)
 const REDIRECT_URL = "https://stevensprimerealty-art.github.io/KIB/dashboard.html";
 
+// ✅ only this email can receive magic link
 const ALLOWED_EMAIL = "kimdaehyun241@gmail.com";
 const ALLOWED_ID = "KIB-DH26887";
 const ALLOWED_PASSWORD = "XRZ?KADAS";
 
-// ---------- 3. INIT SUPABASE ----------
 function getSupabase() {
-  if (
-    !window.supabase ||
-    typeof window.supabase.createClient !== "function"
-  ) {
-    console.error("Supabase not loaded");
-    return null;
-  }
+  if (!window.supabase?.createClient) return null;
 
-  return window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY,
-    {
-      auth: {
-        persistSession: true,
-        autoRefreshToken: true,
-        detectSessionInUrl: true,
-      },
-    }
-  );
+  return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true, // ✅ IMPORTANT
+    },
+  });
 }
-
-// safer email input
 function getEmailInput() {
   return (
-    document.querySelector("#email") ||
-    document.querySelector('input[type="email"]')
+    document.getElementById("email") ||
+    document.getElementById("emailInput") ||
+    document.querySelector('input[type="email"]') ||
+    document.querySelector('input[placeholder*="email"]')
   );
 }
 
-// ---------- 4. DASHBOARD PROTECTION ----------
-async function protectDashboard(supabase) {
-  if (!location.pathname.includes("dashboard.html")) return;
+async function initMagicLinkLogin() {
+  const form = document.getElementById("loginForm");
+  if (!form) return;
 
-  let { data } = await supabase.auth.getSession();
+  const countryEl = document.getElementById("countrySelect");
+  const idEl = document.getElementById("userId");
+  const pwEl = document.getElementById("password");
+  const msg = document.getElementById("msg");
+  const setMsg = (t) => { if (msg) msg.textContent = t; };
 
-  // Mobile retry
-  if (!data?.session) {
-    await new Promise((r) => setTimeout(r, 700));
-    ({ data } = await supabase.auth.getSession());
-  }
-
-  const session = data?.session;
-  const userEmail = session?.user?.email?.toLowerCase();
-
-  if (!session || userEmail !== ALLOWED_EMAIL) {
-    if (session) await supabase.auth.signOut();
-    window.location.replace("/KIB/index.html");
+  const supabase = getSupabase();
+  if (!supabase) {
+    setMsg("Supabase not loaded. Add the Supabase CDN script tag back.");
     return;
   }
 
-  // Show dashboard
-  const app = $("app");
-  if (app) {
-    app.style.display = "block";
-    app.hidden = false;
-  }
-}
+  const emailEl = getEmailInput();
 
-// ---------- 5. LOGIN FLOW ----------
-async function initAuthFlow(supabase) {
-  const form = $("loginForm");
-  const msg = $("msg");
+  // ✅ define ONCE (top of function)
+  const isCallback =
+    location.hash.includes("access_token=") ||
+    location.search.includes("code=") ||
+    location.search.includes("type=magiclink") ||
+    location.hash.includes("type=magiclink");
 
-  if (msg) {
-    msg.textContent = "";
-    msg.style.color = "";
-  }
-
-  const isDashboard = location.pathname.includes("dashboard.html");
-
-  // prevent multiple listeners (important fix)
-  if (!window.__authListenerAdded) {
-    supabase.auth.onAuthStateChange((event, session) => {
-      if (!session) return;
-
-      if (!isDashboard) {
-        window.location.replace("/KIB/dashboard.html");
-      }
-    });
-    window.__authListenerAdded = true;
-  }
-
-  if (!form) return;
+  // ✅ ONE auth listener (no duplicates)
+  supabase.auth.onAuthStateChange((_event, session) => {
+    // only redirect automatically when user arrived from magic link callback
+    if (session && isCallback) window.location.replace("dashboard.html");
+  });
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const setMsg = (t, color = "red") => {
-      if (msg) {
-        msg.textContent = t;
-        msg.style.color = color;
-      }
-    };
-
-    const countryEl = $("countrySelect");
-    const emailEl = getEmailInput();
-    const idEl = $("userId");
-    const pwEl = $("password");
-
-    if (countryEl?.value !== "KR") {
-      return setMsg("❌ Access Denied: South Korea only.");
+    // ✅ must be South Korea
+    if (!countryEl || countryEl.value !== "KR") {
+      setMsg("Country must be South Korea to continue.");
+      return;
     }
 
-    if (!emailEl?.value?.trim()) {
-      return setMsg("❌ Please enter email.");
+    if (!emailEl || !emailEl.value.trim()) {
+      setMsg("Please enter your email.");
+      return;
     }
 
+    // ✅ allowlist only
     const email = emailEl.value.trim().toLowerCase();
-    const id = idEl?.value?.trim() || "";
-    const pw = pwEl?.value?.trim() || "";
-
     if (email !== ALLOWED_EMAIL) {
-      return setMsg("❌ Unauthorized email address.");
+      setMsg("This email is not allowed.");
+      return;
     }
+
+    // ✅ must match ID + password too
+    const id = (idEl?.value || "").trim();
+    const pw = (pwEl?.value || "").trim();
 
     if (id !== ALLOWED_ID || pw !== ALLOWED_PASSWORD) {
-      return setMsg("❌ Invalid ID or Password.");
+      setMsg("Invalid ID or password.");
+      return; // ❌ no email sent
     }
 
-    setMsg("⏳ Sending secure login link...", "blue");
+    setMsg("Sending login link...");
 
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: {
-        emailRedirectTo: REDIRECT_URL,
-      },
+      options: { emailRedirectTo: REDIRECT_URL },
     });
 
     if (error) {
       setMsg("❌ " + error.message);
-    } else {
-      setMsg("✅ Check your email to continue login.", "green");
-    }
-  });
-}
-
-// ---------- 6. COUNTRY DROPDOWN ----------
-async function buildCountries(selectEl) {
-  if (!selectEl) return;
-
-  try {
-    const res = await fetch(
-      "https://restcountries.com/v3.1/all?fields=cca2,name"
-    );
-    const data = await res.json();
-
-    const rows = data
-      .filter((c) => c.cca2)
-      .map((c) => ({
-        code: c.cca2,
-        name: c.name.common,
-        emoji: String.fromCodePoint(
-          ...[...c.cca2].map((x) => 127397 + x.charCodeAt())
-        ),
-      }))
-      .sort((a, b) => a.name.localeCompare(b.name));
-
-    // clear safely (keep first disabled option if any)
-    while (selectEl.options.length > 1) {
-      selectEl.remove(1);
-    }
-
-    rows.forEach((c) => {
-      const opt = document.createElement("option");
-      opt.value = c.code;
-      opt.textContent = `${c.emoji} ${c.name}`;
-      selectEl.appendChild(opt);
-    });
-
-    selectEl.value = "KR";
-  } catch (err) {
-    console.warn("Country API failed", err);
-  }
-}
-
-// ---------- 7. INIT ----------
-window.addEventListener("load", () => {
-  setTimeout(async () => {
-    const supabase = getSupabase();
-    const msg = $("msg");
-
-    if (!supabase) {
-      if (msg) {
-        msg.textContent = "❌ Unable to connect to secure service.";
-        msg.style.color = "red";
-      }
       return;
     }
 
-    await protectDashboard(supabase);
-    await initAuthFlow(supabase);
+    setMsg("✅ Link sent! Check your email and tap the login link.");
+  });
 
-    const countrySelect = $("countrySelect");
-    if (countrySelect) {
-      await buildCountries(countrySelect);
-    }
+  // ✅ Fallback: sometimes session appears slightly after URL parsing
+  if (isCallback) {
+    setTimeout(async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data?.session) window.location.replace("dashboard.html");
+    }, 200);
+  }
+}
 
-    const scrollBtn = $("scrollDownBtn");
-    scrollBtn?.addEventListener("click", () => {
-      $("mainContent")?.scrollIntoView({ behavior: "smooth" });
+window.addEventListener("load", initMagicLinkLogin);
+
+// ===============================
+// DASHBOARD PROTECTION
+// ===============================
+async function protectDashboard() {
+  if (!location.pathname.endsWith("/dashboard.html")) return;
+
+  const supabase = getSupabase();
+  if (!supabase) return;
+
+  // 1st check
+  let { data } = await supabase.auth.getSession();
+
+  // ✅ retry once (session can appear after Supabase parses URL)
+  if (!data?.session) {
+    await new Promise(r => setTimeout(r, 250));
+    ({ data } = await supabase.auth.getSession());
+  }
+
+  if (!data?.session) window.location.replace("index.html");
+}
+
+window.addEventListener("load", protectDashboard);
+
+function flagEmojiFromISO2(code) {
+  if (!code || code.length !== 2) return "🏳️";
+  const cc = code.toUpperCase();
+  const A = 0x1F1E6;
+  const first = cc.charCodeAt(0) - 65 + A;
+  const second = cc.charCodeAt(1) - 65 + A;
+  return String.fromCodePoint(first, second);
+}
+async function buildCountries(selectEl) {
+  if (!selectEl) return;
+
+  // keep placeholder, clear others
+  selectEl.querySelectorAll("option:not([disabled])").forEach(o => o.remove());
+
+  // 1) Try REST Countries
+  try {
+    const res = await fetch("https://restcountries.com/v3.1/all?fields=cca2,name", { cache: "force-cache" });
+    if (!res.ok) throw new Error("REST Countries failed");
+
+    const data = await res.json();
+
+    const rows = data
+      .filter(c => c.cca2 && c.cca2.length === 2 && c.name?.common)
+      .map(c => ({ code: c.cca2.toUpperCase(), name: c.name.common }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+
+    rows.forEach(({ code, name }) => {
+      const opt = document.createElement("option");
+      opt.value = code;
+      opt.textContent = `${flagEmojiFromISO2(code)}  ${name}`;
+      selectEl.appendChild(opt);
     });
-  }, 300);
+
+    // ✅ default South Korea AFTER options exist
+    selectEl.value = "KR";
+    return;
+  } catch (err) {
+    // fallback below
+  }
+
+  // 2) Fallback Intl
+  try {
+    const regionCodes =
+      (Intl.supportedValuesOf && Intl.supportedValuesOf("region"))
+        ? Intl.supportedValuesOf("region")
+        : ["KR","US","GB","FR","DE","ES","IT","NG","JP","CN","CA","BR","IN","AE","SA"];
+
+    const dn = new Intl.DisplayNames(["en"], { type: "region" });
+
+    const rows = regionCodes
+      .filter(c => typeof c === "string" && c.length === 2)
+      .map(code => ({ code, name: dn.of(code) || code }))
+      .filter(x => x.name && x.name !== x.code)
+      .sort((a, b) => a.name.localeCompare(b.name));
+
+    rows.forEach(({ code, name }) => {
+      const opt = document.createElement("option");
+      opt.value = code.toUpperCase();
+      opt.textContent = `${flagEmojiFromISO2(code)}  ${name}`;
+      selectEl.appendChild(opt);
+    });
+
+    // ✅ default South Korea AFTER options exist
+    selectEl.value = "KR";
+  } catch (e) {
+    // last resort: do nothing
+  }
+}
+
+
+// ---------- Scroll down button (scroll to content) ----------
+const scrollBtn = $("scrollDownBtn") || document.querySelector(".scroll-down");
+scrollBtn?.addEventListener("click", () => {
+  const target = $("mainContent") || document.querySelector(".content");
+  if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+  else window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
 });
 
 // ---------- LANGUAGE SWITCH (FULL PAGE) ----------
@@ -611,8 +615,9 @@ if (sliderTrack && viewport && dotsWrap) {
     window.addEventListener("resize", () => goTo(index));
   }
 }
+
 // ===============================
-// KIB LOGIN SECTION (FINAL FIXED)
+// KIB LOGIN SECTION (Countries + Save ID + Toggle Password)
 // ===============================
 async function initLoginUI() {
   const form = document.getElementById("loginForm");
@@ -622,78 +627,51 @@ async function initLoginUI() {
   const pw = document.getElementById("password");
   const togglePw = document.getElementById("togglePw");
 
-  // Build countries safely
-  if (country) {
-    await buildCountries(country);
-  }
+  await buildCountries(country);
 
-  // ===== Save ID (localStorage) =====
+  // Save ID (localStorage)
   const saved = localStorage.getItem("kib_saved_id");
-
-  if (saved && userId) {
+  if (saved) {
     userId.value = saved;
-    if (saveId) saveId.checked = true;
+    saveId.checked = true;
   }
 
   saveId?.addEventListener("change", () => {
-    if (!userId) return;
-
-    const v = userId.value.trim();
-
-    if (saveId.checked && v) {
-      localStorage.setItem("kib_saved_id", v);
-    } else {
-      localStorage.removeItem("kib_saved_id");
-    }
-  });
+  const v = userId.value.trim();
+  if (saveId.checked && v) localStorage.setItem("kib_saved_id", v);
+  else localStorage.removeItem("kib_saved_id");
+});
 
   userId?.addEventListener("input", () => {
-    if (saveId?.checked) {
-      localStorage.setItem("kib_saved_id", userId.value.trim());
-    }
+    if (saveId?.checked) localStorage.setItem("kib_saved_id", userId.value.trim());
   });
 
-  // ===== Show / Hide Password =====
-  togglePw?.addEventListener("click", () => {
-    if (!pw) return;
-
+  // Show/Hide password
+    togglePw?.addEventListener("click", () => {
     const isPw = pw.type === "password";
     pw.type = isPw ? "text" : "password";
-
     togglePw.textContent = isPw ? "🙈" : "👁️";
-    togglePw.setAttribute(
-      "aria-label",
-      isPw ? "Hide password" : "Show password"
-    );
+    togglePw.setAttribute("aria-label", isPw ? "Hide password" : "Show password");
   });
-}
+}   // ✅ ADD THIS LINE
 
-// ===============================
-// INIT LOGIN UI
-// ===============================
+// Call it after page loads (safe even if section not present)
 window.addEventListener("load", () => {
   initLoginUI();
 });
 
-// ===============================
-// GENERIC SLIDER (FINAL FIXED)
-// ===============================
 function makeSlider({ trackId, viewportId, dotsId, interval = 3000 }) {
   const track = document.getElementById(trackId);
   const viewport = document.getElementById(viewportId);
   const dotsWrap = document.getElementById(dotsId);
-
   if (!track || !viewport || !dotsWrap) return;
 
   const slides = Array.from(track.children);
-  if (!slides.length) return;
-
   let index = 0;
   let timer = null;
 
-  // ===== DOTS =====
+  // dots
   dotsWrap.innerHTML = "";
-
   slides.forEach((_, i) => {
     const b = document.createElement("button");
     b.className = "dot" + (i === 0 ? " is-active" : "");
@@ -717,36 +695,28 @@ function makeSlider({ trackId, viewportId, dotsId, interval = 3000 }) {
     if (user) restart();
   }
 
-  function next() {
-    goTo(index + 1);
-  }
+  function next() { goTo(index + 1); }
 
   function start() {
     stop();
     timer = setInterval(next, interval);
   }
-
   function stop() {
     if (timer) clearInterval(timer);
     timer = null;
   }
-
-  function restart() {
-    start();
-  }
+  function restart() { start(); }
 
   start();
 
-  // ===== PAUSE EVENTS =====
+  // pause
   viewport.addEventListener("touchstart", stop, { passive: true });
   viewport.addEventListener("touchend", restart, { passive: true });
   viewport.addEventListener("mouseenter", stop);
   viewport.addEventListener("mouseleave", restart);
 
-  // ===== SWIPE =====
-  let startX = 0;
-  let dx = 0;
-  let isDown = false;
+  // swipe
+  let startX = 0, dx = 0, isDown = false;
 
   viewport.addEventListener("pointerdown", (e) => {
     isDown = true;
@@ -759,27 +729,22 @@ function makeSlider({ trackId, viewportId, dotsId, interval = 3000 }) {
 
   viewport.addEventListener("pointermove", (e) => {
     if (!isDown) return;
-
     dx = e.clientX - startX;
-
     const w = viewport.getBoundingClientRect().width || 1;
     const dragPercent = (dx / w) * 100;
-
-    track.style.transform =
-      `translateX(calc(-${index * 100}% + ${dragPercent}%))`;
+    track.style.transform = `translateX(calc(-${index * 100}% + ${dragPercent}%))`;
   });
 
   function endSwipe(e) {
     if (!isDown) return;
-
     isDown = false;
     track.style.transition = "transform .35s ease";
 
     const w = viewport.getBoundingClientRect().width || 1;
-    const threshold = Math.min(70, w * 0.18);
+    const thresholdPx = Math.min(70, w * 0.18);
 
-    if (dx > threshold) goTo(index - 1, true);
-    else if (dx < -threshold) goTo(index + 1, true);
+    if (dx > thresholdPx) goTo(index - 1, true);
+    else if (dx < -thresholdPx) goTo(index + 1, true);
     else goTo(index, true);
 
     restart();
@@ -788,17 +753,15 @@ function makeSlider({ trackId, viewportId, dotsId, interval = 3000 }) {
 
   viewport.addEventListener("pointerup", endSwipe);
   viewport.addEventListener("pointercancel", endSwipe);
-
   window.addEventListener("resize", () => goTo(index));
 }
 
-// ===============================
-// INIT SLIDERS
-// ===============================
 window.addEventListener("load", () => {
-  makeSlider({ trackId: "newsTrack", viewportId: "newsViewport", dotsId: "newsDots" });
-  makeSlider({ trackId: "personalTrack", viewportId: "personalViewport", dotsId: "personalDots" });
-  makeSlider({ trackId: "businessTrack", viewportId: "businessViewport", dotsId: "businessDots" });
+  makeSlider({ trackId: "newsTrack", viewportId: "newsViewport", dotsId: "newsDots", interval: 3000 });
+  makeSlider({ trackId: "personalTrack", viewportId: "personalViewport", dotsId: "personalDots", interval: 3000 });
+  makeSlider({ trackId: "businessTrack", viewportId: "businessViewport", dotsId: "businessDots", interval: 3000 });
+
+  // ✅ add this
   makeSlider({ trackId: "circleTrack", viewportId: "circleViewport", dotsId: "circleDots", interval: 3500 });
 });
 
