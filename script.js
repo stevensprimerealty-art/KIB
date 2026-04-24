@@ -55,9 +55,8 @@ setTimeout(() => {
   }, 400); // match CSS
 }, 2500);
 });  
-  
-// ===============================
-// KIB — script.js (FULLY FIXED)
+  // ===============================
+// KIB — script.js (VERSION 2.1 - LOAD FIXED)
 // ===============================
 
 // ---------- 1. CORE UTILITIES ----------
@@ -74,7 +73,9 @@ const ALLOWED_ID = "KIB-DH26887";
 const ALLOWED_PASSWORD = "XRZ?KADAS";
 
 function getSupabase() {
-  if (!window.supabase?.createClient) return null;
+  // Checks if the library is loaded in the window
+  if (!window.supabase || typeof window.supabase.createClient !== 'function') return null;
+  
   return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
   });
@@ -88,19 +89,16 @@ function getEmailInput() {
 async function protectDashboard(supabase) {
   if (!location.pathname.endsWith("/dashboard.html")) return;
 
-  // Initially hide the app to prevent "flashing" unauthorized content
   const app = $("app");
   if (app) app.style.display = "none"; 
 
   let { data } = await supabase.auth.getSession();
 
-  // Retry for slow URL parsing
   if (!data?.session) {
-    await new Promise(r => setTimeout(r, 300));
+    await new Promise(r => setTimeout(r, 400)); // Slightly longer retry for mobile
     ({ data } = await supabase.auth.getSession());
   }
 
-  // Strict check: No session OR wrong email = Boot to index
   if (!data?.session || data.session.user.email.toLowerCase() !== ALLOWED_EMAIL) {
     if (data?.session) await supabase.auth.signOut();
     window.location.replace("index.html");
@@ -113,13 +111,17 @@ async function protectDashboard(supabase) {
 async function initAuthFlow(supabase) {
   const form = $("loginForm");
   const msg = $("msg");
-  const setMsg = (t) => { if (msg) msg.textContent = t; };
+  
+  // ✅ IMPORTANT: Clear the "Load failed" message from HTML if Supabase exists
+  if (msg && msg.textContent.includes("Load failed")) {
+    msg.textContent = ""; 
+    msg.style.color = "inherit";
+  }
 
   const isCallback = location.hash.includes("access_token=") || 
                      location.search.includes("code=") || 
                      location.search.includes("type=magiclink");
 
-  // Handle successful redirect after magic link click
   supabase.auth.onAuthStateChange((event, session) => {
     if (session && isCallback) {
       window.location.replace("dashboard.html");
@@ -130,12 +132,13 @@ async function initAuthFlow(supabase) {
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+    const setMsg = (t) => { if (msg) msg.textContent = t; };
+    
     const countryEl = $("countrySelect");
     const emailEl = getEmailInput();
     const idEl = $("userId");
     const pwEl = $("password");
 
-    // Validations
     if (!countryEl || countryEl.value !== "KR") return setMsg("❌ Access Denied: South Korea only.");
     if (!emailEl?.value.trim()) return setMsg("❌ Please enter email.");
 
@@ -143,7 +146,7 @@ async function initAuthFlow(supabase) {
     const id = (idEl?.value || "").trim();
     const pw = (pwEl?.value || "").trim();
 
-    if (email !== ALLOWED_EMAIL) return setMsg("❌ This email is not authorized.");
+    if (email !== ALLOWED_EMAIL) return setMsg("❌ Unauthorized email.");
     if (id !== ALLOWED_ID || pw !== ALLOWED_PASSWORD) return setMsg("❌ Invalid ID or Password.");
 
     setMsg("⏳ Verifying security credentials...");
@@ -153,8 +156,12 @@ async function initAuthFlow(supabase) {
       options: { emailRedirectTo: REDIRECT_URL },
     });
 
-    if (error) setMsg("❌ " + error.message);
-    else setMsg("✅ Secure link sent! Check your email to login.");
+    if (error) {
+        setMsg("❌ " + error.message);
+    } else {
+        msg.style.color = "green";
+        setMsg("✅ Link sent! Please check your email.");
+    }
   });
 }
 
@@ -166,7 +173,6 @@ function flagEmojiFromISO2(code) {
 
 async function buildCountries(selectEl) {
   if (!selectEl) return;
-  selectEl.querySelectorAll("option:not([disabled])").forEach(o => o.remove());
   try {
     const res = await fetch("https://restcountries.com/v3.1/all?fields=cca2,name", { cache: "force-cache" });
     const data = await res.json();
@@ -175,6 +181,7 @@ async function buildCountries(selectEl) {
       .map(c => ({ code: c.cca2.toUpperCase(), name: c.name.common }))
       .sort((a, b) => a.name.localeCompare(b.name));
 
+    selectEl.querySelectorAll("option:not([disabled])").forEach(o => o.remove());
     rows.forEach(({ code, name }) => {
       const opt = document.createElement("option");
       opt.value = code;
@@ -182,34 +189,30 @@ async function buildCountries(selectEl) {
       selectEl.appendChild(opt);
     });
     selectEl.value = "KR";
-  } catch (err) { console.warn("Country list failed."); }
+  } catch (err) { console.warn("Country list fetch failed."); }
 }
 
 // ---------- 6. INITIALIZATION ----------
-window.addEventListener("DOMContentLoaded", async () => {
-  const supabase = getSupabase();
-  if (!supabase) {
-    console.error("Supabase CDN missing.");
-    return;
-  }
+window.addEventListener("load", async () => {
+  // Small delay for mobile browsers to parse external CDN scripts
+  setTimeout(async () => {
+    const supabase = getSupabase();
+    const msg = $("msg");
 
-  // Run security check
-  await protectDashboard(supabase);
+    if (!supabase) {
+      if (msg) {
+          msg.textContent = "❌ Load failed: Security engine not found.";
+          msg.style.color = "red";
+      }
+      return;
+    }
 
-  // Init Login/Callback
-  await initAuthFlow(supabase);
+    await protectDashboard(supabase);
+    await initAuthFlow(supabase);
 
-  // Build Country List
-  const countrySelect = $("countrySelect");
-  if (countrySelect) buildCountries(countrySelect);
-
-  // Scroll Down Handler
-  const scrollBtn = $("scrollDownBtn") || document.querySelector(".scroll-down");
-  scrollBtn?.addEventListener("click", () => {
-    const target = $("mainContent") || document.querySelector(".content");
-    if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
-    else window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
-  });
+    const countrySelect = $("countrySelect");
+    if (countrySelect) buildCountries(countrySelect);
+  }, 300);
 });
 
 // ---------- LANGUAGE SWITCH (FULL PAGE) ----------
