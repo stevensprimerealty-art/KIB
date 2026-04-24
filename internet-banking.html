@@ -5,206 +5,209 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>KIB Internet Banking</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Source Sans 3',sans-serif}
-
-/* HEADER */
-.topbar{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:16px 20px;background:#000;color:#fff;
-}
-
-/* HAMBURGER */
-.hamburger span{
-  display:block;width:25px;height:3px;background:#fff;margin:5px 0;
-  transition:.3s;
-}
-
-/* DRAWER */
-.drawer{
-  position:fixed;top:0;right:-320px;width:320px;height:100%;
-  background:#fff;transition:.3s;z-index:1000;overflow:auto;
-}
-.drawer.is-open{right:0}
-
-.drawer-top{
-  display:flex;justify-content:space-between;padding:15px;
-  border-bottom:1px solid #eee;
-}
-
-.drawer-body a{
-  display:block;padding:12px;text-decoration:none;color:#000;
-}
-
-/* BACKDROP */
-.backdrop{
-  position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:900;
-}
-
-/* HERO */
-.internet-hero{
-  position:relative;min-height:100vh;
-  display:flex;align-items:center;justify-content:center;
-}
-
-.internet-bg{
-  position:absolute;inset:0;
-  background:url('internet-banking-hero.PNG') center/cover no-repeat;
-}
-
-.internet-overlay{
-  position:absolute;inset:0;background:rgba(0,0,0,.45);
-}
-
-/* LOGIN */
-.login-card{
-  position:relative;z-index:2;
-  background:#fff;padding:25px;border-radius:15px;
-  width:320px;display:flex;flex-direction:column;gap:12px;
-}
-
-.login-card input{
-  padding:10px;border:1px solid #ccc;border-radius:6px;
-}
-
-.login-btn{
-  padding:12px;background:#000;color:#fff;border:none;
-  cursor:pointer;
-}
-
-#msg{font-weight:600;font-size:14px}
-</style>
+<!-- ✅ KEEP THIS -->
+<link rel="stylesheet" href="/KIB/styles.css?v=6">
 </head>
 
 <body>
 
-<!-- HEADER -->
+<!-- ================= HEADER ================= -->
 <header class="topbar">
-  <div>KOREA INTERNATIONAL BANKING</div>
+  <div class="brand">
+    <span class="brand-title">KOREA INTERNATIONAL BANKING</span>
+    <span class="brand-sub">/ CAMBODIA</span>
+  </div>
 
-  <button id="menuBtn" class="hamburger">
+  <button id="menuBtn" class="hamburger" aria-controls="drawer">
     <span></span><span></span><span></span>
   </button>
 </header>
 
-<!-- DRAWER -->
+<!-- ================= DRAWER (FULL) ================= -->
 <aside id="drawer" class="drawer">
-  <div class="drawer-top">
-    <strong>MENU</strong>
-    <button id="closeBtn">✕</button>
-  </div>
+  <div class="drawer-shell">
 
-  <div class="drawer-body">
-    <a href="index.html">Home</a>
-    <a href="personal-banking.html">Personal Banking</a>
-    <a href="business-banking.html">Business Banking</a>
-    <a href="internet-banking.html">Internet Banking</a>
+    <div class="drawer-top">
+      <div class="drawer-brand">
+        <span>KOREA INTERNATIONAL BANKING</span>
+        <small>/ CAMBODIA</small>
+      </div>
+      <button id="closeBtn" class="drawer-close">✕</button>
+    </div>
+
+    <div class="drawer-body">
+
+      <a href="/KIB/index.html" class="drawer-link plain">🏠 Home</a>
+
+      <!-- PERSONAL -->
+      <button class="drawer-link" data-accordion="personal">
+        👤 Personal Banking <span class="caret">▾</span>
+      </button>
+      <div class="drawer-sub" data-panel="personal">
+        <a href="/KIB/personal-banking.html">Saving / Deposit</a>
+        <a href="/KIB/personal-banking.html">Loan</a>
+        <a href="/KIB/personal-banking.html">Money Transfer</a>
+      </div>
+
+      <!-- BUSINESS -->
+      <button class="drawer-link" data-accordion="business">
+        🏢 Business Banking <span class="caret">▾</span>
+      </button>
+      <div class="drawer-sub" data-panel="business">
+        <a href="/KIB/business-banking.html">Corporate Savings</a>
+        <a href="/KIB/business-banking.html">Loan</a>
+      </div>
+
+      <!-- DIGITAL -->
+      <button class="drawer-link" data-accordion="digital">
+        💳 Digital Banking <span class="caret">▾</span>
+      </button>
+      <div class="drawer-sub" data-panel="digital">
+        <a href="/KIB/cards-wallet-kib2.html">Cards</a>
+        <a href="/KIB/internet-banking.html">Internet Banking</a>
+      </div>
+
+    </div>
   </div>
 </aside>
 
 <div id="backdrop" class="backdrop" hidden></div>
 
-<!-- HERO LOGIN -->
-<section class="internet-hero">
-  <div class="internet-bg"></div>
-  <div class="internet-overlay"></div>
+<!-- ================= LOGIN SECTION ================= -->
+<section class="login-section" style="position:relative;min-height:100vh;display:flex;align-items:center;">
 
-  <form class="login-card" id="loginForm">
+  <!-- ✅ CORRECT BACKGROUND -->
+  <div style="
+    position:absolute;inset:0;
+    background:url('/KIB/assets/images/internet-banking-hero.PNG') center/cover no-repeat;
+  "></div>
 
-    <h3>KIB BANKING ONLINE</h3>
+  <div style="position:absolute;inset:0;background:rgba(0,0,0,.45);"></div>
 
-    <input id="email" type="email" placeholder="Email" required>
+  <div class="wrap" style="position:relative;z-index:2;">
 
-    <button class="login-btn" type="submit">Login</button>
+    <h3 class="login-title">KIB BANKING ONLINE</h3>
 
-    <p id="msg"></p>
+    <form class="login-card" id="loginForm" novalidate>
 
-  </form>
+      <label class="field">
+        <select id="countrySelect" class="input">
+          <option value="KR">🇰🇷 South Korea</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <input id="userId" class="input" placeholder="ID">
+      </label>
+
+      <label class="field">
+        <div class="input-row">
+          <input id="password" class="input" type="password" placeholder="Password">
+          <button type="button" id="togglePw">👁️</button>
+        </div>
+      </label>
+
+      <label class="field">
+        <input id="email" class="input" type="email" placeholder="Email" required>
+      </label>
+
+      <button class="login-btn">Login</button>
+
+      <p id="msg" class="login-msg"></p>
+
+      <div class="login-foot">
+        <label><input type="checkbox"> Save ID</label>
+        <div>
+          <a href="#">Find ID ></a>
+          <a href="#">Password reset ></a>
+        </div>
+      </div>
+
+    </form>
+  </div>
 </section>
 
-<!-- SUPABASE -->
+<!-- ================= NAV TILES ================= -->
+<section class="kib-nav-cards">
+  <div class="wrap kib-nav-grid">
+
+    <a href="/KIB/personal-banking.html" class="kib-nav-card">
+      <h3>Personal<br>Banking</h3>
+    </a>
+
+    <a href="/KIB/business-banking.html" class="kib-nav-card">
+      <h3>Business<br>Banking</h3>
+    </a>
+
+    <a href="/KIB/internet-banking.html" class="kib-nav-card">
+      <h3>Digital<br>Banking</h3>
+    </a>
+
+    <a href="/KIB/about-us.html" class="kib-nav-card">
+      <h3>About<br>Us</h3>
+    </a>
+
+  </div>
+</section>
+
+<!-- ================= FOOTER (ACCORDION) ================= -->
+<footer class="kib-footer-white">
+  <div class="wrap">
+
+    <div class="kib-footer-acc">
+
+      <div class="kib-acc-item">
+        <button class="kib-acc-btn" data-kib-accordion="personal">
+          <span>Personal Banking</span><span>⌄</span>
+        </button>
+        <div class="kib-acc-panel" data-kib-panel="personal" hidden>
+          <a href="/KIB/personal-banking.html">Saving</a>
+          <a href="/KIB/personal-banking.html">Loan</a>
+        </div>
+      </div>
+
+      <div class="kib-acc-item">
+        <button class="kib-acc-btn" data-kib-accordion="business">
+          <span>Business Banking</span><span>⌄</span>
+        </button>
+        <div class="kib-acc-panel" data-kib-panel="business" hidden>
+          <a href="/KIB/business-banking.html">Corporate</a>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</footer>
+
+<!-- ================= LOCATION FOOTER ================= -->
+<footer class="kib-footer">
+  <div class="wrap">
+
+    <h3 class="kib-footer-title">Location Address</h3>
+
+    <div class="kib-address-list">
+      <p>39 Namdaemun-ro, Jung-gu, Seoul (04531), Republic of Korea.</p>
+      <p>Piazza di Spagna, 59, Rome, Italy</p>
+      <p>25 Old Broad Street, London</p>
+      <p>1250 Broadway, New York</p>
+      <p>Kuwait City</p>
+    </div>
+
+    <div class="kib-footer-meta">
+      <div>Email: info@kibinternational.co.site</div>
+      <div>@ 2022</div>
+    </div>
+
+  </div>
+</footer>
+
+<!-- ================= SCRIPTS ================= -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-// ===============================
-// SUPABASE CONFIG (USE SAME AS MAIN SITE)
-// ===============================
-const SUPABASE_URL = "https://wkhlshjwpjnhpwcfvdqv.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_UyqL5TtlTGVXVeUGeEseCw_QLaujK2V"; // ✅ use your real key
-
-const supabase = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY,
-  {
-    auth:{
-      persistSession:true,
-      autoRefreshToken:true,
-      detectSessionInUrl:true
-    }
-  }
-);
-
-// ===============================
-// AUTO REDIRECT IF ALREADY LOGGED IN
-// ===============================
-(async ()=>{
-  const { data } = await supabase.auth.getSession();
-  if(data?.session){
-    window.location.href = "dashboard.html";
-  }
-})();
-
-// ===============================
-// LOGIN (MAGIC LINK)
-// ===============================
-document.getElementById("loginForm").addEventListener("submit", async (e)=>{
-  e.preventDefault();
-
-  const email = document.getElementById("email").value.trim();
-  const msg = document.getElementById("msg");
-
-  if(!email){
-    msg.textContent = "Enter your email";
-    return;
-  }
-
-  msg.textContent = "Sending login link...";
-
-  const { error } = await supabase.auth.signInWithOtp({
-    email,
-    options:{
-      emailRedirectTo: window.location.origin + "/dashboard.html"
-    }
-  });
-
-  if(error){
-    msg.textContent = "❌ " + error.message;
-  } else {
-    msg.textContent = "✅ Check your email and click the login link";
-  }
-});
-
-// ===============================
-// MENU (MATCHES YOUR MAIN SITE)
-// ===============================
-const drawer=document.getElementById("drawer");
-const backdrop=document.getElementById("backdrop");
-
-document.getElementById("menuBtn").onclick=()=>{
-  drawer.classList.add("is-open");
-  backdrop.hidden=false;
-};
-
-document.getElementById("closeBtn").onclick=closeMenu;
-backdrop.onclick=closeMenu;
-
-function closeMenu(){
-  drawer.classList.remove("is-open");
-  backdrop.hidden=true;
-}
-</script>
+<script src="/KIB/script.js?v=2"></script>
 
 </body>
 </html>
