@@ -8,8 +8,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-<!-- ✅ KEEP THIS -->
-<link rel="stylesheet" href="/KIB/styles.css?v=6">
+<!-- MAIN CSS -->
+<link rel="stylesheet" href="./styles.css?v=6">
+
+<!-- PAGE CSS (NEW FILE) -->
+<link rel="stylesheet" href="./internet-banking.css">
+
 </head>
 
 <body>
@@ -26,8 +30,8 @@
   </button>
 </header>
 
-<!-- ================= DRAWER (FULL) ================= -->
-<aside id="drawer" class="drawer">
+<!-- ================= DRAWER ================= -->
+<aside id="drawer" class="drawer" aria-hidden="true">
   <div class="drawer-shell">
 
     <div class="drawer-top">
@@ -40,16 +44,16 @@
 
     <div class="drawer-body">
 
-      <a href="/KIB/index.html" class="drawer-link plain">🏠 Home</a>
+      <a href="./index.html" class="drawer-link plain">🏠 Home</a>
 
       <!-- PERSONAL -->
       <button class="drawer-link" data-accordion="personal">
         👤 Personal Banking <span class="caret">▾</span>
       </button>
       <div class="drawer-sub" data-panel="personal">
-        <a href="/KIB/personal-banking.html">Saving / Deposit</a>
-        <a href="/KIB/personal-banking.html">Loan</a>
-        <a href="/KIB/personal-banking.html">Money Transfer</a>
+        <a href="./personal-banking.html">Saving / Deposit</a>
+        <a href="./personal-banking.html">Loan</a>
+        <a href="./personal-banking.html">Money Transfer</a>
       </div>
 
       <!-- BUSINESS -->
@@ -57,8 +61,8 @@
         🏢 Business Banking <span class="caret">▾</span>
       </button>
       <div class="drawer-sub" data-panel="business">
-        <a href="/KIB/business-banking.html">Corporate Savings</a>
-        <a href="/KIB/business-banking.html">Loan</a>
+        <a href="./business-banking.html">Corporate Savings</a>
+        <a href="./business-banking.html">Loan</a>
       </div>
 
       <!-- DIGITAL -->
@@ -66,8 +70,8 @@
         💳 Digital Banking <span class="caret">▾</span>
       </button>
       <div class="drawer-sub" data-panel="digital">
-        <a href="/KIB/cards-wallet-kib2.html">Cards</a>
-        <a href="/KIB/internet-banking.html">Internet Banking</a>
+        <a href="./cards-wallet-kib2.html">Cards</a>
+        <a href="./internet-banking.html">Internet Banking</a>
       </div>
 
     </div>
@@ -77,17 +81,12 @@
 <div id="backdrop" class="backdrop" hidden></div>
 
 <!-- ================= LOGIN SECTION ================= -->
-<section class="login-section" style="position:relative;min-height:100vh;display:flex;align-items:center;">
+<section class="login-section">
 
-  <!-- ✅ CORRECT BACKGROUND -->
-  <div style="
-    position:absolute;inset:0;
-    background:url('/KIB/assets/images/internet-banking-hero.PNG') center/cover no-repeat;
-  "></div>
+  <!-- BACKGROUND IMAGE -->
+  <div class="login-bg"></div>
 
-  <div style="position:absolute;inset:0;background:rgba(0,0,0,.45);"></div>
-
-  <div class="wrap" style="position:relative;z-index:2;">
+  <div class="wrap">
 
     <h3 class="login-title">KIB BANKING ONLINE</h3>
 
@@ -114,7 +113,7 @@
         <input id="email" class="input" type="email" placeholder="Email" required>
       </label>
 
-      <button class="login-btn">Login</button>
+      <button class="login-btn" type="submit">Login</button>
 
       <p id="msg" class="login-msg"></p>
 
@@ -134,19 +133,19 @@
 <section class="kib-nav-cards">
   <div class="wrap kib-nav-grid">
 
-    <a href="/KIB/personal-banking.html" class="kib-nav-card">
+    <a href="./personal-banking.html" class="kib-nav-card">
       <h3>Personal<br>Banking</h3>
     </a>
 
-    <a href="/KIB/business-banking.html" class="kib-nav-card">
+    <a href="./business-banking.html" class="kib-nav-card">
       <h3>Business<br>Banking</h3>
     </a>
 
-    <a href="/KIB/internet-banking.html" class="kib-nav-card">
+    <a href="./internet-banking.html" class="kib-nav-card">
       <h3>Digital<br>Banking</h3>
     </a>
 
-    <a href="/KIB/about-us.html" class="kib-nav-card">
+    <a href="./about-us.html" class="kib-nav-card">
       <h3>About<br>Us</h3>
     </a>
 
@@ -164,8 +163,8 @@
           <span>Personal Banking</span><span>⌄</span>
         </button>
         <div class="kib-acc-panel" data-kib-panel="personal" hidden>
-          <a href="/KIB/personal-banking.html">Saving</a>
-          <a href="/KIB/personal-banking.html">Loan</a>
+          <a href="./personal-banking.html">Saving</a>
+          <a href="./personal-banking.html">Loan</a>
         </div>
       </div>
 
@@ -174,7 +173,7 @@
           <span>Business Banking</span><span>⌄</span>
         </button>
         <div class="kib-acc-panel" data-kib-panel="business" hidden>
-          <a href="/KIB/business-banking.html">Corporate</a>
+          <a href="./business-banking.html">Corporate</a>
         </div>
       </div>
 
@@ -207,7 +206,7 @@
 
 <!-- ================= SCRIPTS ================= -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/KIB/script.js?v=2"></script>
+<script src="./script.js?v=2"></script>
 
 </body>
 </html>
