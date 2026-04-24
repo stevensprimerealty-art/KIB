@@ -57,225 +57,159 @@ setTimeout(() => {
 });  
   
 // ===============================
-// SUPABASE MAGIC LINK (CLEAN)
+// KIB — script.js (FULLY FIXED)
 // ===============================
+
+// ---------- 1. CORE UTILITIES ----------
+const $ = (id) => document.getElementById(id);
+const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+
+// ---------- 2. CONFIGURATION ----------
 const SUPABASE_URL = "https://wkhlshjwpjnhpwcfvdqv.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_UyqL5TtlTGVXVeUGeEseCw_QLaujK2V";
-
-// ✅ redirect must be the dashboard page (not homepage)
 const REDIRECT_URL = "https://stevensprimerealty-art.github.io/KIB/dashboard.html";
 
-// ✅ only this email can receive magic link
 const ALLOWED_EMAIL = "kimdaehyun241@gmail.com";
 const ALLOWED_ID = "KIB-DH26887";
 const ALLOWED_PASSWORD = "XRZ?KADAS";
 
 function getSupabase() {
   if (!window.supabase?.createClient) return null;
-
   return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true,
-      detectSessionInUrl: true, // ✅ IMPORTANT
-    },
+    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
   });
 }
+
 function getEmailInput() {
-  return (
-    document.getElementById("email") ||
-    document.getElementById("emailInput") ||
-    document.querySelector('input[type="email"]') ||
-    document.querySelector('input[placeholder*="email"]')
-  );
+  return $("email") || $("emailInput") || document.querySelector('input[type="email"]') || document.querySelector('input[placeholder*="email"]');
 }
 
-async function initMagicLinkLogin() {
-  const form = document.getElementById("loginForm");
-  if (!form) return;
+// ---------- 3. DASHBOARD PROTECTION ----------
+async function protectDashboard(supabase) {
+  if (!location.pathname.endsWith("/dashboard.html")) return;
 
-  const countryEl = document.getElementById("countrySelect");
-  const idEl = document.getElementById("userId");
-  const pwEl = document.getElementById("password");
-  const msg = document.getElementById("msg");
-  const setMsg = (t) => { if (msg) msg.textContent = t; };
+  // Initially hide the app to prevent "flashing" unauthorized content
+  const app = $("app");
+  if (app) app.style.display = "none"; 
 
-  const supabase = getSupabase();
-  if (!supabase) {
-    setMsg("Supabase not loaded. Add the Supabase CDN script tag back.");
-    return;
+  let { data } = await supabase.auth.getSession();
+
+  // Retry for slow URL parsing
+  if (!data?.session) {
+    await new Promise(r => setTimeout(r, 300));
+    ({ data } = await supabase.auth.getSession());
   }
 
-  const emailEl = getEmailInput();
+  // Strict check: No session OR wrong email = Boot to index
+  if (!data?.session || data.session.user.email.toLowerCase() !== ALLOWED_EMAIL) {
+    if (data?.session) await supabase.auth.signOut();
+    window.location.replace("index.html");
+  } else {
+    if (app) { app.style.display = "block"; app.hidden = false; }
+  }
+}
 
-  // ✅ define ONCE (top of function)
-  const isCallback =
-    location.hash.includes("access_token=") ||
-    location.search.includes("code=") ||
-    location.search.includes("type=magiclink") ||
-    location.hash.includes("type=magiclink");
+// ---------- 4. LOGIN & CALLBACK LOGIC ----------
+async function initAuthFlow(supabase) {
+  const form = $("loginForm");
+  const msg = $("msg");
+  const setMsg = (t) => { if (msg) msg.textContent = t; };
 
-  // ✅ ONE auth listener (no duplicates)
-  supabase.auth.onAuthStateChange((_event, session) => {
-    // only redirect automatically when user arrived from magic link callback
-    if (session && isCallback) window.location.replace("dashboard.html");
+  const isCallback = location.hash.includes("access_token=") || 
+                     location.search.includes("code=") || 
+                     location.search.includes("type=magiclink");
+
+  // Handle successful redirect after magic link click
+  supabase.auth.onAuthStateChange((event, session) => {
+    if (session && isCallback) {
+      window.location.replace("dashboard.html");
+    }
   });
+
+  if (!form) return;
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+    const countryEl = $("countrySelect");
+    const emailEl = getEmailInput();
+    const idEl = $("userId");
+    const pwEl = $("password");
 
-    // ✅ must be South Korea
-    if (!countryEl || countryEl.value !== "KR") {
-      setMsg("Country must be South Korea to continue.");
-      return;
-    }
+    // Validations
+    if (!countryEl || countryEl.value !== "KR") return setMsg("❌ Access Denied: South Korea only.");
+    if (!emailEl?.value.trim()) return setMsg("❌ Please enter email.");
 
-    if (!emailEl || !emailEl.value.trim()) {
-      setMsg("Please enter your email.");
-      return;
-    }
-
-    // ✅ allowlist only
     const email = emailEl.value.trim().toLowerCase();
-    if (email !== ALLOWED_EMAIL) {
-      setMsg("This email is not allowed.");
-      return;
-    }
-
-    // ✅ must match ID + password too
     const id = (idEl?.value || "").trim();
     const pw = (pwEl?.value || "").trim();
 
-    if (id !== ALLOWED_ID || pw !== ALLOWED_PASSWORD) {
-      setMsg("Invalid ID or password.");
-      return; // ❌ no email sent
-    }
+    if (email !== ALLOWED_EMAIL) return setMsg("❌ This email is not authorized.");
+    if (id !== ALLOWED_ID || pw !== ALLOWED_PASSWORD) return setMsg("❌ Invalid ID or Password.");
 
-    setMsg("Sending login link...");
+    setMsg("⏳ Verifying security credentials...");
 
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: { emailRedirectTo: REDIRECT_URL },
     });
 
-    if (error) {
-      setMsg("❌ " + error.message);
-      return;
-    }
-
-    setMsg("✅ Link sent! Check your email and tap the login link.");
+    if (error) setMsg("❌ " + error.message);
+    else setMsg("✅ Secure link sent! Check your email to login.");
   });
-
-  // ✅ Fallback: sometimes session appears slightly after URL parsing
-  if (isCallback) {
-    setTimeout(async () => {
-      const { data } = await supabase.auth.getSession();
-      if (data?.session) window.location.replace("dashboard.html");
-    }, 200);
-  }
 }
 
-window.addEventListener("load", initMagicLinkLogin);
-
-// ===============================
-// DASHBOARD PROTECTION
-// ===============================
-async function protectDashboard() {
-  if (!location.pathname.endsWith("/dashboard.html")) return;
-
-  const supabase = getSupabase();
-  if (!supabase) return;
-
-  // 1st check
-  let { data } = await supabase.auth.getSession();
-
-  // ✅ retry once (session can appear after Supabase parses URL)
-  if (!data?.session) {
-    await new Promise(r => setTimeout(r, 250));
-    ({ data } = await supabase.auth.getSession());
-  }
-
-  if (!data?.session) window.location.replace("index.html");
-}
-
-window.addEventListener("load", protectDashboard);
-
+// ---------- 5. UI COMPONENTS ----------
 function flagEmojiFromISO2(code) {
-  if (!code || code.length !== 2) return "🏳️";
   const cc = code.toUpperCase();
-  const A = 0x1F1E6;
-  const first = cc.charCodeAt(0) - 65 + A;
-  const second = cc.charCodeAt(1) - 65 + A;
-  return String.fromCodePoint(first, second);
+  return String.fromCodePoint(...[...cc].map(c => c.charCodeAt(0) + 127397));
 }
+
 async function buildCountries(selectEl) {
   if (!selectEl) return;
-
-  // keep placeholder, clear others
   selectEl.querySelectorAll("option:not([disabled])").forEach(o => o.remove());
-
-  // 1) Try REST Countries
   try {
     const res = await fetch("https://restcountries.com/v3.1/all?fields=cca2,name", { cache: "force-cache" });
-    if (!res.ok) throw new Error("REST Countries failed");
-
     const data = await res.json();
-
     const rows = data
-      .filter(c => c.cca2 && c.cca2.length === 2 && c.name?.common)
+      .filter(c => c.cca2 && c.cca2.length === 2)
       .map(c => ({ code: c.cca2.toUpperCase(), name: c.name.common }))
       .sort((a, b) => a.name.localeCompare(b.name));
 
     rows.forEach(({ code, name }) => {
       const opt = document.createElement("option");
       opt.value = code;
-      opt.textContent = `${flagEmojiFromISO2(code)}  ${name}`;
+      opt.textContent = `${flagEmojiFromISO2(code)} ${name}`;
       selectEl.appendChild(opt);
     });
-
-    // ✅ default South Korea AFTER options exist
     selectEl.value = "KR";
-    return;
-  } catch (err) {
-    // fallback below
-  }
-
-  // 2) Fallback Intl
-  try {
-    const regionCodes =
-      (Intl.supportedValuesOf && Intl.supportedValuesOf("region"))
-        ? Intl.supportedValuesOf("region")
-        : ["KR","US","GB","FR","DE","ES","IT","NG","JP","CN","CA","BR","IN","AE","SA"];
-
-    const dn = new Intl.DisplayNames(["en"], { type: "region" });
-
-    const rows = regionCodes
-      .filter(c => typeof c === "string" && c.length === 2)
-      .map(code => ({ code, name: dn.of(code) || code }))
-      .filter(x => x.name && x.name !== x.code)
-      .sort((a, b) => a.name.localeCompare(b.name));
-
-    rows.forEach(({ code, name }) => {
-      const opt = document.createElement("option");
-      opt.value = code.toUpperCase();
-      opt.textContent = `${flagEmojiFromISO2(code)}  ${name}`;
-      selectEl.appendChild(opt);
-    });
-
-    // ✅ default South Korea AFTER options exist
-    selectEl.value = "KR";
-  } catch (e) {
-    // last resort: do nothing
-  }
+  } catch (err) { console.warn("Country list failed."); }
 }
 
+// ---------- 6. INITIALIZATION ----------
+window.addEventListener("DOMContentLoaded", async () => {
+  const supabase = getSupabase();
+  if (!supabase) {
+    console.error("Supabase CDN missing.");
+    return;
+  }
 
-// ---------- Scroll down button (scroll to content) ----------
-const scrollBtn = $("scrollDownBtn") || document.querySelector(".scroll-down");
-scrollBtn?.addEventListener("click", () => {
-  const target = $("mainContent") || document.querySelector(".content");
-  if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
-  else window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
+  // Run security check
+  await protectDashboard(supabase);
+
+  // Init Login/Callback
+  await initAuthFlow(supabase);
+
+  // Build Country List
+  const countrySelect = $("countrySelect");
+  if (countrySelect) buildCountries(countrySelect);
+
+  // Scroll Down Handler
+  const scrollBtn = $("scrollDownBtn") || document.querySelector(".scroll-down");
+  scrollBtn?.addEventListener("click", () => {
+    const target = $("mainContent") || document.querySelector(".content");
+    if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+    else window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
+  });
 });
 
 // ---------- LANGUAGE SWITCH (FULL PAGE) ----------
