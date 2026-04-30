@@ -14,10 +14,15 @@ window.addEventListener("DOMContentLoaded", () => {
   const img = $("ownerPreview");
 
   file?.addEventListener("change", () => {
-    const f = file.files?.[0];
-    if (!f || !img) return;
-    img.src = URL.createObjectURL(f);
-  });
+  const f = file.files?.[0];
+  if (!f || !img) return;
+
+  const url = URL.createObjectURL(f);
+  img.src = url;
+
+  // cleanup memory after load
+  img.onload = () => URL.revokeObjectURL(url);
+});
 
   // -------------------------
   // Scan QR navigation (FIXED: inside DOMContentLoaded)
@@ -34,48 +39,52 @@ window.addEventListener("DOMContentLoaded", () => {
     window.location.href = "cards.html";
   });
 
-  // -------------------------
-  // Balance (KRW + USD) + eye toggle (DEFAULT: HIDDEN)
-  // -------------------------
-  const eyeBtn = $("toggleBalance");
-  const balKRW = $("balKRW");
-  const balUSD = $("balUSD");
+// -------------------------
+// Balance (ALL currencies) + eye toggle (FINAL FIXED)
+// -------------------------
 
-  const realKRW = (balKRW?.dataset.real || balKRW?.textContent || "").trim();
-  const realUSD = (balUSD?.dataset.real || balUSD?.textContent || "").trim();
+const eyeBtn = document.getElementById("toggleBalance");
 
-  function maskMoney(text) {
-    const t = (text || "").trim();
-    const first = t[0] || "•"; // ₩ or $
-    return first + "••••••••••";
-  }
+function getReal(el) {
+  return (el.dataset.real || el.textContent || "").trim() || "—";
+}
 
-  let visible = false;
+function maskMoney(text) {
+  const t = (text || "").trim();
+  const symbol = t.match(/^[^\d]+/)?.[0] || "";
+  return symbol + "••••••••••";
+}
 
-  function renderBalances() {
-    if (balKRW) balKRW.textContent = visible ? realKRW : maskMoney(realKRW);
-    if (balUSD) balUSD.textContent = visible ? realUSD : maskMoney(realUSD);
+let visible = localStorage.getItem("kib_balance_visible") === "true";
 
-    if (eyeBtn) {
-      if (visible) {
-        eyeBtn.textContent = "🙈";
-        eyeBtn.setAttribute("aria-label", "Hide balance");
-        eyeBtn.setAttribute("aria-pressed", "true");
-      } else {
-        eyeBtn.textContent = "👁️";
-        eyeBtn.setAttribute("aria-label", "Show balance");
-        eyeBtn.setAttribute("aria-pressed", "false");
-      }
-    }
-  }
+function renderBalances() {
+  const balances = document.querySelectorAll(".bal-amt");
 
-  renderBalances(); // start hidden
-
-  eyeBtn?.addEventListener("click", () => {
-    visible = !visible;
-    renderBalances();
+  balances.forEach(el => {
+    const real = getReal(el);
+    el.textContent = visible ? real : maskMoney(real);
   });
 
+  if (eyeBtn) {
+    eyeBtn.textContent = visible ? "🙈" : "👁️";
+    eyeBtn.setAttribute(
+      "aria-label",
+      visible ? "Hide balance" : "Show balance"
+    );
+    eyeBtn.setAttribute("aria-pressed", visible ? "true" : "false");
+  }
+}
+
+// start hidden
+renderBalances();
+
+// toggle
+eyeBtn?.addEventListener("click", () => {
+  visible = !visible;
+  localStorage.setItem("kib_balance_visible", visible);
+  renderBalances();
+});
+  
   // -------------------------
   // Balance slider (swipe + dots)
   // -------------------------
