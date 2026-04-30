@@ -474,3 +474,34 @@ body{
 .bal-dots button.is-active{
   background: rgba(255,255,255,.85);
 }
+
+/* ===============================
+   TRANSACTION IMPROVEMENTS (FINAL)
+================================ */
+
+/* Header (Recent Activity) */
+.tx-header{
+  padding: 12px 14px 6px;
+  font-weight: 900;
+  font-size: 14px;
+  color: rgba(11,18,32,.7);
+}
+
+/* Amount colors */
+.tx-amount.credit{
+  color: #16a34a; /* green = incoming */
+}
+
+.tx-amount.debit{
+  color: #dc2626; /* red = outgoing */
+}
+
+/* Touch / press effect */
+.tx-item{
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.tx-item:active{
+  transform: scale(0.98);
+  box-shadow: 0 6px 12px rgba(0,0,0,.08);
+}
