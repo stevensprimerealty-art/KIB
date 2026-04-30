@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>KIB — Receipt</title>
+  <link rel="stylesheet" href="receipt.css" />
+</head>
+
+<body>
+  <main class="receipt">
+
+    <div class="card">
+
+      <!-- ✅ Bank name (important) -->
+      <h2>Korea Investment Bank</h2>
+      <div class="sub">Transaction Receipt</div>
+
+      <!-- Amount -->
+      <div class="amount" id="r_amount"></div>
+
+      <!-- Status -->
+      <div class="status" id="r_status">Successful</div>
+
+      <!-- Details -->
+      <div class="details">
+        <div><span>Type</span><b id="r_title"></b></div>
+        <div><span>Bank</span><b id="r_bank"></b></div>
+        <div><span>Date</span><b id="r_date"></b></div>
+        <div><span>Time</span><b id="r_time"></b></div>
+        <div><span>Reference</span><b id="r_ref"></b></div>
+      </div>
+
+      <!-- Back button -->
+      <button type="button" onclick="history.back()">Back</button>
+
+    </div>
+
+  </main>
+
+  <script src="receipt.js"></script>
+</body>
+</html>
