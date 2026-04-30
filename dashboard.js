@@ -1,4 +1,3 @@
-
 window.addEventListener("DOMContentLoaded", async () => {
 
   // -------------------------
@@ -83,7 +82,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 // Balance (ALL currencies) + eye toggle (FINAL FIXED)
 // -------------------------
 
-const eyeBtn = document.getElementById("toggleBalance");
+const eyeBtn = $("toggleBalance");
 
 function getReal(el) {
   return (el.dataset.real || el.textContent || "").trim() || "—";
@@ -190,111 +189,182 @@ eyeBtn?.addEventListener("click", () => {
     goTo(0);
   }
 
-  // -------------------------
-  // Recent Transactions (auto-open + stagger fade in/out)
-  // -------------------------
-  const recentBtn = $("recentBtn");
-  const recentPanel = $("recentPanel");
-  const recentChevron = $("recentChevron");
-  const txList = $("txList");
-  const viewAllTx = $("viewAllTx");
+// -------------------------
+// Recent Transactions (auto-open + stagger fade in/out)
+// -------------------------
+const recentBtn = $("recentBtn");
+const recentPanel = $("recentPanel");
+const recentChevron = $("recentChevron");
+const txList = $("txList");
+const viewAllTx = $("viewAllTx");
 
-  const transactions = [
-    { date: "22 Feb 2026", bank: "UniCredit", amount: "₩330,530,596", time: "11:37", status: "Successful" },
-    { date: "21 Feb 2026", bank: "Intesa Sanpaolo", amount: "₩530,000,000", time: "10:04", status: "Successful" },
-    { date: "20 Feb 2026", bank: "UniCredit", amount: "₩400,000,000", time: "13:06", status: "Successful" },
-  ];
+// -------------------------
+// Transactions data (SAFE)
+// -------------------------
+const transactions = [
+  {
+    title: "Cash Deposit",
+    bank: "Korea Investment Bank",
+    amount: "+$848,552.00",
+    date: "04 May 2026",
+    time: "10:42",
+    status: "Successful",
+    reference: "CD-884920193",
+    subtitle: "Branch Cash Deposit"
+  }
+];
 
-  function renderTx(list) {
-    if (!txList) return;
-    txList.innerHTML = list
-      .map(
-        (t) => `
-        <div class="tx-item" role="listitem">
-          <div class="tx-left">
-            <div class="tx-title">${t.bank} — Transfer</div>
-            <div class="tx-meta">${t.date} • ${t.time}</div>
+// -------------------------
+// Render Transactions (FIXED + SAFE)
+// -------------------------
+function renderTx(list) {
+  if (!txList || !Array.isArray(list)) return;
+
+  txList.innerHTML = list
+    .map((t, i) => `
+      <div class="tx-item" role="listitem" data-index="${i}">
+        
+        <div class="tx-left">
+          <div class="tx-title">${t.title || ""}</div>
+
+          <div class="tx-meta">
+            ${(t.bank || "")} • ${(t.date || "")} • ${(t.time || "")}
           </div>
-          <div class="tx-right">
-            <div class="tx-amount">${t.amount}</div>
-            <div class="tx-status">${t.status}</div>
+
+          <div class="tx-sub">
+            ${t.subtitle || ""}
           </div>
         </div>
-      `
-      )
-      .join("");
-  }
 
-  let recentOpen = false;
+        <div class="tx-right">
+          <div class="tx-amount ${
+            (t.amount || "").startsWith("+") ? "credit" : "debit"
+          }">
+            ${t.amount || ""}
+          </div>
 
-  function staggerIn() {
-    if (!txList) return;
-    const items = Array.from(txList.querySelectorAll(".tx-item"));
-    items.forEach((el, i) => {
-      el.style.opacity = "0";
-      el.style.transform = "translateY(-6px)";
-      el.style.animation = "fadeInUp .35s ease forwards";
-      el.style.animationDelay = `${i * 110}ms`;
+          <div class="tx-status">
+            ${t.status || ""}
+          </div>
+        </div>
+
+      </div>
+    `)
+    .join("");
+
+  // -------------------------
+  // Click → open receipt (FIXED)
+  // -------------------------
+  txList.onclick = (e) => {
+    const item = e.target.closest(".tx-item");
+    if (!item) return;
+
+    const i = Number(item.dataset.index);
+
+    if (!list[i]) return;
+
+    localStorage.setItem(
+      "kib_selected_tx",
+      JSON.stringify(list[i])
+    );
+
+    window.location.href = "receipt.html";
+  };
+}
+  
+// -------------------------
+// Animation helpers
+// -------------------------
+let recentOpen = false;
+
+function staggerIn() {
+  if (!txList) return;
+
+  const items = Array.from(txList.querySelectorAll(".tx-item"));
+
+  items.forEach((el, i) => {
+    el.style.opacity = "0";
+    el.style.transform = "translateY(-6px)";
+    el.style.animation = "fadeInUp .35s ease forwards";
+    el.style.animationDelay = `${i * 110}ms`;
+  });
+}
+
+function staggerOut() {
+  if (!txList) return 220;
+
+  const items = Array.from(txList.querySelectorAll(".tx-item"));
+
+  items.forEach((el, i) => {
+    el.style.animation = "fadeOutDown .22s ease forwards";
+    el.style.animationDelay = `${i * 80}ms`;
+  });
+
+  return items.length ? (items.length - 1) * 80 + 220 : 220;
+}
+
+// -------------------------
+// Open / Close panel
+// -------------------------
+function openRecent(auto = false) {
+  if (!recentPanel) return;
+
+  renderTx(transactions || []); // ✅ safe fallback
+  recentPanel.hidden = false;
+
+  requestAnimationFrame(() => {
+    recentPanel.classList.add("is-open");
+    staggerIn();
+  });
+
+  recentOpen = true;
+  recentBtn?.setAttribute("aria-expanded", "true");
+
+  if (recentChevron) recentChevron.textContent = "▴";
+
+  if (!auto) {
+    recentPanel.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
     });
   }
+}
 
-  function staggerOut() {
-    if (!txList) return 220;
-    const items = Array.from(txList.querySelectorAll(".tx-item"));
-    items.forEach((el, i) => {
-      el.style.animation = "fadeOutDown .22s ease forwards";
-      el.style.animationDelay = `${i * 80}ms`;
-    });
-    return items.length ? (items.length - 1) * 80 + 220 : 220;
-  }
+function closeRecent() {
+  if (!recentPanel) return;
 
-  function openRecent(auto = false) {
-    if (!recentPanel) return;
+  const fadeTime = staggerOut();
 
-    renderTx(transactions);
-    recentPanel.hidden = false;
+  recentOpen = false;
+  recentBtn?.setAttribute("aria-expanded", "false");
 
-    requestAnimationFrame(() => {
-      recentPanel.classList.add("is-open");
-      staggerIn();
-    });
+  if (recentChevron) recentChevron.textContent = "▾";
 
-    recentOpen = true;
-    recentBtn?.setAttribute("aria-expanded", "true");
-    if (recentChevron) recentChevron.textContent = "▴";
+  setTimeout(() => {
+    recentPanel.classList.remove("is-open");
 
-    if (!auto) recentPanel.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-
-  function closeRecent() {
-    if (!recentPanel) return;
-
-    const fadeTime = staggerOut();
-
-    recentOpen = false;
-    recentBtn?.setAttribute("aria-expanded", "false");
-    if (recentChevron) recentChevron.textContent = "▾";
-
-    // keep panel visible while items fade out
     setTimeout(() => {
-      recentPanel.classList.remove("is-open");
-      setTimeout(() => {
-        if (!recentOpen) recentPanel.hidden = true;
-      }, 300);
-    }, fadeTime);
-  }
+      if (!recentOpen) recentPanel.hidden = true;
+    }, 300);
+  }, fadeTime);
+}
 
-  recentBtn?.addEventListener("click", () => {
-    if (recentOpen) closeRecent();
-    else openRecent(false);
-  });
+// -------------------------
+// Events
+// -------------------------
+recentBtn?.addEventListener("click", () => {
+  if (recentOpen) closeRecent();
+  else openRecent(false);
+});
 
-  viewAllTx?.addEventListener("click", () => {
-    window.location.href = "transactions.html";
-  });
+viewAllTx?.addEventListener("click", () => {
+  window.location.href = "transactions.html";
+});
 
-  // auto-open on load
-  openRecent(true);
+// -------------------------
+// Auto-open on load
+// -------------------------
+openRecent(true);
 
   // -------------------------
   // Drawer (fade + slide from left)
