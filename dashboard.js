@@ -1,29 +1,69 @@
-// dashboard.js — runs only on dashboard.html
-// ✅ Fixed: Scan QR listener moved INSIDE DOMContentLoaded (no more “not tapping”)
-// ✅ Safe: every block checks elements exist
-// ✅ No demo actions added
 
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("DOMContentLoaded", async () => {
+
+  // -------------------------
+  // AUTH GUARD (REQUIRED)
+  // -------------------------
+  try {
+    const supabase =
+      typeof getSupabase === "function" ? getSupabase() : null;
+
+    // ⛔ Block if Supabase missing
+    if (!supabase) {
+      window.location.replace("index.html");
+      return;
+    }
+
+    const { data } = await supabase.auth.getSession();
+
+    // ⛔ Block if not logged in
+    if (!data?.session) {
+      window.location.replace("index.html");
+      return;
+    }
+
+  } catch (e) {
+    window.location.replace("index.html");
+    return;
+  }
+
+  // -------------------------
   // Helpers
+  // -------------------------
   const $ = (id) => document.getElementById(id);
 
   // -------------------------
-  // Owner image upload preview
+  // Owner image (LOAD + SAVE)
   // -------------------------
   const file = $("ownerImage");
   const img = $("ownerPreview");
 
+  // ✅ Load saved image on page load
+  const savedImage = localStorage.getItem("kib_profile_image");
+  if (savedImage && img) {
+    img.src = savedImage;
+  }
+
+  // ✅ Upload + persist image
   file?.addEventListener("change", () => {
-  const f = file.files?.[0];
-  if (!f || !img) return;
+    const f = file.files?.[0];
+    if (!f || !img) return;
 
-  const url = URL.createObjectURL(f);
-  img.src = url;
+    const reader = new FileReader();
 
-  // cleanup memory after load
-  img.onload = () => URL.revokeObjectURL(url);
-});
+    reader.onload = function (e) {
+      const base64 = e.target.result;
 
+      // show image
+      img.src = base64;
+
+      // save permanently
+      localStorage.setItem("kib_profile_image", base64);
+    };
+
+    reader.readAsDataURL(f);
+  });
+  
   // -------------------------
   // Scan QR navigation (FIXED: inside DOMContentLoaded)
   // -------------------------
