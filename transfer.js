@@ -86,11 +86,11 @@ window.addEventListener("DOMContentLoaded", () => {
   // (If you want this section collapsible)
   // -------------------------
   const recordHead = document.querySelector(".panel#records .panel-head");
-  const recordList = document.querySelector(".record-list");
+  const recordList = document.getElementById("transferRecords");
 
-  if (recordHead && recordList) {
+    if (recordHead && recordList) {
     recordHead.style.cursor = "pointer";
-    let open = true; // your choice: start open or closed
+    let open = true;
 
     function animateIn() {
       const cards = Array.from(recordList.querySelectorAll(".record"));
@@ -119,7 +119,6 @@ window.addEventListener("DOMContentLoaded", () => {
       open = false;
     }
 
-    // Start open and animate once
     recordList.hidden = false;
     animateIn();
 
@@ -127,4 +126,35 @@ window.addEventListener("DOMContentLoaded", () => {
       open ? closeRecords() : openRecords();
     });
   }
+
+  // =========================
+  // ✅ ADD THIS PART HERE
+  // =========================
+  const container = document.getElementById("transferRecords");
+
+  const tx = JSON.parse(localStorage.getItem("kib_selected_tx") || "null");
+
+  if (container && tx) {
+    container.innerHTML = `
+      <div class="record">
+
+        <div class="record-top">
+          <div class="record-bank">${tx.title}</div>
+          <div class="record-status">${tx.status}</div>
+        </div>
+
+        <div class="record-mid">${tx.amount}</div>
+
+        <div class="record-bot">
+          ${tx.bank} • ${tx.date} • ${tx.time}
+        </div>
+
+        <div class="record-bot">
+          ${tx.subtitle || ""}
+        </div>
+
+      </div>
+    `;
+  }
+
 });
