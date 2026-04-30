@@ -6,14 +6,26 @@
   <title>KIB — Transactions</title>
   <link rel="stylesheet" href="transactions.css" />
 </head>
+
 <body>
-  <main class="wrap">
-    <header class="top">
-      <button class="back" type="button" onclick="history.back()">←</button>
-      <h1>Transaction Record</h1>
+  <main class="page">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <button class="icon-btn" type="button" onclick="history.back()">←</button>
+
+      <div class="title">
+        <div class="title-en">Transaction Record</div>
+        <div class="title-ko">거래 내역</div>
+      </div>
+
+      <!-- spacer to balance layout -->
+      <div style="width:40px;"></div>
     </header>
 
-    <section class="list" id="allTx"></section>
+    <!-- TRANSACTION LIST -->
+    <section id="allTx" class="record-list"></section>
+
   </main>
 
   <script src="transactions.js"></script>
