@@ -16,7 +16,7 @@
       <div class="greet">
         <label class="avatar" title="Upload owner image">
           <input id="ownerImage" type="file" accept="image/*" hidden />
-          <img id="ownerPreview" alt="Owner" src="https://via.placeholder.com/44" />
+         <img id="ownerPreview" src="default-avatar.png" alt="Owner avatar" />
         </label>
 
         <div class="greet-text">
@@ -38,47 +38,50 @@
 
         <div class="acct">227881700</div>
 
-        <!-- Balance slider + one eye toggle -->
-        <div class="balance-row">
-          <div class="bal" aria-label="Balance slider">
-            <div class="bal-viewport" id="balViewport">
-              <div class="bal-track" id="balTrack">
+     <!-- Balance slider + one eye toggle -->
+<div class="balance-row">
+  <div class="bal" aria-label="Account balance slider">
+    <div class="bal-viewport" id="balViewport">
+      <div class="bal-track" id="balTrack">
 
-               <!-- EUR -->
-<div class="bal-slide" data-currency="EUR">
-  <div class="bal-amt" id="balEUR" data-real="€781,942.63" aria-live="polite">
-    €781,942.63
-  </div>
-  <div class="bal-sub">EUR Balance</div>
-</div>
-
-<!-- USD -->
-<div class="bal-slide" data-currency="USD">
-  <div class="bal-amt" id="balUSD" data-real="$842,913.27" aria-live="polite">
-    $842,913.27
-  </div>
-  <div class="bal-sub">USD Balance</div>
-</div>
-
-              </div>
-            </div>
-
-            <div class="bal-dots" id="balDots" aria-label="Balance pagination">
-              <button type="button" class="is-active" aria-label="KRW balance"></button>
-              <button type="button" aria-label="USD balance"></button>
-            </div>
+        <!-- EUR -->
+        <div class="bal-slide" data-currency="EUR">
+          <div class="bal-amt" data-real="€781,942.63" aria-live="polite">
+            ••••••••
           </div>
-
-          <button id="toggleBalance" class="eye" type="button" aria-label="Show balance" aria-pressed="false">
-            👁️
-          </button>
+          <div class="bal-sub">EUR Balance</div>
         </div>
 
-        <button id="recentBtn" class="recent" type="button" aria-expanded="false">
-          Recent Transaction <span id="recentChevron" class="chev">▾</span>
-        </button>
-      </article>
+        <!-- USD -->
+        <div class="bal-slide" data-currency="USD">
+          <div class="bal-amt" data-real="$842,913.27" aria-live="polite">
+            ••••••••
+          </div>
+          <div class="bal-sub">USD Balance</div>
+        </div>
 
+      </div>
+    </div>
+
+    <!-- ✅ FIXED labels -->
+    <div class="bal-dots" id="balDots" aria-label="Balance pagination">
+      <button type="button" class="is-active" aria-label="EUR balance"></button>
+      <button type="button" aria-label="USD balance"></button>
+    </div>
+  </div>
+
+  <!-- Eye toggle -->
+  <button id="toggleBalance" class="eye" type="button" aria-label="Show balance" aria-pressed="false">
+    👁️
+  </button>
+</div>
+
+<button id="recentBtn" class="recent" type="button" aria-expanded="false">
+  Recent Transaction <span id="recentChevron" class="chev">▾</span>
+</button>
+        
+</article>
+        
       <!-- layered shadows like inspo -->
       <div class="card-layer layer-1" aria-hidden="true"></div>
       <div class="card-layer layer-2" aria-hidden="true"></div>
