@@ -8,36 +8,87 @@
 </head>
 
 <body>
-  <main class="receipt">
+  <main class="page">
 
-    <div class="card">
+    <!-- =========================
+         TOP BAR
+    ========================= -->
+    <header class="topbar">
+      <button class="icon-btn" type="button" onclick="history.back()">←</button>
 
-      <!-- ✅ Bank name (important) -->
-      <h2>Korea Investment Bank</h2>
-      <div class="sub">Transaction Receipt</div>
-
-      <!-- Amount -->
-      <div class="amount" id="r_amount"></div>
-
-      <!-- Status -->
-      <div class="status" id="r_status">Successful</div>
-
-      <!-- Details -->
-      <div class="details">
-        <div><span>Type</span><b id="r_title"></b></div>
-        <div><span>Bank</span><b id="r_bank"></b></div>
-        <div><span>Date</span><b id="r_date"></b></div>
-        <div><span>Time</span><b id="r_time"></b></div>
-        <div><span>Reference</span><b id="r_ref"></b></div>
+      <div class="title">
+        <div class="title-en">Receipt</div>
+        <div class="title-ko">거래 영수증</div>
       </div>
 
-      <!-- Back button -->
-      <button type="button" onclick="history.back()">Back</button>
+      <button id="menuOpen" class="icon-btn" type="button">☰</button>
+    </header>
 
-    </div>
+    <!-- =========================
+         DRAWER
+    ========================= -->
+    <aside id="drawer" class="drawer" aria-hidden="true">
+      <div class="drawer-top">
+        <div class="drawer-title">Menu</div>
+        <button id="menuClose" class="icon-btn" type="button">✕</button>
+      </div>
+
+      <div class="drawer-list">
+        <button class="drawer-item" onclick="location.href='dashboard.html'">Dashboard</button>
+        <button class="drawer-item" onclick="location.href='transactions.html'">Transactions</button>
+        <button class="drawer-item danger" id="logoutBtn">Log out ➡️</button>
+      </div>
+    </aside>
+
+    <div id="backdrop" class="backdrop" hidden></div>
+
+    <!-- =========================
+         RECEIPT CARD
+    ========================= -->
+    <section class="receipt">
+
+      <div class="card">
+
+        <!-- Bank -->
+        <h2>Korea Investment Bank</h2>
+        <div class="sub">Transaction Receipt</div>
+
+        <!-- Amount -->
+        <div class="amount" id="r_amount">—</div>
+
+        <!-- Status -->
+        <div class="status" id="r_status">—</div>
+
+        <!-- Subtitle (important for your "Restricted") -->
+        <div class="subtitle" id="r_subtitle"></div>
+
+        <!-- Details -->
+        <div class="details">
+          <div><span>Type</span><b id="r_title">—</b></div>
+          <div><span>Bank</span><b id="r_bank">—</b></div>
+          <div><span>Date</span><b id="r_date">—</b></div>
+          <div><span>Time</span><b id="r_time">—</b></div>
+          <div><span>Reference</span><b id="r_ref">—</b></div>
+        </div>
+
+        <!-- Action -->
+        <button class="btn" type="button" onclick="history.back()">
+          Back to Transactions
+        </button>
+
+      </div>
+
+    </section>
 
   </main>
 
-  <script src="receipt.js"></script>
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Global auth -->
+  <script defer src="script.js"></script>
+
+  <!-- Receipt logic -->
+  <script defer src="receipt.js"></script>
 </body>
 </html>
