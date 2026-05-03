@@ -19,79 +19,109 @@
          <img id="ownerPreview" src="default-avatar.png" alt="Owner avatar" />
         </label>
 
-        <div class="greet-text">
-          <div class="hello">Hello</div>
-          <div class="name">Mr Kim Dae Hyun</div>
-        </div>
-      </div>
-
-      <button class="icon-btn" type="button" aria-label="Notifications">🔔</button>
-    </header>
-
-    <!-- ACCOUNT CARD -->
-    <section class="card-wrap" aria-label="Account overview">
-      <article class="bank-card" aria-label="Saving account card">
-        <div class="card-top">
-          <div class="label">Saving Account</div>
-          <div class="mini-chip" aria-hidden="true"></div>
-        </div>
-
-        <div class="acct">227881700</div>
-
-     <!-- Balance slider + one eye toggle -->
-<div class="balance-row">
-  <div class="bal" aria-label="Account balance slider">
-    <div class="bal-viewport" id="balViewport">
-      <div class="bal-track" id="balTrack">
-
-        <!-- EUR -->
-        <div class="bal-slide" data-currency="EUR">
-          <div class="bal-amt" data-real="€780,667.84" aria-live="polite">
-            ••••••••
-          </div>
-          <div class="bal-sub">EUR Balance</div>
-        </div>
-
-        <!-- USD -->
-        <div class="bal-slide" data-currency="USD">
-          <div class="bal-amt" data-real="$848,552.00" aria-live="polite">
-            ••••••••
-          </div>
-          <div class="bal-sub">USD Balance</div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- ✅ FIXED labels -->
-    <div class="bal-dots" id="balDots" aria-label="Balance pagination">
-      <button type="button" class="is-active" aria-label="EUR balance"></button>
-      <button type="button" aria-label="USD balance"></button>
-    </div>
-  </div>
-
-  <!-- Eye toggle -->
-  <button id="toggleBalance" class="eye" type="button" aria-label="Show balance" aria-pressed="false">
-    👁️
-  </button>
+  <div class="greet-text">
+  <div class="hello">Hello</div>
+  <div class="name">Mr Kim Dae Hyun</div>
+</div>
 </div>
 
-<button id="recentBtn" class="recent" type="button" aria-expanded="false">
-  Recent Transaction <span id="recentChevron" class="chev">▾</span>
+<button class="icon-btn" type="button" aria-label="Notifications">🔔</button>
+</header>
+
+<!-- ACCOUNT CARD -->
+<section class="card-wrap" aria-label="Account overview">
+  <article class="bank-card" aria-label="Foreign currency account">
+
+    <!-- TOP -->
+    <div class="card-top">
+      <div class="label">Foreign Currency Account (USD)</div>
+      <div class="mini-chip" aria-hidden="true"></div>
+    </div>
+
+    <!-- ACCOUNT IDENTIFIERS -->
+    <div class="acct">IBAN: IT60X0542****3456</div>
+    <div class="acct-sub">SWIFT/BIC: BCITITMM</div>
+
+    <!-- BALANCE -->
+    <div class="balance-block">
+
+      <!-- TOTAL -->
+      <div class="bal-main">
+        <div 
+          class="bal-amt" 
+          id="totalBalance" 
+          data-real="$882,000.00"
+          data-visible="false"
+          aria-live="polite"
+        >
+          ••••••••
+        </div>
+        <div class="bal-sub">Total Balance (USD)</div>
+      </div>
+
+      <!-- FX -->
+      <div class="bal-secondary">
+        ≈ €749,700 EUR
+        <span class="fx-rate">(1 USD = 0.85 EUR)</span>
+      </div>
+
+      <!-- SPLIT BALANCE -->
+      <div class="bal-split">
+
+        <!-- AVAILABLE -->
+        <div class="bal-item">
+          <div class="label">Available</div>
+          <div 
+            class="value" 
+            data-real="$0.00"
+            data-visible="false"
+            aria-live="polite"
+          >
+            ••••
+          </div>
+        </div>
+
+        <!-- HELD -->
+        <div class="bal-item restricted">
+          <div class="label">Held (Restricted)</div>
+          <div 
+            class="value" 
+            data-real="$882,000.00"
+            data-visible="false"
+            aria-live="polite"
+          >
+            ••••
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+   <button id="toggleBalance" class="eye" type="button" aria-pressed="false">
+  👁️
 </button>
-        
-</article>
-        
-      <!-- layered shadows like inspo -->
-      <div class="card-layer layer-1" aria-hidden="true"></div>
-      <div class="card-layer layer-2" aria-hidden="true"></div>
-    </section>
+
+    <!-- STATUS -->
+    <div class="account-status restricted">
+      🔒 Restricted — Administrative Control
+    </div>
+
+    <!-- RECENT -->
+    <button id="recentBtn" class="recent" type="button" aria-expanded="false">
+      Recent Transactions <span id="recentChevron" class="chev">▾</span>
+    </button>
+
+  </article>
+
+  <!-- layered shadows -->
+  <div class="card-layer layer-1" aria-hidden="true"></div>
+  <div class="card-layer layer-2" aria-hidden="true"></div>
+</section>
 
     <!-- Recent Transactions (slide-down) -->
     <section id="recentPanel" class="recent-panel" hidden aria-label="Recent transactions">
   
-  <div class="tx-header">Recent Activity</div>
-
+<div class="tx-header">Recent Transactions</div>
   <!-- ✅ REQUIRED: THIS WAS MISSING -->
   <div class="tx-list" id="txList"></div>
 
@@ -101,41 +131,78 @@
 
 </section>
 
-    <!-- QUICK ACTION GRID -->
-    <section class="actions" aria-label="Quick actions">
-      <button class="action" type="button" onclick="location.href='transfer.html'">
-        <span class="ico">⇄</span><span>Transfer</span>
-      </button>
+<!-- QUICK ACTION GRID -->
+<section class="actions" aria-label="Quick actions">
 
-      <button class="action" type="button">
-        <span class="ico">₩</span><span>Payment</span>
-      </button>
+  <!-- Transfer (disabled due to restriction) -->
+  <button id="transferBtn" class="action disabled" type="button">
+    <span class="ico">⇄</span>
+    <span>Transfer</span>
+  </button>
 
-      <!-- ✅ FIX: Cards now opens cards.html -->
-      <button class="action" type="button" onclick="location.href='cards.html'">
-        <span class="ico">💳</span><span>Cards</span>
-      </button>
+  <button class="action" type="button">
+    <span class="ico">₩</span>
+    <span>Payment</span>
+  </button>
 
-      <button class="action" type="button">
-        <span class="ico">🏧</span><span>Cash-Out</span>
-      </button>
+  <button class="action" type="button" onclick="location.href='cards.html'">
+    <span class="ico">💳</span>
+    <span>Cards</span>
+  </button>
 
-      <button class="action" type="button">
-        <span class="ico">🆕</span><span>New</span>
-      </button>
+  <button class="action" type="button">
+    <span class="ico">🏧</span>
+    <span>Cash-Out</span>
+  </button>
 
-      <button class="action" type="button">
-        <span class="ico">🤝</span><span>Loan</span>
-      </button>
+  <button class="action" type="button">
+    <span class="ico">🆕</span>
+    <span>New</span>
+  </button>
 
-      <button class="action" type="button">
-        <span class="ico">📱</span><span>Top-Up</span>
-      </button>
+  <button class="action" type="button">
+    <span class="ico">🤝</span>
+    <span>Loan</span>
+  </button>
 
-      <button class="action" type="button">
-        <span class="ico">⋯</span><span>More</span>
-      </button>
-    </section>
+  <button class="action" type="button">
+    <span class="ico">📱</span>
+    <span>Top-Up</span>
+  </button>
+
+  <button class="action" type="button">
+    <span class="ico">⋯</span>
+    <span>More</span>
+  </button>
+
+</section>
+
+<!-- Transfer restriction notice -->
+<div id="transferNotice" class="transfer-notice" hidden>
+  Transfers are currently disabled due to administrative restrictions.
+</div>
+
+<section class="compliance-box">
+
+  <div class="title">⚖️ Administrative Compliance</div>
+
+  <div class="status restricted">
+    Funds credited — restricted pending administrative clearance
+  </div>
+
+  <ul class="rules">
+    <li>Transfers are disabled</li>
+    <li>Withdrawals are not permitted</li>
+    <li>Funds are under AML / administrative monitoring</li>
+  </ul>
+
+  <div class="ref">
+    Reference: ADM-DG/2026/44721
+  </div>
+
+</section>
+
+   
 
     <!-- BANNERS -->
     <section class="banner" aria-label="Promotional banners">
@@ -149,9 +216,7 @@
             <img src="kib-banner-2.jpg" alt="KIB Banner 2">
           </div>
 
-          <div class="banner-slide">
-            <img src="kib-banner-3.jpg" alt="KIB Banner 3">
-          </div>
+    
         </div><!-- ✅ close banner-track -->
       </div><!-- ✅ close banner-viewport -->
 
@@ -169,33 +234,52 @@
     </nav>
   </main>
 
-  <!-- BACKDROP + LEFT DRAWER MENU -->
-  <div id="menuBackdrop" class="backdrop" hidden></div>
+<!-- BACKDROP + LEFT DRAWER MENU -->
+<div id="menuBackdrop" class="backdrop" hidden></div>
 
-  <aside id="drawer" class="drawer" aria-hidden="true">
-    <div class="drawer-top">
-      <div class="drawer-title">Menu</div>
-      <button id="closeDrawer" class="icon-btn" type="button" aria-label="Close menu">✕</button>
-    </div>
+<aside id="drawer" class="drawer" aria-hidden="true">
+  <div class="drawer-top">
+    <div class="drawer-title">Menu</div>
+    <button id="closeDrawer" class="icon-btn" type="button" aria-label="Close menu">✕</button>
+  </div>
 
-    <div class="drawer-list" role="menu">
-      <button class="drawer-item" type="button">Profile</button>
+  <div class="drawer-list" role="menu">
+    <button class="drawer-item" type="button">Profile</button>
 
-      <!-- ✅ FIX: drawer Cards opens cards.html -->
-      <button class="drawer-item" type="button" onclick="location.href='cards.html'">Cards</button>
+    <button class="drawer-item" type="button" onclick="location.href='cards.html'">
+      Cards
+    </button>
 
-      <!-- ✅ FIX: drawer Transfers opens transfer.html -->
-      <button class="drawer-item" type="button" onclick="location.href='transfer.html'">Transfers</button>
+    <!-- ✅ FIXED (disabled due to restriction) -->
+    <button id="drawerTransferBtn" class="drawer-item disabled" type="button">
+      Transfers
+    </button>
 
-      <button class="drawer-item" type="button">Loans</button>
-      <button class="drawer-item" type="button">Support</button>
-      <button class="drawer-item" type="button">Settings</button>
+    <button class="drawer-item" type="button">Loans</button>
+    <button class="drawer-item" type="button">Support</button>
+    <button class="drawer-item" type="button">Settings</button>
 
-      <button id="logoutBtn" class="drawer-item danger" type="button">
-        LOG OUT <span class="arrow">➡️</span>
-      </button>
-    </div>
-  </aside>
+    <button id="logoutBtn" class="drawer-item danger" type="button">
+      LOG OUT <span class="arrow">➡️</span>
+    </button>
+  </div>
+</aside>
+  
+  <!-- ✅ SYSTEM STATE (INSERT HERE) -->
+  <script>
+    window.accountState = {
+      status: "RESTRICTED",
+      balance: {
+        total: 882000,
+        available: 0,
+        held: 882000
+      },
+      restrictions: {
+        transfer: false,
+        withdrawal: false
+      }
+    };
+  </script>
 
   <!-- Supabase MUST be before script.js -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
