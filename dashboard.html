@@ -8,135 +8,122 @@
 </head>
 
 <body>
+  <main class="app">
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <button id="menuBtn" class="icon-btn" type="button" aria-label="Open menu">☰</button>
 
-<main class="app">
+      <div class="greet">
+        <label class="avatar" title="Upload owner image">
+          <input id="ownerImage" type="file" accept="image/*" hidden />
+         <img id="ownerPreview" src="default-avatar.png" alt="Owner avatar" />
+        </label>
 
-<!-- =========================
-     TOP BAR
-========================= -->
-<header class="topbar" role="banner">
+  <div class="greet-text">
+  <div class="hello">Hello</div>
+  <div class="name">Mr Kim Dae Hyun</div>
+</div>
+</div>
 
-  <button id="menuBtn" class="icon-btn" type="button" aria-label="Open menu">
-    ☰
-  </button>
-
-  <div class="greet">
-
-    <label class="avatar" title="Upload profile image">
-      <input id="ownerImage" type="file" accept="image/*" hidden />
-      <img id="ownerPreview" src="default-avatar.png" alt="User avatar" />
-    </label>
-
-    <div class="greet-text">
-      <div class="hello">Hello</div>
-      <div class="name" id="userName">Mr Kim Dae Hyun</div>
-    </div>
-
-  </div>
-
-  <button class="icon-btn" type="button" aria-label="Notifications">
-    🔔
-  </button>
-
+<button class="icon-btn" type="button" aria-label="Notifications">🔔</button>
 </header>
 
-
-<!-- =========================
-     ACCOUNT CARD
-========================= -->
+<!-- ACCOUNT CARD -->
 <section class="card-wrap" aria-label="Account overview">
+  <article class="bank-card" aria-label="Foreign currency account">
 
-  <article class="bank-card">
-
-    <!-- Top -->
+    <!-- TOP -->
     <div class="card-top">
       <div class="label">Foreign Currency Account (USD)</div>
       <div class="mini-chip" aria-hidden="true"></div>
     </div>
 
-    <!-- Identifiers -->
-    <div class="acct">IBAN: <span id="iban">IT60X0542****3456</span></div>
-    <div class="acct">SWIFT/BIC: <span id="swift">BCITITMM</span></div>
+    <!-- ACCOUNT IDENTIFIERS -->
+    <div class="acct">IBAN: IT60X0542****3456</div>
+    <div class="acct-sub">SWIFT/BIC: BCITITMM</div>
 
-    <!-- Balance -->
+    <!-- BALANCE -->
     <div class="balance-block">
 
+      <!-- TOTAL -->
       <div class="bal-main">
         <div 
-          id="totalBalance"
-          class="bal-amt"
-          aria-live="polite"
+          class="bal-amt" 
+          id="totalBalance" 
+          data-real="$882,000.00"
           data-visible="false"
+          aria-live="polite"
         >
           ••••••••
         </div>
         <div class="bal-sub">Total Balance (USD)</div>
       </div>
 
-      <div class="bal-secondary" id="fxDisplay">
-        ≈ €0.00 EUR
-        <span class="fx-rate">(Live FX)</span>
+      <!-- FX -->
+      <div class="bal-secondary">
+        ≈ €749,700 EUR
+        <span class="fx-rate">(1 USD = 0.85 EUR)</span>
       </div>
 
+      <!-- SPLIT BALANCE -->
       <div class="bal-split">
 
+        <!-- AVAILABLE -->
         <div class="bal-item">
           <div class="label">Available</div>
-          <div id="availableBalance" class="value">••••</div>
+          <div 
+            class="value" 
+            data-real="$0.00"
+            data-visible="false"
+            aria-live="polite"
+          >
+            ••••
+          </div>
         </div>
 
+        <!-- HELD -->
         <div class="bal-item restricted">
           <div class="label">Held (Restricted)</div>
-          <div id="heldBalance" class="value">••••</div>
+          <div 
+            class="value" 
+            data-real="$882,000.00"
+            data-visible="false"
+            aria-live="polite"
+          >
+            ••••
+          </div>
         </div>
 
       </div>
-
     </div>
 
-    <!-- Toggle -->
-    <button id="toggleBalance" class="eye" type="button" aria-pressed="false">
-      👁️
-    </button>
+   <button id="toggleBalance" class="eye" type="button" aria-pressed="false">
+  👁️
+</button>
 
-    <!-- Status -->
-    <div id="accountStatus" class="account-status">
+    <!-- STATUS -->
+    <div class="account-status restricted">
       🔒 Restricted — Administrative Control
     </div>
 
-    <!-- Recent -->
-    <button 
-      id="recentBtn"
-      class="recent"
-      type="button"
-      aria-expanded="false"
-      aria-controls="recentPanel"
-    >
-      Recent Transactions
-      <span id="recentChevron">▾</span>
+    <!-- RECENT -->
+    <button id="recentBtn" class="recent" type="button" aria-expanded="false">
+      Recent Transactions <span id="recentChevron" class="chev">▾</span>
     </button>
 
   </article>
 
+  <!-- layered shadows -->
   <div class="card-layer layer-1" aria-hidden="true"></div>
   <div class="card-layer layer-2" aria-hidden="true"></div>
-
 </section>
 
-
-<!-- =========================
-     RECENT TRANSACTIONS
-========================= -->
-<section 
-  id="recentPanel"
-  class="recent-panel"
-  hidden
-  aria-label="Recent transactions"
->
-
-  <div class="tx-header">Recent Transactions</div>
-
-  <div id="txList" class="tx-list"></div>
+    <!-- Recent Transactions (slide-down) -->
+    <section id="recentPanel" class="recent-panel" hidden aria-label="Recent transactions">
+  
+<div class="tx-header">Recent Transactions</div>
+  <!-- ✅ REQUIRED: THIS WAS MISSING -->
+  <div class="tx-list" id="txList"></div>
 
   <button id="viewAllTx" class="view-all" type="button">
     View all →
@@ -144,12 +131,10 @@
 
 </section>
 
-
-<!-- =========================
-     ACTIONS
-========================= -->
+<!-- QUICK ACTION GRID -->
 <section class="actions" aria-label="Quick actions">
 
+  <!-- Transfer (disabled due to restriction) -->
   <button id="transferBtn" class="action disabled" type="button">
     <span class="ico">⇄</span>
     <span>Transfer</span>
@@ -192,162 +177,117 @@
 
 </section>
 
-
-<!-- =========================
-     TRANSFER NOTICE
-========================= -->
+<!-- Transfer restriction notice -->
 <div id="transferNotice" class="transfer-notice" hidden>
-  Transfers are currently disabled due to account restrictions.
+  Transfers are currently disabled due to administrative restrictions.
 </div>
 
-
-<!-- =========================
-     COMPLIANCE
-========================= -->
 <section class="compliance-box">
 
-  <div class="title">⚖️ Compliance Status</div>
+  <div class="title">⚖️ Administrative Compliance</div>
 
-  <div class="status" id="complianceStatus">
-    Account under compliance review
+  <div class="status restricted">
+    Funds credited — restricted pending administrative clearance
   </div>
 
   <ul class="rules">
     <li>Transfers are disabled</li>
-    <li>Withdrawals are restricted</li>
-    <li>Monitoring in progress</li>
+    <li>Withdrawals are not permitted</li>
+    <li>Funds are under AML / administrative monitoring</li>
   </ul>
 
-  <div class="ref" id="caseRef">
-    Case Reference: ADM-DG/2026/44721
+  <div class="ref">
+    Reference: ADM-DG/2026/44721
   </div>
 
 </section>
 
+   
 
-<!-- =========================
-     SYSTEM PANEL
-========================= -->
-<section class="system-panel">
+    <!-- BANNERS -->
+    <section class="banner" aria-label="Promotional banners">
+      <div class="banner-viewport" id="bannerViewport">
+        <div class="banner-track" id="bannerTrack">
+          <div class="banner-slide">
+            <img src="kib-banner-1.jpg" alt="KIB Banner 1">
+          </div>
 
-  <div class="system-card">
-    <div class="system-title">Account Status</div>
-    <div class="system-desc">
-      Account access limited pending review.
-    </div>
-  </div>
+          <div class="banner-slide">
+            <img src="kib-banner-2.jpg" alt="KIB Banner 2">
+          </div>
 
-  <div class="system-card">
-    <div class="system-title">Security</div>
-    <div class="system-desc">
-      Last login verified. No suspicious activity detected.
-    </div>
-  </div>
+    
+        </div><!-- ✅ close banner-track -->
+      </div><!-- ✅ close banner-viewport -->
 
-</section>
+      <div class="banner-dots" id="bannerDots" aria-label="Banner pagination"></div>
+    </section>
 
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav" aria-label="Bottom navigation">
+      <button class="nav-item is-active" type="button">Account</button>
 
-<!-- =========================
-     BOTTOM NAV
-========================= -->
-<nav class="bottom-nav" aria-label="Bottom navigation">
+      <!-- ✅ FIX: make it open scan.html -->
+      <button id="scanNav" class="nav-item" type="button" onclick="location.href='scan.html'">Scan QR</button>
 
-  <button class="nav-item is-active" type="button">
-    Account
-  </button>
+      <button class="nav-item" type="button">Favorite</button>
+    </nav>
+  </main>
 
-  <button class="nav-item" type="button" onclick="location.href='scan.html'">
-    Scan QR
-  </button>
-
-  <button class="nav-item" type="button">
-    Favorite
-  </button>
-
-</nav>
-
-</main>
-
-
-<!-- =========================
-     DRAWER
-========================= -->
+<!-- BACKDROP + LEFT DRAWER MENU -->
 <div id="menuBackdrop" class="backdrop" hidden></div>
 
 <aside id="drawer" class="drawer" aria-hidden="true">
-
   <div class="drawer-top">
     <div class="drawer-title">Menu</div>
     <button id="closeDrawer" class="icon-btn" type="button" aria-label="Close menu">✕</button>
   </div>
 
-  <div class="drawer-list">
-
+  <div class="drawer-list" role="menu">
     <button class="drawer-item" type="button">Profile</button>
-    <button class="drawer-item" type="button" onclick="location.href='cards.html'">Cards</button>
-    <button id="drawerTransferBtn" class="drawer-item disabled" type="button">Transfers</button>
+
+    <button class="drawer-item" type="button" onclick="location.href='cards.html'">
+      Cards
+    </button>
+
+    <!-- ✅ FIXED (disabled due to restriction) -->
+    <button id="drawerTransferBtn" class="drawer-item disabled" type="button">
+      Transfers
+    </button>
+
     <button class="drawer-item" type="button">Loans</button>
     <button class="drawer-item" type="button">Support</button>
     <button class="drawer-item" type="button">Settings</button>
 
     <button id="logoutBtn" class="drawer-item danger" type="button">
-      LOG OUT ➡️
+      LOG OUT <span class="arrow">➡️</span>
     </button>
-
   </div>
-
 </aside>
+  
+  <!-- ✅ SYSTEM STATE (INSERT HERE) -->
+  <script>
+    window.accountState = {
+      status: "RESTRICTED",
+      balance: {
+        total: 882000,
+        available: 0,
+        held: 882000
+      },
+      restrictions: {
+        transfer: false,
+        withdrawal: false
+      }
+    };
+  </script>
 
+  <!-- Supabase MUST be before script.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<!-- =========================
-     LOGIN POPUP
-========================= -->
-<div id="complianceModal" class="compliance-modal" hidden>
+  <!-- Your main auth logic -->
+  <script defer src="script.js"></script>
 
-  <div class="compliance-popup">
-
-    <button id="closeCompliance" type="button">✕</button>
-
-    <div class="popup-title">⚖️ Notice</div>
-
-    <div class="popup-text">
-      This account is currently under restriction.
-      <br><br>
-      Some services are temporarily unavailable.
-    </div>
-
-    <div class="popup-ref">
-      Reference: ADM-DG/2026/44721
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- =========================
-     SYSTEM STATE (temporary)
-========================= -->
-<script>
-window.accountState = {
-  status: "RESTRICTED",
-  balance: {
-    total: 882000,
-    available: 0,
-    held: 882000
-  },
-  restrictions: {
-    transfer: false,
-    withdrawal: false
-  }
-};
-</script>
-
-
-<!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="script.js"></script>
-<script src="dashboard.js"></script>
-
+  <!-- Dashboard-only interactions -->
+  <script defer src="dashboard.js"></script>
 </body>
 </html>
