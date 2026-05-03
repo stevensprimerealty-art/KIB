@@ -7,11 +7,15 @@
   --line:rgba(11,18,32,.10);
 
   --success:#16a34a;
+  --danger:#dc2626;
+
+  --radius:18px;
 }
 
 /* RESET */
 *{box-sizing:border-box}
 html,body{height:100%}
+
 body{
   margin:0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -43,6 +47,11 @@ body{
   padding:10px;
   border-radius:12px;
   cursor:pointer;
+  transition:.2s;
+}
+
+.icon-btn:active{
+  transform:scale(.9);
 }
 
 .title{
@@ -62,6 +71,205 @@ body{
 }
 
 /* =========================
+   DRAWER MENU
+========================= */
+.drawer{
+  position:fixed;
+  top:0;
+  left:0;
+  width:260px;
+  height:100%;
+  background:#fff;
+  border-right:1px solid var(--line);
+  transform:translateX(-100%);
+  transition:transform .25s ease;
+  z-index:20;
+  padding:16px;
+}
+
+.drawer.is-open{
+  transform:translateX(0);
+}
+
+.drawer-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.drawer-title{
+  font-weight:900;
+}
+
+.drawer-item{
+  margin-top:20px;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:#fff;
+  cursor:pointer;
+}
+
+.drawer-item.danger{
+  color:var(--danger);
+  border-color:rgba(220,38,38,.3);
+}
+
+.backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.3);
+  opacity:0;
+  transition:.2s;
+  z-index:10;
+}
+
+.backdrop.is-on{
+  opacity:1;
+}
+
+/* =========================
+   CARD (HOME OPTIONS)
+========================= */
+.card{
+  background:#fff;
+  border-radius:var(--radius);
+  padding:14px;
+  border:1px solid var(--line);
+  box-shadow:0 10px 18px rgba(0,0,0,.05);
+}
+
+/* OPTION ROW */
+.option{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px;
+  border-radius:14px;
+  cursor:pointer;
+  transition:.15s;
+}
+
+.option:active{
+  background:rgba(0,0,0,.04);
+  transform:scale(.98);
+}
+
+.radio{
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  border:2px solid var(--line);
+}
+
+.opt-text{
+  flex:1;
+}
+
+.opt-title{
+  font-weight:800;
+  font-size:14px;
+}
+
+.opt-sub{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+.chev{
+  font-size:18px;
+  color:var(--muted);
+}
+
+/* =========================
+   PANEL
+========================= */
+.panel{
+  margin-top:16px;
+  background:#fff;
+  border-radius:var(--radius);
+  padding:16px;
+  border:1px solid var(--line);
+  box-shadow:0 10px 18px rgba(0,0,0,.05);
+}
+
+.panel-head h2{
+  margin:0;
+  font-size:16px;
+}
+
+.panel-head p{
+  margin-top:6px;
+  font-size:12px;
+  color:var(--muted);
+}
+
+/* =========================
+   FORM
+========================= */
+.form{
+  margin-top:14px;
+  display:grid;
+  gap:12px;
+}
+
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.field span{
+  font-size:12px;
+  color:var(--muted);
+}
+
+input,select{
+  padding:12px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  font-size:14px;
+}
+
+input:focus,select:focus{
+  outline:none;
+  border-color:#3b82f6;
+}
+
+/* BUTTONS */
+.btn{
+  padding:12px;
+  border-radius:12px;
+  border:none;
+  background:#3b82f6;
+  color:#fff;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.btn.ghost{
+  background:#eef4ff;
+  color:#3b82f6;
+}
+
+.btn-row{
+  display:flex;
+  gap:10px;
+}
+
+/* CONTACT */
+.contact-btn{
+  margin-top:6px;
+  padding:12px;
+  border-radius:12px;
+  border:1px dashed var(--line);
+  background:#fafcff;
+  font-size:13px;
+  cursor:pointer;
+}
+
+/* =========================
    RECORD LIST
 ========================= */
 .record-list{
@@ -69,17 +277,14 @@ body{
   gap:14px;
 }
 
-/* =========================
-   RECORD CARD
-========================= */
+/* RECORD CARD */
 .record{
   background:#fff;
   border-radius:18px;
   padding:14px;
   border:1px solid var(--line);
   box-shadow:0 10px 18px rgba(0,0,0,.05);
-
-  transition: transform .15s ease, box-shadow .15s ease;
+  transition:transform .15s ease, box-shadow .15s ease;
 }
 
 .record:active{
@@ -87,14 +292,11 @@ body{
   box-shadow: 0 6px 12px rgba(0,0,0,.08);
 }
 
-/* =========================
-   TOP ROW (BANK + STATUS)
-========================= */
+/* TOP */
 .record-top{
   display:flex;
   justify-content:space-between;
   align-items:flex-start;
-  gap:10px;
 }
 
 .record-bank{
@@ -102,7 +304,6 @@ body{
   font-size:14px;
 }
 
-/* STATUS BADGE */
 .record-status{
   font-size:12px;
   font-weight:800;
@@ -113,103 +314,75 @@ body{
   border-radius:999px;
 }
 
-/* =========================
-   AMOUNT
-========================= */
+/* AMOUNT */
 .record-mid{
   margin-top:8px;
   font-size:18px;
   font-weight:900;
-  letter-spacing:.3px;
 }
 
-/* =========================
-   DATE + TIME
-========================= */
+/* DATE */
 .record-bot{
   margin-top:6px;
   font-size:12px;
   color:var(--muted);
 }
 
+.record-mid.credit{ color:var(--success); }
+.record-mid.debit{ color:var(--danger); }
+
+/* EMPTY */
+.empty{
+  text-align:center;
+  padding:20px;
+  color:var(--muted);
+}
+
 /* =========================
-   OPTIONAL COLORS
+   FX SLIDER
 ========================= */
-.record-mid.credit{
-  color:#16a34a;
-}
-
-.record-mid.debit{
-  color:#dc2626;
-}
-
-/* =========================
-   ANIMATION (OPTIONAL)
-========================= */
-@keyframes fadeInUp {
-  from {
-    opacity:0;
-    transform:translateY(-6px);
-  }
-  to {
-    opacity:1;
-    transform:translateY(0);
-  }
-}
-
-/* ===============================
-   FX SLIDER (FIXED)
-================================ */
-
 .fx-slides{
   margin-top:12px;
   display:flex;
   gap:12px;
-
   overflow-x:auto;
   padding-bottom:6px;
-
   scroll-snap-type:x mandatory;
-  -webkit-overflow-scrolling: touch;
 }
 
-/* Hide scrollbar (mobile clean look) */
-.fx-slides::-webkit-scrollbar{
-  display:none;
-}
+.fx-slides::-webkit-scrollbar{ display:none; }
 
 .fx-card{
-  flex: 0 0 75%;       /* ✅ THIS is the key fix */
+  flex:0 0 75%;
   max-width:260px;
-
   background: linear-gradient(
     135deg,
     rgba(97,164,249,.18),
     rgba(74,138,209,.12)
   );
-
   border:1px solid var(--line);
   border-radius:18px;
   padding:14px;
-
   scroll-snap-align:start;
 }
 
-/* Flag */
-.fx-flag{
-  font-size:20px;
-}
+.fx-flag{ font-size:20px; }
 
-/* Title */
 .fx-main{
   margin-top:10px;
   font-weight:900;
-  font-size:15px;
 }
 
-/* Subtitle */
 .fx-sub{
   margin-top:6px;
   font-size:12px;
   color:var(--muted);
+}
+
+/* =========================
+   ANIMATION
+========================= */
+@keyframes fadeInUp {
+  from {opacity:0; transform:translateY(-6px);}
+  to {opacity:1; transform:translateY(0);}
 }
