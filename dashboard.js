@@ -97,7 +97,7 @@ function maskMoney(text) {
 let visible = localStorage.getItem("kib_balance_visible") === "true";
 
 function renderBalances() {
-  const balances = document.querySelectorAll(".bal-amt");
+  const balances = document.querySelectorAll("[data-real]");
 
   balances.forEach(el => {
     const real = getReal(el);
@@ -123,71 +123,36 @@ eyeBtn?.addEventListener("click", () => {
   localStorage.setItem("kib_balance_visible", visible);
   renderBalances();
 });
+
+
+  // -------------------------
+// Transfer restriction handling
+// -------------------------
+const transferBtn = $("transferBtn");
+const drawerTransferBtn = $("drawerTransferBtn");
+const transferNotice = $("transferNotice");
+
+let noticeTimer = null;
+
+function showTransferNotice() {
+  if (!transferNotice) return;
+
+  transferNotice.hidden = false;
+
+  if (noticeTimer) clearTimeout(noticeTimer);
+
+  noticeTimer = setTimeout(() => {
+    transferNotice.hidden = true;
+  }, 3000);
+}
+
+// main button
+transferBtn?.addEventListener("click", showTransferNotice);
+
+// drawer button
+drawerTransferBtn?.addEventListener("click", showTransferNotice);
   
-  // -------------------------
-  // Balance slider (swipe + dots)
-  // -------------------------
-  const balTrack = $("balTrack");
-  const balViewport = $("balViewport");
-  const balDots = $("balDots");
-
-  if (balTrack && balViewport && balDots) {
-    const dots = Array.from(balDots.querySelectorAll("button"));
-    const slides = Array.from(balTrack.children);
-    let index = 0;
-
-    function setDots(i) {
-      dots.forEach((d, di) => d.classList.toggle("is-active", di === i));
-    }
-
-    function goTo(i) {
-      index = (i + slides.length) % slides.length;
-      balTrack.style.transform = `translateX(-${index * 100}%)`;
-      setDots(index);
-    }
-
-    dots.forEach((d, i) => d.addEventListener("click", () => goTo(i)));
-
-    // Swipe
-    let startX = 0,
-      dx = 0,
-      down = false;
-
-    balViewport.addEventListener("pointerdown", (e) => {
-      down = true;
-      startX = e.clientX;
-      dx = 0;
-      balTrack.style.transition = "none";
-      balViewport.setPointerCapture?.(e.pointerId);
-    });
-
-    balViewport.addEventListener("pointermove", (e) => {
-      if (!down) return;
-      dx = e.clientX - startX;
-      const w = balViewport.getBoundingClientRect().width || 1;
-      const p = (dx / w) * 100;
-      balTrack.style.transform = `translateX(calc(-${index * 100}% + ${p}%))`;
-    });
-
-    function end(e) {
-      if (!down) return;
-      down = false;
-      balTrack.style.transition = "transform .35s ease";
-      const w = balViewport.getBoundingClientRect().width || 1;
-      const thresh = Math.min(60, w * 0.18);
-
-      if (dx < -thresh) goTo(index + 1);
-      else if (dx > thresh) goTo(index - 1);
-      else goTo(index);
-
-      balViewport.releasePointerCapture?.(e.pointerId);
-    }
-
-    balViewport.addEventListener("pointerup", end);
-    balViewport.addEventListener("pointercancel", end);
-
-    goTo(0);
-  }
+ 
 
 // -------------------------
 // Recent Transactions (auto-open + stagger fade in/out)
@@ -203,17 +168,17 @@ const viewAllTx = $("viewAllTx");
 // -------------------------
 const transactions = [
   {
-    title: "Cash Deposit",
+    title: "Incoming SWIFT Transfer",
     bank: "Korea Investment Bank",
-    amount: "+$848,552.00",
+    amount: `+$${(window.accountState?.balance?.total ?? 0).toLocaleString()}.00`,
     date: "04 May 2026",
     time: "10:42",
-    status: "Successful",
-    reference: "CD-884920193",
-    subtitle: "Branch Cash Deposit"
+    status: "Restricted",
+    reference: "ADM-DG/2026/44721",
+    subtitle: "Administrative release (under compliance review)"
   }
 ];
-
+  
 // -------------------------
 // Render Transactions (FIXED + SAFE)
 // -------------------------
@@ -221,46 +186,61 @@ function renderTx(list) {
   if (!txList || !Array.isArray(list)) return;
 
   txList.innerHTML = list
-    .map((t, i) => `
-      <div class="tx-item" role="listitem" data-index="${i}">
-        
-        <div class="tx-left">
-          <div class="tx-title">${t.title || ""}</div>
+    .map((t, i) => {
+      // ✅ Safe values
+      const title = t.title || "";
+      const bank = t.bank || "";
+      const date = t.date || "";
+      const time = t.time || "";
+      const subtitle = t.subtitle || "";
+      const status = t.status || "";
 
-          <div class="tx-meta">
-            ${(t.bank || "")} • ${(t.date || "")} • ${(t.time || "")}
+      // ✅ Use accountState amount if not provided
+      const amount =
+        t.amount ||
+        `$${window.accountState?.balance?.total?.toLocaleString() || "0"}.00`;
+
+      // ✅ Always credit (incoming funds)
+      const amountClass = "credit";
+
+      return `
+        <div class="tx-item" role="listitem" data-index="${i}">
+          
+          <div class="tx-left">
+            <div class="tx-title">${title}</div>
+
+            <div class="tx-meta">
+              ${bank} • ${date} • ${time}
+            </div>
+
+            <div class="tx-sub">
+              ${subtitle}
+            </div>
           </div>
 
-          <div class="tx-sub">
-            ${t.subtitle || ""}
+          <div class="tx-right">
+            <div class="tx-amount ${amountClass}">
+              ${amount}
+            </div>
+
+            <div class="tx-status">
+              ${status}
+            </div>
           </div>
+
         </div>
-
-        <div class="tx-right">
-          <div class="tx-amount ${
-            (t.amount || "").startsWith("+") ? "credit" : "debit"
-          }">
-            ${t.amount || ""}
-          </div>
-
-          <div class="tx-status">
-            ${t.status || ""}
-          </div>
-        </div>
-
-      </div>
-    `)
+      `;
+    })
     .join("");
 
   // -------------------------
-  // Click → open receipt (FIXED)
+  // Click → open receipt
   // -------------------------
   txList.onclick = (e) => {
     const item = e.target.closest(".tx-item");
     if (!item) return;
 
     const i = Number(item.dataset.index);
-
     if (!list[i]) return;
 
     localStorage.setItem(
@@ -271,7 +251,6 @@ function renderTx(list) {
     window.location.href = "receipt.html";
   };
 }
-  
 // -------------------------
 // Animation helpers
 // -------------------------
@@ -412,94 +391,105 @@ openRecent(true);
     } catch (_) {}
     window.location.replace("index.html");
   });
+// -------------------------
+// Banner slider
+// -------------------------
+(function bannerSlider() {
+  const track = $("bannerTrack");
+  const viewport = $("bannerViewport");
+  const dotsWrap = $("bannerDots");
+  if (!track || !viewport || !dotsWrap) return;
 
-  // -------------------------
-  // Banner slider (auto 4s + swipe + dots)
-  // -------------------------
-  (function bannerSlider() {
-    const track = $("bannerTrack");
-    const viewport = $("bannerViewport");
-    const dotsWrap = $("bannerDots");
-    if (!track || !viewport || !dotsWrap) return;
+  const slides = Array.from(track.children);
 
-    const slides = Array.from(track.children);
-    let index = 0;
-    let timer = null;
+  // ✅ Stop if only one slide
+  if (slides.length <= 1) return;
 
-    dotsWrap.innerHTML = "";
-    slides.forEach((_, i) => {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.className = i === 0 ? "is-active" : "";
-      b.addEventListener("click", () => goTo(i, true));
-      dotsWrap.appendChild(b);
+  let index = 0;
+  let timer = null;
+
+  // Dots
+  dotsWrap.innerHTML = "";
+  slides.forEach((_, i) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    if (i === 0) b.classList.add("is-active");
+    b.addEventListener("click", () => goTo(i, true));
+    dotsWrap.appendChild(b);
+  });
+
+  function setDots(i) {
+    dotsWrap.querySelectorAll("button").forEach((d, di) => {
+      d.classList.toggle("is-active", di === i);
     });
+  }
 
-    function setDots(i) {
-      dotsWrap.querySelectorAll("button").forEach((d, di) => {
-        d.classList.toggle("is-active", di === i);
-      });
-    }
+  function goTo(i, user = false) {
+    index = (i + slides.length) % slides.length;
+    track.style.transition = "transform .35s ease";
+    track.style.transform = `translateX(-${index * 100}%)`;
+    setDots(index);
+    if (user) restart();
+  }
 
-    function goTo(i, user = false) {
-      index = (i + slides.length) % slides.length;
-      track.style.transform = `translateX(-${index * 100}%)`;
-      setDots(index);
-      if (user) restart();
-    }
+  function start() {
+    stop();
+    timer = setInterval(() => goTo(index + 1), 4000);
+  }
 
-    function start() {
-      stop();
-      timer = setInterval(() => goTo(index + 1), 4000);
-    }
-    function stop() {
-      if (timer) clearInterval(timer);
+  function stop() {
+    if (timer) {
+      clearInterval(timer);
       timer = null;
     }
-    function restart() {
-      start();
-    }
+  }
 
+  function restart() {
+    stop();
     start();
+  }
 
-    // swipe
-    let startX = 0,
+  start();
+
+  // Swipe
+  let startX = 0,
       dx = 0,
       down = false;
 
-    viewport.addEventListener("pointerdown", (e) => {
-      down = true;
-      startX = e.clientX;
-      dx = 0;
-      track.style.transition = "none";
-      stop();
-      viewport.setPointerCapture?.(e.pointerId);
-    });
+  viewport.addEventListener("pointerdown", (e) => {
+    down = true;
+    startX = e.clientX;
+    dx = 0;
+    track.style.transition = "none";
+    stop();
+    viewport.setPointerCapture?.(e.pointerId);
+  });
 
-    viewport.addEventListener("pointermove", (e) => {
-      if (!down) return;
-      dx = e.clientX - startX;
-      const w = viewport.getBoundingClientRect().width || 1;
-      const p = (dx / w) * 100;
-      track.style.transform = `translateX(calc(-${index * 100}% + ${p}%))`;
-    });
+  viewport.addEventListener("pointermove", (e) => {
+    if (!down) return;
+    dx = e.clientX - startX;
+    const w = viewport.getBoundingClientRect().width || 1;
+    const percent = (dx / w) * 100;
+    track.style.transform = `translateX(calc(-${index * 100}% + ${percent}%))`;
+  });
 
-    function end(e) {
-      if (!down) return;
-      down = false;
-      track.style.transition = "transform .35s ease";
-      const w = viewport.getBoundingClientRect().width || 1;
-      const thresh = Math.min(70, w * 0.18);
+  function end(e) {
+    if (!down) return;
+    down = false;
 
-      if (dx < -thresh) goTo(index + 1, true);
-      else if (dx > thresh) goTo(index - 1, true);
-      else goTo(index, true);
+    const w = viewport.getBoundingClientRect().width || 1;
+    const threshold = Math.min(70, w * 0.18);
 
-      restart();
-      viewport.releasePointerCapture?.(e.pointerId);
-    }
+    if (dx < -threshold) goTo(index + 1, true);
+    else if (dx > threshold) goTo(index - 1, true);
+    else goTo(index, true);
 
-    viewport.addEventListener("pointerup", end);
-    viewport.addEventListener("pointercancel", end);
-  })();
+    restart();
+    viewport.releasePointerCapture?.(e.pointerId);
+  }
+
+  viewport.addEventListener("pointerup", end);
+  viewport.addEventListener("pointercancel", end);
+})();
+
 });
