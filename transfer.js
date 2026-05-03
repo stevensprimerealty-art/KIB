@@ -1,12 +1,12 @@
-// transfer.js — UI only (NO OTP email, NO Supabase calls)
+// transfer.js — FULL VERSION (CLEAN + MATCHED WITH DASHBOARD)
 
 window.addEventListener("DOMContentLoaded", () => {
   const $$ = (sel) => Array.from(document.querySelectorAll(sel));
   const $ = (id) => document.getElementById(id);
 
-  // -------------------------
+  // =========================
   // Drawer (menu)
-  // -------------------------
+  // =========================
   const drawer = $("drawer");
   const backdrop = $("backdrop");
   const menuOpen = $("menuOpen");
@@ -33,18 +33,24 @@ window.addEventListener("DOMContentLoaded", () => {
   menuOpen?.addEventListener("click", openDrawer);
   menuClose?.addEventListener("click", closeDrawer);
   backdrop?.addEventListener("click", closeDrawer);
-  document.addEventListener("keydown", (e) => e.key === "Escape" && closeDrawer());
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeDrawer();
+  });
 
-  // Logout (optional)
+  // =========================
+  // Logout
+  // =========================
   $("logoutBtn")?.addEventListener("click", () => {
     window.location.href = "index.html";
   });
 
-  // -------------------------
+  // =========================
   // Navigation between panels
-  // -------------------------
+  // =========================
   const home = $("home");
-  const panels = ["domestic", "remittance", "fx"].map((id) => $(id)).filter(Boolean);
+  const panels = ["domestic", "remittance", "fx"]
+    .map((id) => $(id))
+    .filter(Boolean);
 
   $$(".option").forEach((opt) => {
     opt.addEventListener("click", () => {
@@ -55,52 +61,138 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // -------------------------
-  // Contact bank buttons (NO DEMO)
-  // -------------------------
-  const contactBtns = $$("[data-contact]");
-  contactBtns.forEach((btn) => {
+  // =========================
+  // Contact buttons
+  // =========================
+  $$("[data-contact]").forEach((btn) => {
     btn.addEventListener("click", () => {
       alert("Invalid request. Contact bank • More information.");
     });
   });
 
-  // -------------------------
-  // Remittance buttons (NO OTP / NO DEMO)
-  // -------------------------
+  // =========================
+  // OTP / Confirm (disabled)
+  // =========================
   const otpMsg = $("otpMsg");
+  const confirmBtn = $("confirmBtn");
+
   $("getOtpBtn")?.addEventListener("click", () => {
-    if (otpMsg) otpMsg.textContent = "Invalid. Contact bank • More information.";
+    if (otpMsg) {
+      otpMsg.textContent =
+        "Invalid. Contact bank • More information.";
+    }
   });
 
   $("confirmBtn")?.addEventListener("click", () => {
-    if (otpMsg) otpMsg.textContent = "Invalid. Contact bank • More information.";
+    if (otpMsg) {
+      otpMsg.textContent =
+        "Invalid. Contact bank • More information.";
+    }
   });
 
-  // Keep confirm disabled always
-  const confirmBtn = $("confirmBtn");
   if (confirmBtn) confirmBtn.disabled = true;
 
-  // -------------------------
-  // Transaction Record on Transfer page: tap to open/close + stagger fade
-  // (If you want this section collapsible)
-  // -------------------------
-  const recordHead = document.querySelector(".panel#records .panel-head");
-  const recordList = document.getElementById("transferRecords");
+  // =========================
+  // Transaction Records
+  // =========================
+  const recordHead = document.querySelector(
+    ".panel#records .panel-head"
+  );
+  const recordList = $("transferRecords");
 
-    if (recordHead && recordList) {
+  function renderTransferRecords() {
+    if (!recordList) return;
+
+    let list = JSON.parse(localStorage.getItem("kib_tx") || "[]");
+
+    // fallback (if no history yet)
+    if (!list.length) {
+      const fallback = JSON.parse(
+        localStorage.getItem("kib_selected_tx") || "null"
+      );
+
+      if (!fallback) {
+        recordList.innerHTML =
+          `<div class="empty">No transactions yet</div>`;
+        return;
+      }
+
+      list = [fallback];
+    }
+
+    recordList.innerHTML = list
+      .map((tx, i) => {
+        const amountClass =
+          (tx.amount || "").startsWith("-")
+            ? "debit"
+            : "credit";
+
+        return `
+          <div class="record" data-index="${i}">
+            
+            <div class="record-top">
+              <div class="record-bank">${tx.title || ""}</div>
+              <div class="record-status">${tx.status || ""}</div>
+            </div>
+
+            <div class="record-mid ${amountClass}">
+              ${tx.amount || ""}
+            </div>
+
+            <div class="record-bot">
+              ${tx.bank || ""} • ${tx.date || ""} • ${tx.time || ""}
+            </div>
+
+            <div class="record-bot">
+              ${tx.subtitle || ""}
+            </div>
+
+          </div>
+        `;
+      })
+      .join("");
+
+    // click → open receipt
+    recordList.onclick = (e) => {
+      const item = e.target.closest(".record");
+      if (!item) return;
+
+      const i = Number(item.dataset.index);
+      if (!list[i]) return;
+
+      localStorage.setItem(
+        "kib_selected_tx",
+        JSON.stringify(list[i])
+      );
+
+      window.location.href = "receipt.html";
+    };
+  }
+
+  // =========================
+  // Animation (stagger)
+  // =========================
+  function animateIn() {
+    if (!recordList) return;
+
+    const cards = Array.from(
+      recordList.querySelectorAll(".record")
+    );
+
+    cards.forEach((c, i) => {
+      c.style.opacity = "0";
+      c.style.transform = "translateY(-6px)";
+      c.style.animation = "fadeInUp .35s ease forwards";
+      c.style.animationDelay = `${i * 90}ms`;
+    });
+  }
+
+  // =========================
+  // Toggle open/close records
+  // =========================
+  if (recordHead && recordList) {
     recordHead.style.cursor = "pointer";
     let open = true;
-
-    function animateIn() {
-      const cards = Array.from(recordList.querySelectorAll(".record"));
-      cards.forEach((c, i) => {
-        c.style.opacity = "0";
-        c.style.transform = "translateY(-6px)";
-        c.style.animation = `fadeInUp .35s ease forwards`;
-        c.style.animationDelay = `${i * 90}ms`;
-      });
-    }
 
     function openRecords() {
       recordList.hidden = false;
@@ -112,13 +204,17 @@ window.addEventListener("DOMContentLoaded", () => {
     function closeRecords() {
       recordList.classList.remove("is-open");
       recordList.classList.add("is-closing");
+
       setTimeout(() => {
         recordList.hidden = true;
         recordList.classList.remove("is-closing");
       }, 250);
+
       open = false;
     }
 
+    // initial render
+    renderTransferRecords();
     recordList.hidden = false;
     animateIn();
 
@@ -126,35 +222,4 @@ window.addEventListener("DOMContentLoaded", () => {
       open ? closeRecords() : openRecords();
     });
   }
-
-  // =========================
-  // ✅ ADD THIS PART HERE
-  // =========================
-  const container = document.getElementById("transferRecords");
-
-  const tx = JSON.parse(localStorage.getItem("kib_selected_tx") || "null");
-
-  if (container && tx) {
-    container.innerHTML = `
-      <div class="record">
-
-        <div class="record-top">
-          <div class="record-bank">${tx.title}</div>
-          <div class="record-status">${tx.status}</div>
-        </div>
-
-        <div class="record-mid">${tx.amount}</div>
-
-        <div class="record-bot">
-          ${tx.bank} • ${tx.date} • ${tx.time}
-        </div>
-
-        <div class="record-bot">
-          ${tx.subtitle || ""}
-        </div>
-
-      </div>
-    `;
-  }
-
 });
