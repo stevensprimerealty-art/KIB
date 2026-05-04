@@ -28,7 +28,7 @@ body{
 .app{
   max-width:460px;
   margin:0 auto;
-  padding:14px;
+  padding: 10px 12px 30px;
   display:flex;
   flex-direction:column;
   gap:16px;
@@ -146,6 +146,10 @@ body{
   font-variant-numeric:tabular-nums;
 }
 
+.balance-block {
+  overflow: hidden;
+}
+
 .eye{
   margin-top:12px;
   border:0;
@@ -191,11 +195,15 @@ body{
   transition:.15s;
 }
 
-.action:active{ transform:scale(.96); }
-
 .action.disabled{
   opacity:.45;
   pointer-events:none;
+}
+
+.action:active,
+.protocol-btn:active,
+.confirm-btn:active {
+  transform: scale(0.96);
 }
 
 /* =========================
@@ -274,8 +282,19 @@ body{
 /* =========================
    SLIDER
 ========================= */
-.slide{ display:none; }
-.slide.active{ display:block; }
+.slider{
+  display:flex;
+  transition:transform 0.3s ease;
+  width:100%;
+}
+
+.slide{
+  min-width:100%;
+}
+.slider {
+  touch-action: pan-y;
+}
+
 
 /* =========================
    PROTOCOL PANEL
@@ -447,3 +466,4 @@ body{
 .drawer button:hover{
   background:#eef2f7;
 }
+
