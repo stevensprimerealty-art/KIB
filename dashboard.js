@@ -4,7 +4,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   /* ================= STATE ================= */
   const state = {
-    index: 1,
+    index: 0, // ✅ start from first slide (important)
     startX: 0,
     currentX: 0,
     dragging: false,
@@ -50,9 +50,12 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* ================= SLIDER (REAL FIX) ================= */
+  /* ================= SLIDER FIX ================= */
+
+  // ✅ ALWAYS use ONE slide width
   function getWidth() {
-    return slider?.getBoundingClientRect().width || 0;
+    const slide = document.querySelector(".slide");
+    return slide ? slide.getBoundingClientRect().width : 0;
   }
 
   function updateSlider(animate = true) {
@@ -72,7 +75,8 @@ window.addEventListener("DOMContentLoaded", () => {
     dots[state.index]?.classList.add("active");
   }
 
-  /* TOUCH */
+  /* ================= TOUCH ================= */
+
   slider?.addEventListener("touchstart", (e) => {
     state.dragging = true;
     state.startX = e.touches[0].clientX;
@@ -106,6 +110,7 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   /* ================= TRANSACTIONS ================= */
+
   const txList = $("txList");
 
   function renderTransactions(limit = 1) {
@@ -138,12 +143,13 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* VIEW ALL */
+  /* ================= VIEW ALL ================= */
   $("viewAllTx")?.addEventListener("click", () => {
     renderTransactions(state.transactions.length);
   });
 
-  /* ================= POPUP (FIXED CLEAN) ================= */
+  /* ================= POPUP ================= */
+
   function showPopup(html) {
     const popup = $("popup");
     const content = $("popupContent");
@@ -155,7 +161,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     requestAnimationFrame(() => popup.classList.add("show"));
 
-    // 🔥 REPLACE handler (no stacking)
+    // ✅ no stacking bug
     popup.onclick = (e) => {
       if (e.target.id === "popup" || e.target.id === "closePopup") {
         popup.classList.remove("show");
@@ -179,15 +185,14 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   /* ================= INIT ================= */
+
   function init() {
     renderBalances();
     renderTransactions(1);
     updateSlider(false);
   }
 
-  // 🔥 DOUBLE FRAME FIX (better than setTimeout)
-  requestAnimationFrame(() => {
-    requestAnimationFrame(init);
-  });
+  // ✅ BEST FIX (stable everywhere)
+  window.addEventListener("load", init);
 
 });
