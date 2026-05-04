@@ -9,25 +9,35 @@ window.addEventListener("DOMContentLoaded", () => {
     index: 1,
     startX: 0,
     currentX: 0,
-    isDragging: false,
-    transactions: JSON.parse(localStorage.getItem("kib_tx") || "[]")
+    dragging: false,
+    balanceVisible: true,
+    balance: {
+      USD: 882000,
+      EUR: 749700,
+      KRW: 1299186000
+    },
+    transactions: JSON.parse(localStorage.getItem("kib_tx")) || [
+      {
+        id: "REF-882000-KIB",
+        type: "Incoming SWIFT",
+        amount: 882000,
+        currency: "USD",
+        date: "04 May 2026 • 11:05 AM",
+        status: "Restricted"
+      }
+    ]
   };
+
+  /* =========================
+     SLIDER (REAL iOS FEEL)
+  ========================= */
 
   const slider = $("slider");
   const slides = document.querySelectorAll(".slide");
   const dots = document.querySelectorAll(".dot");
-  const txList = $("txList");
-  const popup = $("popup");
-
-  /* =========================
-     SLIDER (iOS PHYSICS)
-  ========================= */
 
   function setTranslate(x, animate = false) {
-    slider.style.transition = animate
-      ? "transform 0.35s cubic-bezier(.22,.61,.36,1)"
-      : "none";
-
+    slider.style.transition = animate ? "transform 0.35s cubic-bezier(.22,.61,.36,1)" : "none";
     slider.style.transform = `translateX(${x}px)`;
   }
 
@@ -36,34 +46,28 @@ window.addEventListener("DOMContentLoaded", () => {
     setTranslate(-state.index * width, animate);
 
     dots.forEach(d => d.classList.remove("active"));
-    if (dots[state.index]) dots[state.index].classList.add("active");
+    dots[state.index].classList.add("active");
+
+    updateBalanceDisplay();
   }
 
   slider.addEventListener("touchstart", (e) => {
-    state.isDragging = true;
+    state.dragging = true;
     state.startX = e.touches[0].clientX;
-    state.currentX = state.startX;
-    slider.style.transition = "none";
   });
 
   slider.addEventListener("touchmove", (e) => {
-    if (!state.isDragging) return;
+    if (!state.dragging) return;
 
     state.currentX = e.touches[0].clientX;
     let dx = state.currentX - state.startX;
 
     const width = slider.offsetWidth;
-    let offset = -state.index * width + dx;
-
-    // edge resistance
-    if (state.index === 0 && dx > 0) offset *= 0.4;
-    if (state.index === slides.length - 1 && dx < 0) offset *= 0.4;
-
-    setTranslate(offset);
+    setTranslate(-state.index * width + dx);
   });
 
   slider.addEventListener("touchend", () => {
-    state.isDragging = false;
+    state.dragging = false;
 
     const dx = state.currentX - state.startX;
 
@@ -71,40 +75,43 @@ window.addEventListener("DOMContentLoaded", () => {
     if (dx < -80) state.index++;
 
     state.index = Math.max(0, Math.min(state.index, slides.length - 1));
-
     updateSlider(true);
   });
 
-  updateSlider();
+  /* =========================
+     BALANCE DISPLAY
+  ========================= */
+
+  function formatMoney(v, c) {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: c
+    }).format(v);
+  }
+
+  function updateBalanceDisplay() {
+    const currencies = ["EUR", "USD", "KRW"];
+    const current = currencies[state.index];
+
+    const amountEl = slides[state.index].querySelector(".amount");
+
+    if (!state.balanceVisible) {
+      amountEl.textContent = "••••••••";
+    } else {
+      amountEl.textContent = formatMoney(state.balance[current], current);
+    }
+  }
 
   /* =========================
      TRANSACTIONS
   ========================= */
 
-  // fallback default if empty
-  if (!state.transactions.length) {
-    state.transactions.push({
-      id: Date.now(),
-      type: "Incoming SWIFT",
-      amount: 882000,
-      date: "04 May 2026"
-    });
-    localStorage.setItem("kib_tx", JSON.stringify(state.transactions));
-  }
-
-  function formatMoney(amount) {
-    return (amount > 0 ? "+" : "-") + "$" + Math.abs(amount).toLocaleString();
-  }
+  const txList = $("txList");
 
   function renderTransactions() {
     txList.innerHTML = "";
 
-    if (!state.transactions.length) {
-      txList.innerHTML = `<div class="empty">No transactions yet</div>`;
-      return;
-    }
-
-    state.transactions.slice(0, 5).forEach(tx => {
+    state.transactions.forEach(tx => {
       const el = document.createElement("div");
       el.className = "tx";
 
@@ -114,92 +121,137 @@ window.addEventListener("DOMContentLoaded", () => {
           <small>${tx.date}</small>
         </div>
         <div class="tx-amount ${tx.amount > 0 ? "credit" : "debit"}">
-          ${formatMoney(tx.amount)}
+          ${tx.amount > 0 ? "+" : "-"}${formatMoney(Math.abs(tx.amount), tx.currency)}
         </div>
       `;
 
+      el.onclick = () => openReceipt(tx);
       txList.appendChild(el);
     });
   }
 
-  renderTransactions();
-
   /* =========================
-     TRANSFER
+     RECEIPT SYSTEM (REAL)
   ========================= */
 
-  $("transferBtn")?.addEventListener("click", () => {
+  function openReceipt(tx) {
+    const popup = $("popup");
 
-    const amount = parseFloat(prompt("Enter transfer amount"));
-    if (!amount || amount <= 0) return;
+    popup.innerHTML = `
+      <div class="popup-box">
+        <h3>Transaction Receipt</h3>
 
-    const tx = {
-      id: Date.now(),
-      type: "Transfer",
-      amount: -amount,
-      date: new Date().toLocaleString()
-    };
+        <p><b>Reference:</b> ${tx.id}</p>
+        <p><b>Type:</b> ${tx.type}</p>
+        <p><b>Amount:</b> ${formatMoney(tx.amount, tx.currency)}</p>
+        <p><b>Status:</b> ${tx.status}</p>
+        <p><b>Date:</b> ${tx.date}</p>
 
-    state.transactions.unshift(tx);
-    localStorage.setItem("kib_tx", JSON.stringify(state.transactions));
-
-    renderTransactions();
-    generateReceipt(tx);
-  });
-
-  /* =========================
-     RECEIPT (DOWNLOAD)
-  ========================= */
-
-  function generateReceipt(tx) {
-
-    const content = `
-KIB BANK RECEIPT
-------------------------
-Transaction ID: ${tx.id}
-Type: ${tx.type}
-Amount: ${formatMoney(tx.amount)}
-Date: ${tx.date}
-Status: Completed
-------------------------
+        <button class="primary-btn" id="downloadBtn">Download</button>
+        <button class="secondary-btn" id="closePopup">Close</button>
+      </div>
     `;
 
-    const blob = new Blob([content], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
+    popup.hidden = false;
+    setTimeout(() => popup.classList.add("show"), 10);
 
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `receipt-${tx.id}.txt`;
-    a.click();
+    $("closePopup").onclick = closePopup;
+
+    $("downloadBtn").onclick = () => {
+      const blob = new Blob([JSON.stringify(tx, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `receipt-${tx.id}.json`;
+      a.click();
+    };
+  }
+
+  function closePopup() {
+    const popup = $("popup");
+    popup.classList.remove("show");
+    setTimeout(() => popup.hidden = true, 200);
   }
 
   /* =========================
-     NOTIFICATION POPUP
+     VIEW ALL BUTTON
   ========================= */
 
-  $("notifBtn")?.addEventListener("click", () => {
-    popup.hidden = false;
-    popup.classList.add("show");
-  });
-
-  $("closePopup")?.addEventListener("click", () => {
-    popup.classList.remove("show");
-    setTimeout(() => popup.hidden = true, 200);
-  });
-
-  popup?.addEventListener("click", (e) => {
-    if (e.target === popup) {
-      popup.classList.remove("show");
-      setTimeout(() => popup.hidden = true, 200);
-    }
+  document.querySelector(".tx-header button")?.addEventListener("click", () => {
+    renderTransactions(); // ensures full list
+    alert("Showing all transactions");
   });
 
   /* =========================
-     SCAN BUTTON
+     DRAWER
+  ========================= */
+
+  $("menuBtn")?.addEventListener("click", () => {
+    $("drawer")?.classList.add("open");
+    $("drawerBackdrop")?.removeAttribute("hidden");
+  });
+
+  $("drawerBackdrop")?.addEventListener("click", () => {
+    $("drawer")?.classList.remove("open");
+    $("drawerBackdrop")?.setAttribute("hidden", true);
+  });
+
+  /* =========================
+     TRANSFER (RESTRICTED)
+  ========================= */
+
+  $("transferBtn")?.addEventListener("click", () => {
+    showRestriction();
+  });
+
+  function showRestriction() {
+    const popup = $("popup");
+
+    popup.innerHTML = `
+      <div class="popup-box">
+        <h3>Transfer Restricted</h3>
+        <p class="popup-text">
+          Transfers are disabled under Italian Administrative Authority (ADM).
+        </p>
+
+        <button class="primary-btn">Contact Bank</button>
+        <button class="secondary-btn" id="closePopup">Close</button>
+      </div>
+    `;
+
+    popup.hidden = false;
+    setTimeout(() => popup.classList.add("show"), 10);
+
+    $("closePopup").onclick = closePopup;
+  }
+
+  /* =========================
+     NOTIFICATION (BELL)
+  ========================= */
+
+  $("notifBtn")?.addEventListener("click", showRestriction);
+
+  /* =========================
+     SCAN
   ========================= */
 
   $("scanBtn")?.addEventListener("click", () => {
-    alert("📷 Scan system ready (QR / URL)");
+    alert("📷 Scan system activated");
   });
 
+  /* =========================
+     CARDS BUTTON
+  ========================= */
+
+  document.querySelectorAll(".actions button")[2]?.addEventListener("click", () => {
+    alert("Digital cards coming soon");
+  });
+
+  /* =========================
+     INIT
+  ========================= */
+
+  updateSlider();
+  renderTransactions();
 });
