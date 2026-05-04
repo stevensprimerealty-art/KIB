@@ -26,18 +26,13 @@ let fx = {
 /* =========================
    ITALY TIME HELPERS
 ========================= */
-function getItalyDate(){
-  return new Date(
-    new Date().toLocaleString("en-US", { timeZone: "Europe/Rome" })
-  );
-}
-
 function getItalyTimeString(){
-  return getItalyDate().toLocaleTimeString("en-GB", {
+  return new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Europe/Rome",
     hour: "2-digit",
     minute: "2-digit",
     hour12: false
-  });
+  }).format(new Date());
 }
 
 /* =========================
