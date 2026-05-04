@@ -46,7 +46,7 @@ body{
 }
 
 /* =========================
-   CARD (PREMIUM GLASS)
+   CARD
 ========================= */
 .card{
   margin-top:12px;
@@ -54,13 +54,11 @@ body{
   border-radius:24px;
 
   background:
-    linear-gradient(135deg,rgba(31,95,191,.95),rgba(23,74,148,.9)),
-    rgba(255,255,255,.08);
+    linear-gradient(135deg,rgba(31,95,191,.95),rgba(23,74,148,.9));
 
   backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
-
   color:white;
+
   box-shadow:
     0 20px 40px rgba(0,0,0,.25),
     inset 0 1px 1px rgba(255,255,255,.2);
@@ -86,36 +84,39 @@ body{
 }
 
 /* =========================
-   SLIDER
+   SLIDER (CRITICAL FIX)
 ========================= */
 .slider{
   display:flex;
-  overflow:hidden;
   width:100%;
-  margin-top:12px;
+  overflow:hidden;
+  margin-top:14px;
   will-change:transform;
 }
 
+/* THIS FIXES YOUR BALANCE NOT SHOWING */
 .slide{
   min-width:100%;
+  flex-shrink:0;
   text-align:center;
-  transition:transform .3s;
 }
 
 /* BALANCE */
 .amount{
   font-size:30px;
   font-weight:700;
-  margin-top:10px;
+  margin-top:12px;
   letter-spacing:.5px;
 }
 
-.label{
-  font-size:12px;
-  opacity:.8;
+/* IMPORTANT: ensures text always visible */
+.slide .amount{
+  display:block;
 }
 
-/* DOTS */
+/* =========================
+   DOTS
+========================= */
 .dots{
   text-align:center;
   margin-top:10px;
@@ -289,7 +290,7 @@ body{
 }
 
 /* =========================
-   POPUP (REAL GLASS MODAL)
+   POPUP
 ========================= */
 .popup{
   position:fixed;
@@ -328,34 +329,8 @@ body{
   box-shadow:0 10px 30px rgba(0,0,0,.2);
 }
 
-.popup-text{
-  font-size:13px;
-  margin:10px 0;
-}
-
-/* BUTTONS */
-.primary-btn{
-  width:100%;
-  padding:11px;
-  border:none;
-  border-radius:12px;
-  background:#1f5fbf;
-  color:white;
-  margin-top:10px;
-  font-weight:600;
-}
-
-.secondary-btn{
-  width:100%;
-  padding:11px;
-  border:none;
-  border-radius:12px;
-  background:#e5e7eb;
-  margin-top:8px;
-}
-
 /* =========================
-   DRAWER (SMOOTH)
+   DRAWER (FIXED VISUAL)
 ========================= */
 .drawer{
   position:fixed;
@@ -364,14 +339,15 @@ body{
   width:260px;
   height:100%;
 
-  background:#fff;
+  background:#ffffff;
+
   transform:translateX(-100%);
   transition:.3s cubic-bezier(.22,.61,.36,1);
 
   padding:16px;
   z-index:1000;
 
-  box-shadow:4px 0 20px rgba(0,0,0,.15);
+  box-shadow:4px 0 30px rgba(0,0,0,.2);
 }
 
 .drawer.open{
@@ -380,12 +356,17 @@ body{
 
 .drawer button{
   width:100%;
-  padding:12px;
+  padding:14px;
   margin-bottom:10px;
   border:none;
-  border-radius:10px;
+  border-radius:12px;
   background:#f3f4f6;
   text-align:left;
+  font-weight:600;
+}
+
+.drawer button:active{
+  background:#e5e7eb;
 }
 
 #drawerBackdrop{
