@@ -45,24 +45,24 @@
     <div class="cardHeader">
       <div>
         <h3>EUR Balance</h3>
-        <small class="accountMeta">Foreign Currency Account · ****8821</small>
+        <small class="accountMeta">Primary Account (EUR) · ****8821</small>
       </div>
       <span class="badge">Restricted</span>
     </div>
 
     <p id="eurBalance">€--</p>
     <small id="eurRateText">Rate loading…</small>
-    <small class="subNote">Estimated value based on FX rate</small>
+    <small class="subNote">Available balance</small>
 
     <button type="button" onclick="toggleBalance(this)">Hide</button>
   </div>
 
-  <!-- USD (MAIN ACCOUNT) -->
+  <!-- USD -->
   <div class="card" id="usdCard">
     <div class="cardHeader">
       <div>
         <h3>USD Balance</h3>
-        <small class="accountMeta">Main Account · ****0001</small>
+        <small class="accountMeta">USD Holding Account · ****0001</small>
       </div>
       <span class="badge">Restricted</span>
     </div>
@@ -78,7 +78,7 @@
     <div class="cardHeader">
       <div>
         <h3>KRW Equivalent</h3>
-        <small class="accountMeta">Indicative value based on FX rate</small>
+        <small class="accountMeta">Reference value (FX conversion)</small>
       </div>
       <span class="badge">Restricted</span>
     </div>
@@ -165,32 +165,33 @@
   <div class="tx" onclick="toggleTx()">
 
     <div class="txLeft">
-      <strong>Incoming Transfer</strong>
-      <small>04 May 2026 · 11:12 · Pending Review</small>
+      <strong>Incoming Wire Transfer</strong>
+      <small>2026-05-04 11:12:08 KST</small>
+      <small class="txRef">Ref: ADM-INT-44721</small>
     </div>
 
     <div class="txRight">
       <div class="amount green">+$882,000 USD</div>
-      <small class="status">Restricted</small>
+      <small class="status pending">Under Administrative Review</small>
     </div>
 
   </div>
 
   <div id="txDetails" class="txDetails">
 
-    <p><strong>Reference:</strong> ADM-INT-44721</p>
+    <p><strong>Transaction Type:</strong> International Wire Transfer</p>
 
-    <p><strong>Status:</strong>  
-      Funds received but placed under administrative review.
+    <p><strong>Status:</strong>
+      Transaction received and currently under administrative review.
     </p>
 
-    <p><strong>Availability:</strong>  
-      Funds are not yet available for transfer or withdrawal.
+    <p><strong>Availability:</strong>
+      Funds are temporarily restricted and not available for transfer or withdrawal.
     </p>
 
-    <p><strong>Source:</strong>  
-      International wire transfer
-    </p>
+    <p><strong>Reference Number:</strong> ADM-INT-44721</p>
+
+    <p><strong>Processed At:</strong> 2026-05-04 11:12:08 KST</p>
 
     <button type="button" onclick="toggleTx()">Close</button>
 
@@ -236,9 +237,7 @@
 <div class="modal" id="modal">
   <div class="modalBox">
 
-    <div class="modalHeader">
-      <button type="button" class="closeX" onclick="closeModal()">✕</button>
-    </div>
+    <button type="button" class="closeX" onclick="closeModal()">✕</button>
 
     <h2>Account Access Restricted</h2>
 
