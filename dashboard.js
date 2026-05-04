@@ -6,10 +6,12 @@ window.addEventListener("DOMContentLoaded", () => {
      STATE
   ========================= */
   const state = {
-    index: 1, // start on USD
+    index: 1,
     startX: 0,
     currentX: 0,
     dragging: false,
+
+    balanceVisible: true,
 
     balance: {
       USD: 882000,
@@ -44,7 +46,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const dots = document.querySelectorAll(".dot");
 
   /* =========================
-     BALANCE RENDER
+     BALANCE RENDER + TOGGLE
   ========================= */
   function renderBalances() {
     slides.forEach(slide => {
@@ -53,37 +55,34 @@ window.addEventListener("DOMContentLoaded", () => {
 
       if (!currency || !el) return;
 
-      const value = state.balance[currency] ?? 0;
-      el.textContent = formatMoney(value, currency);
+      el.textContent = state.balanceVisible
+        ? formatMoney(state.balance[currency], currency)
+        : "••••••••";
     });
   }
 
   /* =========================
-     SLIDER (FULL STABLE FIX)
+     SLIDER (STABLE)
   ========================= */
   function updateSlider(animate = true) {
-    if (!slider || !slides.length) return;
+    if (!slider) return;
 
-    const width = slider.clientWidth || slider.getBoundingClientRect().width;
+    const width = slider.getBoundingClientRect().width;
 
-    // 🔥 retry until layout ready
     if (!width || width < 10) {
-      return requestAnimationFrame(() => updateSlider(animate));
+      requestAnimationFrame(() => updateSlider(animate));
+      return;
     }
 
-    slider.style.transition = animate
-      ? "transform .35s cubic-bezier(.22,.61,.36,1)"
-      : "none";
-
+    slider.style.transition = animate ? "transform .35s ease" : "none";
     slider.style.transform = `translateX(-${state.index * width}px)`;
 
     dots.forEach(d => d.classList.remove("active"));
     dots[state.index]?.classList.add("active");
   }
 
-  /* ===== Touch (iOS-feel safe) ===== */
+  /* TOUCH */
   slider?.addEventListener("touchstart", (e) => {
-    if (!slider) return;
     state.dragging = true;
     state.startX = e.touches[0].clientX;
     state.currentX = state.startX;
@@ -91,7 +90,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }, { passive: true });
 
   slider?.addEventListener("touchmove", (e) => {
-    if (!state.dragging || !slider) return;
+    if (!state.dragging) return;
 
     state.currentX = e.touches[0].clientX;
     const dx = state.currentX - state.startX;
@@ -112,14 +111,11 @@ window.addEventListener("DOMContentLoaded", () => {
 
     state.index = Math.max(0, Math.min(state.index, slides.length - 1));
 
-    state.startX = 0;
-    state.currentX = 0;
-
     updateSlider(true);
   });
 
   /* =========================
-     TRANSACTIONS
+     TRANSACTIONS (FIXED)
   ========================= */
   const txList = $("txList");
 
@@ -139,29 +135,39 @@ window.addEventListener("DOMContentLoaded", () => {
       const el = document.createElement("div");
       el.className = "tx";
 
-      const sign = tx.amount > 0 ? "+" : "-";
-
       el.innerHTML = `
         <div>
           <div class="tx-title">${tx.type}</div>
           <small>${tx.date}</small>
         </div>
         <div class="tx-amount ${tx.amount > 0 ? "credit" : "debit"}">
-          ${sign}${formatMoney(Math.abs(tx.amount), tx.currency)}
+          ${tx.amount > 0 ? "+" : "-"}${formatMoney(Math.abs(tx.amount), tx.currency)}
         </div>
       `;
 
-      el.addEventListener("click", () => openReceipt(tx));
+      el.onclick = () => openReceipt(tx);
       txList.appendChild(el);
     });
   }
 
   /* =========================
-     RECEIPT MODAL
+     VIEW ALL (FIXED)
+  ========================= */
+  const viewAllBtn = $("viewAllTx");
+
+  if (viewAllBtn) {
+    viewAllBtn.addEventListener("click", () => {
+      renderTransactions(state.transactions.length);
+    });
+  }
+
+  /* =========================
+     RECEIPT
   ========================= */
   function openReceipt(tx) {
     const modal = $("receiptModal");
     const content = $("receiptContent");
+
     if (!modal || !content) return;
 
     content.innerHTML = `
@@ -172,38 +178,20 @@ window.addEventListener("DOMContentLoaded", () => {
       <p><b>Status:</b> ${tx.status}</p>
       <p><b>Date:</b> ${tx.date}</p>
 
-      <button id="downloadBtn" class="primary-btn">Download</button>
-      <button id="closeReceipt" class="secondary-btn">Close</button>
+      <button id="closeReceipt" class="primary-btn">Close</button>
     `;
 
     modal.hidden = false;
     requestAnimationFrame(() => modal.classList.add("show"));
 
-    $("closeReceipt")?.addEventListener("click", () => {
+    $("closeReceipt").onclick = () => {
       modal.classList.remove("show");
-      setTimeout(() => (modal.hidden = true), 200);
-    });
-
-    $("downloadBtn")?.addEventListener("click", () => {
-      const blob = new Blob([JSON.stringify(tx, null, 2)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `receipt-${tx.id}.json`;
-      a.click();
-    });
+      setTimeout(() => modal.hidden = true, 200);
+    };
   }
 
   /* =========================
-     VIEW ALL
-  ========================= */
-  $("viewAllTx")?.addEventListener("click", () => {
-    renderTransactions(state.transactions.length);
-  });
-
-  /* =========================
-     DRAWER
+     DRAWER (FIXED)
   ========================= */
   const drawer = $("drawer");
   const backdrop = $("drawerBackdrop");
@@ -222,89 +210,52 @@ window.addEventListener("DOMContentLoaded", () => {
   $("closeDrawer")?.addEventListener("click", closeDrawer);
 
   /* =========================
-     POPUP SYSTEM
+     AVATAR UPLOAD (PERSISTENT)
   ========================= */
-  function showPopup(html) {
-    const popup = $("popup");
-    const content = $("popupContent");
-    if (!popup || !content) return;
+  const avatar = $("avatar");
 
-    content.innerHTML = html;
-
-    popup.hidden = false;
-    requestAnimationFrame(() => popup.classList.add("show"));
-
-    popup.querySelector("#closePopup")?.addEventListener("click", () => {
-      popup.classList.remove("show");
-      setTimeout(() => (popup.hidden = true), 200);
-    });
+  function loadAvatar() {
+    const saved = localStorage.getItem("kib_avatar");
+    if (saved && avatar) {
+      avatar.style.backgroundImage = `url(${saved})`;
+      avatar.style.backgroundSize = "cover";
+    }
   }
 
-  /* =========================
-     ACTION BUTTONS
-  ========================= */
-  $("transferBtn")?.addEventListener("click", () => {
-    showPopup(`
-      <h3>Transfer Restricted</h3>
-      <p class="popup-text">Transfers are disabled under ADM regulation.</p>
-      <button id="closePopup" class="primary-btn">Close</button>
-    `);
-  });
+  avatar?.addEventListener("click", () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
 
-  $("notifBtn")?.addEventListener("click", () => {
-    showPopup(`
-      <h3>Account Status</h3>
-      <p class="popup-text">Restricted under Italian Administrative Authority (ADM)</p>
-      <button id="closePopup" class="primary-btn">Close</button>
-    `);
-  });
+    input.onchange = () => {
+      const file = input.files[0];
+      if (!file) return;
 
-  $("scanBtn")?.addEventListener("click", () => {
-    alert("📷 Scan activated");
-  });
+      const reader = new FileReader();
+      reader.onload = () => {
+        localStorage.setItem("kib_avatar", reader.result);
+        loadAvatar();
+      };
+      reader.readAsDataURL(file);
+    };
 
-  $("cardsBtn")?.addEventListener("click", () => {
-    $("cardsScreen") && ($("cardsScreen").hidden = false);
-  });
-
-  $("drawerCardsBtn")?.addEventListener("click", () => {
-    $("cardsScreen") && ($("cardsScreen").hidden = false);
-    closeDrawer();
-  });
-
-  $("closeCards")?.addEventListener("click", () => {
-    $("cardsScreen") && ($("cardsScreen").hidden = true);
+    input.click();
   });
 
   /* =========================
-     AUTO POPUP
-  ========================= */
-  setTimeout(() => {
-    showPopup(`
-      <h3>Account Notice</h3>
-      <p class="popup-text">This account remains under administrative restriction.</p>
-      <button id="closePopup" class="primary-btn">Close</button>
-    `);
-  }, 2000);
-
-  /* =========================
-     RESIZE FIX
-  ========================= */
-  window.addEventListener("resize", () => {
-    updateSlider(false);
-  });
-
-  /* =========================
-     INIT (FINAL FIX)
+     INIT (FINAL)
   ========================= */
   function init() {
+    loadAvatar();
     renderBalances();
-    updateSlider(false);
     renderTransactions(1);
+    updateSlider(false);
   }
 
   requestAnimationFrame(() => {
     requestAnimationFrame(init);
   });
+
+  window.addEventListener("resize", () => updateSlider(false));
 
 });
