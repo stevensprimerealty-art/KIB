@@ -178,7 +178,47 @@ window.addEventListener("DOMContentLoaded", async () => {
   updateSlider(currentIndex);
 
   // -------------------------
-  // TRANSFER BUTTON (FIXED UX)
+  // NOTIFICATIONS
+  // -------------------------
+  $("notifBtn")?.addEventListener("click", () => {
+    const panel = $("notifPanel");
+    panel.hidden = !panel.hidden;
+  });
+
+  // -------------------------
+  // RECENT PANEL
+  // -------------------------
+  $("recentBtn")?.addEventListener("click", () => {
+    const panel = $("recentPanel");
+    const chevron = $("recentChevron");
+
+    const open = panel.classList.toggle("is-open");
+    panel.hidden = false;
+
+    if (chevron) chevron.textContent = open ? "▴" : "▾";
+  });
+
+  // -------------------------
+  // DRAWER
+  // -------------------------
+  const drawer = $("drawer");
+  const backdrop = $("menuBackdrop");
+
+  $("menuBtn")?.addEventListener("click", () => {
+    drawer.classList.add("is-open");
+    backdrop.hidden = false;
+  });
+
+  function closeDrawer() {
+    drawer.classList.remove("is-open");
+    backdrop.hidden = true;
+  }
+
+  $("closeDrawer")?.addEventListener("click", closeDrawer);
+  backdrop?.addEventListener("click", closeDrawer);
+
+  // -------------------------
+  // TRANSFER PANEL
   // -------------------------
   const transferBtn = $("transferBtn");
   const protocolPanel = $("protocolPanel");
@@ -195,7 +235,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    if (protocolPanel) protocolPanel.hidden = false;
+    protocolPanel.hidden = false;
   });
 
   $("closeProtocol")?.addEventListener("click", () => {
@@ -240,11 +280,10 @@ window.addEventListener("DOMContentLoaded", async () => {
     if (!amount) {
       safeHide($("fxBreakdown"), true);
       safeHide($("confirmTransferBox"), true);
-      confirmBtn.disabled = true;
       return;
     }
 
-    const currency = $("transferCurrency").value;
+    const currency = $("transferCurrency")?.value;
     const meta = window.fxMeta?.[currency];
     if (!meta) return;
 
@@ -259,7 +298,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   });
 
   // -------------------------
-  // ADD TRANSACTION (FIXED)
+  // ADD TRANSACTION
   // -------------------------
   function addTransaction(tx) {
     const list = $("txList");
@@ -300,8 +339,9 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     setTimeout(() => {
 
-      const currency = $("transferCurrency").value;
-      const meta = window.fxMeta[currency];
+      const currency = $("transferCurrency")?.value;
+      const meta = window.fxMeta?.[currency];
+      if (!meta) return;
 
       const receive = Math.floor(amount * meta.buyRate - meta.fee);
 
@@ -332,7 +372,6 @@ window.addEventListener("DOMContentLoaded", async () => {
 
       safeHide(receiptPopup, false);
 
-      // RESET (FIXED)
       input.value = "";
       safeHide(error, true);
       safeHide($("fxBreakdown"), true);
@@ -352,8 +391,17 @@ window.addEventListener("DOMContentLoaded", async () => {
     safeHide($("compliancePopup"), true);
   });
 
+  receiptPopup?.addEventListener("click", (e) => {
+    if (e.target === receiptPopup) safeHide(receiptPopup, true);
+  });
+
+  $("compliancePopup")?.addEventListener("click", (e) => {
+    if (e.target.id === "compliancePopup") safeHide($("compliancePopup"), true);
+  });
+
   // -------------------------
   // INIT
   // -------------------------
   await loadFX();
+
 });
