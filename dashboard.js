@@ -24,6 +24,8 @@ let fx = {
 };
 
 function computeFX(){
+  if(fx.timestamp) return; // prevent unnecessary recompute
+
   const eurSpread = 0.012;
   const krwSpread = 0.018;
 
@@ -70,7 +72,7 @@ function saveState(){
 
 
 /* =========================
-   LOAD BALANCES (SAFE)
+   LOAD BALANCES
 ========================= */
 function loadBalances(){
 
@@ -107,7 +109,7 @@ function loadBalances(){
 
 
 /* =========================
-   INIT (SAFE LOAD)
+   INIT
 ========================= */
 document.addEventListener("DOMContentLoaded", () => {
   loadBalances();
@@ -117,23 +119,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 /* =========================
-   COMPLIANCE MODAL
+   MODAL
 ========================= */
 let modalOpen = false;
 
 function showCompliance(){
   if(modalOpen) return;
-  modalOpen = true;
 
   const modal = document.getElementById("modal");
-  if(modal) modal.style.display = "flex";
+  if(!modal) return;
+
+  modal.style.display = "flex";
+  document.body.style.overflow = "hidden";
+
+  modalOpen = true;
 }
 
 function closeModal(){
-  modalOpen = false;
-
   const modal = document.getElementById("modal");
-  if(modal) modal.style.display = "none";
+  if(!modal) return;
+
+  modal.style.display = "none";
+  document.body.style.overflow = "";
+
+  modalOpen = false;
 }
 
 // auto popup
@@ -153,23 +162,55 @@ function blocked(){
 
 
 /* =========================
-   DRAWER
+   DRAWER (FULL FIX)
 ========================= */
 function openDrawer(){
   const drawer = document.getElementById("drawer");
   const overlay = document.getElementById("drawerOverlay");
 
-  if(drawer) drawer.classList.toggle("open");
-  if(overlay) overlay.classList.toggle("active");
+  if(!drawer || !overlay) return;
+
+  drawer.classList.add("open");
+  overlay.classList.add("active");
+
+  document.body.style.overflow = "hidden";
 }
 
 function closeDrawer(){
   const drawer = document.getElementById("drawer");
   const overlay = document.getElementById("drawerOverlay");
 
-  if(drawer) drawer.classList.remove("open");
-  if(overlay) overlay.classList.remove("active");
+  if(!drawer || !overlay) return;
+
+  drawer.classList.remove("open");
+  overlay.classList.remove("active");
+
+  document.body.style.overflow = "";
 }
+
+
+/* close drawer when clicking outside */
+document.addEventListener("click", (e) => {
+  const drawer = document.getElementById("drawer");
+  const menuBtn = document.querySelector(".menuBtn");
+
+  if(!drawer || !drawer.classList.contains("open")) return;
+
+  if(
+    !drawer.contains(e.target) &&
+    !menuBtn.contains(e.target)
+  ){
+    closeDrawer();
+  }
+});
+
+/* ESC key support */
+document.addEventListener("keydown", (e) => {
+  if(e.key === "Escape"){
+    closeDrawer();
+    closeModal();
+  }
+});
 
 
 /* =========================
@@ -228,7 +269,7 @@ function loadImage(){
 
 
 /* =========================
-   BALANCE TOGGLE (ROBUST)
+   BALANCE TOGGLE
 ========================= */
 function toggleBalance(btn){
   const card = btn.closest(".card");
