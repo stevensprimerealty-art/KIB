@@ -11,11 +11,9 @@
 
 <main class="app">
 
-<!-- =======================
-     TOP BAR
-======================= -->
+<!-- ================= TOP BAR ================= -->
 <header class="topbar">
-  <button id="menuBtn" aria-label="Menu">☰</button>
+  <button id="menuBtn" aria-label="Open Menu">☰</button>
 
   <div class="user">
     <div class="avatar" id="avatar"></div>
@@ -25,14 +23,10 @@
     </div>
   </div>
 
-  <button id="notifBtn" aria-label="Notifications">
-    🔔
-  </button>
+  <button id="notifBtn" aria-label="Notifications">🔔</button>
 </header>
 
-<!-- =======================
-     ACCOUNT CARD
-======================= -->
+<!-- ================= ACCOUNT CARD ================= -->
 <section class="card-wrap">
   <div class="card">
 
@@ -64,7 +58,7 @@
 
     </div>
 
-    <!-- DOT INDICATORS -->
+    <!-- DOTS -->
     <div class="dots" id="dots">
       <span class="dot"></span>
       <span class="dot active"></span>
@@ -79,9 +73,7 @@
   </div>
 </section>
 
-<!-- =======================
-     TRANSACTIONS
-======================= -->
+<!-- ================= TRANSACTIONS ================= -->
 <section class="transactions">
   <div class="tx-header">
     <h3>Recent Transactions</h3>
@@ -91,9 +83,7 @@
   <div id="txList" class="tx-list"></div>
 </section>
 
-<!-- =======================
-     ACTION BUTTONS
-======================= -->
+<!-- ================= ACTION BUTTONS ================= -->
 <section class="actions">
   <button id="transferBtn">⇄ Transfer</button>
   <button id="scanBtn">📷 Scan</button>
@@ -103,9 +93,7 @@
 
 </main>
 
-<!-- =======================
-     BOTTOM NAV (HANA STYLE)
-======================= -->
+<!-- ================= BOTTOM NAV ================= -->
 <nav class="bottom-nav">
   <button class="active">🏠<span>Home</span></button>
   <button>📊<span>Assets</span></button>
@@ -114,47 +102,25 @@
   <button>⋯<span>More</span></button>
 </nav>
 
-<!-- =======================
-     NOTIFICATION POPUP (GLASS)
-======================= -->
+<!-- ================= GLOBAL POPUP ================= -->
 <div id="popup" class="popup" hidden>
-  <div class="popup-box">
-
-    <h3>Account Status</h3>
-
-    <p class="popup-text">
-      This account is currently restricted under Italian Administrative Authority (ADM).
-    </p>
-
-    <button class="primary-btn" id="contactBankBtn">
-      Contact Bank
-    </button>
-
-    <button class="secondary-btn" id="closePopup">
-      Close
-    </button>
-
-  </div>
+  <!-- JS will inject content here -->
 </div>
 
-<!-- =======================
-     SIDE DRAWER (FIXED)
-======================= -->
+<!-- ================= DRAWER ================= -->
 <div id="drawerBackdrop" hidden></div>
 
 <aside id="drawer" class="drawer">
   <button id="closeDrawer">✕</button>
 
-  <button>Profile</button>
-  <button>Cards</button>
+  <button id="profileBtn">Profile</button>
+  <button id="drawerCardsBtn">Cards</button>
   <button disabled>Transfers</button>
-  <button>Support</button>
+  <button id="supportBtn">Support</button>
   <button id="logoutBtn">Logout</button>
 </aside>
 
-<!-- =======================
-     SCRIPT
-======================= -->
+<!-- ================= SCRIPT ================= -->
 <script src="dashboard.js"></script>
 
 </body>
