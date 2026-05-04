@@ -13,21 +13,23 @@
 
 <!-- TOPBAR -->
 <header class="topbar">
-  <button class="menuBtn" onclick="openDrawer()">☰</button>
+  <button type="button" class="menuBtn" onclick="openDrawer()" aria-label="Open menu">☰</button>
 
   <div class="user">
     <input type="file" id="imgPicker" hidden/>
-    <img id="profileImg" onclick="pickImage()" src="default.png" alt="Profile"/>
+    <img id="profileImg" onclick="pickImage()" src="default.png" alt="User profile"/>
     <span>Kim Dae Hyun</span>
   </div>
 
-  <button class="bellBtn" onclick="showCompliance()">🔔</button>
+  <button type="button" class="bellBtn" onclick="showCompliance()" aria-label="Notifications">🔔</button>
 </header>
 
 <!-- NOTICE -->
 <div class="notice">
   Administrative Review Active
 </div>
+
+<main>
 
 <!-- ACCOUNTS -->
 <section class="cards">
@@ -43,7 +45,7 @@
     <small id="eurRateText">Rate loading…</small>
     <small class="subNote">Indicative converted balance</small>
 
-    <button onclick="toggleBalance(this)">Hide</button>
+    <button type="button" onclick="toggleBalance(this)">Hide</button>
   </div>
 
   <!-- USD -->
@@ -56,7 +58,7 @@
     <p id="usdBalance">$--</p>
     <small class="subNote">Incoming funds (restricted)</small>
 
-    <button onclick="toggleBalance(this)">Hide</button>
+    <button type="button" onclick="toggleBalance(this)">Hide</button>
   </div>
 
   <!-- KRW -->
@@ -69,7 +71,7 @@
     <p id="krwBalance">₩--</p>
     <small class="subNote">Reference value</small>
 
-    <button onclick="toggleBalance(this)">Hide</button>
+    <button type="button" onclick="toggleBalance(this)">Hide</button>
   </div>
 
 </section>
@@ -114,7 +116,7 @@
 
   <div class="sectionHeader">
     <h3>Recent Transactions</h3>
-    <span class="viewAll">View all</span>
+    <button type="button" class="viewAll">View all</button>
   </div>
 
   <div class="tx" onclick="toggleTx()">
@@ -128,42 +130,44 @@
   <div id="txDetails" class="txDetails">
     <p>Reference: ADM-INT-44721</p>
     <p>Status: Under administrative control</p>
-    <button onclick="toggleTx()">Close</button>
+    <button type="button" onclick="toggleTx()">Close</button>
   </div>
 
 </section>
 
+</main>
+
 </div>
 
 <!-- DRAWER -->
-<div class="drawer" id="drawer">
+<aside class="drawer" id="drawer">
   <div class="drawerContent">
 
-    <button class="closeBtn" onclick="closeDrawer()">✕</button>
+    <button type="button" class="closeBtn" onclick="closeDrawer()" aria-label="Close menu">✕</button>
 
-    <img id="drawerImg" src="default.png"/>
+    <img id="drawerImg" src="default.png" alt="User profile"/>
     <p>Kim Dae Hyun</p>
 
-    <button>Accounts</button>
-    <button>Exchange</button>
-    <button>Funds</button>
-    <button>Support</button>
+    <button type="button">Accounts</button>
+    <button type="button">Exchange</button>
+    <button type="button">Funds</button>
+    <button type="button">Support</button>
 
-    <button onclick="logout()">Logout →</button>
+    <button type="button" onclick="logout()">Logout →</button>
 
   </div>
-</div>
+</aside>
 
-<!-- DRAWER OVERLAY -->
+<!-- OVERLAY -->
 <div class="drawerOverlay" id="drawerOverlay" onclick="closeDrawer()"></div>
 
+<!-- MODAL -->
 <div class="modal" id="modal">
   <div class="modalBox">
 
-    <!-- TOP BAR -->
     <div class="modalHeader">
       <div class="dragHandle"></div>
-      <button class="closeX" onclick="closeModal()">✕</button>
+      <button type="button" class="closeX" onclick="closeModal()" aria-label="Close">✕</button>
     </div>
 
     <h2>Account Access Restricted</h2>
@@ -175,14 +179,14 @@
     </p>
 
     <div class="modalActions">
-      <button>Contact Support</button>
-      <button onclick="closeModal()">Close</button>
+      <button type="button">Contact Support</button>
+      <button type="button" onclick="closeModal()">Close</button>
     </div>
 
   </div>
 </div>
 
-<!-- BOTTOM NAV (REAL BANK STYLE) -->
+<!-- BOTTOM NAV -->
 <nav class="bottomNav">
 
   <div class="navItem active">
