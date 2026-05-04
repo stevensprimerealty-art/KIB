@@ -1,384 +1,121 @@
-/* =========================
-   BASE
-========================= */
-body{
+body {
   margin:0;
-  font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-
-  background:
-    radial-gradient(circle at 20% 20%, rgba(31,95,191,0.15), transparent 40%),
-    radial-gradient(circle at 80% 80%, rgba(23,74,148,0.15), transparent 40%),
-    linear-gradient(180deg,#eef3f9,#e6edf7);
-
-  color:#0a0f1c;
+  font-family: sans-serif;
+  background:#0b1a2a;
+  color:white;
 }
 
-button{
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* APP */
-.app{
-  max-width:420px;
-  margin:auto;
-  padding:12px 12px 90px;
-}
-
-/* =========================
-   TOP BAR
-========================= */
-.topbar{
+.topbar {
   display:flex;
   justify-content:space-between;
+  padding:10px;
   align-items:center;
 }
 
-.topbar button{
-  background:none;
-  border:none;
-  font-size:20px;
-  cursor:pointer;
-}
-
-.user{
+.user {
   display:flex;
-  gap:10px;
   align-items:center;
+  gap:10px;
 }
 
-.avatar{
-  width:38px;
-  height:38px;
+.user img {
+  width:40px;
+  height:40px;
   border-radius:50%;
   object-fit:cover;
-  display:block;
-  box-shadow:0 2px 6px rgba(0,0,0,.15);
+  border:2px solid white;
 }
 
-/* =========================
-   CARD
-========================= */
-.card{
-  margin-top:12px;
-  padding:18px;
-  border-radius:24px;
-
-  background:
-    linear-gradient(135deg,
-      rgba(31,95,191,0.55),
-      rgba(10,40,120,0.45)
-    );
-
-  backdrop-filter: blur(28px) saturate(140%);
-  -webkit-backdrop-filter: blur(28px) saturate(140%);
-
-  border:1px solid rgba(255,255,255,0.25);
-  color:white;
-
-  box-shadow:
-    0 25px 60px rgba(0,0,0,.35),
-    inset 0 1px 1px rgba(255,255,255,.25);
-}
-
-.card-header{
+.cards {
   display:flex;
-  justify-content:space-between;
-  font-size:12px;
-  opacity:.9;
+  overflow-x:auto;
+  gap:15px;
+  padding:20px;
 }
 
-.acct{
-  font-size:12px;
-  margin-top:6px;
-  opacity:.85;
+.card {
+  min-width:250px;
+  padding:20px;
+  border-radius:20px;
+
+  backdrop-filter: blur(20px);
+  background: rgba(0, 120, 255, 0.2);
+  border:1px solid rgba(255,255,255,0.2);
 }
 
-/* =========================
-   SLIDER
-========================= */
-.slider{
+.flipCard {
+  transition: transform 1.8s ease;
+}
+
+.flipCard.active {
+  transform: rotateY(180deg);
+}
+
+.actions {
   display:flex;
-  width:100%;
-  overflow:hidden;
-  margin-top:14px;
-
-  will-change:transform;
-  transform:translate3d(0,0,0); /* smooth */
-  touch-action:pan-y;
-}
-
-.slide{
-  flex:0 0 100%;
-  min-width:100%;
-
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-}
-
-.amount{
-  font-size:30px;
-  font-weight:700;
-  margin-top:12px;
-  letter-spacing:.5px;
-
-  min-height:36px;
-  display:block;
-
-  font-variant-numeric: tabular-nums; /* no jump */
-  transition:.2s;
-}
-
-/* =========================
-   DOTS
-========================= */
-.dots{
-  text-align:center;
-  margin-top:10px;
-}
-
-.dot{
-  width:6px;
-  height:6px;
-  border-radius:50%;
-  background:rgba(255,255,255,0.35);
-  display:inline-block;
-  margin:0 4px;
-  transition:.2s;
-}
-
-.dot.active{
-  width:8px;
-  height:8px;
-  background:#fff;
-  box-shadow:0 0 6px rgba(255,255,255,.8);
-}
-
-/* =========================
-   FX BOX
-========================= */
-.fx-box{
-  margin-top:10px;
-  text-align:center;
-  font-size:13px;
-  opacity:.9;
-
-  background:rgba(255,255,255,0.15);
-  padding:6px 10px;
-  border-radius:10px;
-}
-
-/* =========================
-   TRANSACTIONS
-========================= */
-.transactions{
-  margin-top:14px;
-
-  background:rgba(255,255,255,0.45);
-  backdrop-filter:blur(20px);
-
-  border-radius:18px;
-  padding:14px;
-
-  border:1px solid rgba(255,255,255,0.5);
-
-  box-shadow:0 6px 20px rgba(0,0,0,.08);
-}
-
-.tx-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:10px;
-}
-
-.tx-header h3{
-  margin:0;
-  font-size:15px;
-}
-
-.tx-header button{
-  border:none;
-  background:none;
-  color:#1f5fbf;
-  font-weight:600;
-  cursor:pointer;
-}
-
-/* TX */
-.tx{
-  display:flex;
-  justify-content:space-between;
-  padding:12px 0;
-  border-bottom:1px solid rgba(0,0,0,.06);
-
-  transition:.15s;
-  cursor:pointer;
-}
-
-.tx:active{
-  transform:scale(.98);
-  opacity:.7;
-}
-
-.tx:last-child{
-  border-bottom:none;
-}
-
-.tx-amount.credit{ color:#16a34a; }
-.tx-amount.debit{ color:#dc2626; }
-
-/* =========================
-   ACTIONS
-========================= */
-.actions{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
   gap:10px;
-  margin-top:14px;
+  padding:20px;
 }
 
-.actions button{
-  padding:12px;
-  border-radius:14px;
+button {
+  padding:10px;
   border:none;
-
-  background:rgba(255,255,255,0.35);
-  backdrop-filter:blur(20px);
-
-  border:1px solid rgba(255,255,255,0.4);
-
-  font-weight:600;
-  box-shadow:0 4px 10px rgba(0,0,0,.08);
-
-  transition:.2s ease;
+  border-radius:10px;
+  cursor:pointer;
 }
 
-.actions button:active{
-  transform:scale(.95);
+.transactions {
+  padding:20px;
 }
 
-/* =========================
-   NAV
-========================= */
-.bottom-nav{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-
+.tx {
   display:flex;
-  justify-content:space-around;
-  align-items:center;
-
-  background:rgba(255,255,255,0.6);
-  backdrop-filter:blur(25px);
-
-  border-top:1px solid rgba(255,255,255,0.5);
-
+  justify-content:space-between;
   padding:10px 0;
 }
 
-.bottom-nav button{
-  border:none;
-  background:none;
-  font-size:13px;
-
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-
-  color:#6b7280;
+.green {
+  color:lightgreen;
 }
 
-.bottom-nav button.active{
-  color:#1f5fbf;
-  font-weight:600;
-}
-
-/* =========================
-   POPUP (MATCHES JS)
-========================= */
-.popup{
+.drawer {
   position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.35);
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  z-index:2000;
-}
-
-.popup[hidden]{
-  display:none;
-}
-
-.popup-box{
-  width:85%;
-  max-width:320px;
-
-  background:rgba(255,255,255,0.25);
-  backdrop-filter:blur(30px);
-
-  border-radius:20px;
-  padding:20px;
-
-  border:1px solid rgba(255,255,255,0.5);
-
-  text-align:center;
-
-  box-shadow:0 10px 30px rgba(0,0,0,.25);
-}
-
-/* =========================
-   DRAWER
-========================= */
-.drawer{
-  position:fixed;
-  left:0;
+  left:-100%;
   top:0;
-  width:260px;
+  width:250px;
   height:100%;
-
-  background:rgba(255,255,255,0.9);
-  backdrop-filter:blur(20px);
-
-  transform:translateX(-100%);
-  transition:.3s cubic-bezier(.22,.61,.36,1);
-
-  padding:16px;
-
-  z-index:1001;
-
-  box-shadow:4px 0 30px rgba(0,0,0,.2);
+  background:#111;
+  transition:0.3s;
 }
 
-.drawer.open{
-  transform:translateX(0);
+.drawer.open {
+  left:0;
 }
 
-.drawer button{
-  width:100%;
-  padding:14px;
-  margin-bottom:10px;
-  border:none;
-  border-radius:12px;
-  background:#f3f4f6;
-  text-align:left;
-  font-weight:600;
+.drawerContent {
+  padding:20px;
 }
 
-.drawer button:active{
-  background:#e5e7eb;
+.drawerContent img {
+  width:60px;
+  height:60px;
+  border-radius:50%;
 }
 
-/* BACKDROP */
-#drawerBackdrop{
+.modal {
   position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.3);
-  z-index:1000;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  display:none;
+  justify-content:center;
+  align-items:center;
+  background:rgba(0,0,0,0.6);
+}
+
+.modalBox {
+  background:#1e2d3f;
+  padding:20px;
+  border-radius:15px;
 }
