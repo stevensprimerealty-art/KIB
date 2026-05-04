@@ -4,7 +4,13 @@
 body{
   margin:0;
   font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background:linear-gradient(180deg,#eef3f9,#e6edf7);
+
+  /* 🔥 Better glass background */
+  background:
+    radial-gradient(circle at 20% 20%, rgba(31,95,191,0.15), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(23,74,148,0.15), transparent 40%),
+    linear-gradient(180deg,#eef3f9,#e6edf7);
+
   color:#0a0f1c;
 }
 
@@ -29,6 +35,7 @@ body{
   border:none;
   font-size:20px;
   cursor:pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .user{
@@ -37,31 +44,38 @@ body{
   align-items:center;
 }
 
+/* 🔥 Avatar supports uploaded image */
 .avatar{
   width:38px;
   height:38px;
   border-radius:50%;
+
   background:linear-gradient(135deg,#d1d5db,#9ca3af);
   box-shadow:0 2px 6px rgba(0,0,0,.15);
+
+  background-size:cover;
+  background-position:center;
 }
 
 /* =========================
-   CARD
+   CARD (REAL GLASS)
 ========================= */
 .card{
   margin-top:12px;
   padding:18px;
   border-radius:24px;
 
-  background:
-    linear-gradient(135deg,rgba(31,95,191,.95),rgba(23,74,148,.9));
-
+  background:rgba(31,95,191,0.35);
   backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+
+  border:1px solid rgba(255,255,255,0.35);
+
   color:white;
 
   box-shadow:
     0 20px 40px rgba(0,0,0,.25),
-    inset 0 1px 1px rgba(255,255,255,.2);
+    inset 0 1px 1px rgba(255,255,255,.3);
 }
 
 /* HEADER */
@@ -84,7 +98,7 @@ body{
 }
 
 /* =========================
-   SLIDER (CRITICAL FIX)
+   SLIDER (FIXED)
 ========================= */
 .slider{
   display:flex;
@@ -92,13 +106,18 @@ body{
   overflow:hidden;
   margin-top:14px;
   will-change:transform;
+
+  touch-action:pan-y;
 }
 
-/* THIS FIXES YOUR BALANCE NOT SHOWING */
 .slide{
   min-width:100%;
   flex-shrink:0;
-  text-align:center;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
 }
 
 /* BALANCE */
@@ -107,9 +126,10 @@ body{
   font-weight:700;
   margin-top:12px;
   letter-spacing:.5px;
+
+  min-height:36px; /* prevents blank flicker */
 }
 
-/* IMPORTANT: ensures text always visible */
 .slide .amount{
   display:block;
 }
@@ -140,31 +160,37 @@ body{
 }
 
 /* =========================
-   STATUS
+   STATUS (GLASS PILL)
 ========================= */
 .status{
   margin-top:14px;
   font-size:12px;
 
-  background:rgba(255,255,255,0.18);
-  backdrop-filter:blur(10px);
+  background:rgba(255,255,255,0.2);
+  backdrop-filter:blur(12px);
+
+  border:1px solid rgba(255,255,255,0.35);
 
   padding:8px 10px;
   border-radius:12px;
 }
 
 /* =========================
-   TRANSACTIONS
+   TRANSACTIONS (GLASS PANEL)
 ========================= */
 .transactions{
   margin-top:14px;
-  background:rgba(255,255,255,.7);
-  backdrop-filter:blur(15px);
+
+  background:rgba(255,255,255,0.4);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
 
   border-radius:18px;
   padding:14px;
 
-  box-shadow:0 6px 20px rgba(0,0,0,.06);
+  border:1px solid rgba(255,255,255,0.5);
+
+  box-shadow:0 6px 20px rgba(0,0,0,.08);
 }
 
 .tx-header{
@@ -192,7 +218,7 @@ body{
   display:flex;
   justify-content:space-between;
   padding:12px 0;
-  border-bottom:1px solid rgba(0,0,0,.05);
+  border-bottom:1px solid rgba(0,0,0,.06);
 }
 
 .tx:last-child{
@@ -224,7 +250,7 @@ body{
 }
 
 /* =========================
-   ACTION BUTTONS
+   ACTION BUTTONS (GLASS)
 ========================= */
 .actions{
   display:grid;
@@ -238,8 +264,10 @@ body{
   border-radius:14px;
   border:none;
 
-  background:rgba(255,255,255,0.7);
-  backdrop-filter:blur(10px);
+  background:rgba(255,255,255,0.4);
+  backdrop-filter:blur(15px);
+
+  border:1px solid rgba(255,255,255,0.5);
 
   font-weight:600;
   box-shadow:0 4px 10px rgba(0,0,0,.08);
@@ -252,7 +280,7 @@ body{
 }
 
 /* =========================
-   BOTTOM NAV
+   BOTTOM NAV (GLASS)
 ========================= */
 .bottom-nav{
   position:fixed;
@@ -264,11 +292,12 @@ body{
   justify-content:space-around;
   align-items:center;
 
-  background:rgba(255,255,255,0.85);
-  backdrop-filter:blur(20px);
+  background:rgba(255,255,255,0.6);
+  backdrop-filter:blur(25px);
+
+  border-top:1px solid rgba(255,255,255,0.5);
 
   padding:10px 0;
-  border-top:1px solid rgba(0,0,0,.05);
 }
 
 .bottom-nav button{
@@ -290,7 +319,7 @@ body{
 }
 
 /* =========================
-   POPUP
+   POPUP (GLASS MODAL)
 ========================= */
 .popup{
   position:fixed;
@@ -303,11 +332,13 @@ body{
   justify-content:center;
 
   opacity:0;
+  pointer-events:none;
   transition:.25s;
 }
 
 .popup.show{
   opacity:1;
+  pointer-events:auto;
 }
 
 .popup[hidden]{
@@ -320,17 +351,20 @@ body{
 
   background:rgba(255,255,255,0.25);
   backdrop-filter:blur(30px);
+  -webkit-backdrop-filter:blur(30px);
 
   border-radius:20px;
   padding:20px;
 
+  border:1px solid rgba(255,255,255,0.5);
+
   text-align:center;
 
-  box-shadow:0 10px 30px rgba(0,0,0,.2);
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
 }
 
 /* =========================
-   DRAWER (FIXED VISUAL)
+   DRAWER (FIXED LAYER)
 ========================= */
 .drawer{
   position:fixed;
@@ -345,7 +379,8 @@ body{
   transition:.3s cubic-bezier(.22,.61,.36,1);
 
   padding:16px;
-  z-index:1000;
+
+  z-index:1001;
 
   box-shadow:4px 0 30px rgba(0,0,0,.2);
 }
@@ -369,9 +404,10 @@ body{
   background:#e5e7eb;
 }
 
+/* BACKDROP */
 #drawerBackdrop{
   position:fixed;
   inset:0;
   background:rgba(0,0,0,.3);
-  z-index:900;
+  z-index:1000;
 }
