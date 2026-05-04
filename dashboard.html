@@ -11,7 +11,6 @@
 
 <div class="app">
 
-<!-- TOP BAR -->
 <header class="topbar">
   <button onclick="openDrawer()">☰</button>
 
@@ -26,36 +25,36 @@
   </div>
 </header>
 
-<!-- NOTICE BAR -->
 <div class="notice">
-  Administrative Compliance Active ⚠️
+  Administrative Review Active ⚠️
 </div>
 
-<!-- CARD SLIDER -->
-<section class="cards" id="cardSlider">
+<!-- CARDS -->
+<section class="cards">
 
   <!-- EUR -->
   <div class="card">
     <div class="cardHeader">
-      <h3>EUR Account</h3>
+      <h3>EUR Balance</h3>
       <span class="badge">Restricted</span>
     </div>
 
-    <p id="eurBalance">€812,000</p>
-    <small>Converted from USD</small>
+    <p id="eurBalance">€--</p>
+    <small id="eurRateText">Rate loading…</small>
+    <small>Converted balance (indicative)</small>
 
     <button onclick="toggleBalance(this)">Hide</button>
   </div>
 
   <!-- USD -->
-  <div class="card flipCard" id="usdCard">
+  <div class="card" id="usdCard">
     <div class="cardHeader">
-      <h3>USD Account</h3>
+      <h3>USD Balance</h3>
       <span class="badge">Restricted</span>
     </div>
 
-    <p id="usdBalance">$882,000</p>
-    <small>Main Account</small>
+    <p id="usdBalance">$--</p>
+    <small>Incoming funds (not available)</small>
 
     <button onclick="toggleBalance(this)">Hide</button>
   </div>
@@ -63,26 +62,26 @@
   <!-- KRW -->
   <div class="card">
     <div class="cardHeader">
-      <h3>KRW Account</h3>
+      <h3>KRW Equivalent</h3>
       <span class="badge">Restricted</span>
     </div>
 
-    <p id="krwBalance">₩1,260,530,586</p>
-    <small>Converted from USD</small>
+    <p id="krwBalance">₩--</p>
+    <small>Reference value</small>
 
     <button onclick="toggleBalance(this)">Hide</button>
   </div>
 
 </section>
 
-<!-- ICON GRID (VERY IMPORTANT – matches your reference) -->
+<!-- GRID -->
 <section class="grid">
   <div class="gridItem">Accounts</div>
   <div class="gridItem">Open Banking</div>
-  <div class="gridItem">Events</div>
   <div class="gridItem">Exchange</div>
   <div class="gridItem">Funds</div>
-  <div class="gridItem">Settings</div>
+  <div class="gridItem">Cards</div>
+  <div class="gridItem">Support</div>
 </section>
 
 <!-- ACTIONS -->
@@ -95,14 +94,28 @@
 <section class="transactions">
   <h3>Recent Transactions</h3>
 
-  <div class="tx">
+  <div class="tx" onclick="toggleTx()">
     <div>
-      <strong>ADM Italy Deposit</strong>
+      <strong>Incoming Transfer — Administrative Allocation</strong>
       <small>04 May 2026 • Restricted</small>
     </div>
     <div class="amount green">+$882,000</div>
   </div>
 
+  <div id="txDetails" class="txDetails">
+    <p>Reference: ADM-INT-44721</p>
+    <p>Status: Under administrative control</p>
+    <button onclick="toggleTx()">Close</button>
+  </div>
+
+</section>
+
+<!-- BOTTOM BAR -->
+<section class="quickBar">
+  <div>Payments</div>
+  <div>Cards</div>
+  <div>History</div>
+  <div>Support</div>
 </section>
 
 </div>
@@ -114,24 +127,23 @@
     <p>Kim Dae Hyun</p>
 
     <button>Accounts</button>
-    <button>Open Banking</button>
     <button>Exchange</button>
     <button>Funds</button>
-    <button>Settings</button>
+    <button>Support</button>
 
     <button onclick="logout()">Logout →</button>
   </div>
 </div>
 
-<!-- COMPLIANCE MODAL -->
+<!-- MODAL -->
 <div class="modal" id="modal">
   <div class="modalBox">
-    <h2>Administrative Restriction</h2>
+    <h2>Account Access Restricted</h2>
     <p>
-      This account is under regulatory supervision.<br>
-      Transfers, withdrawals and external access are disabled until case closure.
+      This account is currently under administrative review.<br><br>
+      Some services, including transfers and withdrawals, are temporarily unavailable.<br><br>
+      Your funds remain secure and visible.
     </p>
-
     <button onclick="closeModal()">Close</button>
   </div>
 </div>
