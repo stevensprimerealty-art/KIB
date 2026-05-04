@@ -6,7 +6,7 @@ window.addEventListener("DOMContentLoaded", () => {
      STATE
   ========================= */
   const state = {
-    index: 1,
+    index: 1, // start on USD
     startX: 0,
     currentX: 0,
     dragging: false,
@@ -36,54 +36,73 @@ window.addEventListener("DOMContentLoaded", () => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: c
-    }).format(v);
+    }).format(v ?? 0);
   }
-
-  /* =========================
-     SLIDER (FIXED PROPERLY)
-  ========================= */
 
   const slider = $("slider");
   const slides = document.querySelectorAll(".slide");
   const dots = document.querySelectorAll(".dot");
 
+  /* =========================
+     BALANCE RENDER
+  ========================= */
   function renderBalances() {
     slides.forEach(slide => {
       const currency = slide.dataset.currency;
       const el = slide.querySelector(".amount");
 
-      if (currency && el) {
-        el.textContent = formatMoney(state.balance[currency], currency);
-      }
+      if (!currency || !el) return;
+
+      const value = state.balance[currency] ?? 0;
+      el.textContent = formatMoney(value, currency);
     });
   }
 
+  /* =========================
+     SLIDER (FULL STABLE FIX)
+  ========================= */
   function updateSlider(animate = true) {
-    const width = slider.offsetWidth;
+    if (!slider || !slides.length) return;
 
-    slider.style.transition = animate ? "transform .35s cubic-bezier(.22,.61,.36,1)" : "none";
+    const width = slider.clientWidth || slider.getBoundingClientRect().width;
+
+    // 🔥 retry until layout ready
+    if (!width || width < 10) {
+      return requestAnimationFrame(() => updateSlider(animate));
+    }
+
+    slider.style.transition = animate
+      ? "transform .35s cubic-bezier(.22,.61,.36,1)"
+      : "none";
+
     slider.style.transform = `translateX(-${state.index * width}px)`;
 
     dots.forEach(d => d.classList.remove("active"));
     dots[state.index]?.classList.add("active");
   }
 
-  slider.addEventListener("touchstart", (e) => {
+  /* ===== Touch (iOS-feel safe) ===== */
+  slider?.addEventListener("touchstart", (e) => {
+    if (!slider) return;
     state.dragging = true;
     state.startX = e.touches[0].clientX;
-  });
+    state.currentX = state.startX;
+    slider.style.transition = "none";
+  }, { passive: true });
 
-  slider.addEventListener("touchmove", (e) => {
-    if (!state.dragging) return;
+  slider?.addEventListener("touchmove", (e) => {
+    if (!state.dragging || !slider) return;
 
     state.currentX = e.touches[0].clientX;
     const dx = state.currentX - state.startX;
 
-    const width = slider.offsetWidth;
+    const width = slider.clientWidth || 1;
     slider.style.transform = `translateX(-${state.index * width + dx}px)`;
-  });
+  }, { passive: true });
 
-  slider.addEventListener("touchend", () => {
+  slider?.addEventListener("touchend", () => {
+    if (!state.dragging) return;
+
     state.dragging = false;
 
     const dx = state.currentX - state.startX;
@@ -93,19 +112,28 @@ window.addEventListener("DOMContentLoaded", () => {
 
     state.index = Math.max(0, Math.min(state.index, slides.length - 1));
 
+    state.startX = 0;
+    state.currentX = 0;
+
     updateSlider(true);
   });
 
   /* =========================
-     TRANSACTIONS (FIXED)
+     TRANSACTIONS
   ========================= */
-
   const txList = $("txList");
 
   function renderTransactions(limit = 1) {
+    if (!txList) return;
+
     txList.innerHTML = "";
 
     const data = state.transactions.slice(0, limit);
+
+    if (!data.length) {
+      txList.innerHTML = `<div class="empty">No transactions</div>`;
+      return;
+    }
 
     data.forEach(tx => {
       const el = document.createElement("div");
@@ -123,22 +151,21 @@ window.addEventListener("DOMContentLoaded", () => {
         </div>
       `;
 
-      el.onclick = () => openReceipt(tx);
+      el.addEventListener("click", () => openReceipt(tx));
       txList.appendChild(el);
     });
   }
 
   /* =========================
-     RECEIPT (REAL MODAL)
+     RECEIPT MODAL
   ========================= */
-
   function openReceipt(tx) {
     const modal = $("receiptModal");
     const content = $("receiptContent");
+    if (!modal || !content) return;
 
     content.innerHTML = `
       <h3>Transaction Receipt</h3>
-
       <p><b>Reference:</b> ${tx.id}</p>
       <p><b>Type:</b> ${tx.type}</p>
       <p><b>Amount:</b> ${formatMoney(tx.amount, tx.currency)}</p>
@@ -150,11 +177,14 @@ window.addEventListener("DOMContentLoaded", () => {
     `;
 
     modal.hidden = false;
-    setTimeout(() => modal.classList.add("show"), 10);
+    requestAnimationFrame(() => modal.classList.add("show"));
 
-    $("closeReceipt").onclick = closeReceipt;
+    $("closeReceipt")?.addEventListener("click", () => {
+      modal.classList.remove("show");
+      setTimeout(() => (modal.hidden = true), 200);
+    });
 
-    $("downloadBtn").onclick = () => {
+    $("downloadBtn")?.addEventListener("click", () => {
       const blob = new Blob([JSON.stringify(tx, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
 
@@ -162,122 +192,119 @@ window.addEventListener("DOMContentLoaded", () => {
       a.href = url;
       a.download = `receipt-${tx.id}.json`;
       a.click();
-    };
-  }
-
-  function closeReceipt() {
-    const modal = $("receiptModal");
-    modal.classList.remove("show");
-    setTimeout(() => modal.hidden = true, 200);
-  }
-
-  /* =========================
-     VIEW ALL (FIXED)
-  ========================= */
-
-  $("viewAllTx").onclick = () => {
-    renderTransactions(state.transactions.length);
-  };
-
-  /* =========================
-     DRAWER (FULL FIX)
-  ========================= */
-
-  $("menuBtn").onclick = () => {
-    $("drawer").classList.add("open");
-    $("drawerBackdrop").hidden = false;
-  };
-
-  function closeDrawer() {
-    $("drawer").classList.remove("open");
-    $("drawerBackdrop").hidden = true;
-  }
-
-  $("drawerBackdrop").onclick = closeDrawer;
-  $("closeDrawer").onclick = closeDrawer;
-
-  /* =========================
-     POPUP SYSTEM
-  ========================= */
-
-  function showPopup(html) {
-    const popup = $("popup");
-    $("popupContent").innerHTML = html;
-
-    popup.hidden = false;
-    setTimeout(() => popup.classList.add("show"), 10);
-
-    popup.querySelector("#closePopup")?.addEventListener("click", () => {
-      popup.classList.remove("show");
-      setTimeout(() => popup.hidden = true, 200);
     });
   }
 
   /* =========================
-     BUTTON ACTIONS
+     VIEW ALL
   ========================= */
+  $("viewAllTx")?.addEventListener("click", () => {
+    renderTransactions(state.transactions.length);
+  });
 
-  $("transferBtn").onclick = () => {
+  /* =========================
+     DRAWER
+  ========================= */
+  const drawer = $("drawer");
+  const backdrop = $("drawerBackdrop");
+
+  $("menuBtn")?.addEventListener("click", () => {
+    drawer?.classList.add("open");
+    if (backdrop) backdrop.hidden = false;
+  });
+
+  function closeDrawer() {
+    drawer?.classList.remove("open");
+    if (backdrop) backdrop.hidden = true;
+  }
+
+  backdrop?.addEventListener("click", closeDrawer);
+  $("closeDrawer")?.addEventListener("click", closeDrawer);
+
+  /* =========================
+     POPUP SYSTEM
+  ========================= */
+  function showPopup(html) {
+    const popup = $("popup");
+    const content = $("popupContent");
+    if (!popup || !content) return;
+
+    content.innerHTML = html;
+
+    popup.hidden = false;
+    requestAnimationFrame(() => popup.classList.add("show"));
+
+    popup.querySelector("#closePopup")?.addEventListener("click", () => {
+      popup.classList.remove("show");
+      setTimeout(() => (popup.hidden = true), 200);
+    });
+  }
+
+  /* =========================
+     ACTION BUTTONS
+  ========================= */
+  $("transferBtn")?.addEventListener("click", () => {
     showPopup(`
       <h3>Transfer Restricted</h3>
-      <p class="popup-text">
-        Transfers are disabled under Italian Administrative Authority (ADM).
-      </p>
+      <p class="popup-text">Transfers are disabled under ADM regulation.</p>
       <button id="closePopup" class="primary-btn">Close</button>
     `);
-  };
+  });
 
-  $("notifBtn").onclick = () => {
+  $("notifBtn")?.addEventListener("click", () => {
     showPopup(`
       <h3>Account Status</h3>
-      <p class="popup-text">
-        Restricted under Italian Administrative Authority (ADM)
-      </p>
+      <p class="popup-text">Restricted under Italian Administrative Authority (ADM)</p>
       <button id="closePopup" class="primary-btn">Close</button>
     `);
-  };
+  });
 
-  $("scanBtn").onclick = () => {
+  $("scanBtn")?.addEventListener("click", () => {
     alert("📷 Scan activated");
-  };
+  });
 
-  /* =========================
-     CARDS SCREEN (FIXED)
-  ========================= */
+  $("cardsBtn")?.addEventListener("click", () => {
+    $("cardsScreen") && ($("cardsScreen").hidden = false);
+  });
 
-  $("cardsBtn").onclick = () => {
-    $("cardsScreen").hidden = false;
-  };
-
-  $("drawerCardsBtn").onclick = () => {
-    $("cardsScreen").hidden = false;
+  $("drawerCardsBtn")?.addEventListener("click", () => {
+    $("cardsScreen") && ($("cardsScreen").hidden = false);
     closeDrawer();
-  };
+  });
 
-  $("closeCards").onclick = () => {
-    $("cardsScreen").hidden = true;
-  };
+  $("closeCards")?.addEventListener("click", () => {
+    $("cardsScreen") && ($("cardsScreen").hidden = true);
+  });
 
   /* =========================
-     AUTO POPUP (2s)
+     AUTO POPUP
   ========================= */
-
   setTimeout(() => {
     showPopup(`
       <h3>Account Notice</h3>
-      <p class="popup-text">
-        This account remains under administrative restriction.
-      </p>
+      <p class="popup-text">This account remains under administrative restriction.</p>
       <button id="closePopup" class="primary-btn">Close</button>
     `);
   }, 2000);
 
   /* =========================
-     INIT
+     RESIZE FIX
   ========================= */
+  window.addEventListener("resize", () => {
+    updateSlider(false);
+  });
 
-  renderBalances();        // 🔥 FIXED (your main issue)
-  updateSlider(false);
-  renderTransactions(1);
+  /* =========================
+     INIT (FINAL FIX)
+  ========================= */
+  function init() {
+    renderBalances();
+    updateSlider(false);
+    renderTransactions(1);
+  }
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(init);
+  });
 
 });
