@@ -11,25 +11,25 @@
 
 <div class="app">
 
+<!-- TOPBAR -->
 <header class="topbar">
-  <button onclick="openDrawer()">☰</button>
+  <button class="menuBtn" onclick="openDrawer()">☰</button>
 
   <div class="user">
     <input type="file" id="imgPicker" hidden/>
-    <img id="profileImg" onclick="pickImage()" src="default.png"/>
+    <img id="profileImg" onclick="pickImage()" src="default.png" alt="Profile"/>
     <span>Kim Dae Hyun</span>
   </div>
 
-  <div class="icons">
-    <span onclick="showCompliance()">🔔</span>
-  </div>
+  <button class="bellBtn" onclick="showCompliance()">🔔</button>
 </header>
 
+<!-- NOTICE -->
 <div class="notice">
-  Administrative Review Active ⚠️
+  Administrative Review Active
 </div>
 
-<!-- CARDS -->
+<!-- ACCOUNTS -->
 <section class="cards">
 
   <!-- EUR -->
@@ -41,7 +41,7 @@
 
     <p id="eurBalance">€--</p>
     <small id="eurRateText">Rate loading…</small>
-    <small>Converted balance (indicative)</small>
+    <small class="subNote">Indicative converted balance</small>
 
     <button onclick="toggleBalance(this)">Hide</button>
   </div>
@@ -54,7 +54,7 @@
     </div>
 
     <p id="usdBalance">$--</p>
-    <small>Incoming funds (not available)</small>
+    <small class="subNote">Incoming funds (restricted)</small>
 
     <button onclick="toggleBalance(this)">Hide</button>
   </div>
@@ -67,32 +67,55 @@
     </div>
 
     <p id="krwBalance">₩--</p>
-    <small>Reference value</small>
+    <small class="subNote">Reference value</small>
 
     <button onclick="toggleBalance(this)">Hide</button>
   </div>
 
 </section>
 
-<!-- GRID -->
+<!-- QUICK ACTION GRID -->
 <section class="grid">
-  <div class="gridItem">Accounts</div>
-  <div class="gridItem">Open Banking</div>
-  <div class="gridItem">Exchange</div>
-  <div class="gridItem">Funds</div>
-  <div class="gridItem">Cards</div>
-  <div class="gridItem">Support</div>
-</section>
 
-<!-- ACTIONS -->
-<section class="actions">
-  <button onclick="blocked()">Transfer</button>
-  <button onclick="blocked()">Scan QR</button>
+  <div class="gridItem">
+    <div class="icon">🏦</div>
+    <span>Accounts</span>
+  </div>
+
+  <div class="gridItem">
+    <div class="icon">🔄</div>
+    <span>Exchange</span>
+  </div>
+
+  <div class="gridItem">
+    <div class="icon">💳</div>
+    <span>Cards</span>
+  </div>
+
+  <div class="gridItem" onclick="blocked()">
+    <div class="icon">📤</div>
+    <span>Transfer</span>
+  </div>
+
+  <div class="gridItem">
+    <div class="icon">📊</div>
+    <span>History</span>
+  </div>
+
+  <div class="gridItem">
+    <div class="icon">☎️</div>
+    <span>Support</span>
+  </div>
+
 </section>
 
 <!-- TRANSACTIONS -->
 <section class="transactions">
-  <h3>Recent Transactions</h3>
+
+  <div class="sectionHeader">
+    <h3>Recent Transactions</h3>
+    <span class="viewAll">View all</span>
+  </div>
 
   <div class="tx" onclick="toggleTx()">
     <div>
@@ -110,19 +133,14 @@
 
 </section>
 
-<!-- BOTTOM BAR -->
-<section class="quickBar">
-  <div>Payments</div>
-  <div>Cards</div>
-  <div>History</div>
-  <div>Support</div>
-</section>
-
 </div>
 
 <!-- DRAWER -->
 <div class="drawer" id="drawer">
   <div class="drawerContent">
+
+    <button class="closeBtn" onclick="closeDrawer()">✕</button>
+
     <img id="drawerImg" src="default.png"/>
     <p>Kim Dae Hyun</p>
 
@@ -132,21 +150,57 @@
     <button>Support</button>
 
     <button onclick="logout()">Logout →</button>
+
   </div>
 </div>
+
+<!-- DRAWER OVERLAY -->
+<div class="drawerOverlay" id="drawerOverlay" onclick="closeDrawer()"></div>
 
 <!-- MODAL -->
 <div class="modal" id="modal">
   <div class="modalBox">
+
     <h2>Account Access Restricted</h2>
+
     <p>
       This account is currently under administrative review.<br><br>
       Some services, including transfers and withdrawals, are temporarily unavailable.<br><br>
       Your funds remain secure and visible.
     </p>
-    <button onclick="closeModal()">Close</button>
+
+    <div class="modalActions">
+      <button>Contact Support</button>
+      <button onclick="closeModal()">Close</button>
+    </div>
+
   </div>
 </div>
+
+<!-- BOTTOM NAV (REAL BANK STYLE) -->
+<nav class="bottomNav">
+
+  <div class="navItem active">
+    <span>🏠</span>
+    <small>Home</small>
+  </div>
+
+  <div class="navItem">
+    <span>💳</span>
+    <small>Cards</small>
+  </div>
+
+  <div class="navItem">
+    <span>📊</span>
+    <small>Assets</small>
+  </div>
+
+  <div class="navItem">
+    <span>☰</span>
+    <small>Menu</small>
+  </div>
+
+</nav>
 
 <script src="dashboard.js"></script>
 </body>
