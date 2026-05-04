@@ -13,7 +13,7 @@
 
 <!-- ================= TOP BAR ================= -->
 <header class="topbar">
-  <button id="menuBtn" aria-label="Open Menu">☰</button>
+  <button id="menuBtn">☰</button>
 
   <div class="user">
     <div class="avatar" id="avatar"></div>
@@ -23,7 +23,7 @@
     </div>
   </div>
 
-  <button id="notifBtn" aria-label="Notifications">🔔</button>
+  <button id="notifBtn">🔔</button>
 </header>
 
 <!-- ================= ACCOUNT CARD ================= -->
@@ -41,25 +41,26 @@
     <!-- SLIDER -->
     <div class="slider" id="slider">
 
+      <!-- 🔥 NO HARDCODED VALUES -->
       <div class="slide" data-currency="EUR">
-        <div class="amount" data-currency="EUR">€749,700.00</div>
+        <div class="amount"></div>
         <div class="label">Total Balance (EUR)</div>
       </div>
 
-      <div class="slide active" data-currency="USD">
-        <div class="amount" data-currency="USD">$882,000.00</div>
+      <div class="slide" data-currency="USD">
+        <div class="amount"></div>
         <div class="label">Total Balance (USD)</div>
       </div>
 
       <div class="slide" data-currency="KRW">
-        <div class="amount" data-currency="KRW">₩1,299,186,000</div>
+        <div class="amount"></div>
         <div class="label">Total Balance (KRW)</div>
       </div>
 
     </div>
 
     <!-- DOTS -->
-    <div class="dots" id="dots">
+    <div class="dots">
       <span class="dot"></span>
       <span class="dot active"></span>
       <span class="dot"></span>
@@ -80,7 +81,7 @@
     <button id="viewAllTx">View all →</button>
   </div>
 
-  <div id="txList" class="tx-list"></div>
+  <div id="txList"></div>
 </section>
 
 <!-- ================= ACTION BUTTONS ================= -->
@@ -102,18 +103,14 @@
   <button>⋯<span>More</span></button>
 </nav>
 
-<!-- ================= GLOBAL POPUP ================= -->
+<!-- ================= POPUP ================= -->
 <div id="popup" class="popup" hidden>
-  <div class="popup-box" id="popupContent">
-    <!-- injected dynamically -->
-  </div>
+  <div class="popup-box" id="popupContent"></div>
 </div>
 
-<!-- ================= RECEIPT MODAL ================= -->
+<!-- ================= RECEIPT ================= -->
 <div id="receiptModal" class="popup" hidden>
-  <div class="popup-box" id="receiptContent">
-    <!-- receipt injected -->
-  </div>
+  <div class="popup-box" id="receiptContent"></div>
 </div>
 
 <!-- ================= CARDS SCREEN ================= -->
@@ -149,11 +146,10 @@
   <button id="supportBtn">Support</button>
   <button id="logoutBtn">Logout</button>
 
-  <button id="closeDrawer" class="drawer-close">Close</button>
+  <button id="closeDrawer">Close</button>
 </aside>
 
-<!-- ================= SCRIPT ================= -->
-<script src="dashboard.js"></script>
+<script src="dashboard.js?v=3"></script>
 
 </body>
 </html>
