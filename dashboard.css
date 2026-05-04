@@ -5,7 +5,6 @@ body{
   margin:0;
   font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-  /* 🔥 Better glass background */
   background:
     radial-gradient(circle at 20% 20%, rgba(31,95,191,0.15), transparent 40%),
     radial-gradient(circle at 80% 80%, rgba(23,74,148,0.15), transparent 40%),
@@ -44,38 +43,41 @@ body{
   align-items:center;
 }
 
-/* 🔥 Avatar supports uploaded image */
+/* ✅ FIXED FOR <img> */
 .avatar{
   width:38px;
   height:38px;
   border-radius:50%;
+  object-fit:cover;
+  display:block;
 
-  background:linear-gradient(135deg,#d1d5db,#9ca3af);
   box-shadow:0 2px 6px rgba(0,0,0,.15);
-
-  background-size:cover;
-  background-position:center;
 }
 
 /* =========================
-   CARD (REAL GLASS)
+   CARD (PREMIUM BLUE GLASS)
 ========================= */
 .card{
   margin-top:12px;
   padding:18px;
   border-radius:24px;
 
-  background:rgba(31,95,191,0.35);
-  backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
+  background:
+    linear-gradient(135deg,
+      rgba(31,95,191,0.55),
+      rgba(10,40,120,0.45)
+    );
 
-  border:1px solid rgba(255,255,255,0.35);
+  backdrop-filter: blur(28px) saturate(140%);
+  -webkit-backdrop-filter: blur(28px) saturate(140%);
+
+  border:1px solid rgba(255,255,255,0.25);
 
   color:white;
 
   box-shadow:
-    0 20px 40px rgba(0,0,0,.25),
-    inset 0 1px 1px rgba(255,255,255,.3);
+    0 25px 60px rgba(0,0,0,.35),
+    inset 0 1px 1px rgba(255,255,255,.25);
 }
 
 /* HEADER */
@@ -98,21 +100,21 @@ body{
 }
 
 /* =========================
-   SLIDER (FIXED)
+   SLIDER (HARD FIX)
 ========================= */
 .slider{
   display:flex;
   width:100%;
   overflow:hidden;
   margin-top:14px;
-  will-change:transform;
 
+  will-change:transform;
   touch-action:pan-y;
 }
 
 .slide{
+  flex:0 0 100%;   /* 🔥 CRITICAL FIX */
   min-width:100%;
-  flex-shrink:0;
 
   display:flex;
   flex-direction:column;
@@ -127,10 +129,7 @@ body{
   margin-top:12px;
   letter-spacing:.5px;
 
-  min-height:36px; /* prevents blank flicker */
-}
-
-.slide .amount{
+  min-height:36px;
   display:block;
 }
 
@@ -160,7 +159,7 @@ body{
 }
 
 /* =========================
-   STATUS (GLASS PILL)
+   STATUS
 ========================= */
 .status{
   margin-top:14px;
@@ -176,14 +175,27 @@ body{
 }
 
 /* =========================
-   TRANSACTIONS (GLASS PANEL)
+   FX BOX
+========================= */
+.fx-box{
+  margin-top:10px;
+  text-align:center;
+  font-size:13px;
+  opacity:.9;
+
+  background:rgba(255,255,255,0.15);
+  padding:6px 10px;
+  border-radius:10px;
+}
+
+/* =========================
+   TRANSACTIONS
 ========================= */
 .transactions{
   margin-top:14px;
 
-  background:rgba(255,255,255,0.4);
+  background:rgba(255,255,255,0.45);
   backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
 
   border-radius:18px;
   padding:14px;
@@ -213,7 +225,7 @@ body{
   cursor:pointer;
 }
 
-/* TX ITEM */
+/* TX */
 .tx{
   display:flex;
   justify-content:space-between;
@@ -235,13 +247,8 @@ body{
   font-size:13px;
 }
 
-.tx-amount.credit{
-  color:#16a34a;
-}
-
-.tx-amount.debit{
-  color:#dc2626;
-}
+.tx-amount.credit{ color:#16a34a; }
+.tx-amount.debit{ color:#dc2626; }
 
 .empty{
   padding:14px;
@@ -250,7 +257,7 @@ body{
 }
 
 /* =========================
-   ACTION BUTTONS (GLASS)
+   ACTION BUTTONS
 ========================= */
 .actions{
   display:grid;
@@ -264,15 +271,15 @@ body{
   border-radius:14px;
   border:none;
 
-  background:rgba(255,255,255,0.4);
-  backdrop-filter:blur(15px);
+  background:rgba(255,255,255,0.35);
+  backdrop-filter:blur(20px);
 
-  border:1px solid rgba(255,255,255,0.5);
+  border:1px solid rgba(255,255,255,0.4);
 
   font-weight:600;
   box-shadow:0 4px 10px rgba(0,0,0,.08);
 
-  transition:.15s;
+  transition:.2s ease;
 }
 
 .actions button:active{
@@ -280,7 +287,7 @@ body{
 }
 
 /* =========================
-   BOTTOM NAV (GLASS)
+   BOTTOM NAV
 ========================= */
 .bottom-nav{
   position:fixed;
@@ -308,7 +315,6 @@ body{
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:2px;
 
   color:#6b7280;
 }
@@ -319,7 +325,7 @@ body{
 }
 
 /* =========================
-   POPUP (GLASS MODAL)
+   POPUP (FIXED LAYER)
 ========================= */
 .popup{
   position:fixed;
@@ -334,6 +340,8 @@ body{
   opacity:0;
   pointer-events:none;
   transition:.25s;
+
+  z-index:2000; /* 🔥 FIX */
 }
 
 .popup.show{
@@ -351,7 +359,6 @@ body{
 
   background:rgba(255,255,255,0.25);
   backdrop-filter:blur(30px);
-  -webkit-backdrop-filter:blur(30px);
 
   border-radius:20px;
   padding:20px;
@@ -364,7 +371,7 @@ body{
 }
 
 /* =========================
-   DRAWER (FIXED LAYER)
+   DRAWER
 ========================= */
 .drawer{
   position:fixed;
@@ -373,7 +380,8 @@ body{
   width:260px;
   height:100%;
 
-  background:#ffffff;
+  background:rgba(255,255,255,0.9);
+  backdrop-filter:blur(20px);
 
   transform:translateX(-100%);
   transition:.3s cubic-bezier(.22,.61,.36,1);
