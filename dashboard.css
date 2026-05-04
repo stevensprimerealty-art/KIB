@@ -59,7 +59,7 @@ body {
 }
 
 /* =========================
-   CARDS (REAL BANK STYLE)
+   CARDS
 ========================= */
 .cards {
   display:flex;
@@ -87,14 +87,10 @@ body {
   color:#fff;
 }
 
-/* remove heavy reflection */
 .card::after {
   display:none;
 }
 
-/* =========================
-   CARD CONTENT
-========================= */
 .cardHeader {
   display:flex;
   justify-content:space-between;
@@ -132,15 +128,14 @@ body {
 }
 
 /* =========================
-   BUTTONS
+   BUTTONS (GLOBAL)
 ========================= */
 button {
-  background:rgba(255,255,255,0.2);
   border:none;
   border-radius:10px;
   padding:10px 14px;
   font-weight:600;
-  color:#fff;
+  cursor:pointer;
 }
 
 button:active {
@@ -167,7 +162,6 @@ button:active {
 }
 
 .icon {
-  font-size:22px;
   margin-bottom:6px;
 }
 
@@ -205,12 +199,7 @@ button:active {
   border-bottom:1px solid #eee;
 }
 
-.tx strong {
-  font-size:15px;
-}
-
 .tx small {
-  display:block;
   font-size:12px;
   color:#888;
 }
@@ -233,23 +222,32 @@ button:active {
 }
 
 /* =========================
-   DRAWER
+   DRAWER (FIXED PROPERLY)
 ========================= */
 .drawer {
   position:fixed;
   top:0;
   left:-100%;
-  width:80%;
+  width:82%;
+  max-width:320px;
   height:100%;
+
   background:#fff;
-  transition:0.3s;
+
+  transition:0.28s ease;
   z-index:20;
+
+  display:flex;
+  flex-direction:column;
+
+  box-shadow:4px 0 24px rgba(0,0,0,0.18);
 }
 
 .drawer.open {
   left:0;
 }
 
+/* OVERLAY */
 .drawerOverlay {
   position:fixed;
   inset:0;
@@ -262,28 +260,95 @@ button:active {
   display:block;
 }
 
+/* STRUCTURE */
 .drawerContent {
-  padding:20px;
+  display:flex;
+  flex-direction:column;
+  height:100%;
 }
 
-.drawerContent img {
-  width:60px;
-  height:60px;
+/* HEADER */
+.drawerHeader {
+  display:flex;
+  align-items:center;
+  gap:12px;
+
+  padding:20px 18px;
+
+  border-bottom:1px solid #eee;
+
+  position:relative;
+}
+
+/* 🔥 IMAGE FIX (NO STRETCH EVER AGAIN) */
+.drawerHeader img {
+  width:52px;
+  height:52px;
   border-radius:50%;
-  margin-bottom:10px;
+  object-fit:cover;
+  border:1px solid #e5e7eb;
+  flex-shrink:0;
 }
 
-.drawerContent button {
-  display:block;
+/* USER TEXT */
+.drawerUser {
+  display:flex;
+  flex-direction:column;
+}
+
+.drawerUser strong {
+  font-size:15px;
+  font-weight:600;
+}
+
+.drawerUser small {
+  font-size:12px;
+  color:#888;
+}
+
+/* CLOSE BUTTON */
+.closeBtn {
+  position:absolute;
+  right:14px;
+  top:14px;
+  background:none;
+  font-size:18px;
+  color:#555;
+}
+
+/* MENU */
+.drawerMenu {
+  padding:10px 0;
+}
+
+.drawerMenu button {
   width:100%;
   text-align:left;
-  margin-top:10px;
-  background:#eef2f8;
+  padding:14px 18px;
+  background:none;
+  font-size:15px;
+  color:#222;
+}
+
+.drawerMenu button:hover {
+  background:#f4f6fa;
+}
+
+/* FOOTER */
+.drawerFooter {
+  margin-top:auto;
+  padding:16px;
+  border-top:1px solid #eee;
+}
+
+.drawerFooter button {
+  width:100%;
+  background:#eef3fb;
   color:#2a6edb;
 }
 
 /* =========================
-   MODAL (REALISTIC)
+   MODAL
 ========================= */
 .modal {
   position:fixed;
@@ -291,53 +356,28 @@ button:active {
   display:none;
   justify-content:center;
   align-items:center;
-
   background:rgba(0,0,0,0.35);
-
   z-index:30;
 }
 
 .modalBox {
   width:90%;
   max-width:400px;
-
   padding:20px;
-
   border-radius:16px;
-
   background:#fff;
-
   box-shadow:0 15px 40px rgba(0,0,0,0.2);
 }
 
-/* X button */
 .closeX {
   position:absolute;
   right:15px;
   top:15px;
   background:none;
-  border:none;
   font-size:16px;
   color:#666;
 }
 
-/* =========================
-   MODAL TEXT
-========================= */
-.modalBox h2 {
-  font-size:18px;
-  margin-bottom:10px;
-}
-
-.modalBox p {
-  font-size:14px;
-  line-height:1.5;
-  color:#333;
-}
-
-/* =========================
-   MODAL ACTIONS
-========================= */
 .modalActions {
   display:flex;
   gap:10px;
@@ -360,9 +400,7 @@ button:active {
   display:flex;
   justify-content:space-around;
   padding:10px;
-
   background:#fff;
-
   border-top:1px solid #eee;
 }
 
@@ -376,4 +414,16 @@ button:active {
 
 .navItem.active {
   color:#2a6edb;
+}
+
+/* =========================
+   SVG ICON FIX
+========================= */
+.icon svg,
+.navItem svg {
+  width:24px;
+  height:24px;
+  stroke:currentColor;
+  stroke-width:1.7;
+  fill:none;
 }
