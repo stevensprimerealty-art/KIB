@@ -4,7 +4,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   /* ================= STATE ================= */
   const state = {
-    index: 0, // ✅ start from first slide (important)
+    index: 0,
     startX: 0,
     currentX: 0,
     dragging: false,
@@ -27,6 +27,7 @@ window.addEventListener("DOMContentLoaded", () => {
     ]
   };
 
+  /* ================= HELPERS ================= */
   function formatMoney(v, c) {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -38,24 +39,66 @@ window.addEventListener("DOMContentLoaded", () => {
   const slides = document.querySelectorAll(".slide");
   const dots = document.querySelectorAll(".dot");
 
-  /* ================= BALANCE ================= */
+  /* ================= PROFILE IMAGE (PERSISTENT) ================= */
+
+  const avatar = $("avatar");
+  const drawerAvatar = $("drawerAvatar");
+  const avatarInput = $("avatarInput");
+
+  const savedAvatar = localStorage.getItem("kib_avatar");
+
+  const fallback = "https://i.imgur.com/6VBx3io.png";
+
+  // load image
+  if (savedAvatar) {
+    if (avatar) avatar.src = savedAvatar;
+    if (drawerAvatar) drawerAvatar.src = savedAvatar;
+  } else {
+    if (avatar) avatar.src = fallback;
+    if (drawerAvatar) drawerAvatar.src = fallback;
+  }
+
+  // click avatar → open gallery
+  avatar?.addEventListener("click", () => {
+    avatarInput?.click();
+  });
+
+  // save image permanently
+  avatarInput?.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+      const base64 = event.target.result;
+
+      // save forever
+      localStorage.setItem("kib_avatar", base64);
+
+      // update UI
+      if (avatar) avatar.src = base64;
+      if (drawerAvatar) drawerAvatar.src = base64;
+    };
+
+    reader.readAsDataURL(file);
+  });
+
+  /* ================= BALANCES ================= */
   function renderBalances() {
     slides.forEach(slide => {
       const currency = slide.dataset.currency;
       const el = slide.querySelector(".amount");
-
       if (!currency || !el) return;
 
       el.textContent = formatMoney(state.balance[currency], currency);
     });
   }
 
-  /* ================= SLIDER FIX ================= */
+  /* ================= SLIDER ================= */
 
-  // ✅ ALWAYS use ONE slide width
   function getWidth() {
-    const slide = document.querySelector(".slide");
-    return slide ? slide.getBoundingClientRect().width : 0;
+    return slider?.parentElement.offsetWidth || 0;
   }
 
   function updateSlider(animate = true) {
@@ -63,16 +106,18 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const width = getWidth();
 
-    if (!width || width < 10) {
+    if (!width) {
       requestAnimationFrame(() => updateSlider(animate));
       return;
     }
 
     slider.style.transition = animate ? "transform .35s ease" : "none";
-    slider.style.transform = `translateX(-${state.index * width}px)`;
+    slider.style.transform = `translate3d(-${state.index * width}px,0,0)`;
 
-    dots.forEach(d => d.classList.remove("active"));
-    dots[state.index]?.classList.add("active");
+    if (dots.length === slides.length) {
+      dots.forEach(d => d.classList.remove("active"));
+      dots[state.index]?.classList.add("active");
+    }
   }
 
   /* ================= TOUCH ================= */
@@ -88,10 +133,10 @@ window.addEventListener("DOMContentLoaded", () => {
     if (!state.dragging) return;
 
     state.currentX = e.touches[0].clientX;
-    const dx = state.currentX - state.startX;
+    const dx = (state.currentX - state.startX) * 0.9;
 
     const width = getWidth() || 1;
-    slider.style.transform = `translateX(-${state.index * width + dx}px)`;
+    slider.style.transform = `translate3d(-${state.index * width + dx}px,0,0)`;
   }, { passive: true });
 
   slider?.addEventListener("touchend", () => {
@@ -107,6 +152,10 @@ window.addEventListener("DOMContentLoaded", () => {
     state.index = Math.max(0, Math.min(state.index, slides.length - 1));
 
     updateSlider(true);
+  });
+
+  slider?.addEventListener("touchcancel", () => {
+    state.dragging = false;
   });
 
   /* ================= TRANSACTIONS ================= */
@@ -144,8 +193,14 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ================= VIEW ALL ================= */
-  $("viewAllTx")?.addEventListener("click", () => {
-    renderTransactions(state.transactions.length);
+
+  const viewAllBtn = $("viewAllTx");
+  let expanded = false;
+
+  viewAllBtn?.addEventListener("click", () => {
+    expanded = !expanded;
+    renderTransactions(expanded ? state.transactions.length : 1);
+    viewAllBtn.textContent = expanded ? "Show less" : "View all →";
   });
 
   /* ================= POPUP ================= */
@@ -161,7 +216,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
     requestAnimationFrame(() => popup.classList.add("show"));
 
-    // ✅ no stacking bug
     popup.onclick = (e) => {
       if (e.target.id === "popup" || e.target.id === "closePopup") {
         popup.classList.remove("show");
@@ -173,15 +227,41 @@ window.addEventListener("DOMContentLoaded", () => {
   $("transferBtn")?.addEventListener("click", () => {
     showPopup(`
       <h3>Transfer Restricted</h3>
+      <p>This account is under ADM restriction.</p>
       <button id="closePopup">Close</button>
     `);
   });
 
   $("notifBtn")?.addEventListener("click", () => {
     showPopup(`
-      <h3>Account Restricted</h3>
+      <h3>Account Notice</h3>
+      <p>Account under administrative control (ADM).</p>
       <button id="closePopup">Close</button>
     `);
+  });
+
+  /* ================= DRAWER ================= */
+
+  const drawer = $("drawer");
+  const backdrop = $("drawerBackdrop");
+
+  $("menuBtn")?.addEventListener("click", () => {
+    drawer?.classList.add("open");
+    if (backdrop) backdrop.hidden = false;
+  });
+
+  function closeDrawer() {
+    drawer?.classList.remove("open");
+    if (backdrop) backdrop.hidden = true;
+  }
+
+  backdrop?.addEventListener("click", closeDrawer);
+  $("closeDrawer")?.addEventListener("click", closeDrawer);
+
+  /* ================= RESIZE ================= */
+
+  window.addEventListener("resize", () => {
+    updateSlider(false);
   });
 
   /* ================= INIT ================= */
@@ -192,7 +272,6 @@ window.addEventListener("DOMContentLoaded", () => {
     updateSlider(false);
   }
 
-  // ✅ BEST FIX (stable everywhere)
   window.addEventListener("load", init);
 
 });
