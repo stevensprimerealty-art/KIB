@@ -24,7 +24,9 @@ let fx = {
 };
 
 function computeFX(){
-  if(fx.timestamp) return; // prevent unnecessary recompute
+  // refresh every 60 seconds (real banking behavior)
+  const now = Date.now();
+  if (fx.timestamp && (now - fx.timestamp) < 60000) return;
 
   const eurSpread = 0.012;
   const krwSpread = 0.018;
@@ -35,7 +37,7 @@ function computeFX(){
   fx.eurValue = account.usd * fx.eurRate;
   fx.krwValue = Math.floor(account.usd * fx.krwRate);
 
-  fx.timestamp = new Date();
+  fx.timestamp = now;
 }
 
 
@@ -50,10 +52,12 @@ function formatCurrency(amount, currency){
   }).format(amount);
 }
 
-function formatTime(date){
-  return date
-    ? date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    : "";
+function formatTime(ts){
+  if(!ts) return "";
+  return new Date(ts).toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit'
+  });
 }
 
 
@@ -162,7 +166,7 @@ function blocked(){
 
 
 /* =========================
-   DRAWER (FULL FIX)
+   DRAWER (REAL FIX)
 ========================= */
 function openDrawer(){
   const drawer = document.getElementById("drawer");
@@ -189,7 +193,7 @@ function closeDrawer(){
 }
 
 
-/* close drawer when clicking outside */
+/* CLICK OUTSIDE FIX (SAFE) */
 document.addEventListener("click", (e) => {
   const drawer = document.getElementById("drawer");
   const menuBtn = document.querySelector(".menuBtn");
@@ -198,13 +202,14 @@ document.addEventListener("click", (e) => {
 
   if(
     !drawer.contains(e.target) &&
-    !menuBtn.contains(e.target)
+    menuBtn && !menuBtn.contains(e.target)
   ){
     closeDrawer();
   }
 });
 
-/* ESC key support */
+
+/* ESC SUPPORT */
 document.addEventListener("keydown", (e) => {
   if(e.key === "Escape"){
     closeDrawer();
@@ -303,11 +308,13 @@ function toggleTx(){
 
 
 /* =========================
-   CARD FLIP
+   CARD FLIP (SMART)
 ========================= */
 let flipInterval;
 
 function startCardFlip(){
+  stopCardFlip(); // prevent duplicates
+
   flipInterval = setInterval(() => {
     const el = document.getElementById("usdCard");
     if(el) el.classList.toggle("active");
@@ -315,7 +322,7 @@ function startCardFlip(){
 }
 
 function stopCardFlip(){
-  clearInterval(flipInterval);
+  if(flipInterval) clearInterval(flipInterval);
 }
 
 document.addEventListener("visibilitychange", () => {
