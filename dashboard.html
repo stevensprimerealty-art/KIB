@@ -13,20 +13,22 @@
 
 <!-- TOPBAR -->
 <header class="topbar">
-  <button type="button" class="menuBtn" onclick="openDrawer()" aria-label="Open menu">☰</button>
+  <button type="button" class="menuBtn" onclick="openDrawer()">☰</button>
 
   <div class="user">
     <input type="file" id="imgPicker" hidden/>
-    <img id="profileImg" onclick="pickImage()" src="default.png" alt="User profile"/>
-    <span>Kim Dae Hyun</span>
+    <img id="profileImg" onclick="pickImage()" src="default.png"/>
+    <div>
+      <span class="userName">Kim Dae Hyun</span>
+      <small class="userMeta">Primary Account</small>
+    </div>
   </div>
 
-  <button type="button" class="bellBtn" onclick="showCompliance()" aria-label="Notifications">🔔</button>
+  <button type="button" class="bellBtn" onclick="showCompliance()">🔔</button>
 </header>
 
-<!-- NOTICE -->
 <div class="notice">
-  Administrative Review Active
+  Account Under Administrative Review
 </div>
 
 <main>
@@ -34,78 +36,118 @@
 <!-- ACCOUNTS -->
 <section class="cards">
 
-  <!-- EUR -->
   <div class="card">
     <div class="cardHeader">
-      <h3>EUR Balance</h3>
+      <div>
+        <h3>EUR Balance</h3>
+        <small class="accountMeta">Foreign Currency Account · ****8821</small>
+      </div>
       <span class="badge">Restricted</span>
     </div>
 
     <p id="eurBalance">€--</p>
     <small id="eurRateText">Rate loading…</small>
-    <small class="subNote">Indicative converted balance</small>
+    <small class="subNote">Estimated balance based on FX rate</small>
 
-    <button type="button" onclick="toggleBalance(this)">Hide</button>
+    <button onclick="toggleBalance(this)">Hide</button>
   </div>
 
-  <!-- USD -->
   <div class="card" id="usdCard">
     <div class="cardHeader">
-      <h3>USD Balance</h3>
+      <div>
+        <h3>USD Balance</h3>
+        <small class="accountMeta">Main Account · ****0001</small>
+      </div>
       <span class="badge">Restricted</span>
     </div>
 
     <p id="usdBalance">$--</p>
-    <small class="subNote">Incoming funds (restricted)</small>
+    <small class="subNote">Incoming funds · restricted access</small>
 
-    <button type="button" onclick="toggleBalance(this)">Hide</button>
+    <button onclick="toggleBalance(this)">Hide</button>
   </div>
 
-  <!-- KRW -->
   <div class="card">
     <div class="cardHeader">
-      <h3>KRW Equivalent</h3>
+      <div>
+        <h3>KRW Equivalent</h3>
+        <small class="accountMeta">Reference Currency</small>
+      </div>
       <span class="badge">Restricted</span>
     </div>
 
     <p id="krwBalance">₩--</p>
-    <small class="subNote">Reference value</small>
+    <small class="subNote">Estimated equivalent value</small>
 
-    <button type="button" onclick="toggleBalance(this)">Hide</button>
+    <button onclick="toggleBalance(this)">Hide</button>
   </div>
 
 </section>
 
-<!-- QUICK ACTION GRID -->
+<!-- GRID -->
 <section class="grid">
 
+  <!-- Accounts -->
   <div class="gridItem">
-    <div class="icon">🏦</div>
+    <div class="icon">
+      <svg viewBox="0 0 24 24">
+        <rect x="3" y="6" width="18" height="12" rx="2"/>
+        <path d="M3 10h18"/>
+      </svg>
+    </div>
     <span>Accounts</span>
   </div>
 
+  <!-- Exchange -->
   <div class="gridItem">
-    <div class="icon">🔄</div>
+    <div class="icon">
+      <svg viewBox="0 0 24 24">
+        <path d="M4 7h13M17 7l-3-3m3 3l-3 3"/>
+        <path d="M20 17H7m-3 0l3 3m-3-3l3-3"/>
+      </svg>
+    </div>
     <span>Exchange</span>
   </div>
 
+  <!-- Cards -->
   <div class="gridItem">
-    <div class="icon">💳</div>
+    <div class="icon">
+      <svg viewBox="0 0 24 24">
+        <rect x="3" y="7" width="18" height="10" rx="2"/>
+        <path d="M3 10h18"/>
+      </svg>
+    </div>
     <span>Cards</span>
   </div>
 
+  <!-- Transfer -->
   <div class="gridItem" onclick="blocked()">
-    <div class="icon">📤</div>
+    <div class="icon">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 5v14M12 5l-4 4m4-4l4 4"/>
+      </svg>
+    </div>
     <span>Transfer</span>
   </div>
 
+  <!-- History -->
   <div class="gridItem">
-    <div class="icon">📊</div>
+    <div class="icon">
+      <svg viewBox="0 0 24 24">
+        <path d="M3 12a9 9 0 1 0 3-6.7"/>
+        <path d="M3 3v6h6"/>
+      </svg>
+    </div>
     <span>History</span>
   </div>
 
+  <!-- Support -->
   <div class="gridItem">
-    <div class="icon">☎️</div>
+    <div class="icon">
+      <svg viewBox="0 0 24 24">
+        <path d="M4 4h16v12H5l-1 4V4z"/>
+      </svg>
+    </div>
     <span>Support</span>
   </div>
 
@@ -116,49 +158,47 @@
 
   <div class="sectionHeader">
     <h3>Recent Transactions</h3>
-    <button type="button" class="viewAll">View all</button>
+    <button class="viewAll">View all</button>
   </div>
 
   <div class="tx" onclick="toggleTx()">
     <div>
-      <strong>Incoming Transfer — Administrative Allocation</strong>
-      <small>04 May 2026 • Restricted</small>
+      <strong>Incoming Transfer — Under Administrative Review</strong>
+      <small>04 May 2026 · Processing</small>
     </div>
     <div class="amount green">+$882,000</div>
   </div>
 
   <div id="txDetails" class="txDetails">
-    <p>Reference: ADM-INT-44721</p>
-    <p>Status: Under administrative control</p>
-    <button type="button" onclick="toggleTx()">Close</button>
+    <p><strong>Reference:</strong> ADM-INT-44721</p>
+    <p><strong>Status:</strong> Funds held under administrative control</p>
+    <button onclick="toggleTx()">Close</button>
   </div>
 
 </section>
 
 </main>
-
 </div>
 
 <!-- DRAWER -->
 <aside class="drawer" id="drawer">
   <div class="drawerContent">
 
-    <button type="button" class="closeBtn" onclick="closeDrawer()" aria-label="Close menu">✕</button>
+    <button class="closeBtn" onclick="closeDrawer()">✕</button>
 
-    <img id="drawerImg" src="default.png" alt="User profile"/>
+    <img id="drawerImg" src="default.png"/>
     <p>Kim Dae Hyun</p>
 
-    <button type="button">Accounts</button>
-    <button type="button">Exchange</button>
-    <button type="button">Funds</button>
-    <button type="button">Support</button>
+    <button>Accounts</button>
+    <button>Exchange</button>
+    <button>Funds</button>
+    <button>Support</button>
 
-    <button type="button" onclick="logout()">Logout →</button>
+    <button onclick="logout()">Logout →</button>
 
   </div>
 </aside>
 
-<!-- OVERLAY -->
 <div class="drawerOverlay" id="drawerOverlay" onclick="closeDrawer()"></div>
 
 <!-- MODAL -->
@@ -166,21 +206,20 @@
   <div class="modalBox">
 
     <div class="modalHeader">
-      <div class="dragHandle"></div>
-      <button type="button" class="closeX" onclick="closeModal()" aria-label="Close">✕</button>
+      <button class="closeX" onclick="closeModal()">✕</button>
     </div>
 
     <h2>Account Access Restricted</h2>
 
     <p>
       This account is currently under administrative review.<br><br>
-      Some services, including transfers and withdrawals, are temporarily unavailable.<br><br>
-      Your funds remain secure and visible.
+      Some services are temporarily unavailable.<br><br>
+      Your funds remain secure.
     </p>
 
     <div class="modalActions">
-      <button type="button">Contact Support</button>
-      <button type="button" onclick="closeModal()">Close</button>
+      <button class="primaryBtn">Contact Support</button>
+      <button onclick="closeModal()">Close</button>
     </div>
 
   </div>
@@ -190,22 +229,30 @@
 <nav class="bottomNav">
 
   <div class="navItem active">
-    <span>🏠</span>
+    <svg viewBox="0 0 24 24">
+      <path d="M3 10l9-7 9 7v10H3z"/>
+    </svg>
     <small>Home</small>
   </div>
 
   <div class="navItem">
-    <span>💳</span>
+    <svg viewBox="0 0 24 24">
+      <rect x="3" y="7" width="18" height="10" rx="2"/>
+    </svg>
     <small>Cards</small>
   </div>
 
   <div class="navItem">
-    <span>📊</span>
+    <svg viewBox="0 0 24 24">
+      <path d="M4 20V10M10 20V4M16 20v-6M22 20V14"/>
+    </svg>
     <small>Assets</small>
   </div>
 
   <div class="navItem">
-    <span>☰</span>
+    <svg viewBox="0 0 24 24">
+      <path d="M4 6h16M4 12h16M4 18h16"/>
+    </svg>
     <small>Menu</small>
   </div>
 
