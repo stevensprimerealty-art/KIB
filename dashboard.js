@@ -11,11 +11,13 @@ window.addEventListener("DOMContentLoaded", () => {
     currentX: 0,
     dragging: false,
     balanceVisible: true,
+
     balance: {
       USD: 882000,
       EUR: 749700,
       KRW: 1299186000
     },
+
     transactions: JSON.parse(localStorage.getItem("kib_tx")) || [
       {
         id: "REF-882000-KIB",
@@ -40,55 +42,76 @@ window.addEventListener("DOMContentLoaded", () => {
 
   function showPopup(html) {
     const popup = $("popup");
+
     popup.innerHTML = html;
     popup.hidden = false;
 
-    setTimeout(() => popup.classList.add("show"), 10);
+    requestAnimationFrame(() => {
+      popup.classList.add("show");
+    });
 
-    const closeBtn = popup.querySelector("#closePopup");
-    if (closeBtn) {
-      closeBtn.onclick = closePopup;
-    }
+    popup.querySelectorAll("#closePopup").forEach(btn => {
+      btn.onclick = closePopup;
+    });
   }
 
   function closePopup() {
     const popup = $("popup");
     popup.classList.remove("show");
-    setTimeout(() => popup.hidden = true, 200);
+
+    setTimeout(() => {
+      popup.hidden = true;
+      popup.innerHTML = "";
+    }, 200);
   }
 
   /* =========================
-     SLIDER (FIXED)
+     SLIDER (REAL iOS PHYSICS)
   ========================= */
 
   const slider = $("slider");
   const slides = document.querySelectorAll(".slide");
   const dots = document.querySelectorAll(".dot");
 
+  function setTranslate(x, animate = false) {
+    slider.style.transition = animate
+      ? "transform .35s cubic-bezier(.22,.61,.36,1)"
+      : "none";
+
+    slider.style.transform = `translateX(${x}px)`;
+  }
+
   function updateSlider(animate = true) {
     const width = slider.offsetWidth;
-    slider.style.transition = animate ? "transform .35s ease" : "none";
-    slider.style.transform = `translateX(-${state.index * width}px)`;
+
+    setTranslate(-state.index * width, animate);
 
     dots.forEach(d => d.classList.remove("active"));
     dots[state.index]?.classList.add("active");
 
-    updateBalanceDisplay();
+    updateAllBalances();
   }
 
   slider.addEventListener("touchstart", (e) => {
     state.dragging = true;
     state.startX = e.touches[0].clientX;
+    slider.style.transition = "none";
   });
 
   slider.addEventListener("touchmove", (e) => {
     if (!state.dragging) return;
 
     state.currentX = e.touches[0].clientX;
-    const dx = state.currentX - state.startX;
+    let dx = state.currentX - state.startX;
 
     const width = slider.offsetWidth;
-    slider.style.transform = `translateX(-${state.index * width + dx}px)`;
+    let offset = -state.index * width + dx;
+
+    // resistance edges
+    if (state.index === 0 && dx > 0) offset *= 0.4;
+    if (state.index === slides.length - 1 && dx < 0) offset *= 0.4;
+
+    setTranslate(offset);
   });
 
   slider.addEventListener("touchend", () => {
@@ -105,24 +128,24 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   /* =========================
-     BALANCE DISPLAY
+     BALANCE (FIXED ALL SLIDES)
   ========================= */
 
-  function updateBalanceDisplay() {
-    const currencies = ["EUR", "USD", "KRW"];
-    const current = currencies[state.index];
+  function updateAllBalances() {
+    document.querySelectorAll(".slide").forEach(slide => {
+      const currency = slide.dataset.currency;
+      const el = slide.querySelector(".amount");
 
-    const amountEl = slides[state.index]?.querySelector(".amount");
+      if (!el) return;
 
-    if (!amountEl) return;
-
-    amountEl.textContent = state.balanceVisible
-      ? formatMoney(state.balance[current], current)
-      : "••••••••";
+      el.textContent = state.balanceVisible
+        ? formatMoney(state.balance[currency], currency)
+        : "••••••••";
+    });
   }
 
   /* =========================
-     TRANSACTIONS
+     TRANSACTIONS (FIXED)
   ========================= */
 
   const txList = $("txList");
@@ -132,7 +155,12 @@ window.addEventListener("DOMContentLoaded", () => {
 
     txList.innerHTML = "";
 
-    state.transactions.forEach(tx => {
+    if (!state.transactions.length) {
+      txList.innerHTML = `<div class="empty">No transactions</div>`;
+      return;
+    }
+
+    state.transactions.slice(0, 5).forEach(tx => {
       const el = document.createElement("div");
       el.className = "tx";
 
@@ -149,35 +177,44 @@ window.addEventListener("DOMContentLoaded", () => {
       `;
 
       el.onclick = () => openReceipt(tx);
+
       txList.appendChild(el);
     });
   }
 
   /* =========================
-     RECEIPT
+     RECEIPT (PROPER MODAL)
   ========================= */
 
   function openReceipt(tx) {
-    showPopup(`
-      <div class="popup-box">
-        <h3>Transaction Receipt</h3>
+    const modal = $("receiptModal");
+    const content = $("receiptContent");
 
-        <p><b>Reference:</b> ${tx.id}</p>
-        <p><b>Type:</b> ${tx.type}</p>
-        <p><b>Amount:</b> ${formatMoney(tx.amount, tx.currency)}</p>
-        <p><b>Status:</b> ${tx.status}</p>
-        <p><b>Date:</b> ${tx.date}</p>
+    content.innerHTML = `
+      <h3>Transaction Receipt</h3>
 
-        <button id="downloadBtn">Download</button>
-        <button id="closePopup">Close</button>
-      </div>
-    `);
+      <p><b>Reference:</b> ${tx.id}</p>
+      <p><b>Type:</b> ${tx.type}</p>
+      <p><b>Amount:</b> ${formatMoney(tx.amount, tx.currency)}</p>
+      <p><b>Status:</b> ${tx.status}</p>
+      <p><b>Date:</b> ${tx.date}</p>
+
+      <button id="downloadBtn" class="primary-btn">Download</button>
+      <button id="closeReceipt" class="secondary-btn">Close</button>
+    `;
+
+    modal.hidden = false;
+
+    $("closeReceipt").onclick = () => modal.hidden = true;
 
     $("downloadBtn").onclick = () => {
-      const blob = new Blob([JSON.stringify(tx, null, 2)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
+      const blob = new Blob([JSON.stringify(tx, null, 2)], {
+        type: "application/json"
+      });
 
+      const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
+
       a.href = url;
       a.download = `receipt-${tx.id}.json`;
       a.click();
@@ -188,40 +225,59 @@ window.addEventListener("DOMContentLoaded", () => {
      VIEW ALL
   ========================= */
 
-  $("viewAllTx")?.addEventListener("click", renderTransactions);
-
-  /* =========================
-     DRAWER (FIXED)
-  ========================= */
-
-  $("menuBtn")?.addEventListener("click", () => {
-    $("drawer")?.classList.add("open");
-    $("drawerBackdrop")?.hidden = false;
+  $("viewAllTx")?.addEventListener("click", () => {
+    txList.innerHTML = "";
+    state.transactions.forEach(tx => {
+      const el = document.createElement("div");
+      el.className = "tx";
+      el.innerHTML = `${tx.type} - ${formatMoney(tx.amount, tx.currency)}`;
+      txList.appendChild(el);
+    });
   });
 
+  /* =========================
+     DRAWER (FIXED UI)
+  ========================= */
+
+  function openDrawer() {
+    $("drawer").classList.add("open");
+    $("drawerBackdrop").hidden = false;
+  }
+
+  function closeDrawer() {
+    $("drawer").classList.remove("open");
+    $("drawerBackdrop").hidden = true;
+  }
+
+  $("menuBtn")?.addEventListener("click", openDrawer);
   $("drawerBackdrop")?.addEventListener("click", closeDrawer);
   $("closeDrawer")?.addEventListener("click", closeDrawer);
 
-  function closeDrawer() {
-    $("drawer")?.classList.remove("open");
-    $("drawerBackdrop")?.hidden = true;
-  }
-
   /* =========================
-     TRANSFER (RESTRICTED)
+     CARDS SCREEN (REAL)
   ========================= */
 
-  function showRestriction() {
+  $("cardsBtn")?.addEventListener("click", () => {
+    $("cardsScreen").hidden = false;
+  });
+
+  $("closeCards")?.addEventListener("click", () => {
+    $("cardsScreen").hidden = true;
+  });
+
+  /* =========================
+     TRANSFER (STRICT BLOCK)
+  ========================= */
+
+  $("transferBtn")?.addEventListener("click", () => {
     showPopup(`
       <div class="popup-box">
         <h3>Transfer Restricted</h3>
-        <p>Transfers are disabled under ADM regulation.</p>
+        <p>This account is under ADM restriction.</p>
         <button id="closePopup">Close</button>
       </div>
     `);
-  }
-
-  $("transferBtn")?.addEventListener("click", showRestriction);
+  });
 
   /* =========================
      BELL
@@ -238,42 +294,28 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   /* =========================
-     ACTION BUTTONS
+     SCAN
   ========================= */
 
   $("scanBtn")?.addEventListener("click", () => {
-    alert("📷 Scan activated");
-  });
-
-  $("cardsBtn")?.addEventListener("click", () => {
     showPopup(`
       <div class="popup-box">
-        <h3>Cards</h3>
-        <p>Digital cards will appear here.</p>
-        <button id="closePopup">Close</button>
-      </div>
-    `);
-  });
-
-  $("cashoutBtn")?.addEventListener("click", () => {
-    showPopup(`
-      <div class="popup-box">
-        <h3>Cash-Out</h3>
-        <p>This feature is currently unavailable.</p>
+        <h3>Scan System</h3>
+        <p>QR / URL scanning activated.</p>
         <button id="closePopup">Close</button>
       </div>
     `);
   });
 
   /* =========================
-     AUTO POPUP (2s)
+     AUTO NOTICE (REAL BANK FEEL)
   ========================= */
 
   setTimeout(() => {
     showPopup(`
       <div class="popup-box">
-        <h3>Account Notice</h3>
-        <p>This account remains under administrative restriction.</p>
+        <h3>Administrative Notice</h3>
+        <p>This account remains restricted under ADM supervision.</p>
         <button id="closePopup">Close</button>
       </div>
     `);
