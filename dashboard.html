@@ -14,11 +14,11 @@
 <!-- ================= TOPBAR ================= -->
 <header class="topbar">
 
-  <button type="button" class="menuBtn" onclick="openDrawer()">☰</button>
+  <button type="button" class="menuBtn" onclick="openDrawer()" aria-label="Menu">☰</button>
 
   <div class="user">
     <input type="file" id="imgPicker" hidden/>
-    <img id="profileImg" onclick="pickImage()" src="default.png" alt="Profile"/>
+    <img id="profileImg" onclick="pickImage()" src="default.png" alt="User profile"/>
 
     <div>
       <span class="userName">Kim Dae Hyun</span>
@@ -26,7 +26,7 @@
     </div>
   </div>
 
-  <button type="button" class="bellBtn" onclick="showCompliance()">🔔</button>
+  <button type="button" class="bellBtn" onclick="showCompliance()" aria-label="Notifications">🔔</button>
 
 </header>
 
@@ -40,19 +40,19 @@
 <!-- ================= ACCOUNTS ================= -->
 <section class="cards">
 
-  <!-- EUR -->
+  <!-- EUR (PRIMARY IN YOUR CASE) -->
   <div class="card">
     <div class="cardHeader">
       <div>
         <h3>EUR Balance</h3>
-        <small class="accountMeta">Foreign Currency Account · ****8821</small>
+        <small class="accountMeta">Primary Account · ****8821</small>
       </div>
       <span class="badge">Restricted</span>
     </div>
 
     <p id="eurBalance">€--</p>
     <small id="eurRateText">Rate loading…</small>
-    <small class="subNote">Estimated balance based on FX rate</small>
+    <small class="subNote">Available balance</small>
 
     <button type="button" onclick="toggleBalance(this)">Hide</button>
   </div>
@@ -62,7 +62,7 @@
     <div class="cardHeader">
       <div>
         <h3>USD Balance</h3>
-        <small class="accountMeta">Main Account · ****0001</small>
+        <small class="accountMeta">Foreign Currency Account · ****0001</small>
       </div>
       <span class="badge">Restricted</span>
     </div>
@@ -73,18 +73,18 @@
     <button type="button" onclick="toggleBalance(this)">Hide</button>
   </div>
 
-  <!-- KRW -->
+  <!-- KRW (FIXED PROPERLY) -->
   <div class="card">
     <div class="cardHeader">
       <div>
         <h3>KRW Equivalent</h3>
-        <small class="accountMeta">Reference Currency</small>
+        <small class="accountMeta">Estimated Value · Based on FX Rate</small>
       </div>
       <span class="badge">Restricted</span>
     </div>
 
     <p id="krwBalance">₩--</p>
-    <small class="subNote">Estimated equivalent value</small>
+    <small class="subNote">Indicative only (no KRW account)</small>
 
     <button type="button" onclick="toggleBalance(this)">Hide</button>
   </div>
@@ -104,6 +104,7 @@
     <span>Accounts</span>
   </div>
 
+  <!-- FIXED WORDING -->
   <div class="gridItem">
     <div class="icon">
       <svg viewBox="0 0 24 24">
@@ -111,10 +112,11 @@
         <path d="M20 17H7m-3 0l3 3m-3-3l3-3"/>
       </svg>
     </div>
-    <span>Exchange</span>
+    <span>FX</span>
   </div>
 
-  <div class="gridItem">
+  <!-- CARDS PAGE LINK -->
+  <div class="gridItem" onclick="window.location.href='cards.html'">
     <div class="icon">
       <svg viewBox="0 0 24 24">
         <rect x="3" y="7" width="18" height="10" rx="2"/>
@@ -181,14 +183,12 @@
 </main>
 </div>
 
-<!-- ================= DRAWER (FIXED) ================= -->
+<!-- ================= DRAWER ================= -->
 <aside class="drawer" id="drawer">
-
   <div class="drawerContent">
 
-    <!-- HEADER -->
     <div class="drawerHeader">
-      <img id="drawerImg" src="default.png" alt="Profile"/>
+      <img id="drawerImg" src="default.png" alt="User profile"/>
 
       <div class="drawerUser">
         <strong>Kim Dae Hyun</strong>
@@ -198,24 +198,20 @@
       <button type="button" class="closeBtn" onclick="closeDrawer()">✕</button>
     </div>
 
-    <!-- MENU -->
     <div class="drawerMenu">
-      <button type="button">Accounts</button>
-      <button type="button">Exchange</button>
-      <button type="button">Funds</button>
-      <button type="button">Support</button>
+      <button>Accounts</button>
+      <button>FX</button>
+      <button>Funds</button>
+      <button>Support</button>
     </div>
 
-    <!-- FOOTER -->
     <div class="drawerFooter">
-      <button type="button" onclick="logout()">Logout</button>
+      <button onclick="logout()">Logout</button>
     </div>
 
   </div>
-
 </aside>
 
-<!-- OVERLAY -->
 <div class="drawerOverlay" id="drawerOverlay" onclick="closeDrawer()"></div>
 
 <!-- ================= MODAL ================= -->
@@ -252,7 +248,7 @@
     <small>Home</small>
   </div>
 
-  <div class="navItem">
+  <div class="navItem" onclick="window.location.href='cards.html'">
     <svg viewBox="0 0 24 24">
       <rect x="3" y="7" width="18" height="10" rx="2"/>
     </svg>
