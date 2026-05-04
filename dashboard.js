@@ -10,7 +10,6 @@ window.addEventListener("DOMContentLoaded", () => {
     startX: 0,
     currentX: 0,
     dragging: false,
-    balanceVisible: true,
 
     balance: {
       USD: 882000,
@@ -40,78 +39,48 @@ window.addEventListener("DOMContentLoaded", () => {
     }).format(v);
   }
 
-  function showPopup(html) {
-    const popup = $("popup");
-
-    popup.innerHTML = html;
-    popup.hidden = false;
-
-    requestAnimationFrame(() => {
-      popup.classList.add("show");
-    });
-
-    popup.querySelectorAll("#closePopup").forEach(btn => {
-      btn.onclick = closePopup;
-    });
-  }
-
-  function closePopup() {
-    const popup = $("popup");
-    popup.classList.remove("show");
-
-    setTimeout(() => {
-      popup.hidden = true;
-      popup.innerHTML = "";
-    }, 200);
-  }
-
   /* =========================
-     SLIDER (REAL iOS PHYSICS)
+     SLIDER (FIXED PROPERLY)
   ========================= */
 
   const slider = $("slider");
   const slides = document.querySelectorAll(".slide");
   const dots = document.querySelectorAll(".dot");
 
-  function setTranslate(x, animate = false) {
-    slider.style.transition = animate
-      ? "transform .35s cubic-bezier(.22,.61,.36,1)"
-      : "none";
+  function renderBalances() {
+    slides.forEach(slide => {
+      const currency = slide.dataset.currency;
+      const el = slide.querySelector(".amount");
 
-    slider.style.transform = `translateX(${x}px)`;
+      if (currency && el) {
+        el.textContent = formatMoney(state.balance[currency], currency);
+      }
+    });
   }
 
   function updateSlider(animate = true) {
     const width = slider.offsetWidth;
 
-    setTranslate(-state.index * width, animate);
+    slider.style.transition = animate ? "transform .35s cubic-bezier(.22,.61,.36,1)" : "none";
+    slider.style.transform = `translateX(-${state.index * width}px)`;
 
     dots.forEach(d => d.classList.remove("active"));
     dots[state.index]?.classList.add("active");
-
-    updateAllBalances();
   }
 
   slider.addEventListener("touchstart", (e) => {
     state.dragging = true;
     state.startX = e.touches[0].clientX;
-    slider.style.transition = "none";
   });
 
   slider.addEventListener("touchmove", (e) => {
     if (!state.dragging) return;
 
     state.currentX = e.touches[0].clientX;
-    let dx = state.currentX - state.startX;
+    const dx = state.currentX - state.startX;
 
     const width = slider.offsetWidth;
-    let offset = -state.index * width + dx;
-
-    // resistance edges
-    if (state.index === 0 && dx > 0) offset *= 0.4;
-    if (state.index === slides.length - 1 && dx < 0) offset *= 0.4;
-
-    setTranslate(offset);
+    slider.style.transform = `translateX(-${state.index * width + dx}px)`;
   });
 
   slider.addEventListener("touchend", () => {
@@ -119,8 +88,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const dx = state.currentX - state.startX;
 
-    if (dx > 80) state.index--;
-    if (dx < -80) state.index++;
+    if (dx > 70) state.index--;
+    if (dx < -70) state.index++;
 
     state.index = Math.max(0, Math.min(state.index, slides.length - 1));
 
@@ -128,39 +97,17 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   /* =========================
-     BALANCE (FIXED ALL SLIDES)
-  ========================= */
-
-  function updateAllBalances() {
-    document.querySelectorAll(".slide").forEach(slide => {
-      const currency = slide.dataset.currency;
-      const el = slide.querySelector(".amount");
-
-      if (!el) return;
-
-      el.textContent = state.balanceVisible
-        ? formatMoney(state.balance[currency], currency)
-        : "••••••••";
-    });
-  }
-
-  /* =========================
      TRANSACTIONS (FIXED)
   ========================= */
 
   const txList = $("txList");
 
-  function renderTransactions() {
-    if (!txList) return;
-
+  function renderTransactions(limit = 1) {
     txList.innerHTML = "";
 
-    if (!state.transactions.length) {
-      txList.innerHTML = `<div class="empty">No transactions</div>`;
-      return;
-    }
+    const data = state.transactions.slice(0, limit);
 
-    state.transactions.slice(0, 5).forEach(tx => {
+    data.forEach(tx => {
       const el = document.createElement("div");
       el.className = "tx";
 
@@ -177,13 +124,12 @@ window.addEventListener("DOMContentLoaded", () => {
       `;
 
       el.onclick = () => openReceipt(tx);
-
       txList.appendChild(el);
     });
   }
 
   /* =========================
-     RECEIPT (PROPER MODAL)
+     RECEIPT (REAL MODAL)
   ========================= */
 
   function openReceipt(tx) {
@@ -204,120 +150,125 @@ window.addEventListener("DOMContentLoaded", () => {
     `;
 
     modal.hidden = false;
+    setTimeout(() => modal.classList.add("show"), 10);
 
-    $("closeReceipt").onclick = () => modal.hidden = true;
+    $("closeReceipt").onclick = closeReceipt;
 
     $("downloadBtn").onclick = () => {
-      const blob = new Blob([JSON.stringify(tx, null, 2)], {
-        type: "application/json"
-      });
-
+      const blob = new Blob([JSON.stringify(tx, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
 
+      const a = document.createElement("a");
       a.href = url;
       a.download = `receipt-${tx.id}.json`;
       a.click();
     };
   }
 
-  /* =========================
-     VIEW ALL
-  ========================= */
-
-  $("viewAllTx")?.addEventListener("click", () => {
-    txList.innerHTML = "";
-    state.transactions.forEach(tx => {
-      const el = document.createElement("div");
-      el.className = "tx";
-      el.innerHTML = `${tx.type} - ${formatMoney(tx.amount, tx.currency)}`;
-      txList.appendChild(el);
-    });
-  });
+  function closeReceipt() {
+    const modal = $("receiptModal");
+    modal.classList.remove("show");
+    setTimeout(() => modal.hidden = true, 200);
+  }
 
   /* =========================
-     DRAWER (FIXED UI)
+     VIEW ALL (FIXED)
   ========================= */
 
-  function openDrawer() {
+  $("viewAllTx").onclick = () => {
+    renderTransactions(state.transactions.length);
+  };
+
+  /* =========================
+     DRAWER (FULL FIX)
+  ========================= */
+
+  $("menuBtn").onclick = () => {
     $("drawer").classList.add("open");
     $("drawerBackdrop").hidden = false;
-  }
+  };
 
   function closeDrawer() {
     $("drawer").classList.remove("open");
     $("drawerBackdrop").hidden = true;
   }
 
-  $("menuBtn")?.addEventListener("click", openDrawer);
-  $("drawerBackdrop")?.addEventListener("click", closeDrawer);
-  $("closeDrawer")?.addEventListener("click", closeDrawer);
+  $("drawerBackdrop").onclick = closeDrawer;
+  $("closeDrawer").onclick = closeDrawer;
 
   /* =========================
-     CARDS SCREEN (REAL)
+     POPUP SYSTEM
   ========================= */
 
-  $("cardsBtn")?.addEventListener("click", () => {
+  function showPopup(html) {
+    const popup = $("popup");
+    $("popupContent").innerHTML = html;
+
+    popup.hidden = false;
+    setTimeout(() => popup.classList.add("show"), 10);
+
+    popup.querySelector("#closePopup")?.addEventListener("click", () => {
+      popup.classList.remove("show");
+      setTimeout(() => popup.hidden = true, 200);
+    });
+  }
+
+  /* =========================
+     BUTTON ACTIONS
+  ========================= */
+
+  $("transferBtn").onclick = () => {
+    showPopup(`
+      <h3>Transfer Restricted</h3>
+      <p class="popup-text">
+        Transfers are disabled under Italian Administrative Authority (ADM).
+      </p>
+      <button id="closePopup" class="primary-btn">Close</button>
+    `);
+  };
+
+  $("notifBtn").onclick = () => {
+    showPopup(`
+      <h3>Account Status</h3>
+      <p class="popup-text">
+        Restricted under Italian Administrative Authority (ADM)
+      </p>
+      <button id="closePopup" class="primary-btn">Close</button>
+    `);
+  };
+
+  $("scanBtn").onclick = () => {
+    alert("📷 Scan activated");
+  };
+
+  /* =========================
+     CARDS SCREEN (FIXED)
+  ========================= */
+
+  $("cardsBtn").onclick = () => {
     $("cardsScreen").hidden = false;
-  });
+  };
 
-  $("closeCards")?.addEventListener("click", () => {
+  $("drawerCardsBtn").onclick = () => {
+    $("cardsScreen").hidden = false;
+    closeDrawer();
+  };
+
+  $("closeCards").onclick = () => {
     $("cardsScreen").hidden = true;
-  });
+  };
 
   /* =========================
-     TRANSFER (STRICT BLOCK)
-  ========================= */
-
-  $("transferBtn")?.addEventListener("click", () => {
-    showPopup(`
-      <div class="popup-box">
-        <h3>Transfer Restricted</h3>
-        <p>This account is under ADM restriction.</p>
-        <button id="closePopup">Close</button>
-      </div>
-    `);
-  });
-
-  /* =========================
-     BELL
-  ========================= */
-
-  $("notifBtn")?.addEventListener("click", () => {
-    showPopup(`
-      <div class="popup-box">
-        <h3>Account Status</h3>
-        <p>Restricted under Italian Administrative Authority (ADM)</p>
-        <button id="closePopup">Close</button>
-      </div>
-    `);
-  });
-
-  /* =========================
-     SCAN
-  ========================= */
-
-  $("scanBtn")?.addEventListener("click", () => {
-    showPopup(`
-      <div class="popup-box">
-        <h3>Scan System</h3>
-        <p>QR / URL scanning activated.</p>
-        <button id="closePopup">Close</button>
-      </div>
-    `);
-  });
-
-  /* =========================
-     AUTO NOTICE (REAL BANK FEEL)
+     AUTO POPUP (2s)
   ========================= */
 
   setTimeout(() => {
     showPopup(`
-      <div class="popup-box">
-        <h3>Administrative Notice</h3>
-        <p>This account remains restricted under ADM supervision.</p>
-        <button id="closePopup">Close</button>
-      </div>
+      <h3>Account Notice</h3>
+      <p class="popup-text">
+        This account remains under administrative restriction.
+      </p>
+      <button id="closePopup" class="primary-btn">Close</button>
     `);
   }, 2000);
 
@@ -325,7 +276,8 @@ window.addEventListener("DOMContentLoaded", () => {
      INIT
   ========================= */
 
-  updateSlider();
-  renderTransactions();
+  renderBalances();        // 🔥 FIXED (your main issue)
+  updateSlider(false);
+  renderTransactions(1);
 
 });
