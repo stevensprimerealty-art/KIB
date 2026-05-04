@@ -13,6 +13,11 @@ body {
   padding-bottom:90px;
 }
 
+/* prevent scroll when drawer/modal open */
+body.lock {
+  overflow:hidden;
+}
+
 /* =========================
    TOPBAR
 ========================= */
@@ -21,12 +26,9 @@ body {
   justify-content:space-between;
   align-items:center;
   padding:14px 16px;
-
   background:rgba(255,255,255,0.9);
   backdrop-filter:blur(8px);
-
   border-bottom:1px solid rgba(0,0,0,0.06);
-
   position:sticky;
   top:0;
   z-index:10;
@@ -76,19 +78,14 @@ body {
 .card {
   min-width:88%;
   scroll-snap-align:center;
-
   border-radius:18px;
   padding:20px;
-
   background:linear-gradient(135deg, #1e4fbf, #173c8f);
-
   box-shadow:0 8px 18px rgba(0,40,120,0.18);
-
   color:#fff;
-}
 
-.card::after {
-  display:none;
+  /* premium feel */
+  backdrop-filter:blur(6px);
 }
 
 .cardHeader {
@@ -128,7 +125,7 @@ body {
 }
 
 /* =========================
-   BUTTONS (GLOBAL)
+   BUTTONS (SCOPED)
 ========================= */
 button {
   border:none;
@@ -140,6 +137,12 @@ button {
 
 button:active {
   transform:scale(0.97);
+}
+
+/* card buttons */
+.card button {
+  background:rgba(255,255,255,0.2);
+  color:#fff;
 }
 
 /* =========================
@@ -162,21 +165,10 @@ button:active {
 }
 
 .icon {
-  margin-bottom:6px;
-}
-
-/* =========================
-   ACTIONS
-========================= */
-.actions {
   display:flex;
-  gap:12px;
-  padding:0 16px 16px;
-}
-
-.actions button {
-  background:#eef3fb;
-  color:#2a6edb;
+  justify-content:center;
+  align-items:center;
+  margin-bottom:6px;
 }
 
 /* =========================
@@ -222,32 +214,29 @@ button:active {
 }
 
 /* =========================
-   DRAWER (FIXED PROPERLY)
+   DRAWER (PROPER FIX)
 ========================= */
 .drawer {
   position:fixed;
   top:0;
-  left:-100%;
+  left:0;
+  transform:translateX(-100%);
   width:82%;
   max-width:320px;
   height:100%;
-
   background:#fff;
-
-  transition:0.28s ease;
+  transition:transform 0.28s ease;
   z-index:20;
-
   display:flex;
   flex-direction:column;
-
   box-shadow:4px 0 24px rgba(0,0,0,0.18);
 }
 
 .drawer.open {
-  left:0;
+  transform:translateX(0);
 }
 
-/* OVERLAY */
+/* overlay */
 .drawerOverlay {
   position:fixed;
   inset:0;
@@ -260,27 +249,23 @@ button:active {
   display:block;
 }
 
-/* STRUCTURE */
+/* structure */
 .drawerContent {
   display:flex;
   flex-direction:column;
   height:100%;
 }
 
-/* HEADER */
+/* header */
 .drawerHeader {
   display:flex;
   align-items:center;
   gap:12px;
-
   padding:20px 18px;
-
   border-bottom:1px solid #eee;
-
   position:relative;
 }
 
-/* 🔥 IMAGE FIX (NO STRETCH EVER AGAIN) */
 .drawerHeader img {
   width:52px;
   height:52px;
@@ -290,7 +275,6 @@ button:active {
   flex-shrink:0;
 }
 
-/* USER TEXT */
 .drawerUser {
   display:flex;
   flex-direction:column;
@@ -298,7 +282,6 @@ button:active {
 
 .drawerUser strong {
   font-size:15px;
-  font-weight:600;
 }
 
 .drawerUser small {
@@ -306,7 +289,6 @@ button:active {
   color:#888;
 }
 
-/* CLOSE BUTTON */
 .closeBtn {
   position:absolute;
   right:14px;
@@ -316,7 +298,7 @@ button:active {
   color:#555;
 }
 
-/* MENU */
+/* menu */
 .drawerMenu {
   padding:10px 0;
 }
@@ -334,7 +316,7 @@ button:active {
   background:#f4f6fa;
 }
 
-/* FOOTER */
+/* footer */
 .drawerFooter {
   margin-top:auto;
   padding:16px;
@@ -367,6 +349,7 @@ button:active {
   border-radius:16px;
   background:#fff;
   box-shadow:0 15px 40px rgba(0,0,0,0.2);
+  position:relative;
 }
 
 .closeX {
@@ -399,7 +382,7 @@ button:active {
   width:100%;
   display:flex;
   justify-content:space-around;
-  padding:10px;
+  padding:10px 10px calc(10px + env(safe-area-inset-bottom));
   background:#fff;
   border-top:1px solid #eee;
 }
