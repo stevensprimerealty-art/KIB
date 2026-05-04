@@ -8,6 +8,7 @@ window.addEventListener("DOMContentLoaded", () => {
     startX: 0,
     currentX: 0,
     dragging: false,
+    masked: false,
 
     balance: {
       USD: 882000,
@@ -28,6 +29,7 @@ window.addEventListener("DOMContentLoaded", () => {
   };
 
   /* ================= HELPERS ================= */
+
   function formatMoney(v, c) {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -35,136 +37,148 @@ window.addEventListener("DOMContentLoaded", () => {
     }).format(v ?? 0);
   }
 
+  function mask(v) {
+    return state.masked ? "••••••" : v;
+  }
+
   const slider = $("slider");
   const slides = document.querySelectorAll(".slide");
   const dots = document.querySelectorAll(".dot");
 
-/* ================= PROFILE IMAGE ================= */
+  /* ================= PROFILE IMAGE ================= */
 
-const avatar = $("avatar");
-const drawerAvatar = $("drawerAvatar");
-const avatarInput = $("avatarInput");
+  const avatar = $("avatar");
+  const drawerAvatar = $("drawerAvatar");
+  const avatarInput = $("avatarInput");
 
-const saved = localStorage.getItem("kib_avatar");
-const fallback = "https://i.imgur.com/6VBx3io.png";
+  const saved = localStorage.getItem("kib_avatar");
+  const fallback = "https://i.imgur.com/6VBx3io.png";
 
-function setAvatar(src) {
-  if (avatar) avatar.src = src;
-  if (drawerAvatar) drawerAvatar.src = src;
-}
+  function setAvatar(src) {
+    if (avatar) avatar.src = src;
+    if (drawerAvatar) drawerAvatar.src = src;
+  }
 
-// load
-setAvatar(saved || fallback);
+  setAvatar(saved || fallback);
 
-// open picker
-avatar?.addEventListener("click", () => {
-  avatarInput?.click();
-});
+  avatar?.addEventListener("click", () => avatarInput?.click());
 
-// save permanently
-avatarInput?.addEventListener("change", (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
+  avatarInput?.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-  const reader = new FileReader();
-
-  reader.onload = (ev) => {
-    const base64 = ev.target.result;
-
-    localStorage.setItem("kib_avatar", base64);
-    setAvatar(base64);
-  };
-
-  reader.readAsDataURL(file);
-});
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const base64 = ev.target.result;
+      localStorage.setItem("kib_avatar", base64);
+      setAvatar(base64);
+    };
+    reader.readAsDataURL(file);
+  });
 
   /* ================= BALANCES ================= */
+
   function renderBalances() {
     slides.forEach(slide => {
       const currency = slide.dataset.currency;
       const el = slide.querySelector(".amount");
+
       if (!currency || !el) return;
 
-      el.textContent = formatMoney(state.balance[currency], currency);
+      el.textContent = mask(formatMoney(state.balance[currency], currency));
     });
+
+    updateFX();
   }
 
-/* ================= SLIDER (FINAL STABLE FIX) ================= */
+  /* ================= FX ================= */
 
-// ✅ Always get FULL container width (never 0 like slide.offsetWidth)
-function getWidth() {
-  return slider?.parentElement?.getBoundingClientRect().width || 0;
-}
+  function updateFX() {
+    const fxEl = $("fxValue");
+    if (!fxEl) return;
 
-// ✅ Update slider position
-function updateSlider(animate = true) {
-  if (!slider || !slides.length) return;
+    // base = USD
+    const currentCurrency = slides[state.index]?.dataset.currency;
 
-  const width = getWidth();
+    let valueUSD = state.balance.USD;
 
-  // 🔥 Wait until layout is ready
-  if (!width || width < 10) {
-    return requestAnimationFrame(() => updateSlider(animate));
+    if (currentCurrency === "EUR") valueUSD = state.balance.EUR * 1.08;
+    if (currentCurrency === "KRW") valueUSD = state.balance.KRW / 1300;
+
+    fxEl.textContent = mask(formatMoney(valueUSD, "USD"));
   }
 
-  slider.style.willChange = "transform";
-slider.style.transition = animate
-  ? "transform .35s cubic-bezier(.22,.61,.36,1)"
-  : "none";
+  /* ================= SLIDER (REAL FIX) ================= */
 
-  slider.style.transform = `translate3d(-${state.index * width}px, 0, 0)`;
+  function getWidth() {
+    return slider?.parentElement?.offsetWidth || 0;
+  }
 
-  // ✅ Dots (safe)
-  if (dots.length) {
+  function updateSlider(animate = true) {
+    if (!slider) return;
+
+    const width = getWidth();
+
+    // 🔥 HARD FAILSAFE
+    if (!width) {
+      setTimeout(() => updateSlider(animate), 60);
+      return;
+    }
+
+    slider.style.transition = animate
+      ? "transform .35s cubic-bezier(.22,.61,.36,1)"
+      : "none";
+
+    slider.style.transform = `translate3d(-${state.index * width}px,0,0)`;
+
     dots.forEach(d => d.classList.remove("active"));
     dots[state.index]?.classList.add("active");
+
+    updateFX();
   }
-}
 
-/* ================= TOUCH (SMOOTH + SAFE) ================= */
+  /* ================= TOUCH ================= */
 
-slider?.addEventListener("touchstart", (e) => {
-  if (!slider) return;
+  slider?.addEventListener("touchstart", (e) => {
+    state.dragging = true;
+    state.startX = e.touches[0].clientX;
+    state.currentX = state.startX;
+    slider.style.transition = "none";
+  }, { passive: true });
 
-  state.dragging = true;
-  state.startX = e.touches[0].clientX;
-  state.currentX = state.startX;
+  slider?.addEventListener("touchmove", (e) => {
+    if (!state.dragging) return;
 
-  slider.style.transition = "none";
-}, { passive: true });
+    state.currentX = e.touches[0].clientX;
+    const dx = state.currentX - state.startX;
 
-slider?.addEventListener("touchmove", (e) => {
-  if (!state.dragging || !slider) return;
+    const width = getWidth() || 1;
 
-  state.currentX = e.touches[0].clientX;
-  const dx = (state.currentX - state.startX) * 0.9;
+    slider.style.transform = `translate3d(-${state.index * width + dx}px,0,0)`;
+  }, { passive: true });
 
-  const width = getWidth() || 1;
+  slider?.addEventListener("touchend", () => {
+    if (!state.dragging) return;
 
-  slider.style.transform = `translate3d(-${state.index * width + dx}px, 0, 0)`;
-}, { passive: true });
+    state.dragging = false;
 
-slider?.addEventListener("touchend", () => {
-  if (!state.dragging) return;
+    const dx = state.currentX - state.startX;
 
-  state.dragging = false;
+    if (dx > 60) state.index--;
+    if (dx < -60) state.index++;
 
-  const dx = state.currentX - state.startX;
+    state.index = Math.max(0, Math.min(state.index, slides.length - 1));
 
-  // ✅ Swipe threshold
-  if (dx > 60) state.index--;
-  if (dx < -60) state.index++;
+    updateSlider(true);
+  });
 
-  // ✅ Clamp index
-  state.index = Math.max(0, Math.min(state.index, slides.length - 1));
+  /* ================= MASK TOGGLE ================= */
 
-  updateSlider(true);
-});
+  $("toggleBalance")?.addEventListener("click", () => {
+    state.masked = !state.masked;
+    renderBalances();
+  });
 
-slider?.addEventListener("touchcancel", () => {
-  state.dragging = false;
-});
-  
   /* ================= TRANSACTIONS ================= */
 
   const txList = $("txList");
@@ -201,57 +215,40 @@ slider?.addEventListener("touchcancel", () => {
 
   /* ================= VIEW ALL ================= */
 
-  const viewAllBtn = $("viewAllTx");
   let expanded = false;
 
-  viewAllBtn?.addEventListener("click", () => {
+  $("viewAllTx")?.addEventListener("click", () => {
     expanded = !expanded;
     renderTransactions(expanded ? state.transactions.length : 1);
-    viewAllBtn.textContent = expanded ? "Show less" : "View all →";
   });
 
-function showPopup(html) {
-  const popup = $("popup");
-  const content = $("popupContent");
+  /* ================= POPUP ================= */
 
-  if (!popup || !content) return;
+  function showPopup(html) {
+    const popup = $("popup");
+    const content = $("popupContent");
 
-  content.innerHTML = html;
+    if (!popup || !content) return;
 
-  popup.hidden = false;
+    content.innerHTML = html;
+    popup.hidden = false;
 
-  requestAnimationFrame(() => {
-    popup.classList.add("show");
-  });
+    requestAnimationFrame(() => popup.classList.add("show"));
 
-  // 🔥 CLEAR OLD HANDLER FIRST
-  popup.onclick = null;
-
-  popup.onclick = (e) => {
-    if (
-      e.target.id === "popup" ||
-      e.target.id === "closePopup"
-    ) {
-      popup.classList.remove("show");
-      setTimeout(() => (popup.hidden = true), 200);
-    }
-  };
-}
+    popup.onclick = (e) => {
+      if (e.target.id === "popup" || e.target.id === "closePopup") {
+        popup.classList.remove("show");
+        setTimeout(() => popup.hidden = true, 200);
+      }
+    };
+  }
 
   $("transferBtn")?.addEventListener("click", () => {
-    showPopup(`
-      <h3>Transfer Restricted</h3>
-      <p>This account is under ADM restriction.</p>
-      <button id="closePopup">Close</button>
-    `);
+    showPopup(`<h3>Transfer Restricted</h3><button id="closePopup">Close</button>`);
   });
 
   $("notifBtn")?.addEventListener("click", () => {
-    showPopup(`
-      <h3>Account Notice</h3>
-      <p>Account under administrative control (ADM).</p>
-      <button id="closePopup">Close</button>
-    `);
+    showPopup(`<h3>Account Notice</h3><button id="closePopup">Close</button>`);
   });
 
   /* ================= DRAWER ================= */
@@ -261,34 +258,30 @@ function showPopup(html) {
 
   $("menuBtn")?.addEventListener("click", () => {
     drawer?.classList.add("open");
-    if (backdrop) backdrop.hidden = false;
+    backdrop.hidden = false;
   });
 
   function closeDrawer() {
     drawer?.classList.remove("open");
-    if (backdrop) backdrop.hidden = true;
+    backdrop.hidden = true;
   }
 
   backdrop?.addEventListener("click", closeDrawer);
   $("closeDrawer")?.addEventListener("click", closeDrawer);
 
-  /* ================= RESIZE ================= */
-
-  window.addEventListener("resize", () => {
-    updateSlider(false);
-  });
-
-  /* ================= INIT ================= */
+  /* ================= INIT (REAL FIX) ================= */
 
   function init() {
-  renderBalances();
-  renderTransactions(1);
+    renderBalances();
+    renderTransactions(1);
+    state.index = 0;
 
-  state.index = 0; // 🔥 force reset (prevents broken position)
+    // 🔥 guaranteed layout ready
+    setTimeout(() => {
+      updateSlider(false);
+    }, 80);
+  }
 
-  updateSlider(false);
-}
+  window.addEventListener("load", init);
 
-  requestAnimationFrame(() => {
-  requestAnimationFrame(init);
 });
