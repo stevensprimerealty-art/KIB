@@ -8,16 +8,16 @@ const account = {
 
 
 /* =========================
-   FX ENGINE
+   FIXED FX (CALCULATOR VALUES)
 ========================= */
-const midMarket = {
-  EUR: 0.94,
-  KRW: 1430
+const fixedFX = {
+  EUR: 0.85,
+  KRW: 1469
 };
 
 let fx = {
-  eurRate: 0,
-  krwRate: 0,
+  eurRate: fixedFX.EUR,
+  krwRate: fixedFX.KRW,
   eurValue: 0,
   krwValue: 0,
   timestamp: null
@@ -38,23 +38,16 @@ function getItalyTimeString(){
 
 
 /* =========================
-   FX COMPUTE
+   FX COMPUTE (FIXED)
 ========================= */
 function computeFX(){
-  const now = Date.now();
+  fx.eurRate = fixedFX.EUR;
+  fx.krwRate = fixedFX.KRW;
 
-  if (fx.timestamp && (now - fx.timestamp) < 60000) return;
+  fx.eurValue = Math.round(account.usd * fx.eurRate);     // 751,817
+  fx.krwValue = Math.round(account.usd * fx.krwRate);     // 1,295,480,718
 
-  const eurSpread = 0.012;
-  const krwSpread = 0.018;
-
-  fx.eurRate = midMarket.EUR * (1 - eurSpread);
-  fx.krwRate = midMarket.KRW * (1 - krwSpread);
-
-  fx.eurValue = account.usd * fx.eurRate;
-  fx.krwValue = Math.floor(account.usd * fx.krwRate);
-
-  fx.timestamp = now;
+  fx.timestamp = Date.now();
 }
 
 
@@ -62,8 +55,8 @@ function computeFX(){
    FORMATTERS
 ========================= */
 function formatCurrency(amount, currency){
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
     currency,
     maximumFractionDigits: 0
   }).format(amount || 0);
@@ -71,10 +64,6 @@ function formatCurrency(amount, currency){
 
 function formatKRW(amount){
   return "₩" + Number(amount || 0).toLocaleString("en-US");
-}
-
-function formatTime(){
-  return getItalyTimeString();
 }
 
 
@@ -129,7 +118,7 @@ function loadBalances(){
 
   if(rateEl){
     rateEl.innerText =
-      `1 USD ≈ ${fx.eurRate.toFixed(4)} EUR · ${formatTime()}`;
+      `1 USD = ${fx.eurRate.toFixed(2)} EUR · ${getItalyTimeString()}`;
   }
 
   syncButtons();
@@ -137,7 +126,7 @@ function loadBalances(){
 
 
 /* =========================
-   BUTTON SYNC (FIXED)
+   BUTTON SYNC
 ========================= */
 function syncButtons(){
   document.querySelectorAll(".card").forEach(card=>{
@@ -146,9 +135,11 @@ function syncButtons(){
 
     if(card.id === "usdCard"){
       btn.innerText = hiddenState.usd ? "Show" : "Hide";
-    } else if(card.querySelector("#eurBalance")){
+    } 
+    else if(card.querySelector("#eurBalance")){
       btn.innerText = hiddenState.eur ? "Show" : "Hide";
-    } else if(card.querySelector("#krwBalance")){
+    } 
+    else if(card.querySelector("#krwBalance")){
       btn.innerText = hiddenState.krw ? "Show" : "Hide";
     }
   });
@@ -156,28 +147,22 @@ function syncButtons(){
 
 
 /* =========================
-   INIT (SAFE)
+   INIT
 ========================= */
 let fxInterval;
 
 document.addEventListener("DOMContentLoaded", () => {
-  try {
-    loadBalances();
-    loadImage();
-    initImagePicker();
+  loadBalances();
+  loadImage();
+  initImagePicker();
 
-    if(!fxInterval){
-      fxInterval = setInterval(loadBalances, 60000);
-    }
-
-    setTimeout(() => {
-      if(account.restricted) showCompliance();
-    }, 2000);
-
-  } catch(err){
-    console.error("INIT ERROR:", err);
-    alert("JS Error: " + err.message);
+  if(!fxInterval){
+    fxInterval = setInterval(loadBalances, 60000);
   }
+
+  setTimeout(() => {
+    if(account.restricted) showCompliance();
+  }, 1500);
 });
 
 
@@ -194,7 +179,6 @@ function showCompliance(){
 
   modal.style.display = "flex";
   document.body.style.overflow = "hidden";
-
   modalOpen = true;
 }
 
@@ -204,7 +188,6 @@ function closeModal(){
 
   modal.style.display = "none";
   document.body.style.overflow = "";
-
   modalOpen = false;
 }
 
@@ -223,41 +206,16 @@ function blocked(){
    DRAWER
 ========================= */
 function openDrawer(){
-  const drawer = document.getElementById("drawer");
-  const overlay = document.getElementById("drawerOverlay");
-
-  if(!drawer || !overlay) return;
-
-  drawer.classList.add("open");
-  overlay.classList.add("active");
+  document.getElementById("drawer")?.classList.add("open");
+  document.getElementById("drawerOverlay")?.classList.add("active");
   document.body.style.overflow = "hidden";
 }
 
 function closeDrawer(){
-  const drawer = document.getElementById("drawer");
-  const overlay = document.getElementById("drawerOverlay");
-
-  if(!drawer || !overlay) return;
-
-  drawer.classList.remove("open");
-  overlay.classList.remove("active");
+  document.getElementById("drawer")?.classList.remove("open");
+  document.getElementById("drawerOverlay")?.classList.remove("active");
   document.body.style.overflow = "";
 }
-
-
-/* =========================
-   CLICK OUTSIDE
-========================= */
-document.addEventListener("click", (e) => {
-  const drawer = document.getElementById("drawer");
-  const menuBtn = document.querySelector(".menuBtn");
-
-  if(!drawer || !drawer.classList.contains("open")) return;
-
-  if(!drawer.contains(e.target) && (!menuBtn || !menuBtn.contains(e.target))){
-    closeDrawer();
-  }
-});
 
 
 /* =========================
@@ -272,22 +230,7 @@ document.addEventListener("keydown", (e) => {
 
 
 /* =========================
-   LOGOUT
-========================= */
-async function logout(){
-  try {
-    if(window.supabase){
-      await supabase.auth.signOut();
-    }
-  } catch {}
-
-  localStorage.clear();
-  window.location.href = "index.html";
-}
-
-
-/* =========================
-   PROFILE IMAGE (SAFE FIX)
+   PROFILE IMAGE
 ========================= */
 function pickImage(){
   document.getElementById("imgPicker")?.click();
@@ -302,7 +245,6 @@ function initImagePicker(){
     if(!file) return;
 
     const reader = new FileReader();
-
     reader.onload = () => {
       localStorage.setItem("profileImg", reader.result);
       loadImage();
@@ -316,11 +258,8 @@ function loadImage(){
   const img = localStorage.getItem("profileImg");
   if(!img) return;
 
-  const profile = document.getElementById("profileImg");
-  const drawer = document.getElementById("drawerImg");
-
-  if(profile) profile.src = img;
-  if(drawer) drawer.src = img;
+  document.getElementById("profileImg")?.setAttribute("src", img);
+  document.getElementById("drawerImg")?.setAttribute("src", img);
 }
 
 
@@ -333,9 +272,11 @@ function toggleBalance(btn){
 
   if(card.id === "usdCard"){
     hiddenState.usd = !hiddenState.usd;
-  } else if(card.querySelector("#eurBalance")){
+  } 
+  else if(card.querySelector("#eurBalance")){
     hiddenState.eur = !hiddenState.eur;
-  } else if(card.querySelector("#krwBalance")){
+  } 
+  else if(card.querySelector("#krwBalance")){
     hiddenState.krw = !hiddenState.krw;
   }
 
@@ -354,30 +295,6 @@ function toggleTx(){
   el.style.display =
     el.style.display === "block" ? "none" : "block";
 }
-
-
-/* =========================
-   CARD FLIP
-========================= */
-let flipInterval;
-
-function startCardFlip(){
-  stopCardFlip();
-
-  flipInterval = setInterval(() => {
-    document.getElementById("usdCard")?.classList.toggle("active");
-  }, 4000);
-}
-
-function stopCardFlip(){
-  if(flipInterval) clearInterval(flipInterval);
-}
-
-document.addEventListener("visibilitychange", () => {
-  document.hidden ? stopCardFlip() : startCardFlip();
-});
-
-startCardFlip();
 
 
 /* =========================
