@@ -13,7 +13,6 @@ body {
   padding-bottom:90px;
 }
 
-/* prevent scroll when drawer/modal open */
 body.lock {
   overflow:hidden;
 }
@@ -61,7 +60,7 @@ body.lock {
 }
 
 /* =========================
-   CARDS
+   ACCOUNT CARDS
 ========================= */
 .cards {
   display:flex;
@@ -81,30 +80,24 @@ body.lock {
   border-radius:18px;
   padding:20px;
   background:linear-gradient(135deg, #1e4fbf, #173c8f);
-  box-shadow:0 8px 18px rgba(0,40,120,0.18);
+  box-shadow:0 10px 24px rgba(0,40,120,0.2);
   color:#fff;
-
-  /* premium feel */
-  backdrop-filter:blur(6px);
 }
 
 .cardHeader {
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:10px;
 }
 
 .card h3 {
   font-size:14px;
-  font-weight:600;
   color:rgba(255,255,255,0.85);
 }
 
 .card p {
   font-size:26px;
   font-weight:700;
-  margin:6px 0;
 }
 
 .card small {
@@ -112,35 +105,15 @@ body.lock {
   color:rgba(255,255,255,0.75);
 }
 
-/* =========================
-   BADGE
-========================= */
 .badge {
   background:rgba(255,255,255,0.2);
-  color:#fff;
   padding:4px 10px;
   border-radius:8px;
   font-size:11px;
-  font-weight:600;
 }
 
-/* =========================
-   BUTTONS (SCOPED)
-========================= */
-button {
-  border:none;
-  border-radius:10px;
-  padding:10px 14px;
-  font-weight:600;
-  cursor:pointer;
-}
-
-button:active {
-  transform:scale(0.97);
-}
-
-/* card buttons */
 .card button {
+  margin-top:10px;
   background:rgba(255,255,255,0.2);
   color:#fff;
 }
@@ -165,56 +138,103 @@ button:active {
 }
 
 .icon {
-  display:flex;
-  justify-content:center;
-  align-items:center;
   margin-bottom:6px;
 }
 
 /* =========================
-   TRANSACTIONS
+   TRANSACTIONS (REAL FIX)
 ========================= */
 .transactions {
   padding:16px;
 }
 
-.transactions h3 {
-  font-size:18px;
-  margin-bottom:10px;
+/* header */
+.sectionHeader {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:14px;
 }
 
+.sectionHeader h3 {
+  font-size:18px;
+  font-weight:700;
+}
+
+.viewAll {
+  background:none;
+  color:#2a6edb;
+  font-size:13px;
+}
+
+/* transaction card */
 .tx {
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:14px 0;
-  border-bottom:1px solid #eee;
+
+  background:#fff;
+  border-radius:16px;
+  padding:14px 16px;
+  margin-bottom:12px;
+
+  box-shadow:0 6px 16px rgba(0,0,0,0.05);
+
+  transition:0.2s ease;
 }
 
-.tx small {
+.tx:active {
+  transform:scale(0.98);
+}
+
+/* left */
+.txLeft {
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+
+.txLeft strong {
+  font-size:14px;
+  font-weight:600;
+}
+
+.txLeft small {
   font-size:12px;
-  color:#888;
+  color:#8a8f98;
+}
+
+/* right */
+.txRight {
+  text-align:right;
 }
 
 .amount {
+  font-size:16px;
   font-weight:700;
-  font-size:15px;
 }
 
 .green {
-  color:#18a05e;
+  color:#1dbf73;
 }
 
+.status {
+  font-size:11px;
+  color:#999;
+}
+
+/* details panel */
 .txDetails {
   display:none;
-  background:#f4f6fa;
-  padding:12px;
-  border-radius:10px;
+  background:#fff;
+  border-radius:14px;
+  padding:14px;
   margin-top:10px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.04);
 }
 
 /* =========================
-   DRAWER (PROPER FIX)
+   DRAWER
 ========================= */
 .drawer {
   position:fixed;
@@ -225,10 +245,8 @@ button:active {
   max-width:320px;
   height:100%;
   background:#fff;
-  transition:transform 0.28s ease;
+  transition:0.28s ease;
   z-index:20;
-  display:flex;
-  flex-direction:column;
   box-shadow:4px 0 24px rgba(0,0,0,0.18);
 }
 
@@ -236,7 +254,6 @@ button:active {
   transform:translateX(0);
 }
 
-/* overlay */
 .drawerOverlay {
   position:fixed;
   inset:0;
@@ -249,21 +266,12 @@ button:active {
   display:block;
 }
 
-/* structure */
-.drawerContent {
-  display:flex;
-  flex-direction:column;
-  height:100%;
-}
-
-/* header */
 .drawerHeader {
   display:flex;
   align-items:center;
   gap:12px;
-  padding:20px 18px;
+  padding:20px;
   border-bottom:1px solid #eee;
-  position:relative;
 }
 
 .drawerHeader img {
@@ -271,36 +279,12 @@ button:active {
   height:52px;
   border-radius:50%;
   object-fit:cover;
-  border:1px solid #e5e7eb;
-  flex-shrink:0;
-}
-
-.drawerUser {
-  display:flex;
-  flex-direction:column;
-}
-
-.drawerUser strong {
-  font-size:15px;
-}
-
-.drawerUser small {
-  font-size:12px;
-  color:#888;
 }
 
 .closeBtn {
   position:absolute;
   right:14px;
   top:14px;
-  background:none;
-  font-size:18px;
-  color:#555;
-}
-
-/* menu */
-.drawerMenu {
-  padding:10px 0;
 }
 
 .drawerMenu button {
@@ -308,25 +292,6 @@ button:active {
   text-align:left;
   padding:14px 18px;
   background:none;
-  font-size:15px;
-  color:#222;
-}
-
-.drawerMenu button:hover {
-  background:#f4f6fa;
-}
-
-/* footer */
-.drawerFooter {
-  margin-top:auto;
-  padding:16px;
-  border-top:1px solid #eee;
-}
-
-.drawerFooter button {
-  width:100%;
-  background:#eef3fb;
-  color:#2a6edb;
 }
 
 /* =========================
@@ -339,38 +304,20 @@ button:active {
   justify-content:center;
   align-items:center;
   background:rgba(0,0,0,0.35);
-  z-index:30;
 }
 
 .modalBox {
   width:90%;
   max-width:400px;
+  background:#fff;
   padding:20px;
   border-radius:16px;
-  background:#fff;
-  box-shadow:0 15px 40px rgba(0,0,0,0.2);
-  position:relative;
-}
-
-.closeX {
-  position:absolute;
-  right:15px;
-  top:15px;
-  background:none;
-  font-size:16px;
-  color:#666;
 }
 
 .modalActions {
   display:flex;
   gap:10px;
   margin-top:15px;
-}
-
-.modalActions button {
-  flex:1;
-  background:#eef3fb;
-  color:#2a6edb;
 }
 
 /* =========================
@@ -382,7 +329,7 @@ button:active {
   width:100%;
   display:flex;
   justify-content:space-around;
-  padding:10px 10px calc(10px + env(safe-area-inset-bottom));
+  padding:10px;
   background:#fff;
   border-top:1px solid #eee;
 }
@@ -400,7 +347,7 @@ button:active {
 }
 
 /* =========================
-   SVG ICON FIX
+   SVG FIX
 ========================= */
 .icon svg,
 .navItem svg {
