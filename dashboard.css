@@ -1,30 +1,35 @@
 /* =========================
-   BASE (REAL APP FEEL)
+   BASE
 ========================= */
 body {
   margin:0;
   font-family:-apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
-  background:#f4f6fa;
+  background:linear-gradient(#eef2f8,#f6f8fc);
   color:#111;
   -webkit-font-smoothing:antialiased;
 }
 
 .app {
-  padding-bottom:80px; /* space for bottom nav later */
+  padding-bottom:90px;
 }
 
 /* =========================
-   TOPBAR (NATIVE STYLE)
+   TOPBAR (REAL APP FEEL)
 ========================= */
 .topbar {
   display:flex;
   justify-content:space-between;
   align-items:center;
   padding:14px 16px;
-  background:#fff;
+
+  background:rgba(255,255,255,0.85);
+  backdrop-filter:blur(12px);
+
+  border-bottom:1px solid rgba(0,0,0,0.05);
+
   position:sticky;
   top:0;
-  z-index:5;
+  z-index:10;
 }
 
 .user {
@@ -42,24 +47,25 @@ body {
 }
 
 /* =========================
-   NOTICE BAR (IMPORTANT)
+   NOTICE
 ========================= */
 .notice {
-  background:#fff3cd;
-  color:#7a5b00;
+  background:linear-gradient(to right,#f6e2a6,#f1cf73);
+  color:#5c4700;
   padding:10px;
   text-align:center;
   font-size:13px;
+  font-weight:500;
 }
 
 /* =========================
-   CARD SLIDER (REAL SWIPE)
+   CARD SLIDER
 ========================= */
 .cards {
   display:flex;
-  gap:12px;
+  gap:14px;
   overflow-x:auto;
-  padding:16px;
+  padding:18px 16px;
   scroll-snap-type:x mandatory;
 }
 
@@ -67,102 +73,150 @@ body {
   display:none;
 }
 
+/* =========================
+   PREMIUM GLASS CARDS
+========================= */
 .card {
+  position:relative;
   min-width:88%;
   scroll-snap-align:center;
-  background:#ffffff;
-  border-radius:20px;
-  padding:18px;
-  box-shadow:0 8px 25px rgba(0,0,0,0.06);
+
+  border-radius:22px;
+  padding:20px;
+
+  background:linear-gradient(
+    135deg,
+    rgba(18,65,155,0.92),
+    rgba(10,35,110,0.88)
+  );
+
+  backdrop-filter:blur(18px);
+
+  border:1px solid rgba(255,255,255,0.25);
+
+  box-shadow:
+    0 14px 30px rgba(0,40,120,0.25),
+    inset 0 1px 0 rgba(255,255,255,0.35);
+
+  color:#fff;
 }
 
-/* CARD STRUCTURE */
+/* subtle light reflection */
+.card::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:22px;
+  background:linear-gradient(
+    120deg,
+    rgba(255,255,255,0.25),
+    transparent 60%
+  );
+  opacity:0.15;
+  pointer-events:none;
+}
+
+/* =========================
+   CARD CONTENT
+========================= */
 .cardHeader {
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:10px;
+  margin-bottom:12px;
 }
 
 .card h3 {
-  font-size:15px;
+  font-size:14px;
   font-weight:600;
-  color:#555;
+  color:rgba(255,255,255,0.85);
 }
 
 .card p {
-  font-size:26px;
+  font-size:28px;
   font-weight:700;
+  letter-spacing:0.5px;
   margin:6px 0;
 }
 
 .card small {
-  color:#888;
   font-size:12px;
-  display:block;
-  margin-bottom:12px;
+  color:rgba(255,255,255,0.75);
+  margin-bottom:10px;
 }
 
 /* =========================
-   BADGE (REAL BANK STYLE)
+   BADGE
 ========================= */
 .badge {
-  background:#fff4cc;
-  color:#8a6d00;
-  padding:4px 8px;
-  border-radius:8px;
+  background:rgba(255,255,255,0.2);
+  color:#fff;
+  padding:4px 10px;
+  border-radius:10px;
   font-size:11px;
   font-weight:600;
 }
 
 /* =========================
-   BUTTONS (TOUCH REALISM)
+   BUTTONS
 ========================= */
 button {
-  background:#eef2f8;
+  background:rgba(255,255,255,0.2);
   border:none;
   border-radius:12px;
   padding:10px 14px;
   font-weight:600;
-  color:#2a6edb;
+  color:#fff;
   transition:0.15s;
 }
 
 button:active {
   transform:scale(0.96);
-  background:#dfe7f7;
+  background:rgba(255,255,255,0.35);
 }
 
 /* =========================
-   QUICK ACTIONS
-========================= */
-.actions {
-  display:flex;
-  gap:10px;
-  padding:0 16px 16px;
-}
-
-/* =========================
-   GRID (BANK FEATURE MENU)
+   GRID
 ========================= */
 .grid {
   display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap:12px;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
   padding:16px;
 }
 
 .gridItem {
-  background:white;
+  background:rgba(255,255,255,0.9);
+  backdrop-filter:blur(10px);
   border-radius:16px;
-  padding:14px;
+  padding:16px;
   text-align:center;
   font-size:13px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.05);
+  box-shadow:0 6px 18px rgba(0,0,0,0.05);
+  font-weight:500;
+}
+
+.icon {
+  font-size:22px;
+  margin-bottom:6px;
 }
 
 /* =========================
-   TRANSACTIONS (REAL LIST)
+   ACTIONS
+========================= */
+.actions {
+  display:flex;
+  gap:12px;
+  padding:0 16px 16px;
+}
+
+.actions button {
+  background:#eef3fb;
+  color:#2a6edb;
+}
+
+/* =========================
+   TRANSACTIONS
 ========================= */
 .transactions {
   padding:16px;
@@ -170,14 +224,14 @@ button:active {
 
 .transactions h3 {
   font-size:18px;
-  margin-bottom:10px;
+  margin-bottom:12px;
 }
 
 .tx {
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:14px 0;
+  padding:16px 0;
   border-bottom:1px solid #eee;
 }
 
@@ -193,15 +247,23 @@ button:active {
 
 .amount {
   font-weight:700;
-  font-size:15px;
+  font-size:16px;
 }
 
 .green {
-  color:#1bb76e;
+  color:#18a05e;
+}
+
+.txDetails {
+  display:none;
+  background:#f6f8fc;
+  padding:14px;
+  border-radius:12px;
+  margin-top:10px;
 }
 
 /* =========================
-   DRAWER + OVERLAY (FIXED)
+   DRAWER
 ========================= */
 .drawer {
   position:fixed;
@@ -220,11 +282,8 @@ button:active {
 
 .drawerOverlay {
   position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.3);
+  inset:0;
+  background:rgba(0,0,0,0.35);
   display:none;
   z-index:15;
 }
@@ -249,17 +308,16 @@ button:active {
   width:100%;
   text-align:left;
   margin-top:10px;
+  background:#eef2f8;
+  color:#2a6edb;
 }
 
 /* =========================
-   MODAL (BANK ALERT STYLE)
+   MODAL
 ========================= */
 .modal {
   position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
+  inset:0;
   display:none;
   justify-content:center;
   align-items:flex-end;
@@ -268,8 +326,37 @@ button:active {
 }
 
 .modalBox {
-  background:white;
+  background:#fff;
   width:100%;
   border-radius:20px 20px 0 0;
-  padding:20px;
+  padding:22px;
+}
+
+/* =========================
+   BOTTOM NAV (KOREAN STYLE)
+========================= */
+.bottomNav {
+  position:fixed;
+  bottom:0;
+  width:100%;
+  display:flex;
+  justify-content:space-around;
+  padding:10px;
+
+  background:rgba(255,255,255,0.9);
+  backdrop-filter:blur(10px);
+
+  border-top:1px solid #eee;
+}
+
+.navItem {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  font-size:12px;
+  color:#777;
+}
+
+.navItem.active {
+  color:#2a6edb;
 }
