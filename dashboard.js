@@ -39,50 +39,44 @@ window.addEventListener("DOMContentLoaded", () => {
   const slides = document.querySelectorAll(".slide");
   const dots = document.querySelectorAll(".dot");
 
-  /* ================= PROFILE IMAGE (PERSISTENT) ================= */
+/* ================= PROFILE IMAGE ================= */
 
-  const avatar = $("avatar");
-  const drawerAvatar = $("drawerAvatar");
-  const avatarInput = $("avatarInput");
+const avatar = $("avatar");
+const drawerAvatar = $("drawerAvatar");
+const avatarInput = $("avatarInput");
 
-  const savedAvatar = localStorage.getItem("kib_avatar");
+const saved = localStorage.getItem("kib_avatar");
+const fallback = "https://i.imgur.com/6VBx3io.png";
 
-  const fallback = "https://i.imgur.com/6VBx3io.png";
+function setAvatar(src) {
+  if (avatar) avatar.src = src;
+  if (drawerAvatar) drawerAvatar.src = src;
+}
 
-  // load image
-  if (savedAvatar) {
-    if (avatar) avatar.src = savedAvatar;
-    if (drawerAvatar) drawerAvatar.src = savedAvatar;
-  } else {
-    if (avatar) avatar.src = fallback;
-    if (drawerAvatar) drawerAvatar.src = fallback;
-  }
+// load
+setAvatar(saved || fallback);
 
-  // click avatar → open gallery
-  avatar?.addEventListener("click", () => {
-    avatarInput?.click();
-  });
+// open picker
+avatar?.addEventListener("click", () => {
+  avatarInput?.click();
+});
 
-  // save image permanently
-  avatarInput?.addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+// save permanently
+avatarInput?.addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
 
-    const reader = new FileReader();
+  const reader = new FileReader();
 
-    reader.onload = function (event) {
-      const base64 = event.target.result;
+  reader.onload = (ev) => {
+    const base64 = ev.target.result;
 
-      // save forever
-      localStorage.setItem("kib_avatar", base64);
+    localStorage.setItem("kib_avatar", base64);
+    setAvatar(base64);
+  };
 
-      // update UI
-      if (avatar) avatar.src = base64;
-      if (drawerAvatar) drawerAvatar.src = base64;
-    };
-
-    reader.readAsDataURL(file);
-  });
+  reader.readAsDataURL(file);
+});
 
   /* ================= BALANCES ================= */
   function renderBalances() {
@@ -95,69 +89,82 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* ================= SLIDER ================= */
+/* ================= SLIDER (FINAL STABLE FIX) ================= */
 
-  function getWidth() {
-    return slider?.parentElement.offsetWidth || 0;
+// ✅ Always get FULL container width (never 0 like slide.offsetWidth)
+function getWidth() {
+  return slider?.parentElement?.getBoundingClientRect().width || 0;
+}
+
+// ✅ Update slider position
+function updateSlider(animate = true) {
+  if (!slider || !slides.length) return;
+
+  const width = getWidth();
+
+  // 🔥 Wait until layout is ready
+  if (!width || width < 10) {
+    return requestAnimationFrame(() => updateSlider(animate));
   }
 
-  function updateSlider(animate = true) {
-    if (!slider) return;
+  slider.style.willChange = "transform";
+slider.style.transition = animate
+  ? "transform .35s cubic-bezier(.22,.61,.36,1)"
+  : "none";
 
-    const width = getWidth();
+  slider.style.transform = `translate3d(-${state.index * width}px, 0, 0)`;
 
-    if (!width) {
-      requestAnimationFrame(() => updateSlider(animate));
-      return;
-    }
-
-    slider.style.transition = animate ? "transform .35s ease" : "none";
-    slider.style.transform = `translate3d(-${state.index * width}px,0,0)`;
-
-    if (dots.length === slides.length) {
-      dots.forEach(d => d.classList.remove("active"));
-      dots[state.index]?.classList.add("active");
-    }
+  // ✅ Dots (safe)
+  if (dots.length) {
+    dots.forEach(d => d.classList.remove("active"));
+    dots[state.index]?.classList.add("active");
   }
+}
 
-  /* ================= TOUCH ================= */
+/* ================= TOUCH (SMOOTH + SAFE) ================= */
 
-  slider?.addEventListener("touchstart", (e) => {
-    state.dragging = true;
-    state.startX = e.touches[0].clientX;
-    state.currentX = state.startX;
-    slider.style.transition = "none";
-  }, { passive: true });
+slider?.addEventListener("touchstart", (e) => {
+  if (!slider) return;
 
-  slider?.addEventListener("touchmove", (e) => {
-    if (!state.dragging) return;
+  state.dragging = true;
+  state.startX = e.touches[0].clientX;
+  state.currentX = state.startX;
 
-    state.currentX = e.touches[0].clientX;
-    const dx = (state.currentX - state.startX) * 0.9;
+  slider.style.transition = "none";
+}, { passive: true });
 
-    const width = getWidth() || 1;
-    slider.style.transform = `translate3d(-${state.index * width + dx}px,0,0)`;
-  }, { passive: true });
+slider?.addEventListener("touchmove", (e) => {
+  if (!state.dragging || !slider) return;
 
-  slider?.addEventListener("touchend", () => {
-    if (!state.dragging) return;
+  state.currentX = e.touches[0].clientX;
+  const dx = (state.currentX - state.startX) * 0.9;
 
-    state.dragging = false;
+  const width = getWidth() || 1;
 
-    const dx = state.currentX - state.startX;
+  slider.style.transform = `translate3d(-${state.index * width + dx}px, 0, 0)`;
+}, { passive: true });
 
-    if (dx > 60) state.index--;
-    if (dx < -60) state.index++;
+slider?.addEventListener("touchend", () => {
+  if (!state.dragging) return;
 
-    state.index = Math.max(0, Math.min(state.index, slides.length - 1));
+  state.dragging = false;
 
-    updateSlider(true);
-  });
+  const dx = state.currentX - state.startX;
 
-  slider?.addEventListener("touchcancel", () => {
-    state.dragging = false;
-  });
+  // ✅ Swipe threshold
+  if (dx > 60) state.index--;
+  if (dx < -60) state.index++;
 
+  // ✅ Clamp index
+  state.index = Math.max(0, Math.min(state.index, slides.length - 1));
+
+  updateSlider(true);
+});
+
+slider?.addEventListener("touchcancel", () => {
+  state.dragging = false;
+});
+  
   /* ================= TRANSACTIONS ================= */
 
   const txList = $("txList");
@@ -203,26 +210,33 @@ window.addEventListener("DOMContentLoaded", () => {
     viewAllBtn.textContent = expanded ? "Show less" : "View all →";
   });
 
-  /* ================= POPUP ================= */
+function showPopup(html) {
+  const popup = $("popup");
+  const content = $("popupContent");
 
-  function showPopup(html) {
-    const popup = $("popup");
-    const content = $("popupContent");
+  if (!popup || !content) return;
 
-    if (!popup || !content) return;
+  content.innerHTML = html;
 
-    content.innerHTML = html;
-    popup.hidden = false;
+  popup.hidden = false;
 
-    requestAnimationFrame(() => popup.classList.add("show"));
+  requestAnimationFrame(() => {
+    popup.classList.add("show");
+  });
 
-    popup.onclick = (e) => {
-      if (e.target.id === "popup" || e.target.id === "closePopup") {
-        popup.classList.remove("show");
-        setTimeout(() => popup.hidden = true, 200);
-      }
-    };
-  }
+  // 🔥 CLEAR OLD HANDLER FIRST
+  popup.onclick = null;
+
+  popup.onclick = (e) => {
+    if (
+      e.target.id === "popup" ||
+      e.target.id === "closePopup"
+    ) {
+      popup.classList.remove("show");
+      setTimeout(() => (popup.hidden = true), 200);
+    }
+  };
+}
 
   $("transferBtn")?.addEventListener("click", () => {
     showPopup(`
@@ -267,11 +281,14 @@ window.addEventListener("DOMContentLoaded", () => {
   /* ================= INIT ================= */
 
   function init() {
-    renderBalances();
-    renderTransactions(1);
-    updateSlider(false);
-  }
+  renderBalances();
+  renderTransactions(1);
 
-  window.addEventListener("load", init);
+  state.index = 0; // 🔥 force reset (prevents broken position)
 
+  updateSlider(false);
+}
+
+  requestAnimationFrame(() => {
+  requestAnimationFrame(init);
 });
