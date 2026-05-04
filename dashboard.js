@@ -8,36 +8,29 @@ const account = {
 
 
 /* =========================
-   MID-MARKET RATES (BASE)
+   FX ENGINE (CACHED LIKE BANK)
 ========================= */
 const midMarket = {
   EUR: 0.94,
   KRW: 1430
 };
 
+let fx = {
+  eurRate: 0,
+  krwRate: 0,
+  eurValue: 0,
+  krwValue: 0
+};
 
-/* =========================
-   BANK FX ENGINE (REALISTIC)
-========================= */
-function applyBankSpread(rate, currency){
-  let spread;
+function computeFX(){
+  const eurSpread = 0.012;
+  const krwSpread = 0.018;
 
-  switch(currency){
-    case "EUR":
-      spread = 0.012; // 1.2%
-      break;
-    case "KRW":
-      spread = 0.018; // 1.8%
-      break;
-    default:
-      spread = 0.015;
-  }
+  fx.eurRate = midMarket.EUR * (1 - eurSpread);
+  fx.krwRate = midMarket.KRW * (1 - krwSpread);
 
-  return rate * (1 - spread);
-}
-
-function getBankRate(currency){
-  return applyBankSpread(midMarket[currency], currency);
+  fx.eurValue = account.usd * fx.eurRate;
+  fx.krwValue = Math.floor(account.usd * fx.krwRate);
 }
 
 
@@ -47,33 +40,31 @@ function getBankRate(currency){
 function formatCurrency(amount, currency){
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: currency,
+    currency,
     maximumFractionDigits: 0
   }).format(amount);
 }
 
 
 /* =========================
-   LOAD BALANCES (FIXED)
+   LOAD BALANCES (SINGLE SOURCE)
 ========================= */
 function loadBalances(){
 
-  const eurRate = getBankRate("EUR");
-  const krwRate = getBankRate("KRW");
+  computeFX();
 
   document.getElementById("usdBalance").innerText =
-    formatCurrency(account.usd, "USD");
+    hiddenState.usd ? "••••" : formatCurrency(account.usd, "USD");
 
   document.getElementById("eurBalance").innerText =
-    formatCurrency(account.usd * eurRate, "EUR");
+    hiddenState.eur ? "••••" : formatCurrency(fx.eurValue, "EUR");
 
   document.getElementById("krwBalance").innerText =
-    "₩" + Math.floor(account.usd * krwRate).toLocaleString();
+    hiddenState.krw ? "••••" : "₩" + fx.krwValue.toLocaleString();
 
-  // OPTIONAL: show rate info (if element exists)
-  if(document.getElementById("eurRateText")){
-    document.getElementById("eurRateText").innerText =
-      `1 USD ≈ ${eurRate.toFixed(4)} EUR`;
+  const rateEl = document.getElementById("eurRateText");
+  if(rateEl){
+    rateEl.innerText = `1 USD ≈ ${fx.eurRate.toFixed(4)} EUR (bank rate)`;
   }
 }
 
@@ -96,12 +87,9 @@ function closeModal(){
   document.getElementById("modal").style.display = "none";
 }
 
-
-// AUTO POPUP (REALISTIC)
+// auto popup
 setTimeout(() => {
-  if(account.restricted){
-    showCompliance();
-  }
+  if(account.restricted) showCompliance();
 }, 2000);
 
 
@@ -111,30 +99,30 @@ setTimeout(() => {
 function blocked(){
   if(account.restricted){
     showCompliance();
-    return;
   }
 }
 
 
 /* =========================
-   DRAWER + OVERLAY (FIXED)
+   DRAWER (SAFE)
 ========================= */
 function openDrawer(){
   const drawer = document.getElementById("drawer");
   const overlay = document.getElementById("drawerOverlay");
 
   drawer.classList.toggle("open");
-  overlay.classList.toggle("active");
+  if(overlay) overlay.classList.toggle("active");
 }
 
 function closeDrawer(){
   document.getElementById("drawer").classList.remove("open");
-  document.getElementById("drawerOverlay").classList.remove("active");
+  const overlay = document.getElementById("drawerOverlay");
+  if(overlay) overlay.classList.remove("active");
 }
 
 
 /* =========================
-   LOGOUT (SUPABASE SAFE)
+   LOGOUT
 ========================= */
 async function logout(){
   try {
@@ -155,13 +143,13 @@ function pickImage(){
   document.getElementById("imgPicker").click();
 }
 
-document.getElementById("imgPicker").addEventListener("change", function(e){
+document.getElementById("imgPicker").addEventListener("change", e => {
   const file = e.target.files[0];
   if(!file) return;
 
   const reader = new FileReader();
 
-  reader.onload = function(){
+  reader.onload = () => {
     localStorage.setItem("profileImg", reader.result);
     loadImage();
   };
@@ -182,7 +170,7 @@ loadImage();
 
 
 /* =========================
-   BALANCE TOGGLE (FIXED)
+   BALANCE TOGGLE (STABLE)
 ========================= */
 let hiddenState = {
   usd: false,
@@ -192,34 +180,32 @@ let hiddenState = {
 
 function toggleBalance(btn){
   const card = btn.closest(".card");
-  const balanceEl = card.querySelector("p");
-
-  const eurRate = getBankRate("EUR");
-  const krwRate = getBankRate("KRW");
 
   if(card.id === "usdCard"){
     hiddenState.usd = !hiddenState.usd;
 
-    balanceEl.innerText = hiddenState.usd
-      ? "••••"
-      : formatCurrency(account.usd, "USD");
-
-  } else if(balanceEl.id === "eurBalance"){
+  } else if(card.querySelector("#eurBalance")){
     hiddenState.eur = !hiddenState.eur;
 
-    balanceEl.innerText = hiddenState.eur
-      ? "••••"
-      : formatCurrency(account.usd * eurRate, "EUR");
-
-  } else if(balanceEl.id === "krwBalance"){
+  } else if(card.querySelector("#krwBalance")){
     hiddenState.krw = !hiddenState.krw;
-
-    balanceEl.innerText = hiddenState.krw
-      ? "••••"
-      : "₩" + Math.floor(account.usd * krwRate).toLocaleString();
   }
 
   btn.innerText = btn.innerText === "Hide" ? "Show" : "Hide";
+
+  loadBalances(); // re-render properly
+}
+
+
+/* =========================
+   TRANSACTION TOGGLE (NEW)
+========================= */
+function toggleTx(){
+  const el = document.getElementById("txDetails");
+  if(!el) return;
+
+  el.style.display =
+    el.style.display === "block" ? "none" : "block";
 }
 
 
@@ -230,7 +216,8 @@ let flipInterval;
 
 function startCardFlip(){
   flipInterval = setInterval(() => {
-    document.getElementById("usdCard").classList.toggle("active");
+    const el = document.getElementById("usdCard");
+    if(el) el.classList.toggle("active");
   }, 4000);
 }
 
