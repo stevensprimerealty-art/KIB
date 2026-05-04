@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>KIB Dashboard</title>
-<link rel="stylesheet" href="dashboard.css?v=11"/>
+<link rel="stylesheet" href="dashboard.css?v=12"/>
 </head>
 
 <body>
@@ -16,14 +16,12 @@
 
   <div class="user">
     <img id="avatar" class="avatar" src="https://i.imgur.com/6VBx3io.png"/>
-    <input type="file" id="avatarInput" hidden />
     <div>
       <div class="hello">Hello</div>
       <div class="name">Mr Kim Dae Hyun</div>
     </div>
   </div>
 
-  <!-- ✅ USE SAFE WRAPPER -->
   <button onclick="safeOpenNotifications()">🔔</button>
 </header>
 
@@ -37,20 +35,21 @@
 
     <div class="acct">IBAN: IT60X0542****3456</div>
 
+    <!-- ✅ CLEAN SLIDES (NO data-original) -->
     <div class="slider" id="slider">
 
       <div class="slide" data-currency="EUR">
-        <div class="amount" data-original="€749,700.00">€749,700.00</div>
+        <div class="amount">€0.00</div>
         <div class="label">EUR</div>
       </div>
 
       <div class="slide" data-currency="USD">
-        <div class="amount" data-original="$882,000.00">$882,000.00</div>
+        <div class="amount">$0.00</div>
         <div class="label">USD</div>
       </div>
 
       <div class="slide" data-currency="KRW">
-        <div class="amount" data-original="₩1,299,186,000">₩1,299,186,000</div>
+        <div class="amount">₩0</div>
         <div class="label">KRW</div>
       </div>
 
@@ -71,21 +70,16 @@
 
   <div class="tx-header">
     <h3>Transactions</h3>
-
     <button onclick="safeViewAll()">View all →</button>
   </div>
 
-  <div id="txList">
-    <div class="tx">Loading...</div>
-  </div>
+  <div id="txList"></div>
 
 </section>
 
 <section class="actions">
 
-  <!-- ✅ SAFE WRAPPER -->
   <button onclick="safeOpenTransfer()">⇄ Transfer</button>
-
   <button onclick="openPopup('Scan not available')">📷 Scan</button>
 
   <button onclick="document.getElementById('cardsScreen').hidden=false">
@@ -134,6 +128,7 @@
 
 <!-- ================= SAFE GLOBAL WRAPPERS ================= -->
 <script>
+
 /* POPUP */
 window.openPopup = function(text){
   document.getElementById("popupText").innerHTML = text;
@@ -155,46 +150,44 @@ window.closeDrawer = function(){
   document.getElementById("drawerBackdrop").hidden = true;
 }
 
-/* MASK */
-let hiddenBal = false;
+/* MASK → JS controls actual values */
 window.toggleFallback = function(){
-  hiddenBal = !hiddenBal;
-
-  document.querySelectorAll(".amount").forEach(el=>{
-    el.textContent = hiddenBal ? "••••••" : el.dataset.original;
-  });
-}
-
-/* SAFE VIEW ALL */
-window.safeViewAll = function(){
-  if (window.renderTransactions) {
-    window.renderTransactions(999);
-  } else {
-    openPopup("Loading transactions...");
+  if (window.toggleFallback) {
+    // handled by dashboard.js
   }
 }
 
-/* ✅ SAFE NOTIFICATIONS (NO OVERRIDE) */
+/* VIEW ALL */
+window.safeViewAll = function(){
+  if (window.__renderTransactions) {
+    window.__renderTransactions(999);
+  } else {
+    openPopup("Transactions loading...");
+  }
+}
+
+/* NOTIFICATIONS */
 window.safeOpenNotifications = function(){
-  if (window.openNotifications && window.openNotifications !== window.safeOpenNotifications) {
+  if (window.openNotifications) {
     window.openNotifications();
   } else {
     openPopup("No notifications yet");
   }
 }
 
-/* ✅ SAFE TRANSFER (NO OVERRIDE) */
+/* TRANSFER */
 window.safeOpenTransfer = function(){
-  if (window.openTransfer && window.openTransfer !== window.safeOpenTransfer) {
+  if (window.openTransfer) {
     window.openTransfer();
   } else {
     openPopup("Transfer system loading...");
   }
 }
+
 </script>
 
 <!-- MAIN JS -->
-<script src="dashboard.js?v=9"></script>
+<script src="dashboard.js?v=12"></script>
 
 </body>
 </html>
