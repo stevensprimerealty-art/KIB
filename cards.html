@@ -1,96 +1,117 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>KIB — Cards</title>
-  <link rel="stylesheet" href="cards.css" />
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>KIB Cards</title>
+<link rel="stylesheet" href="cards.css"/>
 </head>
 
 <body>
-  <main class="app">
-    <!-- TOP BAR -->
-    <header class="topbar">
-      <button class="icon-btn" type="button" aria-label="Return to dashboard" onclick="location.href='dashboard.html'">
-        ←
-      </button>
-      <h1 class="title">My Cards</h1>
-      <span aria-hidden="true"></span>
-    </header>
 
-    <!-- KRW CARD -->
-    <section class="card-section" aria-label="KIB KRW Debit Card">
-      <div class="card-label">KIB KRW Debit Card</div>
+<div class="app">
 
-      <button class="card-flip" type="button" data-flip-card="krw" aria-label="Flip KRW card">
-        <div class="flip-inner">
-          <!-- FRONT (your image) -->
-          <div class="flip-face flip-front">
-            <img class="card-img" src="assets/kib-krw-card.PNG" alt="KIB KRW Debit Card" />
-          </div>
+<!-- TOPBAR -->
+<header class="topbar">
+  <button onclick="history.back()">←</button>
+  <h2>Cards</h2>
+  <div></div>
+</header>
 
-          <!-- BACK (simple back design) -->
-          <div class="flip-face flip-back">
-            <div class="mag-strip"></div>
-            <div class="back-row">
-              <div class="cvv-box">
-                <div class="cvv-label">CVV</div>
-                <div class="cvv">***</div>
-              </div>
-              <div class="back-brand">Mastercard</div>
-            </div>
-            <div class="back-note">Tap to flip back</div>
+<!-- CARDS -->
+<section class="digitalCards">
+
+  <!-- USD CARD -->
+  <div class="bankCard primary" onclick="flipCard(this)">
+    <div class="cardInner">
+
+      <!-- FRONT -->
+      <div class="cardFront">
+        <div class="cardTop">
+          <span class="bank">KEB Hana Bank</span>
+          <div class="right">
+            <span class="primaryBadge">Primary</span>
+            <span class="type">VISA</span>
           </div>
         </div>
 
-        <!-- Disabled overlay -->
-        <div class="disabled-overlay" aria-hidden="true">DISABLED</div>
-      </button>
+        <div class="chip"></div>
 
-      <button class="toggle-btn" type="button" data-card="krw" aria-pressed="true">
-        Card Enabled
-      </button>
-    </section>
-
-    <!-- USD CARD -->
-    <section class="card-section" aria-label="KIB USD Debit Card">
-      <div class="card-label">KIB USD Debit Card</div>
-
-      <button class="card-flip" type="button" data-flip-card="usd" aria-label="Flip USD card">
-        <div class="flip-inner">
-          <!-- FRONT (your image) -->
-          <div class="flip-face flip-front">
-            <img class="card-img" src="assets/kib-usd-card.PNG" alt="KIB USD Debit Card" />
-          </div>
-
-          <!-- BACK -->
-          <div class="flip-face flip-back">
-            <div class="mag-strip"></div>
-            <div class="back-row">
-              <div class="cvv-box">
-                <div class="cvv-label">CVV</div>
-                <div class="cvv">***</div>
-              </div>
-              <div class="back-brand">Mastercard</div>
-            </div>
-            <div class="back-note">Tap to flip back</div>
-          </div>
+        <div class="cardNumber" data-full="4242424242420001">
+          •••• •••• •••• 0001
         </div>
 
-        <div class="disabled-overlay" aria-hidden="true">DISABLED</div>
-      </button>
+        <div class="cardBottom">
+          <div>
+            <small>Card Holder</small>
+            <p>Kim Dae Hyun</p>
+          </div>
 
-      <button class="toggle-btn" type="button" data-card="usd" aria-pressed="true">
-        Card Enabled
-      </button>
-    </section>
+          <div>
+            <small>Expires</small>
+            <p>12/29</p>
+          </div>
+        </div>
+      </div>
 
-    <!-- RETURN HOME BUTTON -->
-    <button class="home-btn" type="button" onclick="location.href='dashboard.html'" aria-label="Return to Home">
-      ← Return to Home
-    </button>
-  </main>
+      <!-- BACK -->
+      <div class="cardBack">
+        <div class="stripe"></div>
 
-  <script defer src="cards.js"></script>
+        <div class="cvvBox">
+          <small>CVV</small>
+          <div class="cvv">•••</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- EUR CARD -->
+  <div class="bankCard eur" onclick="flipCard(this)">
+    <div class="cardInner">
+
+      <div class="cardFront">
+        <div class="cardTop">
+          <span class="bank">KEB Hana Bank</span>
+          <span class="type">MASTERCARD</span>
+        </div>
+
+        <div class="chip"></div>
+
+        <div class="cardNumber" data-full="5555444433338821">
+          •••• •••• •••• 8821
+        </div>
+
+        <div class="cardBottom">
+          <div>
+            <small>Card Holder</small>
+            <p>Kim Dae Hyun</p>
+          </div>
+
+          <div>
+            <small>Expires</small>
+            <p>11/28</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cardBack">
+        <div class="stripe"></div>
+
+        <div class="cvvBox">
+          <small>CVV</small>
+          <div class="cvv">•••</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+</div>
+
+<script src="cards.js"></script>
 </body>
 </html>
