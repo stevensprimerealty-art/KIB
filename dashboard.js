@@ -8,7 +8,7 @@ const account = {
 
 
 /* =========================
-   FX ENGINE (REALISTIC CACHE)
+   FX ENGINE (REALISTIC CACHE + ITALY TIME)
 ========================= */
 const midMarket = {
   EUR: 0.94,
@@ -20,13 +20,32 @@ let fx = {
   krwRate: 0,
   eurValue: 0,
   krwValue: 0,
-  timestamp: 0
+  timestamp: null
 };
 
+/* =========================
+   ITALY TIME HELPERS
+========================= */
+function getItalyDate(){
+  return new Date(
+    new Date().toLocaleString("en-US", { timeZone: "Europe/Rome" })
+  );
+}
+
+function getItalyTimeString(){
+  return getItalyDate().toLocaleTimeString("en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false
+  });
+}
+
+/* =========================
+   FX COMPUTE
+========================= */
 function computeFX(){
   const now = Date.now();
 
-  // refresh every 60s
   if (fx.timestamp && (now - fx.timestamp) < 60000) return;
 
   const eurSpread = 0.012;
@@ -57,12 +76,8 @@ function formatKRW(amount){
   return "₩" + Number(amount || 0).toLocaleString("en-US");
 }
 
-function formatTime(ts){
-  if(!ts) return "";
-  return new Date(ts).toLocaleTimeString([], {
-    hour: '2-digit',
-    minute: '2-digit'
-  });
+function formatTime(){
+  return getItalyTimeString(); // always Italy
 }
 
 
@@ -87,7 +102,7 @@ function saveState(){
 
 
 /* =========================
-   LOAD BALANCES (SAFE + CLEAN)
+   LOAD BALANCES
 ========================= */
 function loadBalances(){
 
@@ -118,7 +133,7 @@ function loadBalances(){
 
   if(rateEl && fx.eurRate){
     rateEl.innerText =
-      `1 USD ≈ ${fx.eurRate.toFixed(4)} EUR • ${formatTime(fx.timestamp)}`;
+      `1 USD ≈ ${fx.eurRate.toFixed(4)} EUR · ${formatTime()}`;
   }
 
   syncButtons();
@@ -126,7 +141,7 @@ function loadBalances(){
 
 
 /* =========================
-   BUTTON STATE SYNC (FIXED)
+   BUTTON STATE SYNC
 ========================= */
 function syncButtons(){
   document.querySelectorAll(".card").forEach(card=>{
@@ -158,7 +173,6 @@ document.addEventListener("DOMContentLoaded", () => {
   loadImage();
   initImagePicker();
 
-  // prevent duplicate intervals
   if(!fxInterval){
     fxInterval = setInterval(loadBalances, 60000);
   }
@@ -208,7 +222,7 @@ function blocked(){
 
 
 /* =========================
-   DRAWER (STABLE)
+   DRAWER
 ========================= */
 function openDrawer(){
   const drawer = document.getElementById("drawer");
@@ -233,23 +247,24 @@ function closeDrawer(){
 }
 
 
-/* CLICK OUTSIDE */
+/* =========================
+   CLICK OUTSIDE
+========================= */
 document.addEventListener("click", (e) => {
   const drawer = document.getElementById("drawer");
   const menuBtn = document.querySelector(".menuBtn");
 
   if(!drawer || !drawer.classList.contains("open")) return;
 
-  if(
-    !drawer.contains(e.target) &&
-    (!menuBtn || !menuBtn.contains(e.target))
-  ){
+  if(!drawer.contains(e.target) && (!menuBtn || !menuBtn.contains(e.target))){
     closeDrawer();
   }
 });
 
 
-/* ESC SUPPORT */
+/* =========================
+   ESC SUPPORT
+========================= */
 document.addEventListener("keydown", (e) => {
   if(e.key === "Escape"){
     closeDrawer();
@@ -277,8 +292,7 @@ async function logout(){
    PROFILE IMAGE
 ========================= */
 function pickImage(){
-  const input = document.getElementById("imgPicker");
-  if(input) input.click();
+  document.getElementById("imgPicker")?.click();
 }
 
 function initImagePicker(){
@@ -290,7 +304,6 @@ function initImagePicker(){
     if(!file) return;
 
     const reader = new FileReader();
-
     reader.onload = () => {
       localStorage.setItem("profileImg", reader.result);
       loadImage();
@@ -304,17 +317,14 @@ function loadImage(){
   const img = localStorage.getItem("profileImg");
 
   if(img){
-    const profile = document.getElementById("profileImg");
-    const drawer = document.getElementById("drawerImg");
-
-    if(profile) profile.src = img;
-    if(drawer) drawer.src = img;
+    document.getElementById("profileImg").src = img;
+    document.getElementById("drawerImg").src = img;
   }
 }
 
 
 /* =========================
-   BALANCE TOGGLE (CLEAN)
+   BALANCE TOGGLE
 ========================= */
 function toggleBalance(btn){
   const card = btn.closest(".card");
@@ -350,7 +360,7 @@ function toggleTx(){
 
 
 /* =========================
-   CARD FLIP (OPTIONAL)
+   CARD FLIP
 ========================= */
 let flipInterval;
 
@@ -358,8 +368,7 @@ function startCardFlip(){
   stopCardFlip();
 
   flipInterval = setInterval(() => {
-    const el = document.getElementById("usdCard");
-    if(el) el.classList.toggle("active");
+    document.getElementById("usdCard")?.classList.toggle("active");
   }, 4000);
 }
 
