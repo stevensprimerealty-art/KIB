@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>KIB Dashboard</title>
-<link rel="stylesheet" href="dashboard.css?v=5"/>
+<link rel="stylesheet" href="dashboard.css?v=6"/>
 </head>
 
 <body>
@@ -16,7 +16,11 @@
   <button id="menuBtn">☰</button>
 
   <div class="user">
-    <div class="avatar" id="avatar"></div>
+
+    <!-- ✅ FIXED AVATAR -->
+    <img id="avatar" class="avatar" src="" alt="Profile"/>
+    <input type="file" id="avatarInput" accept="image/*" hidden />
+
     <div>
       <div class="hello">Hello</div>
       <div class="name">Mr Kim Dae Hyun</div>
@@ -41,7 +45,6 @@
     <!-- SLIDER -->
     <div class="slider" id="slider">
 
-      <!-- 🔥 NO HARDCODED VALUES -->
       <div class="slide" data-currency="EUR">
         <div class="amount"></div>
         <div class="label">Total Balance (EUR)</div>
@@ -66,7 +69,6 @@
       <span class="dot"></span>
     </div>
 
-    <!-- STATUS -->
     <div class="status">
       🔒 Restricted — Under Italian Administrative Authority (ADM)
     </div>
@@ -136,7 +138,10 @@
 <aside id="drawer" class="drawer">
 
   <div class="drawer-header">
-    <div class="avatar large"></div>
+
+    <!-- ✅ FIXED DRAWER AVATAR -->
+    <img id="drawerAvatar" class="avatar large" src="" alt="Profile"/>
+
     <div class="drawer-name">Kim Dae Hyun</div>
   </div>
 
@@ -149,6 +154,6 @@
   <button id="closeDrawer">Close</button>
 </aside>
 
-<script src="dashboard.js?v=5"></script>
+<script src="dashboard.js?v=6"></script>
 </body>
 </html>
