@@ -4,14 +4,13 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>KIB Dashboard</title>
-<link rel="stylesheet" href="dashboard.css?v=8"/>
+<link rel="stylesheet" href="dashboard.css?v=11"/>
 </head>
 
 <body>
 
 <main class="app">
 
-<!-- ================= TOP BAR ================= -->
 <header class="topbar">
   <button onclick="openDrawer()">☰</button>
 
@@ -24,11 +23,10 @@
     </div>
   </div>
 
-  <!-- ✅ WORKS WITHOUT JS -->
-  <button onclick="openPopup('Account Restricted')">🔔</button>
+  <!-- ✅ USE SAFE WRAPPER -->
+  <button onclick="safeOpenNotifications()">🔔</button>
 </header>
 
-<!-- ================= ACCOUNT ================= -->
 <section class="card-wrap">
   <div class="card">
 
@@ -39,21 +37,20 @@
 
     <div class="acct">IBAN: IT60X0542****3456</div>
 
-    <!-- SLIDER -->
     <div class="slider" id="slider">
 
       <div class="slide" data-currency="EUR">
-        <div class="amount">€749,700.00</div>
+        <div class="amount" data-original="€749,700.00">€749,700.00</div>
         <div class="label">EUR</div>
       </div>
 
       <div class="slide" data-currency="USD">
-        <div class="amount">$882,000.00</div>
+        <div class="amount" data-original="$882,000.00">$882,000.00</div>
         <div class="label">USD</div>
       </div>
 
       <div class="slide" data-currency="KRW">
-        <div class="amount">₩1,299,186,000</div>
+        <div class="amount" data-original="₩1,299,186,000">₩1,299,186,000</div>
         <div class="label">KRW</div>
       </div>
 
@@ -65,44 +62,32 @@
       <span class="dot"></span>
     </div>
 
-    <!-- FX fallback -->
-    <div class="fx-box">
-      ≈ $882,000.00
-    </div>
+    <div class="fx-box" id="fxValue">≈ $0.00</div>
 
   </div>
 </section>
 
-<!-- ================= TRANSACTIONS ================= -->
 <section class="transactions">
 
   <div class="tx-header">
     <h3>Transactions</h3>
 
-    <!-- ✅ fallback -->
-    <button onclick="document.getElementById('allTx').hidden=false">
-      View all →
-    </button>
+    <button onclick="safeViewAll()">View all →</button>
   </div>
 
   <div id="txList">
-    <div class="tx">
-      <div>Incoming SWIFT</div>
-      <div class="credit">+$882,000</div>
-    </div>
+    <div class="tx">Loading...</div>
   </div>
 
 </section>
 
-<!-- ================= ACTIONS ================= -->
 <section class="actions">
 
-  <button onclick="openPopup('Transfer Restricted')">⇄ Transfer</button>
+  <!-- ✅ SAFE WRAPPER -->
+  <button onclick="safeOpenTransfer()">⇄ Transfer</button>
 
-  <!-- fallback scan -->
   <button onclick="openPopup('Scan not available')">📷 Scan</button>
 
-  <!-- fallback cards -->
   <button onclick="document.getElementById('cardsScreen').hidden=false">
     💳 Cards
   </button>
@@ -113,7 +98,6 @@
 
 </main>
 
-<!-- ================= NAV ================= -->
 <nav class="bottom-nav">
   <button class="active">🏠</button>
   <button>📊</button>
@@ -121,29 +105,15 @@
   <button>💳</button>
 </nav>
 
-<!-- ================= POPUP ================= -->
+<!-- POPUP -->
 <div id="popup" class="popup" hidden>
   <div class="popup-box">
-    <h3 id="popupText">Notice</h3>
+    <div id="popupText">Notice</div>
     <button onclick="closePopup()">Close</button>
   </div>
 </div>
 
-<!-- ================= VIEW ALL ================= -->
-<div id="allTx" class="popup" hidden>
-  <div class="popup-box">
-    <h3>All Transactions</h3>
-
-    <div class="tx">
-      <div>Incoming SWIFT</div>
-      <div class="credit">+$882,000</div>
-    </div>
-
-    <button onclick="this.closest('.popup').hidden=true">Close</button>
-  </div>
-</div>
-
-<!-- ================= CARDS ================= -->
+<!-- CARDS -->
 <div id="cardsScreen" class="popup" hidden>
   <div class="popup-box">
     <h3>Card</h3>
@@ -152,57 +122,79 @@
   </div>
 </div>
 
-<!-- ================= DRAWER ================= -->
+<!-- DRAWER -->
 <div id="drawerBackdrop" hidden onclick="closeDrawer()"></div>
 
 <aside id="drawer" class="drawer">
-
   <button onclick="openPopup('Profile')">Profile</button>
   <button onclick="openPopup('Cards')">Cards</button>
   <button onclick="openPopup('Support')">Support</button>
-
   <button onclick="closeDrawer()">Close</button>
-
 </aside>
 
-<!-- ================= FALLBACK JS ================= -->
+<!-- ================= SAFE GLOBAL WRAPPERS ================= -->
 <script>
-
-/* ===== WORKS EVEN IF dashboard.js FAILS ===== */
-
-function openPopup(text){
-  document.getElementById("popupText").innerText = text;
+/* POPUP */
+window.openPopup = function(text){
+  document.getElementById("popupText").innerHTML = text;
   document.getElementById("popup").hidden = false;
 }
 
-function closePopup(){
+window.closePopup = function(){
   document.getElementById("popup").hidden = true;
 }
 
-function openDrawer(){
+/* DRAWER */
+window.openDrawer = function(){
   document.getElementById("drawer").classList.add("open");
   document.getElementById("drawerBackdrop").hidden = false;
 }
 
-function closeDrawer(){
+window.closeDrawer = function(){
   document.getElementById("drawer").classList.remove("open");
   document.getElementById("drawerBackdrop").hidden = true;
 }
 
-/* basic mask fallback */
+/* MASK */
 let hiddenBal = false;
-function toggleFallback(){
+window.toggleFallback = function(){
   hiddenBal = !hiddenBal;
 
   document.querySelectorAll(".amount").forEach(el=>{
-    el.textContent = hiddenBal ? "••••••" : el.dataset.original || el.textContent;
+    el.textContent = hiddenBal ? "••••••" : el.dataset.original;
   });
 }
 
+/* SAFE VIEW ALL */
+window.safeViewAll = function(){
+  if (window.renderTransactions) {
+    window.renderTransactions(999);
+  } else {
+    openPopup("Loading transactions...");
+  }
+}
+
+/* ✅ SAFE NOTIFICATIONS (NO OVERRIDE) */
+window.safeOpenNotifications = function(){
+  if (window.openNotifications && window.openNotifications !== window.safeOpenNotifications) {
+    window.openNotifications();
+  } else {
+    openPopup("No notifications yet");
+  }
+}
+
+/* ✅ SAFE TRANSFER (NO OVERRIDE) */
+window.safeOpenTransfer = function(){
+  if (window.openTransfer && window.openTransfer !== window.safeOpenTransfer) {
+    window.openTransfer();
+  } else {
+    openPopup("Transfer system loading...");
+  }
+}
 </script>
 
 <!-- MAIN JS -->
-<script src="dashboard.js?v=8"></script>
+<script src="dashboard.js?v=9"></script>
 
 </body>
 </html>
