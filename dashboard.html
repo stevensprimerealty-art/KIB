@@ -11,13 +11,15 @@
 
 <div class="app">
 
-<!-- TOPBAR -->
+<!-- ================= TOPBAR ================= -->
 <header class="topbar">
+
   <button type="button" class="menuBtn" onclick="openDrawer()">☰</button>
 
   <div class="user">
     <input type="file" id="imgPicker" hidden/>
-    <img id="profileImg" onclick="pickImage()" src="default.png"/>
+    <img id="profileImg" onclick="pickImage()" src="default.png" alt="Profile"/>
+
     <div>
       <span class="userName">Kim Dae Hyun</span>
       <small class="userMeta">Primary Account</small>
@@ -25,17 +27,20 @@
   </div>
 
   <button type="button" class="bellBtn" onclick="showCompliance()">🔔</button>
+
 </header>
 
+<!-- ================= NOTICE ================= -->
 <div class="notice">
   Account Under Administrative Review
 </div>
 
 <main>
 
-<!-- ACCOUNTS -->
+<!-- ================= ACCOUNTS ================= -->
 <section class="cards">
 
+  <!-- EUR -->
   <div class="card">
     <div class="cardHeader">
       <div>
@@ -49,9 +54,10 @@
     <small id="eurRateText">Rate loading…</small>
     <small class="subNote">Estimated balance based on FX rate</small>
 
-    <button onclick="toggleBalance(this)">Hide</button>
+    <button type="button" onclick="toggleBalance(this)">Hide</button>
   </div>
 
+  <!-- USD -->
   <div class="card" id="usdCard">
     <div class="cardHeader">
       <div>
@@ -64,9 +70,10 @@
     <p id="usdBalance">$--</p>
     <small class="subNote">Incoming funds · restricted access</small>
 
-    <button onclick="toggleBalance(this)">Hide</button>
+    <button type="button" onclick="toggleBalance(this)">Hide</button>
   </div>
 
+  <!-- KRW -->
   <div class="card">
     <div class="cardHeader">
       <div>
@@ -79,15 +86,14 @@
     <p id="krwBalance">₩--</p>
     <small class="subNote">Estimated equivalent value</small>
 
-    <button onclick="toggleBalance(this)">Hide</button>
+    <button type="button" onclick="toggleBalance(this)">Hide</button>
   </div>
 
 </section>
 
-<!-- GRID -->
+<!-- ================= GRID ================= -->
 <section class="grid">
 
-  <!-- Accounts -->
   <div class="gridItem">
     <div class="icon">
       <svg viewBox="0 0 24 24">
@@ -98,7 +104,6 @@
     <span>Accounts</span>
   </div>
 
-  <!-- Exchange -->
   <div class="gridItem">
     <div class="icon">
       <svg viewBox="0 0 24 24">
@@ -109,7 +114,6 @@
     <span>Exchange</span>
   </div>
 
-  <!-- Cards -->
   <div class="gridItem">
     <div class="icon">
       <svg viewBox="0 0 24 24">
@@ -120,7 +124,6 @@
     <span>Cards</span>
   </div>
 
-  <!-- Transfer -->
   <div class="gridItem" onclick="blocked()">
     <div class="icon">
       <svg viewBox="0 0 24 24">
@@ -130,7 +133,6 @@
     <span>Transfer</span>
   </div>
 
-  <!-- History -->
   <div class="gridItem">
     <div class="icon">
       <svg viewBox="0 0 24 24">
@@ -141,7 +143,6 @@
     <span>History</span>
   </div>
 
-  <!-- Support -->
   <div class="gridItem">
     <div class="icon">
       <svg viewBox="0 0 24 24">
@@ -153,12 +154,12 @@
 
 </section>
 
-<!-- TRANSACTIONS -->
+<!-- ================= TRANSACTIONS ================= -->
 <section class="transactions">
 
   <div class="sectionHeader">
     <h3>Recent Transactions</h3>
-    <button class="viewAll">View all</button>
+    <button type="button" class="viewAll">View all</button>
   </div>
 
   <div class="tx" onclick="toggleTx()">
@@ -172,7 +173,7 @@
   <div id="txDetails" class="txDetails">
     <p><strong>Reference:</strong> ADM-INT-44721</p>
     <p><strong>Status:</strong> Funds held under administrative control</p>
-    <button onclick="toggleTx()">Close</button>
+    <button type="button" onclick="toggleTx()">Close</button>
   </div>
 
 </section>
@@ -180,33 +181,49 @@
 </main>
 </div>
 
-<!-- DRAWER -->
+<!-- ================= DRAWER (FIXED) ================= -->
 <aside class="drawer" id="drawer">
+
   <div class="drawerContent">
 
-    <button class="closeBtn" onclick="closeDrawer()">✕</button>
+    <!-- HEADER -->
+    <div class="drawerHeader">
+      <img id="drawerImg" src="default.png" alt="Profile"/>
 
-    <img id="drawerImg" src="default.png"/>
-    <p>Kim Dae Hyun</p>
+      <div class="drawerUser">
+        <strong>Kim Dae Hyun</strong>
+        <small>Primary Account</small>
+      </div>
 
-    <button>Accounts</button>
-    <button>Exchange</button>
-    <button>Funds</button>
-    <button>Support</button>
+      <button type="button" class="closeBtn" onclick="closeDrawer()">✕</button>
+    </div>
 
-    <button onclick="logout()">Logout →</button>
+    <!-- MENU -->
+    <div class="drawerMenu">
+      <button type="button">Accounts</button>
+      <button type="button">Exchange</button>
+      <button type="button">Funds</button>
+      <button type="button">Support</button>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="drawerFooter">
+      <button type="button" onclick="logout()">Logout</button>
+    </div>
 
   </div>
+
 </aside>
 
+<!-- OVERLAY -->
 <div class="drawerOverlay" id="drawerOverlay" onclick="closeDrawer()"></div>
 
-<!-- MODAL -->
+<!-- ================= MODAL ================= -->
 <div class="modal" id="modal">
   <div class="modalBox">
 
     <div class="modalHeader">
-      <button class="closeX" onclick="closeModal()">✕</button>
+      <button type="button" class="closeX" onclick="closeModal()">✕</button>
     </div>
 
     <h2>Account Access Restricted</h2>
@@ -218,14 +235,14 @@
     </p>
 
     <div class="modalActions">
-      <button class="primaryBtn">Contact Support</button>
-      <button onclick="closeModal()">Close</button>
+      <button type="button" class="primaryBtn">Contact Support</button>
+      <button type="button" onclick="closeModal()">Close</button>
     </div>
 
   </div>
 </div>
 
-<!-- BOTTOM NAV -->
+<!-- ================= BOTTOM NAV ================= -->
 <nav class="bottomNav">
 
   <div class="navItem active">
@@ -249,7 +266,7 @@
     <small>Assets</small>
   </div>
 
-  <div class="navItem">
+  <div class="navItem" onclick="openDrawer()">
     <svg viewBox="0 0 24 24">
       <path d="M4 6h16M4 12h16M4 18h16"/>
     </svg>
