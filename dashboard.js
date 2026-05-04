@@ -31,13 +31,21 @@ window.addEventListener("DOMContentLoaded", () => {
   const dots = document.querySelectorAll(".dot");
   const txList = $("txList");
 
-  /* ================= AUTH ================= */
+  /* ================= AUTH (🔥 FIXED) ================= */
 
   async function getSession() {
-    const { data: { session }, error } = await supabase.auth.getSession()
 
-    if (error || !session) {
-      window.location.href = "/index.html"
+    // 🔥 CRITICAL FIX (handles magic link token)
+    const { data: urlSession } = await supabase.auth.getSessionFromUrl({
+      storeSession: true
+    })
+
+    if (urlSession?.session) return urlSession.session
+
+    const { data: { session } } = await supabase.auth.getSession()
+
+    if (!session) {
+      openPopup("Session expired. Please login again.")
       return null
     }
 
@@ -47,13 +55,13 @@ window.addEventListener("DOMContentLoaded", () => {
   /* ================= COMPLIANCE ================= */
 
   async function loadCompliance(userId) {
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from("accounts")
       .select("restricted, restriction_reason")
       .eq("user_id", userId)
       .single()
 
-    if (error || !data) return
+    if (!data) return
 
     state.compliance.restricted = data.restricted
     state.compliance.reason = data.restriction_reason || "Restricted"
@@ -70,22 +78,21 @@ window.addEventListener("DOMContentLoaded", () => {
   /* ================= BALANCE ================= */
 
   async function loadBalances(userId) {
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from("accounts")
       .select("*")
       .eq("user_id", userId)
       .single()
 
-    if (error || !data) {
-      console.error(error)
-      openPopup("Balance load error")
+    if (!data) {
+      openPopup("No account data found")
       return
     }
 
     state.balance = {
-      USD: data.usd_balance,
-      EUR: data.eur_balance,
-      KRW: data.krw_balance
+      USD: data.usd_balance || 0,
+      EUR: data.eur_balance || 0,
+      KRW: data.krw_balance || 0
     }
 
     renderBalances()
@@ -106,14 +113,12 @@ window.addEventListener("DOMContentLoaded", () => {
     slides.forEach((slide, i) => {
       const currency = slide.dataset.currency;
       const el = slide.querySelector(".amount");
-      if (!currency || !el) return;
 
       el.textContent = mask(formatMoney(state.balance[currency], currency));
 
       slide.onclick = () => {
         state.index = i
 
-        // toggle filter
         state.filteredCurrency =
           state.filteredCurrency === currency ? null : currency
 
@@ -125,21 +130,18 @@ window.addEventListener("DOMContentLoaded", () => {
     updateFX();
   }
 
-  /* ================= LIVE FX ================= */
+  /* ================= FX ================= */
 
   async function loadFX() {
     try {
       const res = await fetch("https://api.exchangerate.host/latest?base=USD")
       const data = await res.json()
 
-      if (data?.rates?.EUR && data?.rates?.KRW) {
+      if (data?.rates) {
         state.fxRates.EURUSD = 1 / data.rates.EUR
         state.fxRates.KRWUSD = data.rates.KRW
       }
-
-    } catch (e) {
-      console.log("FX fallback used")
-    }
+    } catch {}
   }
 
   function updateFX() {
@@ -159,19 +161,14 @@ window.addEventListener("DOMContentLoaded", () => {
   /* ================= TRANSACTIONS ================= */
 
   async function loadTransactions(userId) {
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from("transactions")
       .select("*")
       .eq("user_id", userId)
       .order("created_at", { ascending: false })
 
-    if (error) {
-      console.error(error)
-      openPopup("Transaction load error")
-      return
-    }
-
     state.transactions = data || []
+
     renderTransactions(1)
   }
 
@@ -187,9 +184,7 @@ window.addEventListener("DOMContentLoaded", () => {
     data = data.slice(0, limit)
 
     if (!data.length) {
-      txList.innerHTML = `<div class="tx">
-        No ${state.filteredCurrency || ""} transactions
-      </div>`
+      txList.innerHTML = `<div class="tx">No transactions</div>`
       return
     }
 
@@ -200,7 +195,7 @@ window.addEventListener("DOMContentLoaded", () => {
       el.innerHTML = `
         <div>
           <div>${tx.type || "Transaction"}</div>
-          <small>${tx.created_at ? new Date(tx.created_at).toLocaleString() : ""}</small>
+          <small>${new Date(tx.created_at).toLocaleString()}</small>
         </div>
         <div class="${tx.amount > 0 ? "credit" : "debit"}">
           ${tx.amount > 0 ? "+" : "-"}${formatMoney(Math.abs(tx.amount), tx.currency)}
@@ -219,7 +214,6 @@ window.addEventListener("DOMContentLoaded", () => {
     openPopup(`
       <h3>SWIFT Receipt</h3>
       <p><b>Ref:</b> ${tx.id}</p>
-      <p><b>Type:</b> ${tx.type}</p>
       <p><b>Amount:</b> ${formatMoney(tx.amount, tx.currency)}</p>
       <p><b>Status:</b> ${tx.status || "Completed"}</p>
     `)
@@ -232,7 +226,6 @@ window.addEventListener("DOMContentLoaded", () => {
       .from("notifications")
       .select("*")
       .eq("user_id", userId)
-      .order("created_at", { ascending: false })
 
     state.notifications = data || []
   }
@@ -243,14 +236,10 @@ window.addEventListener("DOMContentLoaded", () => {
       return
     }
 
-    const html = state.notifications.map(n => `
-      <p>${n.message}</p>
-    `).join("")
-
-    openPopup(`<h3>Notifications</h3>${html}`)
+    openPopup(state.notifications.map(n => `<p>${n.message}</p>`).join(""))
   }
 
-  /* ================= SLIDER (FINAL FIX) ================= */
+  /* ================= SLIDER ================= */
 
   function getWidth() {
     return slider?.parentElement?.offsetWidth || 0;
@@ -260,13 +249,10 @@ window.addEventListener("DOMContentLoaded", () => {
     const width = getWidth();
 
     if (!width) {
-      if (retry < 5) {
-        setTimeout(() => updateSlider(retry + 1), 80);
-      }
+      if (retry < 5) setTimeout(() => updateSlider(retry + 1), 80);
       return;
     }
 
-    slider.style.transition = "transform .35s ease";
     slider.style.transform = `translateX(-${state.index * width}px)`;
 
     dots.forEach(d => d.classList.remove("active"));
@@ -285,11 +271,8 @@ window.addEventListener("DOMContentLoaded", () => {
   /* ================= POPUP ================= */
 
   window.openPopup = function (html) {
-    const popup = $("popup");
-    const text = $("popupText");
-
-    text.innerHTML = html || "No data";
-    popup.hidden = false;
+    $("popupText").innerHTML = html || "No data";
+    $("popup").hidden = false;
   }
 
   window.closePopup = function () {
@@ -304,15 +287,13 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const userId = session.user.id;
 
-    await Promise.all([
-      loadFX(),
-      loadCompliance(userId),
-      loadBalances(userId),
-      loadTransactions(userId),
-      loadNotifications(userId)
-    ]);
+    await loadFX()
+    await loadCompliance(userId)
+    await loadBalances(userId)
+    await loadTransactions(userId)
+    await loadNotifications(userId)
 
-    requestAnimationFrame(() => updateSlider());
+    setTimeout(updateSlider, 100);
   }
 
   init();
