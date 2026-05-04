@@ -1,305 +1,205 @@
-window.addEventListener("DOMContentLoaded", async () => {
+window.addEventListener("DOMContentLoaded", () => {
 
   const $ = (id) => document.getElementById(id);
-  const safeHide = (el, state) => el && (el.hidden = state);
 
-  // -------------------------
-  // AUTH GUARD
-  // -------------------------
-  try {
-    const supabase =
-      typeof getSupabase === "function" ? getSupabase() : null;
-
-    if (!supabase) return window.location.replace("index.html");
-
-    const { data } = await supabase.auth.getSession();
-    if (!data?.session) return window.location.replace("index.html");
-
-  } catch {
-    return window.location.replace("index.html");
-  }
-
-  // -------------------------
-  // STATE
-  // -------------------------
-  window.accountState = {
-    status: "RESTRICTED",
-    currency: "USD",
-    balance: {
-      USD: 882000,
-      EUR: 0,
-      KRW: 0
-    }
+  /* =========================
+     STATE
+  ========================= */
+  const state = {
+    index: 1,
+    startX: 0,
+    currentX: 0,
+    isDragging: false,
+    transactions: JSON.parse(localStorage.getItem("kib_tx") || "[]")
   };
 
-  let transactions = JSON.parse(localStorage.getItem("kib_tx") || "[]");
+  const slider = $("slider");
+  const slides = document.querySelectorAll(".slide");
+  const dots = document.querySelectorAll(".dot");
+  const txList = $("txList");
+  const popup = $("popup");
 
-  // -------------------------
-  // FX CONFIG
-  // -------------------------
-  const FX_CONFIG = {
-    spread: { EUR: 0.018, KRW: 0.025 },
-    fee: { EUR: 12, KRW: 3500 }
-  };
+  /* =========================
+     SLIDER (iOS PHYSICS)
+  ========================= */
 
-  function formatMoney(v, c) {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: c
-    }).format(v || 0);
+  function setTranslate(x, animate = false) {
+    slider.style.transition = animate
+      ? "transform 0.35s cubic-bezier(.22,.61,.36,1)"
+      : "none";
+
+    slider.style.transform = `translateX(${x}px)`;
   }
 
-  function applyBankRates(usd, rate, currency) {
-    const spread = FX_CONFIG.spread[currency] || 0.02;
-    const fee = FX_CONFIG.fee[currency] || 0;
-    const buyRate = rate * (1 - spread);
+  function updateSlider(animate = true) {
+    const width = slider.offsetWidth;
+    setTranslate(-state.index * width, animate);
 
-    return {
-      converted: usd * buyRate - fee,
-      buyRate,
-      fee
-    };
+    dots.forEach(d => d.classList.remove("active"));
+    if (dots[state.index]) dots[state.index].classList.add("active");
   }
 
-  // -------------------------
-  // FX LOAD (FIXED NO FREEZE)
-  // -------------------------
-  async function loadFX() {
-    try {
-      const res = await fetch("https://api.exchangerate.host/latest?base=USD");
-      const data = await res.json();
-
-      const usd = window.accountState.balance.USD;
-
-      const eur = applyBankRates(usd, data.rates.EUR, "EUR");
-      const krw = applyBankRates(usd, data.rates.KRW, "KRW");
-
-      window.fxMeta = { EUR: eur, KRW: krw };
-
-    } catch {
-      window.fxMeta = {
-        EUR: applyBankRates(882000, 0.85, "EUR"),
-        KRW: applyBankRates(882000, 1470, "KRW")
-      };
-    }
-
-    updateBalances(window.accountState.balance);
-  }
-
-  // -------------------------
-  // BALANCE
-  // -------------------------
-  function updateBalances(balances) {
-    document.querySelectorAll(".slide").forEach(slide => {
-      const c = slide.dataset.currency;
-      const val = balances[c];
-      if (val == null) return;
-
-      slide.querySelectorAll("[data-real]").forEach(el => {
-        el.dataset.real = formatMoney(val, c);
-      });
-    });
-
-    renderBalances();
-  }
-
-  let visible = localStorage.getItem("kib_balance_visible") === "true";
-
-  function renderBalances() {
-    document.querySelectorAll("[data-real]").forEach(el => {
-      const real = el.dataset.real || "";
-      el.textContent = visible ? real : "••••••••";
-    });
-
-    if ($("toggleBalance"))
-      $("toggleBalance").textContent = visible ? "🙈" : "👁️";
-  }
-
-  $("toggleBalance")?.addEventListener("click", () => {
-    visible = !visible;
-    localStorage.setItem("kib_balance_visible", visible);
-    renderBalances();
+  slider.addEventListener("touchstart", (e) => {
+    state.isDragging = true;
+    state.startX = e.touches[0].clientX;
+    state.currentX = state.startX;
+    slider.style.transition = "none";
   });
 
-  // -------------------------
-  // SLIDER (REAL SWIPE)
-  // -------------------------
-  const slider = $("accountSlider");
-  const slides = slider?.querySelectorAll(".slide") || [];
-  let index = 1;
+  slider.addEventListener("touchmove", (e) => {
+    if (!state.isDragging) return;
 
-  function updateSlider() {
-    slider.style.transform = `translateX(-${index * 100}%)`;
+    state.currentX = e.touches[0].clientX;
+    let dx = state.currentX - state.startX;
 
-    const currency = slides[index]?.dataset.currency;
-    window.accountState.currency = currency;
+    const width = slider.offsetWidth;
+    let offset = -state.index * width + dx;
 
-    $("transferCurrency") && ($("transferCurrency").value = currency);
-    $("transferLabel") && ($("transferLabel").textContent = `Amount (${currency})`);
-  }
+    // edge resistance
+    if (state.index === 0 && dx > 0) offset *= 0.4;
+    if (state.index === slides.length - 1 && dx < 0) offset *= 0.4;
 
-  let startX = 0;
-
-  slider?.addEventListener("touchstart", e => {
-    startX = e.touches[0].clientX;
+    setTranslate(offset);
   });
 
-  slider?.addEventListener("touchend", e => {
-    const dx = e.changedTouches[0].clientX - startX;
+  slider.addEventListener("touchend", () => {
+    state.isDragging = false;
 
-    if (dx > 50) index--;
-    if (dx < -50) index++;
+    const dx = state.currentX - state.startX;
 
-    index = Math.max(0, Math.min(index, slides.length - 1));
+    if (dx > 80) state.index--;
+    if (dx < -80) state.index++;
 
-    updateSlider();
+    state.index = Math.max(0, Math.min(state.index, slides.length - 1));
+
+    updateSlider(true);
   });
 
   updateSlider();
 
-  // -------------------------
-  // NOTIFICATIONS
-  // -------------------------
-  $("notifBtn")?.addEventListener("click", () => {
-    const panel = $("notifPanel");
-    panel.hidden = !panel.hidden;
-  });
+  /* =========================
+     TRANSACTIONS
+  ========================= */
 
-  // -------------------------
-  // RECENT TRANSACTIONS (FIXED)
-  // -------------------------
+  // fallback default if empty
+  if (!state.transactions.length) {
+    state.transactions.push({
+      id: Date.now(),
+      type: "Incoming SWIFT",
+      amount: 882000,
+      date: "04 May 2026"
+    });
+    localStorage.setItem("kib_tx", JSON.stringify(state.transactions));
+  }
+
+  function formatMoney(amount) {
+    return (amount > 0 ? "+" : "-") + "$" + Math.abs(amount).toLocaleString();
+  }
+
   function renderTransactions() {
-    const list = $("txList");
-    if (!list) return;
+    txList.innerHTML = "";
 
-    list.innerHTML = "";
-
-    if (!transactions.length) {
-      list.innerHTML = `<div style="padding:12px;color:#888">No transactions yet</div>`;
+    if (!state.transactions.length) {
+      txList.innerHTML = `<div class="empty">No transactions yet</div>`;
       return;
     }
 
-    transactions.slice(0, 5).forEach(tx => {
+    state.transactions.slice(0, 5).forEach(tx => {
       const el = document.createElement("div");
-      el.className = "tx-item";
+      el.className = "tx";
 
       el.innerHTML = `
-        <div class="tx-left">
-          <div class="tx-title">Outgoing Transfer</div>
-          <div class="tx-sub">${tx.currency}</div>
-          <div class="tx-meta">${tx.date}</div>
+        <div>
+          <div class="tx-title">${tx.type}</div>
+          <small>${tx.date}</small>
         </div>
-        <div class="tx-right">
-          <div class="tx-amount debit">-${formatMoney(tx.amount, "USD")}</div>
-          <div class="tx-status">Completed</div>
+        <div class="tx-amount ${tx.amount > 0 ? "credit" : "debit"}">
+          ${formatMoney(tx.amount)}
         </div>
       `;
 
-      list.appendChild(el);
+      txList.appendChild(el);
     });
   }
 
-  $("recentBtn")?.addEventListener("click", () => {
-    const panel = $("recentPanel");
+  renderTransactions();
 
-    const open = panel.classList.toggle("is-open");
+  /* =========================
+     TRANSFER
+  ========================= */
 
-    if (open) {
-      panel.hidden = false;
-      renderTransactions();
-    } else {
-      setTimeout(() => (panel.hidden = true), 300);
-    }
-  });
-
-  // -------------------------
-  // DRAWER
-  // -------------------------
-  const drawer = $("drawer");
-  const backdrop = $("menuBackdrop");
-
-  $("menuBtn")?.addEventListener("click", () => {
-    drawer.classList.add("is-open");
-    backdrop.hidden = false;
-  });
-
-  const closeDrawer = () => {
-    drawer.classList.remove("is-open");
-    backdrop.hidden = true;
-  };
-
-  $("closeDrawer")?.addEventListener("click", closeDrawer);
-  backdrop?.addEventListener("click", closeDrawer);
-
-  // -------------------------
-  // TRANSFER
-  // -------------------------
   $("transferBtn")?.addEventListener("click", () => {
 
-    if (window.accountState.status === "RESTRICTED") {
-      safeHide($("compliancePopup"), false);
-      return;
-    }
-
-    $("protocolPanel").hidden = false;
-  });
-
-  $("closeProtocol")?.addEventListener("click", () => {
-    safeHide($("protocolPanel"), true);
-  });
-
-  const input = $("transferAmount");
-  const confirmBtn = $("confirmTransferBtn");
-
-  input?.addEventListener("input", () => {
-    const val = parseFloat(input.value);
-
-    if (!val || val <= 0) {
-      confirmBtn.disabled = true;
-      return;
-    }
-
-    confirmBtn.disabled = false;
-  });
-
-  confirmBtn?.addEventListener("click", () => {
-
-    const amount = parseFloat(input.value);
-    if (!amount) return;
+    const amount = parseFloat(prompt("Enter transfer amount"));
+    if (!amount || amount <= 0) return;
 
     const tx = {
       id: Date.now(),
-      amount,
-      currency: window.accountState.currency,
+      type: "Transfer",
+      amount: -amount,
       date: new Date().toLocaleString()
     };
 
-    transactions.unshift(tx);
-    localStorage.setItem("kib_tx", JSON.stringify(transactions));
-
-    window.accountState.balance.USD -= amount;
-    updateBalances(window.accountState.balance);
+    state.transactions.unshift(tx);
+    localStorage.setItem("kib_tx", JSON.stringify(state.transactions));
 
     renderTransactions();
-
-    safeHide($("receiptPopup"), false);
+    generateReceipt(tx);
   });
 
-  // -------------------------
-  // POPUPS
-  // -------------------------
-  $("closeReceipt")?.addEventListener("click", () => {
-    safeHide($("receiptPopup"), true);
+  /* =========================
+     RECEIPT (DOWNLOAD)
+  ========================= */
+
+  function generateReceipt(tx) {
+
+    const content = `
+KIB BANK RECEIPT
+------------------------
+Transaction ID: ${tx.id}
+Type: ${tx.type}
+Amount: ${formatMoney(tx.amount)}
+Date: ${tx.date}
+Status: Completed
+------------------------
+    `;
+
+    const blob = new Blob([content], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `receipt-${tx.id}.txt`;
+    a.click();
+  }
+
+  /* =========================
+     NOTIFICATION POPUP
+  ========================= */
+
+  $("notifBtn")?.addEventListener("click", () => {
+    popup.hidden = false;
+    popup.classList.add("show");
   });
 
   $("closePopup")?.addEventListener("click", () => {
-    safeHide($("compliancePopup"), true);
+    popup.classList.remove("show");
+    setTimeout(() => popup.hidden = true, 200);
   });
 
-  // -------------------------
-  // INIT
-  // -------------------------
-  await loadFX();
-  renderTransactions();
+  popup?.addEventListener("click", (e) => {
+    if (e.target === popup) {
+      popup.classList.remove("show");
+      setTimeout(() => popup.hidden = true, 200);
+    }
+  });
+
+  /* =========================
+     SCAN BUTTON
+  ========================= */
+
+  $("scanBtn")?.addEventListener("click", () => {
+    alert("📷 Scan system ready (QR / URL)");
+  });
 
 });
