@@ -87,7 +87,7 @@ function saveState(){
 
 
 /* =========================
-   LOAD BALANCES (FIXED)
+   LOAD BALANCES (SAFE + CLEAN)
 ========================= */
 function loadBalances(){
 
@@ -107,16 +107,16 @@ function loadBalances(){
   if(eurEl){
     eurEl.innerText = hiddenState.eur
       ? "••••"
-      : formatCurrency(fx.eurValue, "EUR");
+      : formatCurrency(fx.eurValue || 0, "EUR");
   }
 
   if(krwEl){
     krwEl.innerText = hiddenState.krw
       ? "••••"
-      : formatKRW(fx.krwValue);
+      : formatKRW(fx.krwValue || 0);
   }
 
-  if(rateEl){
+  if(rateEl && fx.eurRate){
     rateEl.innerText =
       `1 USD ≈ ${fx.eurRate.toFixed(4)} EUR • ${formatTime(fx.timestamp)}`;
   }
@@ -126,7 +126,7 @@ function loadBalances(){
 
 
 /* =========================
-   BUTTON STATE SYNC
+   BUTTON STATE SYNC (FIXED)
 ========================= */
 function syncButtons(){
   document.querySelectorAll(".card").forEach(card=>{
@@ -135,9 +135,13 @@ function syncButtons(){
 
     if(card.id === "usdCard"){
       btn.innerText = hiddenState.usd ? "Show" : "Hide";
-    } else if(card.querySelector("#eurBalance")){
+    }
+
+    if(card.querySelector("#eurBalance")){
       btn.innerText = hiddenState.eur ? "Show" : "Hide";
-    } else if(card.querySelector("#krwBalance")){
+    }
+
+    if(card.querySelector("#krwBalance")){
       btn.innerText = hiddenState.krw ? "Show" : "Hide";
     }
   });
@@ -147,13 +151,17 @@ function syncButtons(){
 /* =========================
    INIT
 ========================= */
+let fxInterval;
+
 document.addEventListener("DOMContentLoaded", () => {
   loadBalances();
   loadImage();
   initImagePicker();
 
-  // refresh FX every 60s (real app behavior)
-  setInterval(loadBalances, 60000);
+  // prevent duplicate intervals
+  if(!fxInterval){
+    fxInterval = setInterval(loadBalances, 60000);
+  }
 });
 
 
@@ -306,7 +314,7 @@ function loadImage(){
 
 
 /* =========================
-   BALANCE TOGGLE (FIXED)
+   BALANCE TOGGLE (CLEAN)
 ========================= */
 function toggleBalance(btn){
   const card = btn.closest(".card");
@@ -314,9 +322,13 @@ function toggleBalance(btn){
 
   if(card.id === "usdCard"){
     hiddenState.usd = !hiddenState.usd;
-  } else if(card.querySelector("#eurBalance")){
+  }
+
+  if(card.querySelector("#eurBalance")){
     hiddenState.eur = !hiddenState.eur;
-  } else if(card.querySelector("#krwBalance")){
+  }
+
+  if(card.querySelector("#krwBalance")){
     hiddenState.krw = !hiddenState.krw;
   }
 
@@ -338,7 +350,7 @@ function toggleTx(){
 
 
 /* =========================
-   CARD FLIP
+   CARD FLIP (OPTIONAL)
 ========================= */
 let flipInterval;
 
