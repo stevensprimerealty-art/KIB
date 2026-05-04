@@ -8,7 +8,7 @@ const account = {
 
 
 /* =========================
-   FX ENGINE (CACHED LIKE BANK)
+   FX ENGINE (BANK STYLE CACHE)
 ========================= */
 const midMarket = {
   EUR: 0.94,
@@ -19,7 +19,8 @@ let fx = {
   eurRate: 0,
   krwRate: 0,
   eurValue: 0,
-  krwValue: 0
+  krwValue: 0,
+  timestamp: null
 };
 
 function computeFX(){
@@ -31,6 +32,8 @@ function computeFX(){
 
   fx.eurValue = account.usd * fx.eurRate;
   fx.krwValue = Math.floor(account.usd * fx.krwRate);
+
+  fx.timestamp = new Date();
 }
 
 
@@ -45,30 +48,72 @@ function formatCurrency(amount, currency){
   }).format(amount);
 }
 
+function formatTime(date){
+  return date
+    ? date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    : "";
+}
+
 
 /* =========================
-   LOAD BALANCES (SINGLE SOURCE)
+   STATE (PERSISTENT)
+========================= */
+let hiddenState = JSON.parse(localStorage.getItem("hiddenState")) || {
+  usd: false,
+  eur: false,
+  krw: false
+};
+
+function saveState(){
+  localStorage.setItem("hiddenState", JSON.stringify(hiddenState));
+}
+
+
+/* =========================
+   LOAD BALANCES (SAFE)
 ========================= */
 function loadBalances(){
 
   computeFX();
 
-  document.getElementById("usdBalance").innerText =
-    hiddenState.usd ? "••••" : formatCurrency(account.usd, "USD");
-
-  document.getElementById("eurBalance").innerText =
-    hiddenState.eur ? "••••" : formatCurrency(fx.eurValue, "EUR");
-
-  document.getElementById("krwBalance").innerText =
-    hiddenState.krw ? "••••" : "₩" + fx.krwValue.toLocaleString();
-
+  const usdEl = document.getElementById("usdBalance");
+  const eurEl = document.getElementById("eurBalance");
+  const krwEl = document.getElementById("krwBalance");
   const rateEl = document.getElementById("eurRateText");
+
+  if(usdEl){
+    usdEl.innerText = hiddenState.usd
+      ? "••••"
+      : formatCurrency(account.usd, "USD");
+  }
+
+  if(eurEl){
+    eurEl.innerText = hiddenState.eur
+      ? "••••"
+      : formatCurrency(fx.eurValue, "EUR");
+  }
+
+  if(krwEl){
+    krwEl.innerText = hiddenState.krw
+      ? "••••"
+      : "₩" + fx.krwValue.toLocaleString();
+  }
+
   if(rateEl){
-    rateEl.innerText = `1 USD ≈ ${fx.eurRate.toFixed(4)} EUR (bank rate)`;
+    rateEl.innerText =
+      `1 USD ≈ ${fx.eurRate.toFixed(4)} EUR • ${formatTime(fx.timestamp)}`;
   }
 }
 
-loadBalances();
+
+/* =========================
+   INIT (SAFE LOAD)
+========================= */
+document.addEventListener("DOMContentLoaded", () => {
+  loadBalances();
+  loadImage();
+  initImagePicker();
+});
 
 
 /* =========================
@@ -79,12 +124,16 @@ let modalOpen = false;
 function showCompliance(){
   if(modalOpen) return;
   modalOpen = true;
-  document.getElementById("modal").style.display = "flex";
+
+  const modal = document.getElementById("modal");
+  if(modal) modal.style.display = "flex";
 }
 
 function closeModal(){
   modalOpen = false;
-  document.getElementById("modal").style.display = "none";
+
+  const modal = document.getElementById("modal");
+  if(modal) modal.style.display = "none";
 }
 
 // auto popup
@@ -104,19 +153,21 @@ function blocked(){
 
 
 /* =========================
-   DRAWER (SAFE)
+   DRAWER
 ========================= */
 function openDrawer(){
   const drawer = document.getElementById("drawer");
   const overlay = document.getElementById("drawerOverlay");
 
-  drawer.classList.toggle("open");
+  if(drawer) drawer.classList.toggle("open");
   if(overlay) overlay.classList.toggle("active");
 }
 
 function closeDrawer(){
-  document.getElementById("drawer").classList.remove("open");
+  const drawer = document.getElementById("drawer");
   const overlay = document.getElementById("drawerOverlay");
+
+  if(drawer) drawer.classList.remove("open");
   if(overlay) overlay.classList.remove("active");
 }
 
@@ -137,68 +188,69 @@ async function logout(){
 
 
 /* =========================
-   PROFILE IMAGE (PERSISTENT)
+   PROFILE IMAGE
 ========================= */
 function pickImage(){
-  document.getElementById("imgPicker").click();
+  const input = document.getElementById("imgPicker");
+  if(input) input.click();
 }
 
-document.getElementById("imgPicker").addEventListener("change", e => {
-  const file = e.target.files[0];
-  if(!file) return;
+function initImagePicker(){
+  const input = document.getElementById("imgPicker");
+  if(!input) return;
 
-  const reader = new FileReader();
+  input.addEventListener("change", e => {
+    const file = e.target.files[0];
+    if(!file) return;
 
-  reader.onload = () => {
-    localStorage.setItem("profileImg", reader.result);
-    loadImage();
-  };
+    const reader = new FileReader();
 
-  reader.readAsDataURL(file);
-});
+    reader.onload = () => {
+      localStorage.setItem("profileImg", reader.result);
+      loadImage();
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
 
 function loadImage(){
   const img = localStorage.getItem("profileImg");
 
   if(img){
-    document.getElementById("profileImg").src = img;
-    document.getElementById("drawerImg").src = img;
+    const profile = document.getElementById("profileImg");
+    const drawer = document.getElementById("drawerImg");
+
+    if(profile) profile.src = img;
+    if(drawer) drawer.src = img;
   }
 }
 
-loadImage();
-
 
 /* =========================
-   BALANCE TOGGLE (STABLE)
+   BALANCE TOGGLE (ROBUST)
 ========================= */
-let hiddenState = {
-  usd: false,
-  eur: false,
-  krw: false
-};
-
 function toggleBalance(btn){
   const card = btn.closest(".card");
+  if(!card) return;
 
   if(card.id === "usdCard"){
     hiddenState.usd = !hiddenState.usd;
-
   } else if(card.querySelector("#eurBalance")){
     hiddenState.eur = !hiddenState.eur;
-
   } else if(card.querySelector("#krwBalance")){
     hiddenState.krw = !hiddenState.krw;
   }
 
   btn.innerText = btn.innerText === "Hide" ? "Show" : "Hide";
 
-  loadBalances(); // re-render properly
+  saveState();
+  loadBalances();
 }
 
 
 /* =========================
-   TRANSACTION TOGGLE (NEW)
+   TRANSACTION TOGGLE
 ========================= */
 function toggleTx(){
   const el = document.getElementById("txDetails");
@@ -210,7 +262,7 @@ function toggleTx(){
 
 
 /* =========================
-   CARD FLIP (OPTIMIZED)
+   CARD FLIP
 ========================= */
 let flipInterval;
 
@@ -226,11 +278,7 @@ function stopCardFlip(){
 }
 
 document.addEventListener("visibilitychange", () => {
-  if(document.hidden){
-    stopCardFlip();
-  } else {
-    startCardFlip();
-  }
+  document.hidden ? stopCardFlip() : startCardFlip();
 });
 
 startCardFlip();
