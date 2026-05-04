@@ -1,256 +1,150 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>KIB — Dashboard</title>
-  <link rel="stylesheet" href="dashboard.css" />
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>KIB Dashboard</title>
+<link rel="stylesheet" href="dashboard.css"/>
 </head>
 
 <body>
 
 <main class="app">
 
-<!-- TOP BAR -->
+<!-- =======================
+     TOP BAR
+======================= -->
 <header class="topbar">
-  <button id="menuBtn" class="icon-btn" aria-label="Open menu">☰</button>
+  <button id="menuBtn" aria-label="Menu">☰</button>
 
-  <div class="greet">
-    <label class="avatar">
-      <input id="ownerImage" type="file" accept="image/*" hidden />
-      <img id="ownerPreview" src="default-avatar.png" />
-    </label>
-
-    <div class="greet-text">
+  <div class="user">
+    <div class="avatar" id="avatar"></div>
+    <div>
       <div class="hello">Hello</div>
       <div class="name">Mr Kim Dae Hyun</div>
     </div>
   </div>
 
-  <button id="notifBtn" class="icon-btn bell" aria-label="Notifications">
-    🔔 <span id="notifBadge" class="badge" hidden>0</span>
+  <button id="notifBtn" aria-label="Notifications">
+    🔔
   </button>
 </header>
 
-<!-- NOTIFICATIONS -->
-<div id="notifPanel" class="notif-panel" hidden>
-  <div class="notif-title">Notifications</div>
-
-  <div class="notif-item">
-    <div class="notif-text">Administrative restriction applied by Italian authorities</div>
-    <div class="notif-sub">Tap for details or contact support</div>
-  </div>
-
-  <div class="notif-item">
-    <div class="notif-text">Transfers are currently disabled</div>
-  </div>
-</div>
-
-<!-- ACCOUNT -->
+<!-- =======================
+     ACCOUNT CARD
+======================= -->
 <section class="card-wrap">
-  <article class="bank-card" id="accountCard">
+  <div class="card">
 
-    <div class="card-top">
-      <div class="label">Multi-Currency Savings Account</div>
-      <div class="timestamp">04 May 2026 • 11:05 AM</div>
+    <div class="card-header">
+      <span>Multi-Currency Savings Account</span>
+      <span id="cardDate">04 May 2026</span>
     </div>
 
     <div class="acct">IBAN: IT60X0542****3456</div>
     <div class="acct-sub">SWIFT/BIC: BCITITMM</div>
 
-    <div class="balance-block">
-      <div id="accountSlider" class="slider">
+    <!-- SLIDER -->
+    <div class="slider" id="slider">
 
-        <!-- EUR -->
-        <div class="slide" data-currency="EUR">
-          <div class="bal-main">
-            <div class="bal-amt" data-real="€749,700.00">••••••••</div>
-            <div class="bal-sub">Total Balance (EUR)</div>
-          </div>
-
-          <div class="bal-split">
-            <div class="bal-item">
-              <div class="label">Available</div>
-              <div class="value" data-real="€0.00">••••</div>
-            </div>
-            <div class="bal-item restricted">
-              <div class="label">Held</div>
-              <div class="value" data-real="€749,700.00">••••</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- USD -->
-        <div class="slide active" data-currency="USD">
-          <div class="bal-main">
-            <div class="bal-amt" data-real="$882,000.00">••••••••</div>
-            <div class="bal-sub">Total Balance (USD)</div>
-          </div>
-
-          <div class="bal-split">
-            <div class="bal-item">
-              <div class="label">Available</div>
-              <div class="value" data-real="$0.00">••••</div>
-            </div>
-            <div class="bal-item restricted">
-              <div class="label">Held</div>
-              <div class="value" data-real="$882,000.00">••••</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- KRW -->
-        <div class="slide" data-currency="KRW">
-          <div class="bal-main">
-            <div class="bal-amt" data-real="₩1,299,186,000">••••••••</div>
-            <div class="bal-sub">Total Balance (KRW)</div>
-          </div>
-
-          <div class="bal-split">
-            <div class="bal-item">
-              <div class="label">Available</div>
-              <div class="value" data-real="₩0">••••</div>
-            </div>
-            <div class="bal-item restricted">
-              <div class="label">Held</div>
-              <div class="value" data-real="₩1,299,186,000">••••</div>
-            </div>
-          </div>
-        </div>
-
+      <div class="slide" data-currency="EUR">
+        <div class="amount">€749,700.00</div>
+        <div class="label">Total Balance (EUR)</div>
       </div>
+
+      <div class="slide active" data-currency="USD">
+        <div class="amount">$882,000.00</div>
+        <div class="label">Total Balance (USD)</div>
+      </div>
+
+      <div class="slide" data-currency="KRW">
+        <div class="amount">₩1,299,186,000</div>
+        <div class="label">Total Balance (KRW)</div>
+      </div>
+
     </div>
 
-    <button id="toggleBalance" class="eye" aria-label="Toggle balance visibility">👁️</button>
+    <!-- DOT INDICATORS -->
+    <div class="dots" id="dots">
+      <span class="dot"></span>
+      <span class="dot active"></span>
+      <span class="dot"></span>
+    </div>
 
-    <div class="account-status restricted">
+    <!-- STATUS -->
+    <div class="status">
       🔒 Restricted — Under Italian Administrative Authority (ADM)
     </div>
 
-    <button id="recentBtn" class="recent">
-      Recent Transactions <span id="recentChevron">▾</span>
+  </div>
+</section>
+
+<!-- =======================
+     TRANSACTIONS
+======================= -->
+<section class="transactions">
+  <div class="tx-header">
+    <h3>Recent Transactions</h3>
+    <button id="viewAllTx">View all →</button>
+  </div>
+
+  <div id="txList" class="tx-list"></div>
+</section>
+
+<!-- =======================
+     ACTION BUTTONS
+======================= -->
+<section class="actions">
+  <button id="transferBtn">⇄ Transfer</button>
+  <button id="scanBtn">📷 Scan</button>
+  <button id="cardsBtn">💳 Cards</button>
+  <button id="cashoutBtn">🏧 Cash-Out</button>
+</section>
+
+</main>
+
+<!-- =======================
+     BOTTOM NAV (HANA STYLE)
+======================= -->
+<nav class="bottom-nav">
+  <button class="active">🏠<span>Home</span></button>
+  <button>📊<span>Assets</span></button>
+  <button>🏦<span>Bank</span></button>
+  <button>💳<span>Cards</span></button>
+  <button>⋯<span>More</span></button>
+</nav>
+
+<!-- =======================
+     NOTIFICATION POPUP (GLASS)
+======================= -->
+<div id="popup" class="popup" hidden>
+  <div class="popup-box">
+
+    <h3>Account Status</h3>
+
+    <p class="popup-text">
+      This account is currently restricted under Italian Administrative Authority (ADM).
+    </p>
+
+    <button class="primary-btn" id="contactBankBtn">
+      Contact Bank
     </button>
 
-  </article>
-</section>
-
-<!-- TRANSACTIONS -->
-<section id="recentPanel" class="recent-panel" hidden>
-  <div class="tx-header">Recent Transactions</div>
-
-  <div id="txList" class="tx-list">
-    <div class="tx-group" data-currency="USD">
-      <div class="tx-item">
-        <div class="tx-left">
-          <div class="tx-title">Incoming SWIFT Transfer</div>
-          <div class="tx-sub">Administrative release under compliance</div>
-          <div class="tx-meta">04 May 2026 • 11:05 AM</div>
-        </div>
-        <div class="tx-right">
-          <div class="tx-amount credit">+$882,000.00</div>
-          <div class="tx-status">Restricted</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <button id="viewAllTx" class="view-all">View all →</button>
-</section>
-
-<!-- ACTIONS -->
-<section class="actions">
-  <button id="transferBtn" class="action">⇄ Transfer</button>
-  <button class="action">₩ Payment</button>
-  <button class="action">💳 Cards</button>
-  <button class="action">🏧 Cash-Out</button>
-</section>
-
-<!-- PROTOCOL PANEL -->
-<div id="protocolPanel" class="protocol-panel" hidden>
-
-  <div class="protocol-box">
-
-    <button id="closeProtocol">✕</button>
-
-    <h3>Transfer Protocol Access</h3>
-
-    <button class="protocol-btn">SWIFT Transfer</button>
-    <button class="protocol-btn">Internal Bank Transfer</button>
-    <button class="protocol-btn">Regulated Release Protocol</button>
-
-    <!-- STATE -->
-    <input type="hidden" id="transferCurrency" />
-
-    <!-- INPUT -->
-    <div class="transfer-input">
-      <label id="transferLabel">Amount (USD)</label>
-
-      <input
-        id="transferAmount"
-        type="number"
-        step="0.01"
-        inputmode="decimal"
-        autocomplete="off"
-        placeholder="Enter amount"
-      />
-
-      <div id="transferError" class="input-error" hidden>
-        Invalid amount entered
-      </div>
-    </div>
-
-    <!-- FX -->
-    <div id="fxBreakdown" class="fx-box" hidden>
-      <div class="fx-row">
-        <span>Exchange Rate</span>
-        <span id="fxRate"></span>
-      </div>
-      <div class="fx-row">
-        <span>Processing Fee</span>
-        <span id="fxFee"></span>
-      </div>
-      <div class="fx-row total">
-        <span>Net Amount Received</span>
-        <span id="fxReceive"></span>
-      </div>
-    </div>
-
-    <!-- CONFIRM -->
-    <div id="confirmTransferBox" hidden>
-      <div id="transferLoading" hidden>Processing transfer...</div>
-
-      <button id="confirmTransferBtn" class="confirm-btn" disabled>
-        Confirm Transfer
-      </button>
-    </div>
+    <button class="secondary-btn" id="closePopup">
+      Close
+    </button>
 
   </div>
 </div>
 
-<!-- RECEIPT -->
-<div id="receiptPopup" class="popup" hidden>
-  <div class="popup-box">
-    <button id="closeReceipt">✕</button>
-    <h3>Transaction Receipt</h3>
-    <div id="receiptContent"></div>
-    <button id="downloadReceipt" class="confirm-btn">Download Receipt</button>
-  </div>
-</div>
-
-<!-- COMPLIANCE -->
-<div id="compliancePopup" class="popup" hidden>
-  <div class="popup-box">
-    <button id="closePopup">✕</button>
-    <h3>Administrative Restriction</h3>
-    <p>Transfers are disabled under administrative control.</p>
-  </div>
-</div>
-
-<!-- DRAWER -->
-<div id="menuBackdrop" class="backdrop" hidden></div>
+<!-- =======================
+     SIDE DRAWER (FIXED)
+======================= -->
+<div id="drawerBackdrop" hidden></div>
 
 <aside id="drawer" class="drawer">
   <button id="closeDrawer">✕</button>
+
   <button>Profile</button>
   <button>Cards</button>
   <button disabled>Transfers</button>
@@ -258,18 +152,10 @@
   <button id="logoutBtn">Logout</button>
 </aside>
 
-</main>
-
-<script>
-window.accountState = {
-  status: "RESTRICTED",
-  currency: "USD"
-};
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script defer src="script.js"></script>
-<script defer src="dashboard.js"></script>
+<!-- =======================
+     SCRIPT
+======================= -->
+<script src="dashboard.js"></script>
 
 </body>
 </html>
