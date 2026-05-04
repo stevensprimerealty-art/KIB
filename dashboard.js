@@ -17,6 +17,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   }
 
   const $ = (id) => document.getElementById(id);
+  const safeHide = (el, state) => el && (el.hidden = state);
 
   // -------------------------
   // SYSTEM STATE
@@ -36,8 +37,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   // -------------------------
   const FX_CONFIG = {
     spread: { EUR: 0.018, KRW: 0.025 },
-    fee: { EUR: 12, KRW: 3500 },
-    displayAdjustment: 0.995
+    fee: { EUR: 12, KRW: 3500 }
   };
 
   // -------------------------
@@ -58,13 +58,10 @@ window.addEventListener("DOMContentLoaded", async () => {
     const fee = FX_CONFIG.fee[currency] || 0;
 
     const buyRate = rate * (1 - spread);
-    const sellRate = rate * (1 + spread);
 
     return {
-      display: usd * rate * FX_CONFIG.displayAdjustment,
       converted: usd * buyRate - fee,
       buyRate,
-      sellRate,
       fee
     };
   }
@@ -73,8 +70,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     document.querySelectorAll(".slide").forEach(slide => {
       const c = slide.dataset.currency;
       const val = balances[c];
-
-      if (val == null) return; // FIXED
+      if (val == null) return;
 
       const formatted = formatMoney(val, c);
 
@@ -91,27 +87,20 @@ window.addEventListener("DOMContentLoaded", async () => {
       const res = await fetch("https://api.exchangerate.host/latest?base=USD");
       const data = await res.json();
 
-      if (!data?.rates) throw new Error("Invalid FX");
-
       const usd = window.accountState.balance.USD;
 
       const eur = applyBankRates(usd, data.rates.EUR, "EUR");
       const krw = applyBankRates(usd, data.rates.KRW, "KRW");
 
-      window.accountState.balance.EUR = eur.display;
-      window.accountState.balance.KRW = krw.display;
-
       window.fxMeta = { EUR: eur, KRW: krw };
 
       updateBalances({
         USD: usd,
-        EUR: eur.display,
-        KRW: krw.display
+        EUR: eur.converted,
+        KRW: krw.converted
       });
 
     } catch {
-      console.warn("FX fallback");
-
       const usd = window.accountState.balance.USD;
 
       const eur = applyBankRates(usd, 0.85, "EUR");
@@ -121,8 +110,8 @@ window.addEventListener("DOMContentLoaded", async () => {
 
       updateBalances({
         USD: usd,
-        EUR: eur.display,
-        KRW: krw.display
+        EUR: eur.converted,
+        KRW: krw.converted
       });
     }
   }
@@ -134,8 +123,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   let visible = localStorage.getItem("kib_balance_visible") === "true";
 
   function maskMoney(text) {
-    if (!text) return "••••••••";
-    const symbol = text.match(/^[^\d]+/)?.[0] || "";
+    const symbol = text?.match(/^[^\d]+/)?.[0] || "";
     return symbol + "••••••••";
   }
 
@@ -155,18 +143,26 @@ window.addEventListener("DOMContentLoaded", async () => {
   });
 
   // -------------------------
-  // SLIDER (SAFE)
+  // SLIDER
   // -------------------------
   const slider = $("accountSlider");
   const slides = slider?.querySelectorAll(".slide") || [];
-
   let currentIndex = 1;
 
   function updateSlider(i) {
     if (!slides.length) return;
 
-    slides.forEach((s, idx) => s.classList.toggle("active", idx === i));
-    window.accountState.currency = slides[i].dataset.currency;
+    currentIndex = (i + slides.length) % slides.length;
+
+    slides.forEach((s, idx) =>
+      s.classList.toggle("active", idx === currentIndex)
+    );
+
+    const currency = slides[currentIndex].dataset.currency;
+    window.accountState.currency = currency;
+
+    $("transferCurrency") && ($("transferCurrency").value = currency);
+    $("transferLabel") && ($("transferLabel").textContent = `Amount (${currency})`);
   }
 
   slider?.addEventListener("touchstart", e => {
@@ -175,152 +171,189 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   slider?.addEventListener("touchend", e => {
     const dx = e.changedTouches[0].clientX - slider.startX;
-
-    if (dx > 50) currentIndex--;
-    if (dx < -50) currentIndex++;
-
-    currentIndex = (currentIndex + slides.length) % slides.length;
-    updateSlider(currentIndex);
+    if (dx > 50) updateSlider(currentIndex - 1);
+    if (dx < -50) updateSlider(currentIndex + 1);
   });
 
   updateSlider(currentIndex);
 
   // -------------------------
-  // FX BREAKDOWN
+  // TRANSFER BUTTON (FIXED UX)
   // -------------------------
-  const fxBox = $("fxBreakdown");
-  const fxRate = $("fxRate");
-  const fxFee = $("fxFee");
-  const fxReceive = $("fxReceive");
+  const transferBtn = $("transferBtn");
+  const protocolPanel = $("protocolPanel");
 
-  function showFx(currency) {
-    const meta = window.fxMeta?.[currency];
-    if (!meta) return;
+  transferBtn?.addEventListener("click", () => {
 
-    const receive = Math.floor(meta.converted);
-
-    fxRate.textContent = `1 USD = ${meta.buyRate.toFixed(4)} ${currency}`;
-    fxFee.textContent = formatMoney(meta.fee, currency);
-    fxReceive.textContent = formatMoney(receive, currency);
-
-    if (fxBox) fxBox.hidden = false;
-  }
-
-  // -------------------------
-  // TRANSFER ENGINE
-  // -------------------------
-  const confirmBox = $("confirmTransferBox");
-  const confirmBtn = $("confirmTransferBtn");
-  const receiptPopup = $("receiptPopup");
-  const receiptContent = $("receiptContent");
-
-  let pendingTransfer = null;
-
-  function prepareTransfer(currency) {
-    const meta = window.fxMeta?.[currency];
-    if (!meta) return;
-
-    const usd = window.accountState.balance.USD;
-    const receive = Math.floor(meta.converted);
-
-    pendingTransfer = {
-      id: "TX-" + Date.now(),
-      from: "USD",
-      to: currency,
-      usd,
-      rate: meta.buyRate,
-      fee: meta.fee,
-      receive,
-      date: new Date().toLocaleString()
-    };
-
-    if (confirmBox) confirmBox.hidden = false;
-  }
-
-  function showReceipt(tx) {
-    if (!receiptContent) return;
-
-    receiptContent.innerHTML = `
-      <p><b>ID:</b> ${tx.id}</p>
-      <p><b>From:</b> USD</p>
-      <p><b>To:</b> ${tx.to}</p>
-      <p><b>Sent:</b> $${tx.usd.toLocaleString()}</p>
-      <p><b>Rate:</b> ${tx.rate.toFixed(4)}</p>
-      <p><b>Fee:</b> ${formatMoney(tx.fee, tx.to)}</p>
-      <p><b>Received:</b> ${formatMoney(tx.receive, tx.to)}</p>
-      <p><b>Date:</b> ${tx.date}</p>
-    `;
-
-    if (receiptPopup) receiptPopup.hidden = false;
-  }
-
-  confirmBtn?.addEventListener("click", () => {
-    if (!pendingTransfer) return;
-
-    if (window.accountState.status === "RESTRICTED") {
-      $("compliancePopup")?.classList.remove("hidden");
+    if (!window.fxMeta) {
+      alert("System loading...");
       return;
     }
 
-    // deduct balance
-    window.accountState.balance.USD = 0;
+    if (window.accountState.status === "RESTRICTED") {
+      safeHide($("compliancePopup"), false);
+      return;
+    }
 
-    // re-render UI 🔥
-    updateBalances(window.accountState.balance);
+    if (protocolPanel) protocolPanel.hidden = false;
+  });
 
-    // store history
-    const history =
-      JSON.parse(localStorage.getItem("kib_tx_history") || "[]");
+  $("closeProtocol")?.addEventListener("click", () => {
+    safeHide(protocolPanel, true);
+  });
 
-    history.unshift(pendingTransfer);
-    localStorage.setItem("kib_tx_history", JSON.stringify(history));
+  // -------------------------
+  // INPUT VALIDATION
+  // -------------------------
+  const input = $("transferAmount");
+  const error = $("transferError");
+  const confirmBtn = $("confirmTransferBtn");
 
-    showReceipt(pendingTransfer);
+  function validateInput() {
+    if (!input) return null;
+
+    const val = parseFloat(input.value);
+    const max = window.accountState.balance.USD;
+
+    if (!val || val <= 0) {
+      safeHide(error, false);
+      error.textContent = "Enter a valid amount";
+      confirmBtn.disabled = true;
+      return null;
+    }
+
+    if (val > max) {
+      safeHide(error, false);
+      error.textContent = "Amount exceeds balance";
+      confirmBtn.disabled = true;
+      return null;
+    }
+
+    safeHide(error, true);
+    confirmBtn.disabled = false;
+    return val;
+  }
+
+  input?.addEventListener("input", () => {
+    const amount = validateInput();
+
+    if (!amount) {
+      safeHide($("fxBreakdown"), true);
+      safeHide($("confirmTransferBox"), true);
+      confirmBtn.disabled = true;
+      return;
+    }
+
+    const currency = $("transferCurrency").value;
+    const meta = window.fxMeta?.[currency];
+    if (!meta) return;
+
+    const receive = Math.floor(amount * meta.buyRate - meta.fee);
+
+    $("fxRate").textContent = `1 USD = ${meta.buyRate.toFixed(4)} ${currency}`;
+    $("fxFee").textContent = formatMoney(meta.fee, currency);
+    $("fxReceive").textContent = formatMoney(receive, currency);
+
+    safeHide($("fxBreakdown"), false);
+    safeHide($("confirmTransferBox"), false);
+  });
+
+  // -------------------------
+  // ADD TRANSACTION (FIXED)
+  // -------------------------
+  function addTransaction(tx) {
+    const list = $("txList");
+    if (!list) return;
+
+    const el = document.createElement("div");
+    el.className = "tx-item";
+
+    el.innerHTML = `
+      <div class="tx-left">
+        <div class="tx-title">Outgoing Transfer</div>
+        <div class="tx-sub">${tx.currency} conversion</div>
+        <div class="tx-meta">${tx.date}</div>
+      </div>
+      <div class="tx-right">
+        <div class="tx-amount debit">-${formatMoney(tx.amount, "USD")}</div>
+        <div class="tx-status">Completed</div>
+      </div>
+    `;
+
+    list.prepend(el);
+  }
+
+  // -------------------------
+  // TRANSFER EXECUTION
+  // -------------------------
+  const loading = $("transferLoading");
+  const receiptPopup = $("receiptPopup");
+  const receiptContent = $("receiptContent");
+
+  confirmBtn?.addEventListener("click", () => {
+
+    const amount = validateInput();
+    if (!amount) return;
+
+    confirmBtn.disabled = true;
+    safeHide(loading, false);
+
+    setTimeout(() => {
+
+      const currency = $("transferCurrency").value;
+      const meta = window.fxMeta[currency];
+
+      const receive = Math.floor(amount * meta.buyRate - meta.fee);
+
+      const tx = {
+        id: "TX-" + Date.now(),
+        amount,
+        currency,
+        receive,
+        rate: meta.buyRate,
+        fee: meta.fee,
+        date: new Date().toLocaleString()
+      };
+
+      window.accountState.balance.USD -= amount;
+
+      updateBalances(window.accountState.balance);
+      addTransaction(tx);
+
+      receiptContent.innerHTML = `
+        <p><b>ID:</b> ${tx.id}</p>
+        <p><b>Sent:</b> ${formatMoney(amount, "USD")}</p>
+        <p><b>Currency:</b> ${currency}</p>
+        <p><b>Rate:</b> ${tx.rate.toFixed(4)}</p>
+        <p><b>Fee:</b> ${formatMoney(tx.fee, currency)}</p>
+        <p><b>Received:</b> ${formatMoney(tx.receive, currency)}</p>
+        <p><b>Date:</b> ${tx.date}</p>
+      `;
+
+      safeHide(receiptPopup, false);
+
+      // RESET (FIXED)
+      input.value = "";
+      safeHide(error, true);
+      safeHide($("fxBreakdown"), true);
+      safeHide($("confirmTransferBox"), true);
+      confirmBtn.disabled = true;
+      safeHide(loading, true);
+      safeHide(protocolPanel, true);
+
+    }, 1200);
   });
 
   $("closeReceipt")?.addEventListener("click", () => {
-    if (receiptPopup) receiptPopup.hidden = true;
+    safeHide(receiptPopup, true);
   });
 
-  $("downloadReceipt")?.addEventListener("click", () => {
-    if (!pendingTransfer) return;
-
-    const blob = new Blob([JSON.stringify(pendingTransfer, null, 2)], {
-      type: "application/json"
-    });
-
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-
-    a.href = url;
-    a.download = `${pendingTransfer.id}.json`;
-    a.click();
-
-    URL.revokeObjectURL(url);
-  });
-
-  // -------------------------
-  // PROTOCOL BUTTONS
-  // -------------------------
-  document.querySelectorAll(".protocol-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-
-      const currency = window.accountState.currency;
-
-      if (currency === "USD") {
-        fxBox && (fxBox.hidden = true);
-        confirmBox && (confirmBox.hidden = true);
-        return;
-      }
-
-      showFx(currency);
-      prepareTransfer(currency);
-    });
+  $("closePopup")?.addEventListener("click", () => {
+    safeHide($("compliancePopup"), true);
   });
 
   // -------------------------
   // INIT
   // -------------------------
   await loadFX();
-
 });
