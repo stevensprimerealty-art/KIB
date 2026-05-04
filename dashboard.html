@@ -42,17 +42,17 @@
     <div class="slider" id="slider">
 
       <div class="slide" data-currency="EUR">
-        <div class="amount">€749,700.00</div>
+        <div class="amount" data-currency="EUR">€749,700.00</div>
         <div class="label">Total Balance (EUR)</div>
       </div>
 
       <div class="slide active" data-currency="USD">
-        <div class="amount">$882,000.00</div>
+        <div class="amount" data-currency="USD">$882,000.00</div>
         <div class="label">Total Balance (USD)</div>
       </div>
 
       <div class="slide" data-currency="KRW">
-        <div class="amount">₩1,299,186,000</div>
+        <div class="amount" data-currency="KRW">₩1,299,186,000</div>
         <div class="label">Total Balance (KRW)</div>
       </div>
 
@@ -104,20 +104,52 @@
 
 <!-- ================= GLOBAL POPUP ================= -->
 <div id="popup" class="popup" hidden>
-  <!-- JS will inject content here -->
+  <div class="popup-box" id="popupContent">
+    <!-- injected dynamically -->
+  </div>
+</div>
+
+<!-- ================= RECEIPT MODAL ================= -->
+<div id="receiptModal" class="popup" hidden>
+  <div class="popup-box" id="receiptContent">
+    <!-- receipt injected -->
+  </div>
+</div>
+
+<!-- ================= CARDS SCREEN ================= -->
+<div id="cardsScreen" class="cards-screen" hidden>
+  <div class="cards-header">
+    <button id="closeCards">←</button>
+    <h3>My Cards</h3>
+  </div>
+
+  <div class="card-ui">
+    <div class="virtual-card">
+      <div class="chip"></div>
+      <div class="card-number">**** **** **** 3456</div>
+      <div class="card-name">KIM DAE HYUN</div>
+      <div class="card-exp">12/29</div>
+    </div>
+  </div>
 </div>
 
 <!-- ================= DRAWER ================= -->
 <div id="drawerBackdrop" hidden></div>
 
 <aside id="drawer" class="drawer">
-  <button id="closeDrawer">✕</button>
+
+  <div class="drawer-header">
+    <div class="avatar large"></div>
+    <div class="drawer-name">Kim Dae Hyun</div>
+  </div>
 
   <button id="profileBtn">Profile</button>
   <button id="drawerCardsBtn">Cards</button>
   <button disabled>Transfers</button>
   <button id="supportBtn">Support</button>
   <button id="logoutBtn">Logout</button>
+
+  <button id="closeDrawer" class="drawer-close">Close</button>
 </aside>
 
 <!-- ================= SCRIPT ================= -->
