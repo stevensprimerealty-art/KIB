@@ -40,45 +40,45 @@
 <!-- ================= ACCOUNTS ================= -->
 <section class="cards">
 
-  <!-- EUR (PRIMARY IN YOUR CASE) -->
+  <!-- EUR -->
   <div class="card">
     <div class="cardHeader">
       <div>
         <h3>EUR Balance</h3>
-        <small class="accountMeta">Primary Account · ****8821</small>
+        <small class="accountMeta">Foreign Currency Account · ****8821</small>
       </div>
       <span class="badge">Restricted</span>
     </div>
 
     <p id="eurBalance">€--</p>
     <small id="eurRateText">Rate loading…</small>
-    <small class="subNote">Available balance</small>
+    <small class="subNote">Estimated value based on FX rate</small>
 
     <button type="button" onclick="toggleBalance(this)">Hide</button>
   </div>
 
-  <!-- USD -->
+  <!-- USD (MAIN ACCOUNT) -->
   <div class="card" id="usdCard">
     <div class="cardHeader">
       <div>
         <h3>USD Balance</h3>
-        <small class="accountMeta">Foreign Currency Account · ****0001</small>
+        <small class="accountMeta">Main Account · ****0001</small>
       </div>
       <span class="badge">Restricted</span>
     </div>
 
     <p id="usdBalance">$--</p>
-    <small class="subNote">Incoming funds · restricted access</small>
+    <small class="subNote">Funds under administrative restriction</small>
 
     <button type="button" onclick="toggleBalance(this)">Hide</button>
   </div>
 
-  <!-- KRW (FIXED PROPERLY) -->
+  <!-- KRW -->
   <div class="card">
     <div class="cardHeader">
       <div>
         <h3>KRW Equivalent</h3>
-        <small class="accountMeta">Estimated Value · Based on FX Rate</small>
+        <small class="accountMeta">Indicative value based on FX rate</small>
       </div>
       <span class="badge">Restricted</span>
     </div>
@@ -104,7 +104,6 @@
     <span>Accounts</span>
   </div>
 
-  <!-- FIXED WORDING -->
   <div class="gridItem">
     <div class="icon">
       <svg viewBox="0 0 24 24">
@@ -115,7 +114,6 @@
     <span>FX</span>
   </div>
 
-  <!-- CARDS PAGE LINK -->
   <div class="gridItem" onclick="window.location.href='cards.html'">
     <div class="icon">
       <svg viewBox="0 0 24 24">
@@ -165,17 +163,37 @@
   </div>
 
   <div class="tx" onclick="toggleTx()">
-    <div>
-      <strong>Incoming Transfer — Under Administrative Review</strong>
-      <small>04 May 2026 · Processing</small>
+
+    <div class="txLeft">
+      <strong>Incoming Transfer</strong>
+      <small>04 May 2026 · 11:12 · Pending Review</small>
     </div>
-    <div class="amount green">+$882,000</div>
+
+    <div class="txRight">
+      <div class="amount green">+$882,000 USD</div>
+      <small class="status">Restricted</small>
+    </div>
+
   </div>
 
   <div id="txDetails" class="txDetails">
+
     <p><strong>Reference:</strong> ADM-INT-44721</p>
-    <p><strong>Status:</strong> Funds held under administrative control</p>
+
+    <p><strong>Status:</strong>  
+      Funds received but placed under administrative review.
+    </p>
+
+    <p><strong>Availability:</strong>  
+      Funds are not yet available for transfer or withdrawal.
+    </p>
+
+    <p><strong>Source:</strong>  
+      International wire transfer
+    </p>
+
     <button type="button" onclick="toggleTx()">Close</button>
+
   </div>
 
 </section>
@@ -199,14 +217,14 @@
     </div>
 
     <div class="drawerMenu">
-      <button>Accounts</button>
-      <button>FX</button>
-      <button>Funds</button>
-      <button>Support</button>
+      <button type="button">Accounts</button>
+      <button type="button">FX</button>
+      <button type="button">Funds</button>
+      <button type="button">Support</button>
     </div>
 
     <div class="drawerFooter">
-      <button onclick="logout()">Logout</button>
+      <button type="button" onclick="logout()">Logout</button>
     </div>
 
   </div>
