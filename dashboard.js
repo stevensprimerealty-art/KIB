@@ -8,7 +8,7 @@ const account = {
 
 
 /* =========================
-   FX ENGINE (REALISTIC CACHE + ITALY TIME)
+   FX ENGINE
 ========================= */
 const midMarket = {
   EUR: 0.94,
@@ -23,8 +23,9 @@ let fx = {
   timestamp: null
 };
 
+
 /* =========================
-   ITALY TIME HELPERS
+   ITALY TIME
 ========================= */
 function getItalyTimeString(){
   return new Intl.DateTimeFormat("en-GB", {
@@ -34,6 +35,7 @@ function getItalyTimeString(){
     hour12: false
   }).format(new Date());
 }
+
 
 /* =========================
    FX COMPUTE
@@ -72,12 +74,12 @@ function formatKRW(amount){
 }
 
 function formatTime(){
-  return getItalyTimeString(); // always Italy
+  return getItalyTimeString();
 }
 
 
 /* =========================
-   STATE (SAFE)
+   STATE
 ========================= */
 function getSavedState(){
   try {
@@ -100,7 +102,6 @@ function saveState(){
    LOAD BALANCES
 ========================= */
 function loadBalances(){
-
   computeFX();
 
   const usdEl = document.getElementById("usdBalance");
@@ -117,16 +118,16 @@ function loadBalances(){
   if(eurEl){
     eurEl.innerText = hiddenState.eur
       ? "••••"
-      : formatCurrency(fx.eurValue || 0, "EUR");
+      : formatCurrency(fx.eurValue, "EUR");
   }
 
   if(krwEl){
     krwEl.innerText = hiddenState.krw
       ? "••••"
-      : formatKRW(fx.krwValue || 0);
+      : formatKRW(fx.krwValue);
   }
 
-  if(rateEl && fx.eurRate){
+  if(rateEl){
     rateEl.innerText =
       `1 USD ≈ ${fx.eurRate.toFixed(4)} EUR · ${formatTime()}`;
   }
@@ -136,7 +137,7 @@ function loadBalances(){
 
 
 /* =========================
-   BUTTON STATE SYNC
+   BUTTON SYNC (FIXED)
 ========================= */
 function syncButtons(){
   document.querySelectorAll(".card").forEach(card=>{
@@ -145,13 +146,9 @@ function syncButtons(){
 
     if(card.id === "usdCard"){
       btn.innerText = hiddenState.usd ? "Show" : "Hide";
-    }
-
-    if(card.querySelector("#eurBalance")){
+    } else if(card.querySelector("#eurBalance")){
       btn.innerText = hiddenState.eur ? "Show" : "Hide";
-    }
-
-    if(card.querySelector("#krwBalance")){
+    } else if(card.querySelector("#krwBalance")){
       btn.innerText = hiddenState.krw ? "Show" : "Hide";
     }
   });
@@ -159,17 +156,27 @@ function syncButtons(){
 
 
 /* =========================
-   INIT
+   INIT (SAFE)
 ========================= */
 let fxInterval;
 
 document.addEventListener("DOMContentLoaded", () => {
-  loadBalances();
-  loadImage();
-  initImagePicker();
+  try {
+    loadBalances();
+    loadImage();
+    initImagePicker();
 
-  if(!fxInterval){
-    fxInterval = setInterval(loadBalances, 60000);
+    if(!fxInterval){
+      fxInterval = setInterval(loadBalances, 60000);
+    }
+
+    setTimeout(() => {
+      if(account.restricted) showCompliance();
+    }, 2000);
+
+  } catch(err){
+    console.error("INIT ERROR:", err);
+    alert("JS Error: " + err.message);
   }
 });
 
@@ -201,13 +208,9 @@ function closeModal(){
   modalOpen = false;
 }
 
-setTimeout(() => {
-  if(account.restricted) showCompliance();
-}, 2000);
-
 
 /* =========================
-   BLOCKED ACTIONS
+   BLOCKED
 ========================= */
 function blocked(){
   if(account.restricted){
@@ -258,7 +261,7 @@ document.addEventListener("click", (e) => {
 
 
 /* =========================
-   ESC SUPPORT
+   ESC
 ========================= */
 document.addEventListener("keydown", (e) => {
   if(e.key === "Escape"){
@@ -284,7 +287,7 @@ async function logout(){
 
 
 /* =========================
-   PROFILE IMAGE
+   PROFILE IMAGE (SAFE FIX)
 ========================= */
 function pickImage(){
   document.getElementById("imgPicker")?.click();
@@ -299,6 +302,7 @@ function initImagePicker(){
     if(!file) return;
 
     const reader = new FileReader();
+
     reader.onload = () => {
       localStorage.setItem("profileImg", reader.result);
       loadImage();
@@ -310,11 +314,13 @@ function initImagePicker(){
 
 function loadImage(){
   const img = localStorage.getItem("profileImg");
+  if(!img) return;
 
-  if(img){
-    document.getElementById("profileImg").src = img;
-    document.getElementById("drawerImg").src = img;
-  }
+  const profile = document.getElementById("profileImg");
+  const drawer = document.getElementById("drawerImg");
+
+  if(profile) profile.src = img;
+  if(drawer) drawer.src = img;
 }
 
 
@@ -327,13 +333,9 @@ function toggleBalance(btn){
 
   if(card.id === "usdCard"){
     hiddenState.usd = !hiddenState.usd;
-  }
-
-  if(card.querySelector("#eurBalance")){
+  } else if(card.querySelector("#eurBalance")){
     hiddenState.eur = !hiddenState.eur;
-  }
-
-  if(card.querySelector("#krwBalance")){
+  } else if(card.querySelector("#krwBalance")){
     hiddenState.krw = !hiddenState.krw;
   }
 
