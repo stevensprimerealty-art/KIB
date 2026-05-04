@@ -4,190 +4,105 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>KIB Dashboard</title>
-<link rel="stylesheet" href="dashboard.css?v=12"/>
+<link rel="stylesheet" href="dashboard.css"/>
 </head>
 
 <body>
 
-<main class="app">
+<div class="app">
 
+<!-- TOP BAR -->
 <header class="topbar">
   <button onclick="openDrawer()">☰</button>
 
   <div class="user">
-    <img id="avatar" class="avatar" src="https://i.imgur.com/6VBx3io.png"/>
-    <div>
-      <div class="hello">Hello</div>
-      <div class="name">Mr Kim Dae Hyun</div>
-    </div>
+    <input type="file" id="imgPicker" hidden/>
+    <img id="profileImg" onclick="pickImage()" src="default.png"/>
+    <span>Kim Dae Hyun</span>
   </div>
 
-  <button onclick="safeOpenNotifications()">🔔</button>
+  <div class="icons">
+    <span onclick="showCompliance()">🔔</span>
+  </div>
 </header>
 
-<section class="card-wrap">
+<!-- CARD SLIDER -->
+<section class="cards" id="cardSlider">
+
+  <!-- EUR -->
   <div class="card">
-
-    <div class="card-header">
-      <span>Multi-Currency Account</span>
-      <button onclick="toggleFallback()">👁</button>
-    </div>
-
-    <div class="acct">IBAN: IT60X0542****3456</div>
-
-    <!-- ✅ CLEAN SLIDES (NO data-original) -->
-    <div class="slider" id="slider">
-
-      <div class="slide" data-currency="EUR">
-        <div class="amount">€0.00</div>
-        <div class="label">EUR</div>
-      </div>
-
-      <div class="slide" data-currency="USD">
-        <div class="amount">$0.00</div>
-        <div class="label">USD</div>
-      </div>
-
-      <div class="slide" data-currency="KRW">
-        <div class="amount">₩0</div>
-        <div class="label">KRW</div>
-      </div>
-
-    </div>
-
-    <div class="dots">
-      <span class="dot active"></span>
-      <span class="dot"></span>
-      <span class="dot"></span>
-    </div>
-
-    <div class="fx-box" id="fxValue">≈ $0.00</div>
-
-  </div>
-</section>
-
-<section class="transactions">
-
-  <div class="tx-header">
-    <h3>Transactions</h3>
-    <button onclick="safeViewAll()">View all →</button>
+    <h3>EUR Account</h3>
+    <p id="eurBalance">€---</p>
+    <button onclick="toggleBalance(this)">Hide</button>
   </div>
 
-  <div id="txList"></div>
+  <!-- USD -->
+  <div class="card flipCard" id="usdCard">
+    <h3>USD Account</h3>
+    <p id="usdBalance">$882,000</p>
+    <button onclick="toggleBalance(this)">Hide</button>
+  </div>
+
+  <!-- KRW -->
+  <div class="card">
+    <h3>KRW Account</h3>
+    <p id="krwBalance">₩---</p>
+    <button onclick="toggleBalance(this)">Hide</button>
+  </div>
 
 </section>
 
+<!-- ACTIONS -->
 <section class="actions">
+  <button onclick="blocked()">Transfer</button>
+  <button onclick="blocked()">Scan QR</button>
+</section>
 
-  <button onclick="safeOpenTransfer()">⇄ Transfer</button>
-  <button onclick="openPopup('Scan not available')">📷 Scan</button>
+<!-- TRANSACTIONS -->
+<section class="transactions">
+  <h3>Recent Transactions</h3>
 
-  <button onclick="document.getElementById('cardsScreen').hidden=false">
-    💳 Cards
-  </button>
-
-  <button onclick="openPopup('Cash-Out disabled')">🏧 Cash-Out</button>
+  <div class="tx">
+    <div>
+      <strong>ADM Italy Deposit</strong>
+      <small>04 May 2026</small>
+    </div>
+    <div class="amount green">+$882,000</div>
+  </div>
 
 </section>
 
-</main>
-
-<nav class="bottom-nav">
-  <button class="active">🏠</button>
-  <button>📊</button>
-  <button>🏦</button>
-  <button>💳</button>
-</nav>
-
-<!-- POPUP -->
-<div id="popup" class="popup" hidden>
-  <div class="popup-box">
-    <div id="popupText">Notice</div>
-    <button onclick="closePopup()">Close</button>
-  </div>
-</div>
-
-<!-- CARDS -->
-<div id="cardsScreen" class="popup" hidden>
-  <div class="popup-box">
-    <h3>Card</h3>
-    <p>**** **** **** 3456</p>
-    <button onclick="this.closest('.popup').hidden=true">Close</button>
-  </div>
 </div>
 
 <!-- DRAWER -->
-<div id="drawerBackdrop" hidden onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawerContent">
+    <img id="drawerImg" src="default.png"/>
+    <p>Kim Dae Hyun</p>
 
-<aside id="drawer" class="drawer">
-  <button onclick="openPopup('Profile')">Profile</button>
-  <button onclick="openPopup('Cards')">Cards</button>
-  <button onclick="openPopup('Support')">Support</button>
-  <button onclick="closeDrawer()">Close</button>
-</aside>
+    <button>Accounts</button>
+    <button>Open Banking</button>
+    <button>Exchange</button>
+    <button>Funds</button>
+    <button>Settings</button>
 
-<!-- ================= SAFE GLOBAL WRAPPERS ================= -->
-<script>
+    <button onclick="logout()">Logout →</button>
+  </div>
+</div>
 
-/* POPUP */
-window.openPopup = function(text){
-  document.getElementById("popupText").innerHTML = text;
-  document.getElementById("popup").hidden = false;
-}
+<!-- COMPLIANCE MODAL -->
+<div class="modal" id="modal">
+  <div class="modalBox">
+    <h2>Account Restricted</h2>
+    <p>
+      Funds are under administrative compliance.<br/>
+      Transfers and withdrawals are disabled until case closure.
+    </p>
 
-window.closePopup = function(){
-  document.getElementById("popup").hidden = true;
-}
+    <button onclick="closeModal()">Close</button>
+  </div>
+</div>
 
-/* DRAWER */
-window.openDrawer = function(){
-  document.getElementById("drawer").classList.add("open");
-  document.getElementById("drawerBackdrop").hidden = false;
-}
-
-window.closeDrawer = function(){
-  document.getElementById("drawer").classList.remove("open");
-  document.getElementById("drawerBackdrop").hidden = true;
-}
-
-/* MASK → JS controls actual values */
-window.toggleFallback = function(){
-  if (window.toggleFallback) {
-    // handled by dashboard.js
-  }
-}
-
-/* VIEW ALL */
-window.safeViewAll = function(){
-  if (window.__renderTransactions) {
-    window.__renderTransactions(999);
-  } else {
-    openPopup("Transactions loading...");
-  }
-}
-
-/* NOTIFICATIONS */
-window.safeOpenNotifications = function(){
-  if (window.openNotifications) {
-    window.openNotifications();
-  } else {
-    openPopup("No notifications yet");
-  }
-}
-
-/* TRANSFER */
-window.safeOpenTransfer = function(){
-  if (window.openTransfer) {
-    window.openTransfer();
-  } else {
-    openPopup("Transfer system loading...");
-  }
-}
-
-</script>
-
-<!-- MAIN JS -->
-<script src="dashboard.js?v=12"></script>
-
+<script src="dashboard.js"></script>
 </body>
 </html>
