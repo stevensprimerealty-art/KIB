@@ -2,16 +2,12 @@ window.addEventListener("DOMContentLoaded", () => {
 
   const $ = (id) => document.getElementById(id);
 
-  /* =========================
-     STATE
-  ========================= */
+  /* ================= STATE ================= */
   const state = {
     index: 1,
     startX: 0,
     currentX: 0,
     dragging: false,
-
-    balanceVisible: true,
 
     balance: {
       USD: 882000,
@@ -31,9 +27,6 @@ window.addEventListener("DOMContentLoaded", () => {
     ]
   };
 
-  /* =========================
-     HELPERS
-  ========================= */
   function formatMoney(v, c) {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -45,9 +38,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const slides = document.querySelectorAll(".slide");
   const dots = document.querySelectorAll(".dot");
 
-  /* =========================
-     BALANCE RENDER + TOGGLE
-  ========================= */
+  /* ================= BALANCE ================= */
   function renderBalances() {
     slides.forEach(slide => {
       const currency = slide.dataset.currency;
@@ -55,19 +46,19 @@ window.addEventListener("DOMContentLoaded", () => {
 
       if (!currency || !el) return;
 
-      el.textContent = state.balanceVisible
-        ? formatMoney(state.balance[currency], currency)
-        : "••••••••";
+      el.textContent = formatMoney(state.balance[currency], currency);
     });
   }
 
-  /* =========================
-     SLIDER (STABLE)
-  ========================= */
+  /* ================= SLIDER (REAL FIX) ================= */
+  function getWidth() {
+    return slider?.getBoundingClientRect().width || 0;
+  }
+
   function updateSlider(animate = true) {
     if (!slider) return;
 
-    const width = slider.getBoundingClientRect().width;
+    const width = getWidth();
 
     if (!width || width < 10) {
       requestAnimationFrame(() => updateSlider(animate));
@@ -95,7 +86,7 @@ window.addEventListener("DOMContentLoaded", () => {
     state.currentX = e.touches[0].clientX;
     const dx = state.currentX - state.startX;
 
-    const width = slider.clientWidth || 1;
+    const width = getWidth() || 1;
     slider.style.transform = `translateX(-${state.index * width + dx}px)`;
   }, { passive: true });
 
@@ -106,17 +97,15 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const dx = state.currentX - state.startX;
 
-    if (dx > 70) state.index--;
-    if (dx < -70) state.index++;
+    if (dx > 60) state.index--;
+    if (dx < -60) state.index++;
 
     state.index = Math.max(0, Math.min(state.index, slides.length - 1));
 
     updateSlider(true);
   });
 
-  /* =========================
-     TRANSACTIONS (FIXED)
-  ========================= */
+  /* ================= TRANSACTIONS ================= */
   const txList = $("txList");
 
   function renderTransactions(limit = 1) {
@@ -145,117 +134,60 @@ window.addEventListener("DOMContentLoaded", () => {
         </div>
       `;
 
-      el.onclick = () => openReceipt(tx);
       txList.appendChild(el);
     });
   }
 
-  /* =========================
-     VIEW ALL (FIXED)
-  ========================= */
-  const viewAllBtn = $("viewAllTx");
+  /* VIEW ALL */
+  $("viewAllTx")?.addEventListener("click", () => {
+    renderTransactions(state.transactions.length);
+  });
 
-  if (viewAllBtn) {
-    viewAllBtn.addEventListener("click", () => {
-      renderTransactions(state.transactions.length);
-    });
-  }
+  /* ================= POPUP (FIXED CLEAN) ================= */
+  function showPopup(html) {
+    const popup = $("popup");
+    const content = $("popupContent");
 
-  /* =========================
-     RECEIPT
-  ========================= */
-  function openReceipt(tx) {
-    const modal = $("receiptModal");
-    const content = $("receiptContent");
+    if (!popup || !content) return;
 
-    if (!modal || !content) return;
+    content.innerHTML = html;
+    popup.hidden = false;
 
-    content.innerHTML = `
-      <h3>Transaction Receipt</h3>
-      <p><b>Reference:</b> ${tx.id}</p>
-      <p><b>Type:</b> ${tx.type}</p>
-      <p><b>Amount:</b> ${formatMoney(tx.amount, tx.currency)}</p>
-      <p><b>Status:</b> ${tx.status}</p>
-      <p><b>Date:</b> ${tx.date}</p>
+    requestAnimationFrame(() => popup.classList.add("show"));
 
-      <button id="closeReceipt" class="primary-btn">Close</button>
-    `;
-
-    modal.hidden = false;
-    requestAnimationFrame(() => modal.classList.add("show"));
-
-    $("closeReceipt").onclick = () => {
-      modal.classList.remove("show");
-      setTimeout(() => modal.hidden = true, 200);
+    // 🔥 REPLACE handler (no stacking)
+    popup.onclick = (e) => {
+      if (e.target.id === "popup" || e.target.id === "closePopup") {
+        popup.classList.remove("show");
+        setTimeout(() => popup.hidden = true, 200);
+      }
     };
   }
 
-  /* =========================
-     DRAWER (FIXED)
-  ========================= */
-  const drawer = $("drawer");
-  const backdrop = $("drawerBackdrop");
-
-  $("menuBtn")?.addEventListener("click", () => {
-    drawer?.classList.add("open");
-    if (backdrop) backdrop.hidden = false;
+  $("transferBtn")?.addEventListener("click", () => {
+    showPopup(`
+      <h3>Transfer Restricted</h3>
+      <button id="closePopup">Close</button>
+    `);
   });
 
-  function closeDrawer() {
-    drawer?.classList.remove("open");
-    if (backdrop) backdrop.hidden = true;
-  }
-
-  backdrop?.addEventListener("click", closeDrawer);
-  $("closeDrawer")?.addEventListener("click", closeDrawer);
-
-  /* =========================
-     AVATAR UPLOAD (PERSISTENT)
-  ========================= */
-  const avatar = $("avatar");
-
-  function loadAvatar() {
-    const saved = localStorage.getItem("kib_avatar");
-    if (saved && avatar) {
-      avatar.style.backgroundImage = `url(${saved})`;
-      avatar.style.backgroundSize = "cover";
-    }
-  }
-
-  avatar?.addEventListener("click", () => {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = "image/*";
-
-    input.onchange = () => {
-      const file = input.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = () => {
-        localStorage.setItem("kib_avatar", reader.result);
-        loadAvatar();
-      };
-      reader.readAsDataURL(file);
-    };
-
-    input.click();
+  $("notifBtn")?.addEventListener("click", () => {
+    showPopup(`
+      <h3>Account Restricted</h3>
+      <button id="closePopup">Close</button>
+    `);
   });
 
-  /* =========================
-     INIT (FINAL)
-  ========================= */
+  /* ================= INIT ================= */
   function init() {
-    loadAvatar();
     renderBalances();
     renderTransactions(1);
     updateSlider(false);
   }
 
+  // 🔥 DOUBLE FRAME FIX (better than setTimeout)
   requestAnimationFrame(() => {
     requestAnimationFrame(init);
   });
-
-  window.addEventListener("resize", () => updateSlider(false));
 
 });
