@@ -1,34 +1,95 @@
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+const supabase = createClient(
+  "YOUR_SUPABASE_URL",
+  "YOUR_ANON_KEY"
+)
+
 window.addEventListener("DOMContentLoaded", () => {
 
   const $ = (id) => document.getElementById(id);
 
-  /* ================= STATE ================= */
   const state = {
     index: 0,
-    startX: 0,
-    currentX: 0,
-    dragging: false,
     masked: false,
 
-    balance: {
-      USD: 882000,
-      EUR: 749700,
-      KRW: 1299186000
+    balance: { USD: 0, EUR: 0, KRW: 0 },
+    transactions: [],
+    filteredCurrency: null,
+
+    compliance: {
+      restricted: false,
+      reason: "Administrative Hold (ADM)"
     },
 
-    transactions: JSON.parse(localStorage.getItem("kib_tx")) || [
-      {
-        id: "REF-882000-KIB",
-        type: "Incoming SWIFT Transfer",
-        amount: 882000,
-        currency: "USD",
-        date: "04 May 2026 • 11:05 AM",
-        status: "Restricted"
-      }
-    ]
+    fxRates: { EURUSD: 1.08, KRWUSD: 1300 },
+    notifications: []
   };
 
-  /* ================= HELPERS ================= */
+  const slider = $("slider");
+  const slides = document.querySelectorAll(".slide");
+  const dots = document.querySelectorAll(".dot");
+  const txList = $("txList");
+
+  /* ================= AUTH ================= */
+
+  async function getSession() {
+    const { data: { session }, error } = await supabase.auth.getSession()
+
+    if (error || !session) {
+      window.location.href = "/index.html"
+      return null
+    }
+
+    return session
+  }
+
+  /* ================= COMPLIANCE ================= */
+
+  async function loadCompliance(userId) {
+    const { data, error } = await supabase
+      .from("accounts")
+      .select("restricted, restriction_reason")
+      .eq("user_id", userId)
+      .single()
+
+    if (error || !data) return
+
+    state.compliance.restricted = data.restricted
+    state.compliance.reason = data.restriction_reason || "Restricted"
+  }
+
+  window.openTransfer = function () {
+    if (state.compliance.restricted) {
+      openPopup(state.compliance.reason)
+      return
+    }
+    openPopup("Transfer allowed")
+  }
+
+  /* ================= BALANCE ================= */
+
+  async function loadBalances(userId) {
+    const { data, error } = await supabase
+      .from("accounts")
+      .select("*")
+      .eq("user_id", userId)
+      .single()
+
+    if (error || !data) {
+      console.error(error)
+      openPopup("Balance load error")
+      return
+    }
+
+    state.balance = {
+      USD: data.usd_balance,
+      EUR: data.eur_balance,
+      KRW: data.krw_balance
+    }
+
+    renderBalances()
+  }
 
   function formatMoney(v, c) {
     return new Intl.NumberFormat("en-US", {
@@ -41,95 +102,172 @@ window.addEventListener("DOMContentLoaded", () => {
     return state.masked ? "••••••" : v;
   }
 
-  const slider = $("slider");
-  const slides = document.querySelectorAll(".slide");
-  const dots = document.querySelectorAll(".dot");
-
-  /* ================= PROFILE IMAGE ================= */
-
-  const avatar = $("avatar");
-  const drawerAvatar = $("drawerAvatar");
-  const avatarInput = $("avatarInput");
-
-  const saved = localStorage.getItem("kib_avatar");
-  const fallback = "https://i.imgur.com/6VBx3io.png";
-
-  function setAvatar(src) {
-    if (avatar) avatar.src = src;
-    if (drawerAvatar) drawerAvatar.src = src;
-  }
-
-  setAvatar(saved || fallback);
-
-  avatar?.addEventListener("click", () => avatarInput?.click());
-
-  avatarInput?.addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      const base64 = ev.target.result;
-      localStorage.setItem("kib_avatar", base64);
-      setAvatar(base64);
-    };
-    reader.readAsDataURL(file);
-  });
-
-  /* ================= BALANCES ================= */
-
   function renderBalances() {
-    slides.forEach(slide => {
+    slides.forEach((slide, i) => {
       const currency = slide.dataset.currency;
       const el = slide.querySelector(".amount");
-
       if (!currency || !el) return;
 
       el.textContent = mask(formatMoney(state.balance[currency], currency));
+
+      slide.onclick = () => {
+        state.index = i
+
+        // toggle filter
+        state.filteredCurrency =
+          state.filteredCurrency === currency ? null : currency
+
+        updateSlider()
+        renderTransactions(5)
+      };
     });
 
     updateFX();
   }
 
-  /* ================= FX ================= */
+  /* ================= LIVE FX ================= */
+
+  async function loadFX() {
+    try {
+      const res = await fetch("https://api.exchangerate.host/latest?base=USD")
+      const data = await res.json()
+
+      if (data?.rates?.EUR && data?.rates?.KRW) {
+        state.fxRates.EURUSD = 1 / data.rates.EUR
+        state.fxRates.KRWUSD = data.rates.KRW
+      }
+
+    } catch (e) {
+      console.log("FX fallback used")
+    }
+  }
 
   function updateFX() {
     const fxEl = $("fxValue");
     if (!fxEl) return;
 
-    // base = USD
-    const currentCurrency = slides[state.index]?.dataset.currency;
+    const current = slides[state.index]?.dataset.currency;
 
     let valueUSD = state.balance.USD;
 
-    if (currentCurrency === "EUR") valueUSD = state.balance.EUR * 1.08;
-    if (currentCurrency === "KRW") valueUSD = state.balance.KRW / 1300;
+    if (current === "EUR") valueUSD = state.balance.EUR * state.fxRates.EURUSD;
+    if (current === "KRW") valueUSD = state.balance.KRW / state.fxRates.KRWUSD;
 
     fxEl.textContent = mask(formatMoney(valueUSD, "USD"));
   }
 
-  /* ================= SLIDER (REAL FIX) ================= */
+  /* ================= TRANSACTIONS ================= */
+
+  async function loadTransactions(userId) {
+    const { data, error } = await supabase
+      .from("transactions")
+      .select("*")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false })
+
+    if (error) {
+      console.error(error)
+      openPopup("Transaction load error")
+      return
+    }
+
+    state.transactions = data || []
+    renderTransactions(1)
+  }
+
+  function renderTransactions(limit = 1) {
+    txList.innerHTML = ""
+
+    let data = state.transactions
+
+    if (state.filteredCurrency) {
+      data = data.filter(tx => tx.currency === state.filteredCurrency)
+    }
+
+    data = data.slice(0, limit)
+
+    if (!data.length) {
+      txList.innerHTML = `<div class="tx">
+        No ${state.filteredCurrency || ""} transactions
+      </div>`
+      return
+    }
+
+    data.forEach(tx => {
+      const el = document.createElement("div")
+      el.className = "tx"
+
+      el.innerHTML = `
+        <div>
+          <div>${tx.type || "Transaction"}</div>
+          <small>${tx.created_at ? new Date(tx.created_at).toLocaleString() : ""}</small>
+        </div>
+        <div class="${tx.amount > 0 ? "credit" : "debit"}">
+          ${tx.amount > 0 ? "+" : "-"}${formatMoney(Math.abs(tx.amount), tx.currency)}
+        </div>
+      `
+
+      el.onclick = () => showReceipt(tx)
+
+      txList.appendChild(el)
+    })
+  }
+
+  /* ================= RECEIPT ================= */
+
+  function showReceipt(tx) {
+    openPopup(`
+      <h3>SWIFT Receipt</h3>
+      <p><b>Ref:</b> ${tx.id}</p>
+      <p><b>Type:</b> ${tx.type}</p>
+      <p><b>Amount:</b> ${formatMoney(tx.amount, tx.currency)}</p>
+      <p><b>Status:</b> ${tx.status || "Completed"}</p>
+    `)
+  }
+
+  /* ================= NOTIFICATIONS ================= */
+
+  async function loadNotifications(userId) {
+    const { data } = await supabase
+      .from("notifications")
+      .select("*")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false })
+
+    state.notifications = data || []
+  }
+
+  window.openNotifications = function () {
+    if (!state.notifications.length) {
+      openPopup("No notifications")
+      return
+    }
+
+    const html = state.notifications.map(n => `
+      <p>${n.message}</p>
+    `).join("")
+
+    openPopup(`<h3>Notifications</h3>${html}`)
+  }
+
+  /* ================= SLIDER (FINAL FIX) ================= */
 
   function getWidth() {
     return slider?.parentElement?.offsetWidth || 0;
   }
 
-  function updateSlider(animate = true) {
-    if (!slider) return;
-
+  function updateSlider(retry = 0) {
     const width = getWidth();
 
-    // 🔥 HARD FAILSAFE
     if (!width) {
-      setTimeout(() => updateSlider(animate), 60);
+      if (retry < 5) {
+        setTimeout(() => updateSlider(retry + 1), 80);
+      }
       return;
     }
 
-    slider.style.transition = animate
-      ? "transform .35s cubic-bezier(.22,.61,.36,1)"
-      : "none";
-
-    slider.style.transform = `translate3d(-${state.index * width}px,0,0)`;
+    slider.style.transition = "transform .35s ease";
+    slider.style.transform = `translateX(-${state.index * width}px)`;
 
     dots.forEach(d => d.classList.remove("active"));
     dots[state.index]?.classList.add("active");
@@ -137,151 +275,46 @@ window.addEventListener("DOMContentLoaded", () => {
     updateFX();
   }
 
-  /* ================= TOUCH ================= */
+  /* ================= MASK ================= */
 
-  slider?.addEventListener("touchstart", (e) => {
-    state.dragging = true;
-    state.startX = e.touches[0].clientX;
-    state.currentX = state.startX;
-    slider.style.transition = "none";
-  }, { passive: true });
-
-  slider?.addEventListener("touchmove", (e) => {
-    if (!state.dragging) return;
-
-    state.currentX = e.touches[0].clientX;
-    const dx = state.currentX - state.startX;
-
-    const width = getWidth() || 1;
-
-    slider.style.transform = `translate3d(-${state.index * width + dx}px,0,0)`;
-  }, { passive: true });
-
-  slider?.addEventListener("touchend", () => {
-    if (!state.dragging) return;
-
-    state.dragging = false;
-
-    const dx = state.currentX - state.startX;
-
-    if (dx > 60) state.index--;
-    if (dx < -60) state.index++;
-
-    state.index = Math.max(0, Math.min(state.index, slides.length - 1));
-
-    updateSlider(true);
-  });
-
-  /* ================= MASK TOGGLE ================= */
-
-  $("toggleBalance")?.addEventListener("click", () => {
+  window.toggleFallback = function () {
     state.masked = !state.masked;
     renderBalances();
-  });
-
-  /* ================= TRANSACTIONS ================= */
-
-  const txList = $("txList");
-
-  function renderTransactions(limit = 1) {
-    if (!txList) return;
-
-    txList.innerHTML = "";
-
-    const data = state.transactions.slice(0, limit);
-
-    if (!data.length) {
-      txList.innerHTML = `<div class="empty">No transactions</div>`;
-      return;
-    }
-
-    data.forEach(tx => {
-      const el = document.createElement("div");
-      el.className = "tx";
-
-      el.innerHTML = `
-        <div>
-          <div class="tx-title">${tx.type}</div>
-          <small>${tx.date}</small>
-        </div>
-        <div class="tx-amount ${tx.amount > 0 ? "credit" : "debit"}">
-          ${tx.amount > 0 ? "+" : "-"}${formatMoney(Math.abs(tx.amount), tx.currency)}
-        </div>
-      `;
-
-      txList.appendChild(el);
-    });
-  }
-
-  /* ================= VIEW ALL ================= */
-
-  let expanded = false;
-
-  $("viewAllTx")?.addEventListener("click", () => {
-    expanded = !expanded;
-    renderTransactions(expanded ? state.transactions.length : 1);
-  });
+  };
 
   /* ================= POPUP ================= */
 
-  function showPopup(html) {
+  window.openPopup = function (html) {
     const popup = $("popup");
-    const content = $("popupContent");
+    const text = $("popupText");
 
-    if (!popup || !content) return;
-
-    content.innerHTML = html;
+    text.innerHTML = html || "No data";
     popup.hidden = false;
-
-    requestAnimationFrame(() => popup.classList.add("show"));
-
-    popup.onclick = (e) => {
-      if (e.target.id === "popup" || e.target.id === "closePopup") {
-        popup.classList.remove("show");
-        setTimeout(() => popup.hidden = true, 200);
-      }
-    };
   }
 
-  $("transferBtn")?.addEventListener("click", () => {
-    showPopup(`<h3>Transfer Restricted</h3><button id="closePopup">Close</button>`);
-  });
-
-  $("notifBtn")?.addEventListener("click", () => {
-    showPopup(`<h3>Account Notice</h3><button id="closePopup">Close</button>`);
-  });
-
-  /* ================= DRAWER ================= */
-
-  const drawer = $("drawer");
-  const backdrop = $("drawerBackdrop");
-
-  $("menuBtn")?.addEventListener("click", () => {
-    drawer?.classList.add("open");
-    backdrop.hidden = false;
-  });
-
-  function closeDrawer() {
-    drawer?.classList.remove("open");
-    backdrop.hidden = true;
+  window.closePopup = function () {
+    $("popup").hidden = true;
   }
 
-  backdrop?.addEventListener("click", closeDrawer);
-  $("closeDrawer")?.addEventListener("click", closeDrawer);
+  /* ================= INIT ================= */
 
-  /* ================= INIT (REAL FIX) ================= */
+  async function init() {
+    const session = await getSession();
+    if (!session) return;
 
-  function init() {
-    renderBalances();
-    renderTransactions(1);
-    state.index = 0;
+    const userId = session.user.id;
 
-    // 🔥 guaranteed layout ready
-    setTimeout(() => {
-      updateSlider(false);
-    }, 80);
+    await Promise.all([
+      loadFX(),
+      loadCompliance(userId),
+      loadBalances(userId),
+      loadTransactions(userId),
+      loadNotifications(userId)
+    ]);
+
+    requestAnimationFrame(() => updateSlider());
   }
 
-  window.addEventListener("load", init);
+  init();
 
 });
