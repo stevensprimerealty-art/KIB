@@ -311,27 +311,116 @@ button:active {
   background:#eef2f8;
   color:#2a6edb;
 }
-
 /* =========================
-   MODAL
+   MODAL (CENTER GLASS)
 ========================= */
 .modal {
   position:fixed;
   inset:0;
   display:none;
+
   justify-content:center;
-  align-items:flex-end;
-  background:rgba(0,0,0,0.4);
+  align-items:center; /* ✅ CENTER */
+
+  background:rgba(10,20,40,0.35);
+  backdrop-filter:blur(10px);
+
   z-index:30;
 }
 
+/* =========================
+   GLASS BOX (PREMIUM)
+========================= */
 .modalBox {
-  background:#fff;
-  width:100%;
-  border-radius:20px 20px 0 0;
+  width:88%;
+  max-width:420px;
+
   padding:22px;
+
+  border-radius:20px;
+
+  /* GLASS WHITE + BLUE */
+  background:linear-gradient(
+    135deg,
+    rgba(255,255,255,0.85),
+    rgba(230,240,255,0.75)
+  );
+
+  backdrop-filter:blur(18px);
+
+  border:1px solid rgba(255,255,255,0.5);
+
+  box-shadow:
+    0 20px 40px rgba(0,0,0,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.6);
+
+  animation:fadeIn 0.25s ease;
 }
 
+/* =========================
+   HEADER
+========================= */
+.modalHeader {
+  position:relative;
+  margin-bottom:10px;
+}
+
+/* X button */
+.closeX {
+  position:absolute;
+  right:0;
+  top:0;
+
+  background:none;
+  border:none;
+
+  font-size:18px;
+  color:#555;
+}
+
+/* =========================
+   TEXT
+========================= */
+.modalBox h2 {
+  font-size:20px;
+  margin-bottom:12px;
+}
+
+.modalBox p {
+  font-size:14px;
+  line-height:1.5;
+  color:#333;
+}
+
+/* =========================
+   ACTIONS
+========================= */
+.modalActions {
+  display:flex;
+  gap:10px;
+  margin-top:18px;
+}
+
+.modalActions button {
+  flex:1;
+
+  background:#eef2f8;
+  color:#2a6edb;
+}
+
+/* =========================
+   ANIMATION
+========================= */
+@keyframes fadeIn {
+  from {
+    opacity:0;
+    transform:scale(0.95);
+  }
+  to {
+    opacity:1;
+    transform:scale(1);
+  }
+}
 /* =========================
    BOTTOM NAV (KOREAN STYLE)
 ========================= */
