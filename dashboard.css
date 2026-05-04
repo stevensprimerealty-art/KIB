@@ -13,6 +13,10 @@ body{
   color:#0a0f1c;
 }
 
+button{
+  -webkit-tap-highlight-color: transparent;
+}
+
 /* APP */
 .app{
   max-width:420px;
@@ -34,7 +38,6 @@ body{
   border:none;
   font-size:20px;
   cursor:pointer;
-  -webkit-tap-highlight-color: transparent;
 }
 
 .user{
@@ -43,19 +46,17 @@ body{
   align-items:center;
 }
 
-/* ✅ FIXED FOR <img> */
 .avatar{
   width:38px;
   height:38px;
   border-radius:50%;
   object-fit:cover;
   display:block;
-
   box-shadow:0 2px 6px rgba(0,0,0,.15);
 }
 
 /* =========================
-   CARD (PREMIUM BLUE GLASS)
+   CARD
 ========================= */
 .card{
   margin-top:12px;
@@ -72,7 +73,6 @@ body{
   -webkit-backdrop-filter: blur(28px) saturate(140%);
 
   border:1px solid rgba(255,255,255,0.25);
-
   color:white;
 
   box-shadow:
@@ -80,7 +80,6 @@ body{
     inset 0 1px 1px rgba(255,255,255,.25);
 }
 
-/* HEADER */
 .card-header{
   display:flex;
   justify-content:space-between;
@@ -94,13 +93,8 @@ body{
   opacity:.85;
 }
 
-.acct-sub{
-  font-size:11px;
-  opacity:.7;
-}
-
 /* =========================
-   SLIDER (HARD FIX)
+   SLIDER
 ========================= */
 .slider{
   display:flex;
@@ -109,11 +103,12 @@ body{
   margin-top:14px;
 
   will-change:transform;
+  transform:translate3d(0,0,0); /* smooth */
   touch-action:pan-y;
 }
 
 .slide{
-  flex:0 0 100%;   /* 🔥 CRITICAL FIX */
+  flex:0 0 100%;
   min-width:100%;
 
   display:flex;
@@ -122,7 +117,6 @@ body{
   justify-content:center;
 }
 
-/* BALANCE */
 .amount{
   font-size:30px;
   font-weight:700;
@@ -131,6 +125,9 @@ body{
 
   min-height:36px;
   display:block;
+
+  font-variant-numeric: tabular-nums; /* no jump */
+  transition:.2s;
 }
 
 /* =========================
@@ -156,22 +153,6 @@ body{
   height:8px;
   background:#fff;
   box-shadow:0 0 6px rgba(255,255,255,.8);
-}
-
-/* =========================
-   STATUS
-========================= */
-.status{
-  margin-top:14px;
-  font-size:12px;
-
-  background:rgba(255,255,255,0.2);
-  backdrop-filter:blur(12px);
-
-  border:1px solid rgba(255,255,255,0.35);
-
-  padding:8px 10px;
-  border-radius:12px;
 }
 
 /* =========================
@@ -231,33 +212,25 @@ body{
   justify-content:space-between;
   padding:12px 0;
   border-bottom:1px solid rgba(0,0,0,.06);
+
+  transition:.15s;
+  cursor:pointer;
+}
+
+.tx:active{
+  transform:scale(.98);
+  opacity:.7;
 }
 
 .tx:last-child{
   border-bottom:none;
 }
 
-.tx-title{
-  font-weight:600;
-  font-size:13px;
-}
-
-.tx-amount{
-  font-weight:700;
-  font-size:13px;
-}
-
 .tx-amount.credit{ color:#16a34a; }
 .tx-amount.debit{ color:#dc2626; }
 
-.empty{
-  padding:14px;
-  color:#888;
-  text-align:center;
-}
-
 /* =========================
-   ACTION BUTTONS
+   ACTIONS
 ========================= */
 .actions{
   display:grid;
@@ -287,7 +260,7 @@ body{
 }
 
 /* =========================
-   BOTTOM NAV
+   NAV
 ========================= */
 .bottom-nav{
   position:fixed;
@@ -325,28 +298,18 @@ body{
 }
 
 /* =========================
-   POPUP (FIXED LAYER)
+   POPUP (MATCHES JS)
 ========================= */
 .popup{
   position:fixed;
   inset:0;
-
   background:rgba(0,0,0,0.35);
 
   display:flex;
   align-items:center;
   justify-content:center;
 
-  opacity:0;
-  pointer-events:none;
-  transition:.25s;
-
-  z-index:2000; /* 🔥 FIX */
-}
-
-.popup.show{
-  opacity:1;
-  pointer-events:auto;
+  z-index:2000;
 }
 
 .popup[hidden]{
