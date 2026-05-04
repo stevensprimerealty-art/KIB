@@ -13,7 +13,7 @@
 
 <!-- TOP BAR -->
 <header class="topbar">
-  <button id="menuBtn" class="icon-btn">☰</button>
+  <button id="menuBtn" class="icon-btn" aria-label="Open menu">☰</button>
 
   <div class="greet">
     <label class="avatar">
@@ -27,8 +27,8 @@
     </div>
   </div>
 
-  <button id="notifBtn" class="icon-btn bell">
-    🔔 <span class="badge">1</span>
+  <button id="notifBtn" class="icon-btn bell" aria-label="Notifications">
+    🔔 <span id="notifBadge" class="badge" hidden>0</span>
   </button>
 </header>
 
@@ -48,7 +48,6 @@
 
 <!-- ACCOUNT -->
 <section class="card-wrap">
-
   <article class="bank-card" id="accountCard">
 
     <div class="card-top">
@@ -60,7 +59,6 @@
     <div class="acct-sub">SWIFT/BIC: BCITITMM</div>
 
     <div class="balance-block">
-
       <div id="accountSlider" class="slider">
 
         <!-- EUR -->
@@ -75,7 +73,6 @@
               <div class="label">Available</div>
               <div class="value" data-real="€0.00">••••</div>
             </div>
-
             <div class="bal-item restricted">
               <div class="label">Held</div>
               <div class="value" data-real="€749,700.00">••••</div>
@@ -95,7 +92,6 @@
               <div class="label">Available</div>
               <div class="value" data-real="$0.00">••••</div>
             </div>
-
             <div class="bal-item restricted">
               <div class="label">Held</div>
               <div class="value" data-real="$882,000.00">••••</div>
@@ -115,7 +111,6 @@
               <div class="label">Available</div>
               <div class="value" data-real="₩0">••••</div>
             </div>
-
             <div class="bal-item restricted">
               <div class="label">Held</div>
               <div class="value" data-real="₩1,299,186,000">••••</div>
@@ -124,10 +119,9 @@
         </div>
 
       </div>
-
     </div>
 
-    <button id="toggleBalance" class="eye">👁️</button>
+    <button id="toggleBalance" class="eye" aria-label="Toggle balance visibility">👁️</button>
 
     <div class="account-status restricted">
       🔒 Restricted — Under Italian Administrative Authority (ADM)
@@ -138,26 +132,34 @@
     </button>
 
   </article>
-
 </section>
 
 <!-- TRANSACTIONS -->
 <section id="recentPanel" class="recent-panel" hidden>
-
   <div class="tx-header">Recent Transactions</div>
 
   <div id="txList" class="tx-list">
-    <!-- (your existing tx groups remain) -->
+    <div class="tx-group" data-currency="USD">
+      <div class="tx-item">
+        <div class="tx-left">
+          <div class="tx-title">Incoming SWIFT Transfer</div>
+          <div class="tx-sub">Administrative release under compliance</div>
+          <div class="tx-meta">04 May 2026 • 11:05 AM</div>
+        </div>
+        <div class="tx-right">
+          <div class="tx-amount credit">+$882,000.00</div>
+          <div class="tx-status">Restricted</div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- ✅ REQUIRED -->
   <button id="viewAllTx" class="view-all">View all →</button>
-
 </section>
 
 <!-- ACTIONS -->
 <section class="actions">
-  <button id="transferBtn" class="action disabled">⇄ Transfer</button>
+  <button id="transferBtn" class="action">⇄ Transfer</button>
   <button class="action">₩ Payment</button>
   <button class="action">💳 Cards</button>
   <button class="action">🏧 Cash-Out</button>
@@ -176,6 +178,27 @@
     <button class="protocol-btn">Internal Bank Transfer</button>
     <button class="protocol-btn">Regulated Release Protocol</button>
 
+    <!-- STATE -->
+    <input type="hidden" id="transferCurrency" />
+
+    <!-- INPUT -->
+    <div class="transfer-input">
+      <label id="transferLabel">Amount (USD)</label>
+
+      <input
+        id="transferAmount"
+        type="number"
+        step="0.01"
+        inputmode="decimal"
+        autocomplete="off"
+        placeholder="Enter amount"
+      />
+
+      <div id="transferError" class="input-error" hidden>
+        Invalid amount entered
+      </div>
+    </div>
+
     <!-- FX -->
     <div id="fxBreakdown" class="fx-box" hidden>
       <div class="fx-row">
@@ -183,18 +206,20 @@
         <span id="fxRate"></span>
       </div>
       <div class="fx-row">
-        <span>Fee</span>
+        <span>Processing Fee</span>
         <span id="fxFee"></span>
       </div>
       <div class="fx-row total">
-        <span>You Receive</span>
+        <span>Net Amount Received</span>
         <span id="fxReceive"></span>
       </div>
     </div>
 
     <!-- CONFIRM -->
-    <div id="confirmTransferBox" class="confirm-box" hidden>
-      <button id="confirmTransferBtn" class="confirm-btn">
+    <div id="confirmTransferBox" hidden>
+      <div id="transferLoading" hidden>Processing transfer...</div>
+
+      <button id="confirmTransferBtn" class="confirm-btn" disabled>
         Confirm Transfer
       </button>
     </div>
@@ -208,9 +233,7 @@
     <button id="closeReceipt">✕</button>
     <h3>Transaction Receipt</h3>
     <div id="receiptContent"></div>
-    <button id="downloadReceipt" class="confirm-btn">
-      Download Receipt
-    </button>
+    <button id="downloadReceipt" class="confirm-btn">Download Receipt</button>
   </div>
 </div>
 
