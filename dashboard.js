@@ -1,5 +1,8 @@
 window.addEventListener("DOMContentLoaded", async () => {
 
+  const $ = (id) => document.getElementById(id);
+  const safeHide = (el, state) => el && (el.hidden = state);
+
   // -------------------------
   // AUTH GUARD
   // -------------------------
@@ -16,13 +19,10 @@ window.addEventListener("DOMContentLoaded", async () => {
     return window.location.replace("index.html");
   }
 
-  const $ = (id) => document.getElementById(id);
-  const safeHide = (el, state) => el && (el.hidden = state);
-
   // -------------------------
-  // SYSTEM STATE
+  // STATE
   // -------------------------
-  window.accountState = window.accountState || {
+  window.accountState = {
     status: "RESTRICTED",
     currency: "USD",
     balance: {
@@ -32,6 +32,8 @@ window.addEventListener("DOMContentLoaded", async () => {
     }
   };
 
+  let transactions = JSON.parse(localStorage.getItem("kib_tx") || "[]");
+
   // -------------------------
   // FX CONFIG
   // -------------------------
@@ -40,23 +42,16 @@ window.addEventListener("DOMContentLoaded", async () => {
     fee: { EUR: 12, KRW: 3500 }
   };
 
-  // -------------------------
-  // HELPERS
-  // -------------------------
-  function formatMoney(value, currency) {
+  function formatMoney(v, c) {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
-      currency
-    }).format(value || 0);
+      currency: c
+    }).format(v || 0);
   }
 
-  // -------------------------
-  // FX ENGINE
-  // -------------------------
   function applyBankRates(usd, rate, currency) {
     const spread = FX_CONFIG.spread[currency] || 0.02;
     const fee = FX_CONFIG.fee[currency] || 0;
-
     const buyRate = rate * (1 - spread);
 
     return {
@@ -66,22 +61,9 @@ window.addEventListener("DOMContentLoaded", async () => {
     };
   }
 
-  function updateBalances(balances) {
-    document.querySelectorAll(".slide").forEach(slide => {
-      const c = slide.dataset.currency;
-      const val = balances[c];
-      if (val == null) return;
-
-      const formatted = formatMoney(val, c);
-
-      slide.querySelectorAll("[data-real]").forEach(el => {
-        el.dataset.real = formatted;
-      });
-    });
-
-    renderBalances();
-  }
-
+  // -------------------------
+  // FX LOAD (FIXED NO FREEZE)
+  // -------------------------
   async function loadFX() {
     try {
       const res = await fetch("https://api.exchangerate.host/latest?base=USD");
@@ -94,88 +76,86 @@ window.addEventListener("DOMContentLoaded", async () => {
 
       window.fxMeta = { EUR: eur, KRW: krw };
 
-      updateBalances({
-        USD: usd,
-        EUR: eur.converted,
-        KRW: krw.converted
-      });
-
     } catch {
-      const usd = window.accountState.balance.USD;
-
-      const eur = applyBankRates(usd, 0.85, "EUR");
-      const krw = applyBankRates(usd, 1470, "KRW");
-
-      window.fxMeta = { EUR: eur, KRW: krw };
-
-      updateBalances({
-        USD: usd,
-        EUR: eur.converted,
-        KRW: krw.converted
-      });
+      window.fxMeta = {
+        EUR: applyBankRates(882000, 0.85, "EUR"),
+        KRW: applyBankRates(882000, 1470, "KRW")
+      };
     }
+
+    updateBalances(window.accountState.balance);
   }
 
   // -------------------------
-  // BALANCE VISIBILITY
+  // BALANCE
   // -------------------------
-  const eyeBtn = $("toggleBalance");
+  function updateBalances(balances) {
+    document.querySelectorAll(".slide").forEach(slide => {
+      const c = slide.dataset.currency;
+      const val = balances[c];
+      if (val == null) return;
+
+      slide.querySelectorAll("[data-real]").forEach(el => {
+        el.dataset.real = formatMoney(val, c);
+      });
+    });
+
+    renderBalances();
+  }
+
   let visible = localStorage.getItem("kib_balance_visible") === "true";
-
-  function maskMoney(text) {
-    const symbol = text?.match(/^[^\d]+/)?.[0] || "";
-    return symbol + "••••••••";
-  }
 
   function renderBalances() {
     document.querySelectorAll("[data-real]").forEach(el => {
       const real = el.dataset.real || "";
-      el.textContent = visible ? real : maskMoney(real);
+      el.textContent = visible ? real : "••••••••";
     });
 
-    if (eyeBtn) eyeBtn.textContent = visible ? "🙈" : "👁️";
+    if ($("toggleBalance"))
+      $("toggleBalance").textContent = visible ? "🙈" : "👁️";
   }
 
-  eyeBtn?.addEventListener("click", () => {
+  $("toggleBalance")?.addEventListener("click", () => {
     visible = !visible;
     localStorage.setItem("kib_balance_visible", visible);
     renderBalances();
   });
 
   // -------------------------
-  // SLIDER
+  // SLIDER (REAL SWIPE)
   // -------------------------
   const slider = $("accountSlider");
   const slides = slider?.querySelectorAll(".slide") || [];
-  let currentIndex = 1;
+  let index = 1;
 
-  function updateSlider(i) {
-    if (!slides.length) return;
+  function updateSlider() {
+    slider.style.transform = `translateX(-${index * 100}%)`;
 
-    currentIndex = (i + slides.length) % slides.length;
-
-    slides.forEach((s, idx) =>
-      s.classList.toggle("active", idx === currentIndex)
-    );
-
-    const currency = slides[currentIndex].dataset.currency;
+    const currency = slides[index]?.dataset.currency;
     window.accountState.currency = currency;
 
     $("transferCurrency") && ($("transferCurrency").value = currency);
     $("transferLabel") && ($("transferLabel").textContent = `Amount (${currency})`);
   }
 
+  let startX = 0;
+
   slider?.addEventListener("touchstart", e => {
-    slider.startX = e.touches[0].clientX;
+    startX = e.touches[0].clientX;
   });
 
   slider?.addEventListener("touchend", e => {
-    const dx = e.changedTouches[0].clientX - slider.startX;
-    if (dx > 50) updateSlider(currentIndex - 1);
-    if (dx < -50) updateSlider(currentIndex + 1);
+    const dx = e.changedTouches[0].clientX - startX;
+
+    if (dx > 50) index--;
+    if (dx < -50) index++;
+
+    index = Math.max(0, Math.min(index, slides.length - 1));
+
+    updateSlider();
   });
 
-  updateSlider(currentIndex);
+  updateSlider();
 
   // -------------------------
   // NOTIFICATIONS
@@ -186,16 +166,50 @@ window.addEventListener("DOMContentLoaded", async () => {
   });
 
   // -------------------------
-  // RECENT PANEL
+  // RECENT TRANSACTIONS (FIXED)
   // -------------------------
+  function renderTransactions() {
+    const list = $("txList");
+    if (!list) return;
+
+    list.innerHTML = "";
+
+    if (!transactions.length) {
+      list.innerHTML = `<div style="padding:12px;color:#888">No transactions yet</div>`;
+      return;
+    }
+
+    transactions.slice(0, 5).forEach(tx => {
+      const el = document.createElement("div");
+      el.className = "tx-item";
+
+      el.innerHTML = `
+        <div class="tx-left">
+          <div class="tx-title">Outgoing Transfer</div>
+          <div class="tx-sub">${tx.currency}</div>
+          <div class="tx-meta">${tx.date}</div>
+        </div>
+        <div class="tx-right">
+          <div class="tx-amount debit">-${formatMoney(tx.amount, "USD")}</div>
+          <div class="tx-status">Completed</div>
+        </div>
+      `;
+
+      list.appendChild(el);
+    });
+  }
+
   $("recentBtn")?.addEventListener("click", () => {
     const panel = $("recentPanel");
-    const chevron = $("recentChevron");
 
     const open = panel.classList.toggle("is-open");
-    panel.hidden = false;
 
-    if (chevron) chevron.textContent = open ? "▴" : "▾";
+    if (open) {
+      panel.hidden = false;
+      renderTransactions();
+    } else {
+      setTimeout(() => (panel.hidden = true), 300);
+    }
   });
 
   // -------------------------
@@ -209,199 +223,83 @@ window.addEventListener("DOMContentLoaded", async () => {
     backdrop.hidden = false;
   });
 
-  function closeDrawer() {
+  const closeDrawer = () => {
     drawer.classList.remove("is-open");
     backdrop.hidden = true;
-  }
+  };
 
   $("closeDrawer")?.addEventListener("click", closeDrawer);
   backdrop?.addEventListener("click", closeDrawer);
 
   // -------------------------
-  // TRANSFER PANEL
+  // TRANSFER
   // -------------------------
-  const transferBtn = $("transferBtn");
-  const protocolPanel = $("protocolPanel");
-
-  transferBtn?.addEventListener("click", () => {
-
-    if (!window.fxMeta) {
-      alert("System loading...");
-      return;
-    }
+  $("transferBtn")?.addEventListener("click", () => {
 
     if (window.accountState.status === "RESTRICTED") {
       safeHide($("compliancePopup"), false);
       return;
     }
 
-    protocolPanel.hidden = false;
+    $("protocolPanel").hidden = false;
   });
 
   $("closeProtocol")?.addEventListener("click", () => {
-    safeHide(protocolPanel, true);
+    safeHide($("protocolPanel"), true);
   });
 
-  // -------------------------
-  // INPUT VALIDATION
-  // -------------------------
   const input = $("transferAmount");
-  const error = $("transferError");
   const confirmBtn = $("confirmTransferBtn");
 
-  function validateInput() {
-    if (!input) return null;
-
+  input?.addEventListener("input", () => {
     const val = parseFloat(input.value);
-    const max = window.accountState.balance.USD;
 
     if (!val || val <= 0) {
-      safeHide(error, false);
-      error.textContent = "Enter a valid amount";
       confirmBtn.disabled = true;
-      return null;
-    }
-
-    if (val > max) {
-      safeHide(error, false);
-      error.textContent = "Amount exceeds balance";
-      confirmBtn.disabled = true;
-      return null;
-    }
-
-    safeHide(error, true);
-    confirmBtn.disabled = false;
-    return val;
-  }
-
-  input?.addEventListener("input", () => {
-    const amount = validateInput();
-
-    if (!amount) {
-      safeHide($("fxBreakdown"), true);
-      safeHide($("confirmTransferBox"), true);
       return;
     }
 
-    const currency = $("transferCurrency")?.value;
-    const meta = window.fxMeta?.[currency];
-    if (!meta) return;
-
-    const receive = Math.floor(amount * meta.buyRate - meta.fee);
-
-    $("fxRate").textContent = `1 USD = ${meta.buyRate.toFixed(4)} ${currency}`;
-    $("fxFee").textContent = formatMoney(meta.fee, currency);
-    $("fxReceive").textContent = formatMoney(receive, currency);
-
-    safeHide($("fxBreakdown"), false);
-    safeHide($("confirmTransferBox"), false);
+    confirmBtn.disabled = false;
   });
-
-  // -------------------------
-  // ADD TRANSACTION
-  // -------------------------
-  function addTransaction(tx) {
-    const list = $("txList");
-    if (!list) return;
-
-    const el = document.createElement("div");
-    el.className = "tx-item";
-
-    el.innerHTML = `
-      <div class="tx-left">
-        <div class="tx-title">Outgoing Transfer</div>
-        <div class="tx-sub">${tx.currency} conversion</div>
-        <div class="tx-meta">${tx.date}</div>
-      </div>
-      <div class="tx-right">
-        <div class="tx-amount debit">-${formatMoney(tx.amount, "USD")}</div>
-        <div class="tx-status">Completed</div>
-      </div>
-    `;
-
-    list.prepend(el);
-  }
-
-  // -------------------------
-  // TRANSFER EXECUTION
-  // -------------------------
-  const loading = $("transferLoading");
-  const receiptPopup = $("receiptPopup");
-  const receiptContent = $("receiptContent");
 
   confirmBtn?.addEventListener("click", () => {
 
-    const amount = validateInput();
+    const amount = parseFloat(input.value);
     if (!amount) return;
 
-    confirmBtn.disabled = true;
-    safeHide(loading, false);
+    const tx = {
+      id: Date.now(),
+      amount,
+      currency: window.accountState.currency,
+      date: new Date().toLocaleString()
+    };
 
-    setTimeout(() => {
+    transactions.unshift(tx);
+    localStorage.setItem("kib_tx", JSON.stringify(transactions));
 
-      const currency = $("transferCurrency")?.value;
-      const meta = window.fxMeta?.[currency];
-      if (!meta) return;
+    window.accountState.balance.USD -= amount;
+    updateBalances(window.accountState.balance);
 
-      const receive = Math.floor(amount * meta.buyRate - meta.fee);
+    renderTransactions();
 
-      const tx = {
-        id: "TX-" + Date.now(),
-        amount,
-        currency,
-        receive,
-        rate: meta.buyRate,
-        fee: meta.fee,
-        date: new Date().toLocaleString()
-      };
-
-      window.accountState.balance.USD -= amount;
-
-      updateBalances(window.accountState.balance);
-      addTransaction(tx);
-
-      receiptContent.innerHTML = `
-        <p><b>ID:</b> ${tx.id}</p>
-        <p><b>Sent:</b> ${formatMoney(amount, "USD")}</p>
-        <p><b>Currency:</b> ${currency}</p>
-        <p><b>Rate:</b> ${tx.rate.toFixed(4)}</p>
-        <p><b>Fee:</b> ${formatMoney(tx.fee, currency)}</p>
-        <p><b>Received:</b> ${formatMoney(tx.receive, currency)}</p>
-        <p><b>Date:</b> ${tx.date}</p>
-      `;
-
-      safeHide(receiptPopup, false);
-
-      input.value = "";
-      safeHide(error, true);
-      safeHide($("fxBreakdown"), true);
-      safeHide($("confirmTransferBox"), true);
-      confirmBtn.disabled = true;
-      safeHide(loading, true);
-      safeHide(protocolPanel, true);
-
-    }, 1200);
+    safeHide($("receiptPopup"), false);
   });
 
+  // -------------------------
+  // POPUPS
+  // -------------------------
   $("closeReceipt")?.addEventListener("click", () => {
-    safeHide(receiptPopup, true);
+    safeHide($("receiptPopup"), true);
   });
 
   $("closePopup")?.addEventListener("click", () => {
     safeHide($("compliancePopup"), true);
   });
 
-  receiptPopup?.addEventListener("click", (e) => {
-    if (e.target === receiptPopup) safeHide(receiptPopup, true);
-  });
-
-  $("compliancePopup")?.addEventListener("click", (e) => {
-    if (e.target.id === "compliancePopup") safeHide($("compliancePopup"), true);
-  });
-
   // -------------------------
   // INIT
   // -------------------------
   await loadFX();
+  renderTransactions();
 
 });
