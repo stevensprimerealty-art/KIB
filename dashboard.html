@@ -26,30 +26,63 @@
   </div>
 </header>
 
+<!-- NOTICE BAR -->
+<div class="notice">
+  Administrative Compliance Active ⚠️
+</div>
+
 <!-- CARD SLIDER -->
 <section class="cards" id="cardSlider">
 
   <!-- EUR -->
   <div class="card">
-    <h3>EUR Account</h3>
-    <p id="eurBalance">€---</p>
+    <div class="cardHeader">
+      <h3>EUR Account</h3>
+      <span class="badge">Restricted</span>
+    </div>
+
+    <p id="eurBalance">€812,000</p>
+    <small>Converted from USD</small>
+
     <button onclick="toggleBalance(this)">Hide</button>
   </div>
 
   <!-- USD -->
   <div class="card flipCard" id="usdCard">
-    <h3>USD Account</h3>
+    <div class="cardHeader">
+      <h3>USD Account</h3>
+      <span class="badge">Restricted</span>
+    </div>
+
     <p id="usdBalance">$882,000</p>
+    <small>Main Account</small>
+
     <button onclick="toggleBalance(this)">Hide</button>
   </div>
 
   <!-- KRW -->
   <div class="card">
-    <h3>KRW Account</h3>
-    <p id="krwBalance">₩---</p>
+    <div class="cardHeader">
+      <h3>KRW Account</h3>
+      <span class="badge">Restricted</span>
+    </div>
+
+    <p id="krwBalance">₩1,260,530,586</p>
+    <small>Converted from USD</small>
+
     <button onclick="toggleBalance(this)">Hide</button>
   </div>
 
+</section>
+
+<!-- ICON GRID (VERY IMPORTANT – matches your reference) -->
+<section class="grid">
+  <div class="gridItem">Accounts</div>
+  <div class="gridItem">Open Banking</div>
+  <div class="gridItem">Events</div>
+  <div class="gridItem">Exchange</div>
+  <div class="gridItem">Funds</div>
+  <div class="gridItem">Settings</div>
 </section>
 
 <!-- ACTIONS -->
@@ -65,7 +98,7 @@
   <div class="tx">
     <div>
       <strong>ADM Italy Deposit</strong>
-      <small>04 May 2026</small>
+      <small>04 May 2026 • Restricted</small>
     </div>
     <div class="amount green">+$882,000</div>
   </div>
@@ -93,10 +126,10 @@
 <!-- COMPLIANCE MODAL -->
 <div class="modal" id="modal">
   <div class="modalBox">
-    <h2>Account Restricted</h2>
+    <h2>Administrative Restriction</h2>
     <p>
-      Funds are under administrative compliance.<br/>
-      Transfers and withdrawals are disabled until case closure.
+      This account is under regulatory supervision.<br>
+      Transfers, withdrawals and external access are disabled until case closure.
     </p>
 
     <button onclick="closeModal()">Close</button>
