@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>KIB Dashboard</title>
-<link rel="stylesheet" href="dashboard.css?v=6"/>
+<link rel="stylesheet" href="dashboard.css?v=8"/>
 </head>
 
 <body>
@@ -13,64 +13,61 @@
 
 <!-- ================= TOP BAR ================= -->
 <header class="topbar">
-  <button id="menuBtn">☰</button>
+  <button onclick="openDrawer()">☰</button>
 
   <div class="user">
-
-    <!-- ✅ FIXED AVATAR -->
-    <img id="avatar" class="avatar" src="" alt="Profile"/>
-    <input type="file" id="avatarInput" accept="image/*" hidden />
-
+    <img id="avatar" class="avatar" src="https://i.imgur.com/6VBx3io.png"/>
+    <input type="file" id="avatarInput" hidden />
     <div>
       <div class="hello">Hello</div>
       <div class="name">Mr Kim Dae Hyun</div>
     </div>
   </div>
 
-  <button id="notifBtn">🔔</button>
+  <!-- ✅ WORKS WITHOUT JS -->
+  <button onclick="openPopup('Account Restricted')">🔔</button>
 </header>
 
-<!-- ================= ACCOUNT CARD ================= -->
+<!-- ================= ACCOUNT ================= -->
 <section class="card-wrap">
   <div class="card">
 
     <div class="card-header">
-      <span>Multi-Currency Savings Account</span>
-      <span id="cardDate">04 May 2026</span>
+      <span>Multi-Currency Account</span>
+      <button onclick="toggleFallback()">👁</button>
     </div>
 
     <div class="acct">IBAN: IT60X0542****3456</div>
-    <div class="acct-sub">SWIFT/BIC: BCITITMM</div>
 
     <!-- SLIDER -->
     <div class="slider" id="slider">
 
       <div class="slide" data-currency="EUR">
-        <div class="amount"></div>
-        <div class="label">Total Balance (EUR)</div>
+        <div class="amount">€749,700.00</div>
+        <div class="label">EUR</div>
       </div>
 
       <div class="slide" data-currency="USD">
-        <div class="amount"></div>
-        <div class="label">Total Balance (USD)</div>
+        <div class="amount">$882,000.00</div>
+        <div class="label">USD</div>
       </div>
 
       <div class="slide" data-currency="KRW">
-        <div class="amount"></div>
-        <div class="label">Total Balance (KRW)</div>
+        <div class="amount">₩1,299,186,000</div>
+        <div class="label">KRW</div>
       </div>
 
     </div>
 
-    <!-- DOTS -->
     <div class="dots">
-      <span class="dot"></span>
       <span class="dot active"></span>
+      <span class="dot"></span>
       <span class="dot"></span>
     </div>
 
-    <div class="status">
-      🔒 Restricted — Under Italian Administrative Authority (ADM)
+    <!-- FX fallback -->
+    <div class="fx-box">
+      ≈ $882,000.00
     </div>
 
   </div>
@@ -78,82 +75,134 @@
 
 <!-- ================= TRANSACTIONS ================= -->
 <section class="transactions">
+
   <div class="tx-header">
-    <h3>Recent Transactions</h3>
-    <button id="viewAllTx">View all →</button>
+    <h3>Transactions</h3>
+
+    <!-- ✅ fallback -->
+    <button onclick="document.getElementById('allTx').hidden=false">
+      View all →
+    </button>
   </div>
 
-  <div id="txList"></div>
+  <div id="txList">
+    <div class="tx">
+      <div>Incoming SWIFT</div>
+      <div class="credit">+$882,000</div>
+    </div>
+  </div>
+
 </section>
 
-<!-- ================= ACTION BUTTONS ================= -->
+<!-- ================= ACTIONS ================= -->
 <section class="actions">
-  <button id="transferBtn">⇄ Transfer</button>
-  <button id="scanBtn">📷 Scan</button>
-  <button id="cardsBtn">💳 Cards</button>
-  <button id="cashoutBtn">🏧 Cash-Out</button>
+
+  <button onclick="openPopup('Transfer Restricted')">⇄ Transfer</button>
+
+  <!-- fallback scan -->
+  <button onclick="openPopup('Scan not available')">📷 Scan</button>
+
+  <!-- fallback cards -->
+  <button onclick="document.getElementById('cardsScreen').hidden=false">
+    💳 Cards
+  </button>
+
+  <button onclick="openPopup('Cash-Out disabled')">🏧 Cash-Out</button>
+
 </section>
 
 </main>
 
-<!-- ================= BOTTOM NAV ================= -->
+<!-- ================= NAV ================= -->
 <nav class="bottom-nav">
-  <button class="active">🏠<span>Home</span></button>
-  <button>📊<span>Assets</span></button>
-  <button>🏦<span>Bank</span></button>
-  <button>💳<span>Cards</span></button>
-  <button>⋯<span>More</span></button>
+  <button class="active">🏠</button>
+  <button>📊</button>
+  <button>🏦</button>
+  <button>💳</button>
 </nav>
 
 <!-- ================= POPUP ================= -->
 <div id="popup" class="popup" hidden>
-  <div class="popup-box" id="popupContent"></div>
-</div>
-
-<!-- ================= RECEIPT ================= -->
-<div id="receiptModal" class="popup" hidden>
-  <div class="popup-box" id="receiptContent"></div>
-</div>
-
-<!-- ================= CARDS SCREEN ================= -->
-<div id="cardsScreen" class="cards-screen" hidden>
-  <div class="cards-header">
-    <button id="closeCards">←</button>
-    <h3>My Cards</h3>
+  <div class="popup-box">
+    <h3 id="popupText">Notice</h3>
+    <button onclick="closePopup()">Close</button>
   </div>
+</div>
 
-  <div class="card-ui">
-    <div class="virtual-card">
-      <div class="chip"></div>
-      <div class="card-number">**** **** **** 3456</div>
-      <div class="card-name">KIM DAE HYUN</div>
-      <div class="card-exp">12/29</div>
+<!-- ================= VIEW ALL ================= -->
+<div id="allTx" class="popup" hidden>
+  <div class="popup-box">
+    <h3>All Transactions</h3>
+
+    <div class="tx">
+      <div>Incoming SWIFT</div>
+      <div class="credit">+$882,000</div>
     </div>
+
+    <button onclick="this.closest('.popup').hidden=true">Close</button>
+  </div>
+</div>
+
+<!-- ================= CARDS ================= -->
+<div id="cardsScreen" class="popup" hidden>
+  <div class="popup-box">
+    <h3>Card</h3>
+    <p>**** **** **** 3456</p>
+    <button onclick="this.closest('.popup').hidden=true">Close</button>
   </div>
 </div>
 
 <!-- ================= DRAWER ================= -->
-<div id="drawerBackdrop" hidden></div>
+<div id="drawerBackdrop" hidden onclick="closeDrawer()"></div>
 
 <aside id="drawer" class="drawer">
 
-  <div class="drawer-header">
+  <button onclick="openPopup('Profile')">Profile</button>
+  <button onclick="openPopup('Cards')">Cards</button>
+  <button onclick="openPopup('Support')">Support</button>
 
-    <!-- ✅ FIXED DRAWER AVATAR -->
-    <img id="drawerAvatar" class="avatar large" src="" alt="Profile"/>
+  <button onclick="closeDrawer()">Close</button>
 
-    <div class="drawer-name">Kim Dae Hyun</div>
-  </div>
-
-  <button id="profileBtn">Profile</button>
-  <button id="drawerCardsBtn">Cards</button>
-  <button disabled>Transfers</button>
-  <button id="supportBtn">Support</button>
-  <button id="logoutBtn">Logout</button>
-
-  <button id="closeDrawer">Close</button>
 </aside>
 
-<script src="dashboard.js?v=6"></script>
+<!-- ================= FALLBACK JS ================= -->
+<script>
+
+/* ===== WORKS EVEN IF dashboard.js FAILS ===== */
+
+function openPopup(text){
+  document.getElementById("popupText").innerText = text;
+  document.getElementById("popup").hidden = false;
+}
+
+function closePopup(){
+  document.getElementById("popup").hidden = true;
+}
+
+function openDrawer(){
+  document.getElementById("drawer").classList.add("open");
+  document.getElementById("drawerBackdrop").hidden = false;
+}
+
+function closeDrawer(){
+  document.getElementById("drawer").classList.remove("open");
+  document.getElementById("drawerBackdrop").hidden = true;
+}
+
+/* basic mask fallback */
+let hiddenBal = false;
+function toggleFallback(){
+  hiddenBal = !hiddenBal;
+
+  document.querySelectorAll(".amount").forEach(el=>{
+    el.textContent = hiddenBal ? "••••••" : el.dataset.original || el.textContent;
+  });
+}
+
+</script>
+
+<!-- MAIN JS -->
+<script src="dashboard.js?v=8"></script>
+
 </body>
 </html>
