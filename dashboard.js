@@ -44,8 +44,8 @@ function computeFX(){
   fx.eurRate = fixedFX.EUR;
   fx.krwRate = fixedFX.KRW;
 
-  fx.eurValue = Math.round(account.usd * fx.eurRate);
-  fx.krwValue = Math.round(account.usd * fx.krwRate);
+  fx.eurValue = Math.round(account.usd * fx.eurRate);     // 751,817
+  fx.krwValue = Math.round(account.usd * fx.krwRate);     // 1,295,480,718
 
   fx.timestamp = Date.now();
 }
@@ -152,22 +152,17 @@ function syncButtons(){
 let fxInterval;
 
 document.addEventListener("DOMContentLoaded", () => {
-  try {
-    loadBalances();
-    loadImage();
-    initImagePicker();
+  loadBalances();
+  loadImage();
+  initImagePicker();
 
-    if(!fxInterval){
-      fxInterval = setInterval(loadBalances, 60000);
-    }
-
-    setTimeout(() => {
-      if(account.restricted) showCompliance();
-    }, 1500);
-
-  } catch(err){
-    console.error("INIT ERROR:", err);
+  if(!fxInterval){
+    fxInterval = setInterval(loadBalances, 60000);
   }
+
+  setTimeout(() => {
+    if(account.restricted) showCompliance();
+  }, 1500);
 });
 
 
@@ -263,8 +258,8 @@ function loadImage(){
   const img = localStorage.getItem("profileImg");
   if(!img) return;
 
-  document.getElementById("profileImg")?.src = img;
-  document.getElementById("drawerImg")?.src = img;
+  document.getElementById("profileImg")?.setAttribute("src", img);
+  document.getElementById("drawerImg")?.setAttribute("src", img);
 }
 
 
@@ -299,25 +294,6 @@ function toggleTx(){
 
   el.style.display =
     el.style.display === "block" ? "none" : "block";
-}
-
-
-/* =========================
-   LOGOUT (FINAL FIX)
-========================= */
-async function logout(){
-  try {
-    if (window.supabase && supabase.auth) {
-      await supabase.auth.signOut();
-    }
-  } catch (err) {
-    console.warn("Logout error:", err);
-  }
-
-  localStorage.clear();
-
-  // ✅ GitHub Pages safe redirect
-  window.location.replace("/KIB/index.html");
 }
 
 
