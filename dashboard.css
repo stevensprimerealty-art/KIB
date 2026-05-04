@@ -1,15 +1,17 @@
 body {
   margin:0;
-  font-family: sans-serif;
-  background:#0b1a2a;
-  color:white;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background:#f5f7fb;
+  color:#111;
 }
 
+/* TOPBAR */
 .topbar {
   display:flex;
   justify-content:space-between;
-  padding:10px;
   align-items:center;
+  padding:15px;
+  background:white;
 }
 
 .user {
@@ -19,73 +21,92 @@ body {
 }
 
 .user img {
-  width:40px;
-  height:40px;
+  width:42px;
+  height:42px;
   border-radius:50%;
-  object-fit:cover;
-  border:2px solid white;
+  border:2px solid #ddd;
 }
 
+/* CARDS */
 .cards {
   display:flex;
+  gap:12px;
   overflow-x:auto;
-  gap:15px;
-  padding:20px;
+  padding:15px;
 }
 
 .card {
-  min-width:250px;
-  padding:20px;
+  min-width:280px;
+  background:#ffffff;
   border-radius:20px;
-
-  backdrop-filter: blur(20px);
-  background: rgba(0, 120, 255, 0.2);
-  border:1px solid rgba(255,255,255,0.2);
+  padding:20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
-.flipCard {
-  transition: transform 1.8s ease;
+.card h3 {
+  font-size:18px;
+  margin-bottom:10px;
 }
 
-.flipCard.active {
-  transform: rotateY(180deg);
+.card p {
+  font-size:24px;
+  font-weight:bold;
+  margin-bottom:10px;
 }
 
+/* BUTTONS */
+button {
+  background:#e9eef5;
+  border:none;
+  border-radius:12px;
+  padding:10px 14px;
+  font-weight:500;
+  color:#2a6edb;
+}
+
+/* ACTIONS */
 .actions {
   display:flex;
   gap:10px;
-  padding:20px;
+  padding:15px;
 }
 
-button {
-  padding:10px;
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
-}
-
+/* TRANSACTIONS */
 .transactions {
   padding:20px;
+}
+
+.transactions h3 {
+  font-size:20px;
+  margin-bottom:15px;
 }
 
 .tx {
   display:flex;
   justify-content:space-between;
-  padding:10px 0;
+  align-items:center;
+  padding:15px 0;
+  border-bottom:1px solid #eee;
+}
+
+.amount {
+  font-weight:bold;
 }
 
 .green {
-  color:lightgreen;
+  color:#1bb76e;
 }
 
+/* DRAWER */
 .drawer {
   position:fixed;
-  left:-100%;
   top:0;
-  width:250px;
+  left:-100%;
+  width:80%;
   height:100%;
-  background:#111;
+  background:white;
   transition:0.3s;
+  z-index:10;
 }
 
 .drawer.open {
@@ -100,8 +121,17 @@ button {
   width:60px;
   height:60px;
   border-radius:50%;
+  margin-bottom:10px;
 }
 
+.drawerContent button {
+  display:block;
+  width:100%;
+  text-align:left;
+  margin-top:10px;
+}
+
+/* MODAL */
 .modal {
   position:fixed;
   top:0;
@@ -111,11 +141,36 @@ button {
   display:none;
   justify-content:center;
   align-items:center;
-  background:rgba(0,0,0,0.6);
+  background:rgba(0,0,0,0.4);
 }
 
 .modalBox {
-  background:#1e2d3f;
+  background:white;
   padding:20px;
-  border-radius:15px;
+  border-radius:16px;
+  width:85%;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:15px;
+  padding:20px;
+}
+
+.gridItem {
+  background:white;
+  border-radius:16px;
+  padding:15px;
+  text-align:center;
+  font-size:14px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.05);
+}
+
+.badge {
+  background:#fff3cd;
+  color:#856404;
+  padding:4px 8px;
+  border-radius:8px;
+  font-size:12px;
 }
